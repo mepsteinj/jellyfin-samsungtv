@@ -4,7 +4,7 @@ var tvKey = new Common.API.TVKeyValue();
 
 var Main =
 {
-		version : "v2.2.6a",
+		version : "v3.0.0",
 		requiredServerVersion : "10.5.2",
 
 		//TV Series Version
