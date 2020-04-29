@@ -1,16 +1,16 @@
 var GuiDisplayOneItem = {
 		ItemData : null,
 		ItemIndexData : null,
-		
+
 		selectedItem : 0,
 		topLeftItem : 0,
 		MAXCOLUMNCOUNT : 4,
 		MAXROWCOUNT : 3,
-		
+
 		indexSeekPos : -1,
 		isResume : false,
 		genreType : "",
-		
+
 		startParams : [],
 		isLatest : false,
 		backdropTimeout : null
@@ -26,28 +26,28 @@ GuiDisplayOneItem.getMaxDisplay = function() {
 
 GuiDisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
 	alert("Page Enter : GuiDisplayOneItem");
-	
-	//Save Start Params	
+
+	//Save Start Params
 	this.startParams = [title,url];
-	
+
 	//Reset Values
 	this.indexSeekPos = -1;
 	this.selectedItem = selectedItem;
 	this.topLeftItem = topLeftItem;
 	this.genreType = null;
-	
+
 	//Load Data
 	this.ItemData = Server.getContent(url + "&Limit="+File.getTVProperty("ItemPaging"));
 	if (this.ItemData == null) { Support.processReturnURLHistory(); }
 	//Once we've browsed the channels down to a content folder we should display them using GuiDisplay_Series.
 	if (this.ItemData.TotalRecordCount >0){
-		if (this.ItemData.Items[0].Type == "ChannelVideoItem" || 
-				this.ItemData.Items[0].Type == "ChannelAudioItem" || 
+		if (this.ItemData.Items[0].Type == "ChannelVideoItem" ||
+				this.ItemData.Items[0].Type == "ChannelAudioItem" ||
 				this.ItemData.Items[0].Type == "Trailer" ||
 				this.ItemData.Items[0].Type == "AudioPodcast") {
 			GuiDisplay_Series.start("All "+this.ItemData.Items[0].Type,url,selectedItem,topLeftItem,this.ItemData);
 			return;
-		}	
+		}
 	}
 
 	//Setup display width height based on title
@@ -58,37 +58,37 @@ GuiDisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
 		this.MAXROWCOUNT = 2;
 		break;
 	case "Music":
-	case "Albums":	
-	case "Artists":	
+	case "Albums":
+	case "Artists":
 		this.MAXCOLUMNCOUNT = 6;
 		this.MAXROWCOUNT = 3;
-		break;		
+		break;
 	default:
 		this.MAXCOLUMNCOUNT = 4;
 		this.MAXROWCOUNT = 3;
 		break;
 	}
-	
+
 	//Set Page Content
 	document.getElementById("pageContent").innerHTML = "<div id='title' class='EpisodesSeriesInfo'>"+title+"</div>" +
-			"<div id=Center class='SeriesCenter'><div id=Content></div></div>";	
-	
-	//Set Top 
+			"<div id=Center class='SeriesCenter'><div id=Content></div></div>";
+
+	//Set Top
 	GuiDisplayOneItem.setPadding(title);
-	
+
 	if (this.ItemData.Items.length > 0) {
 		//Set isResume based on title - used in UpdateDisplayedItems
 		this.isResume = (title == "Resume") ? true : false;
-		
+
 		//Alter to only allow indexing on certain pages??
-		//this.ItemIndexData = Support.processIndexing(this.ItemData.Items); 
-	
+		//this.ItemIndexData = Support.processIndexing(this.ItemData.Items);
+
 		//Display first XX series
 		this.updateDisplayedItems();
-			
+
 		//Update Selected Collection CSS
-		this.updateSelectedItems();	
-			
+		this.updateSelectedItems();
+
 		//Set Focus for Key Events
 		document.getElementById("GuiDisplayOneItem").focus();
 	} else {
@@ -96,9 +96,9 @@ GuiDisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
 		document.getElementById("Counter").innerHTML = "";
 		document.getElementById("Content").style.fontSize="40px";
 		document.getElementById("Content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid<br>Press return to get back to the previous screen";
-		
+
 		document.getElementById("NoItems").focus();
-	}	
+	}
 }
 
 GuiDisplayOneItem.updateDisplayedItems = function() {
@@ -129,53 +129,53 @@ GuiDisplayOneItem.keyDown = function() {
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
-	
+
 	//Update Screensaver Timer
 	Support.screensaver();
-	
-	//If screensaver is running 
+
+	//If screensaver is running
 	if (Main.getIsScreensaverRunning()) {
 		//Update Main.js isScreensaverRunning - Sets to True
 		Main.setIsScreensaverRunning();
-		
+
 		//End Screensaver
 		GuiImagePlayer_Screensaver.stopScreensaver();
-		
+
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
-	
+
 	switch(keyCode) {
 		//Need Logout Key
 		case tvKey.KEY_LEFT:
-			alert("LEFT");	
+			alert("LEFT");
 			this.processLeftKey();
 			break;
 		case tvKey.KEY_RIGHT:
-			alert("RIGHT");	
+			alert("RIGHT");
 			this.processRightKey();
-			break;		
+			break;
 		case tvKey.KEY_UP:
 			alert("UP");
 			this.processUpKey();
-			break;	
+			break;
 		case tvKey.KEY_DOWN:
 			alert("DOWN");
 			this.processDownKey();
-			break;	
-		case tvKey.KEY_PANEL_CH_UP: 
-		case tvKey.KEY_CH_UP: 
+			break;
+		case tvKey.KEY_PANEL_CH_UP:
+		case tvKey.KEY_CH_UP:
 			this.processChannelUpKey();
-			break;			
-		case tvKey.KEY_PANEL_CH_DOWN: 
-		case tvKey.KEY_CH_DOWN: 
+			break;
+		case tvKey.KEY_PANEL_CH_DOWN:
+		case tvKey.KEY_CH_DOWN:
 			this.processChannelDownKey();
-			break;	
+			break;
 		case tvKey.KEY_RETURN:
 			alert("RETURN");
 			widgetAPI.blockNavigation(event);
 			Support.processReturnURLHistory();
-			break;	
+			break;
 		case tvKey.KEY_ENTER:
 		case tvKey.KEY_PANEL_ENTER:
 			alert("ENTER");
@@ -183,13 +183,13 @@ GuiDisplayOneItem.keyDown = function() {
 			break;
 		case tvKey.KEY_PLAY:
 			this.playSelectedItem();
-			break;	
+			break;
 		case tvKey.KEY_GREEN:
 			//Watched - May not be needed on this page
 			break;
-		case tvKey.KEY_YELLOW:	
+		case tvKey.KEY_YELLOW:
 			//Favourites - May not be needed on this page
-			break;	
+			break;
 		case tvKey.KEY_BLUE:
 			GuiMusicPlayer.showMusicPlayer("GuiDisplayOneItem",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
 			break;
@@ -199,14 +199,14 @@ GuiDisplayOneItem.keyDown = function() {
 			break;
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY");
-			widgetAPI.sendExitEvent(); 
+			widgetAPI.sendExitEvent();
 			break;
 	}
 }
 
 GuiDisplayOneItem.processSelectedItem = function() {
 	clearTimeout(this.backdropTimeout);
-	Support.processSelectedItem("GuiDisplayOneItem",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null,this.genreType,this.isLatest); 
+	Support.processSelectedItem("GuiDisplayOneItem",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null,this.genreType,this.isLatest);
 }
 
 GuiDisplayOneItem.playSelectedItem = function () {
@@ -257,7 +257,7 @@ GuiDisplayOneItem.processUpKey = function() {
 	this.selectedItem = this.selectedItem - this.MAXCOLUMNCOUNT;
 	if (this.selectedItem < 0) {
 		//Check User Setting
-		this.selectedItem = this.selectedItem + this.MAXCOLUMNCOUNT;	
+		this.selectedItem = this.selectedItem + this.MAXCOLUMNCOUNT;
 	} else {
 		if (this.selectedItem < this.topLeftItem) {
 			if (this.topLeftItem - this.MAXCOLUMNCOUNT < 0) {
@@ -307,7 +307,7 @@ GuiDisplayOneItem.processChannelUpKey = function() {
 
 GuiDisplayOneItem.processChannelDownKey = function() {
 	this.selectedItem = this.selectedItem + this.getMaxDisplay();
-	if (this.selectedItem >= this.ItemData.Items.length) {		
+	if (this.selectedItem >= this.ItemData.Items.length) {
 		this.selectedItem = (this.ItemData.Items.length-1);
 		if (this.selectedItem >= this.topLeftItem + this.getMaxDisplay()) {
 			this.topLeftItem = this.topLeftItem + this.getMaxDisplay();
@@ -323,16 +323,16 @@ GuiDisplayOneItem.processChannelDownKey = function() {
 GuiDisplayOneItem.processIndexing = function() {
 	var indexLetter = this.ItemIndexData[0];
 	var indexPos = this.ItemIndexData[1];
-	
+
 	this.indexSeekPos++;
 	if (this.indexSeekPos >= indexPos.length) {
 		this.indexSeekPos = 0;
 		this.topLeftItem = 0;
 	}
-	
+
 	this.selectedItem = indexPos[this.indexSeekPos];
 	this.topLeftItem = this.selectedItem;
-	
+
 	this.updateDisplayedItems();
 	this.updateSelectedItems();
 }
@@ -340,7 +340,7 @@ GuiDisplayOneItem.processIndexing = function() {
 GuiDisplayOneItem.setPadding = function(title) {
 	switch (title) {
 	case "Media Folders":
-	case "Collections":	
+	case "Collections":
 		if (this.ItemData.Items.length <= this.MAXCOLUMNCOUNT) {
 			document.getElementById("Center").style.top = "220px";
 		} else {
@@ -348,9 +348,9 @@ GuiDisplayOneItem.setPadding = function(title) {
 		}
 		break;
 	case "Music":
-	case "Albums":	
-	case "Artists":	
-		break;		
+	case "Albums":
+	case "Artists":
+		break;
 	default:
 		if (this.ItemData.Items.length > this.MAXCOLUMNCOUNT * 2) {
 			//3 Rows
@@ -361,7 +361,7 @@ GuiDisplayOneItem.setPadding = function(title) {
 		} else {
 			//1 Row
 			document.getElementById("Center").style.top = "180px";
-		}		
+		}
 		break;
 	}
 }

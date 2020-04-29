@@ -6,28 +6,28 @@ Render Error 4 :  Unsupported video resolution
 Render Error 6 :  Corrupt Stream
 */
 
-var GuiPlayer_Transcoding = {		
+var GuiPlayer_Transcoding = {
 		//File Information
 		MediaSource : null,
 		videoIndex : 0,
 		audioIndex : 0,
-	
+
 		//Bitrate check
 		bitRateToUse : null,
-		
+
 		//Boolean that conclude if all Video or All Audio elements will play without transcode
 		isVideo : true,
 		isAudio : true,
-		
+
 		//All Video Elements
 		isCodec : null,
 		isResolution : null,
 		isContainer : null,
 		isBitRate : null,
-		isLevel : null,	
+		isLevel : null,
 		isFrameRate : null,
 		isProfile : null,
-		
+
 		//All Audio elements
 		isAudioCodec : null,
 		isAudioContainer : null,
@@ -35,12 +35,12 @@ var GuiPlayer_Transcoding = {
 }
 
 //--------------------------------------------------------------------------------------
-GuiPlayer_Transcoding.start = function(showId, MediaSource,MediaSourceIndex, videoIndex, audioIndex, isFirstAudioIndex, subtitleIndex) {	
+GuiPlayer_Transcoding.start = function(showId, MediaSource,MediaSourceIndex, videoIndex, audioIndex, isFirstAudioIndex, subtitleIndex) {
 	//Set Class Vars
 	this.MediaSource = MediaSource;
 	this.videoIndex = videoIndex;
 	this.audioIndex = audioIndex;
-	
+
 	//Check Video & Audio Compatibility
 	this.checkCodec(videoIndex);
 	this.checkAudioCodec(audioIndex);
@@ -66,15 +66,15 @@ GuiPlayer_Transcoding.start = function(showId, MediaSource,MediaSourceIndex, vid
 		if (isFirstAudioIndex == true) {
 			transcodeStatus = "Direct Play";
 			streamparams = '/Stream.'+this.MediaSource.Container+'?static=true&MediaSourceId='+this.MediaSource.Id + '&api_key=' + Server.getAuthToken();
-		} else {			
+		} else {
 			transcodeStatus = "Stream Copy - Audio Not First Track";
 			streamparams = '/Stream.ts?VideoStreamIndex='+this.videoIndex+'&AudioStreamIndex='+this.audioIndex+'&VideoCodec=copy&AudioCodec='+ streamAudioCodec +'&MediaSourceId='+this.MediaSource.Id + '&api_key=' + Server.getAuthToken();
-		}	
+		}
 	} else if (this.isVideo == false) {
-		transcodeStatus = "Transcoding Audio & Video";	
-		streamparams = '/Stream.ts?VideoStreamIndex='+this.videoIndex+'&AudioStreamIndex='+this.audioIndex+'&VideoCodec=h264&Profile=high&Level=41&MaxVideoBitDepth=8&MaxWidth=1920&VideoBitrate='+this.bitRateToUse+'&AudioCodec=' + streamAudioCodec +'&AudioBitrate=360000&MaxAudioChannels=6&MediaSourceId='+this.MediaSource.Id + '&api_key=' + Server.getAuthToken();	
+		transcodeStatus = "Transcoding Audio & Video";
+		streamparams = '/Stream.ts?VideoStreamIndex='+this.videoIndex+'&AudioStreamIndex='+this.audioIndex+'&VideoCodec=h264&Profile=high&Level=41&MaxVideoBitDepth=8&MaxWidth=1920&VideoBitrate='+this.bitRateToUse+'&AudioCodec=' + streamAudioCodec +'&AudioBitrate=360000&MaxAudioChannels=6&MediaSourceId='+this.MediaSource.Id + '&api_key=' + Server.getAuthToken();
 	} else if (this.isVideo == true && (this.isAudio == false || convertAACtoDolby == true)) {
-		transcodeStatus = "Transcoding Audio";	
+		transcodeStatus = "Transcoding Audio";
 		streamparams = '/Stream.ts?VideoStreamIndex='+this.videoIndex+'&AudioStreamIndex='+this.audioIndex+'&VideoCodec=copy&AudioCodec='+ streamAudioCodec +'&audioBitrate=360000&MaxAudioChannels=6&MediaSourceId='+this.MediaSource.Id + '&api_key=' + Server.getAuthToken();
 	}
 	var url = Server.getServerAddr() + '/Videos/' + showId + streamparams + '&DeviceId='+Server.getDeviceID();
@@ -83,13 +83,13 @@ GuiPlayer_Transcoding.start = function(showId, MediaSource,MediaSourceIndex, vid
 
 	//Return results to Versions
 	//MediaSourceId,Url,transcodeStatus,videoIndex,audioIndex
-	return [MediaSourceIndex,url,transcodeStatus,videoIndex,audioIndex,subtitleIndex];	
+	return [MediaSourceIndex,url,transcodeStatus,videoIndex,audioIndex,subtitleIndex];
 }
 
 GuiPlayer_Transcoding.checkCodec = function() {
 	var codec = this.MediaSource.MediaStreams[this.videoIndex].Codec.toLowerCase();
 	var codecParams = GuiPlayer_TranscodeParams.getParameters(codec,this.MediaSource.MediaStreams[this.videoIndex].Width);
-	
+
 	this.isCodec = codecParams[0];
 	this.isContainer = this.checkContainer(codecParams[1]);
 	this.isResolution = this.checkResolution(codecParams[2]);
@@ -97,7 +97,7 @@ GuiPlayer_Transcoding.checkCodec = function() {
 	this.isFrameRate = this.checkFrameRate(codecParams[4]);
 	this.isLevel = this.checkLevel(codecParams[5]);
 	this.isProfile = this.checkProfile(codecParams[6]);
-	
+
 	//Results
 	FileLog.write("Video : Video File Analysis Results");
 	FileLog.write("Video : Codec Compatibility: " + this.isCodec + " : " + this.MediaSource.MediaStreams[this.videoIndex].Codec);
@@ -107,9 +107,9 @@ GuiPlayer_Transcoding.checkCodec = function() {
 	FileLog.write("Video : FrameRate Compatibility: " + this.isFrameRate + " : " + this.MediaSource.MediaStreams[this.videoIndex].AverageFrameRate);
 	FileLog.write("Video : Level Compatibility: " + this.isLevel + " : " + this.MediaSource.MediaStreams[this.videoIndex].Level);
 	FileLog.write("Video : Profile Compatibility: " + this.isProfile + " : " + this.MediaSource.MediaStreams[this.videoIndex].Profile);
-	
+
 	//Put it all together
-	if (this.isCodec && this.isContainer && this.isResolution && this.isBitRate && this.isFrameRate && this.isLevel && this.isProfile) { // 
+	if (this.isCodec && this.isContainer && this.isResolution && this.isBitRate && this.isFrameRate && this.isLevel && this.isProfile) { //
 		this.isVideo = true;
 	} else {
 		this.isVideo = false;
@@ -119,23 +119,23 @@ GuiPlayer_Transcoding.checkCodec = function() {
 GuiPlayer_Transcoding.checkAudioCodec = function() {
 	var audiocodec = this.MediaSource.MediaStreams[this.audioIndex].Codec.toLowerCase();
 	var audiocodecParams = GuiPlayer_TranscodeParams.getAudioParameters(audiocodec);
-	
+
 	this.isAudioCodec = audiocodecParams[0];
 	this.isAudioContainer = this.checkContainer(audiocodecParams[1]);
-	this.isAudioChannel = this.checkAudioChannels(audiocodecParams[2]);		
-	
+	this.isAudioChannel = this.checkAudioChannels(audiocodecParams[2]);
+
 	//Results
 	FileLog.write("Video : Audio File Analysis Results");
 	FileLog.write("Video : Codec Compatibility: " + this.isAudioCodec + " : " + this.MediaSource.MediaStreams[this.audioIndex].Codec);
 	FileLog.write("Video : Container Compatibility: " + this.isAudioContainer + " : " + this.MediaSource.Container);
 	FileLog.write("Video : Channel Compatibility: " + this.isAudioChannel + " : " + this.MediaSource.MediaStreams[this.audioIndex].Channels);
-	
+
 	//Put it all together
 	if (this.isAudioCodec && this.isAudioChannel) {
 		this.isAudio = true;
 	} else {
 		this.isAudio = false;
-	}		
+	}
 }
 
 GuiPlayer_Transcoding.checkAudioChannels = function(maxChannels) {
@@ -179,8 +179,8 @@ GuiPlayer_Transcoding.checkBitRate = function(maxBitRate) {
 	//Get Bitrate from Settings File
 	var maxBitRateSetting = File.getTVProperty("Bitrate")*1024*1024;
 
-    // MCB - Ignore bitrate in file
-    this.bitRateToUse = maxBitRateSetting;
+	// MCB - Ignore bitrate in file
+	this.bitRateToUse = maxBitRateSetting;
 
 	if (this.MediaSource.MediaStreams[this.videoIndex].BitRate > maxBitRateSetting) {
 		return false;

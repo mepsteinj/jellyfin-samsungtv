@@ -10,13 +10,13 @@ GuiPage_Contributors.onFocus = function() {
 
 GuiPage_Contributors.start = function() {
 	alert("Page Enter : GuiPage_Contributors");
-	
+
 	document.getElementById("Counter").innerHTML = Main.version;
 	document.getElementById("guiReturnButton").style.visibility = "";
 	document.getElementById("guiReturnButton").innerHTML = "Return";
-	
+
 	document.getElementById("pageContent").innerHTML = "<div class='EpisodesSeriesInfo'>About:</div><div id=ContentAbout style='font-size:1em;' class='guiPage_Settings_Settings'></div>";
-	
+
 	var htmlToAdd = "Jellyfin for Samsung Smart TVs is a free, opensource community project. A broad range of Smarthub devices are supported due to the generously donated time and efforts of, among others, the following people.<br>";
 	htmlToAdd += "Feedback on this and other Jellyfin products is gratefully received at jellyfin/community.<br><br>"
 	htmlToAdd += "<span style='font-size:1.2em;'>Main Developers</span><table><tr class='guiSettingsRow'>";
@@ -51,9 +51,9 @@ GuiPage_Contributors.start = function() {
 			htmlToAdd += "</tr>";
 		}
 	}
-	
+
 	document.getElementById("ContentAbout").innerHTML = htmlToAdd + "</tr></table>";
-	
+
 	//Set Focus for Key Events
 	document.getElementById("GuiPage_Contributors").focus();
 }
@@ -70,22 +70,22 @@ GuiPage_Contributors.keyDown = function() {
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
-	
+
 	//Update Screensaver Timer
 	Support.screensaver();
-	
-	//If screensaver is running 
+
+	//If screensaver is running
 	if (Main.getIsScreensaverRunning()) {
 		//Update Main.js isScreensaverRunning - Sets to True
 		Main.setIsScreensaverRunning();
-		
+
 		//End Screensaver
 		GuiImagePlayer_Screensaver.stopScreensaver();
-		
+
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
-	
+
 	switch(keyCode) {
 		case tvKey.KEY_LEFT:
 			alert("LEFT");
@@ -95,17 +95,17 @@ GuiPage_Contributors.keyDown = function() {
 			alert("RETURN");
 			widgetAPI.blockNavigation(event);
 			Support.processReturnURLHistory();
-			break;	
+			break;
 		case tvKey.KEY_BLUE:
 			GuiMusicPlayer.showMusicPlayer("GuiPage_Contributors");
-			break;	
+			break;
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
 			this.openMenu();
-			break;	
+			break;
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY");
-			widgetAPI.sendExitEvent(); 
+			widgetAPI.sendExitEvent();
 			break;
 	}
 }

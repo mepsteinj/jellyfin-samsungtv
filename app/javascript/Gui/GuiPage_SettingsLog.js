@@ -2,10 +2,10 @@ var GuiPage_SettingsLog = {
 		logArray : null,
 		selectedBannerItem : 0,
 		topLeftItem : 0,
-		
+
 		MAXCOLUMNCOUNT : 1,
 		MAXROWCOUNT : 20,
-		
+
 		bannerItems : ["User Settings","Server Settings","TV Settings","Log","About"],
 }
 
@@ -19,15 +19,15 @@ GuiPage_SettingsLog.getMaxDisplay = function() {
 
 GuiPage_SettingsLog.start = function() {
 	alert("Page Enter : GuiPage_SettingsLog");
-	
+
 	//Reset Vars
 	this.selectedBannerItem = 3; //match Logs
-	
+
 	//Load Data
-	this.logArray = FileLog.loadFile(true);  
+	this.logArray = FileLog.loadFile(true);
 	this.topLeftItem = this.logArray.length - GuiPage_SettingsLog.getMaxDisplay();
 	this.topLeftItem = (this.topLeftItem < 0) ? 0 : this.topLeftItem;
-	
+
 	//Load Settings
 	document.getElementById("pageContent").className = "";
 	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='bannerMenu'></div><div id='guiTV_Show_Title' class='guiPage_Settings_Title'>Log</div>\ \
@@ -36,16 +36,16 @@ GuiPage_SettingsLog.start = function() {
 			"<div id=guiPage_Settings_Overview_Title></div>" +
 			"<div id=guiPage_Settings_Overview_Content></div>" +
 		"</div>";*/
-	
+
 	//Create Banner Items
 	for (var index = 0; index < this.bannerItems.length; index++) {
 		if (index != this.bannerItems.length-1) {
-			document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem bannerItemPadding'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";			
+			document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem bannerItemPadding'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";
 		} else {
-			document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";					
+			document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";
 		}
 	}
-	
+
 	//Update Displayed
 	//this.setText();
 	this.updateDisplayedItems();
@@ -68,7 +68,7 @@ GuiPage_SettingsLog.updateSelectedBannerItems = function() {
 				document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text";
 			} else {
 				document.getElementById("bannerItem"+index).className = "bannerItem highlight"+Main.highlightColour+"Text";
-			}		
+			}
 		} else {
 			if (index != this.bannerItems.length-1) { //Don't put padding on the last one.
 				if (index == 3) {
@@ -99,40 +99,40 @@ GuiPage_SettingsLog.keyDown = function() {
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
-	
+
 	//Update Screensaver Timer
 	Support.screensaver();
-	
-	//If screensaver is running 
+
+	//If screensaver is running
 	if (Main.getIsScreensaverRunning()) {
 		//Update Main.js isScreensaverRunning - Sets to True
 		Main.setIsScreensaverRunning();
-		
+
 		//End Screensaver
 		GuiImagePlayer_Screensaver.stopScreensaver();
-		
+
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
-	
+
 	switch(keyCode) {
 		//Need Logout Key
-		case tvKey.KEY_UP:	
+		case tvKey.KEY_UP:
 			this.processUpKey();
 			break;
-		case tvKey.KEY_DOWN:	
+		case tvKey.KEY_DOWN:
 			this.processDownKey();
-			break;	
+			break;
 		case tvKey.KEY_LEFT:
 			this.processLeftKey();
 			break;
 		case tvKey.KEY_RIGHT:
 			this.processRightKey();
-			break;	
+			break;
 		case tvKey.KEY_RETURN:
 			widgetAPI.blockNavigation(event);
 			Support.processReturnURLHistory();
-			break;	
+			break;
 		case tvKey.KEY_ENTER:
 		case tvKey.KEY_PANEL_ENTER:
 			this.processSelectedItem();
@@ -143,15 +143,15 @@ GuiPage_SettingsLog.keyDown = function() {
 			FileLog.write("Log File Emptied by User")
 			GuiPage_SettingsLog.start(); //relead
 			break;
-		case tvKey.KEY_BLUE:	
+		case tvKey.KEY_BLUE:
 			GuiMusicPlayer.showMusicPlayer("GuiPage_SettingsLog","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
-			break;		
+			break;
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
 			GuiMainMenu.requested("GuiPage_SettingsLog",null);
-			break;	
+			break;
 		case tvKey.KEY_EXIT:
-			widgetAPI.sendExitEvent(); 
+			widgetAPI.sendExitEvent();
 			break;
 	}
 }
@@ -162,7 +162,7 @@ GuiPage_SettingsLog.processUpKey = function() {
 		this.topLeftItem = 0;
 	} else {
 		this.updateDisplayedItems();
-	}	
+	}
 }
 
 GuiPage_SettingsLog.processDownKey = function() {
@@ -180,8 +180,8 @@ GuiPage_SettingsLog.processLeftKey = function() {
 		this.selectedBannerItem = 0;
 		this.openMenu();
 	} else {
-		this.updateSelectedBannerItems();	
-	}	
+		this.updateSelectedBannerItems();
+	}
 }
 
 GuiPage_SettingsLog.openMenu = function() {
@@ -194,7 +194,7 @@ GuiPage_SettingsLog.processRightKey = function() {
 	if (this.selectedBannerItem >= this.bannerItems.length) {
 		this.selectedBannerItem--;
 	} else {
-		this.updateSelectedBannerItems();	
+		this.updateSelectedBannerItems();
 	}
 }
 

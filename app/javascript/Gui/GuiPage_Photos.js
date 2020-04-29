@@ -1,11 +1,11 @@
 var GuiPage_Photos = {
 		ItemData : null,
-		
+
 		selectedItem : 0,
 		topLeftItem : 0,
 		MAXCOLUMNCOUNT : 4,
 		MAXROWCOUNT : 3,
-		
+
 		isResume : false,
 		genreType : "",
 		startParams : [],
@@ -23,42 +23,42 @@ GuiPage_Photos.getMaxDisplay = function() {
 
 GuiPage_Photos.start = function(title,url,selectedItem,topLeftItem) {
 	alert("Page Enter : GuiPage_Photos");
-	
-	//Save Start Params	
+
+	//Save Start Params
 	this.startParams = [title,url];
-	
+
 	alert (url);
-	
+
 	//Reset Values
 	this.indexSeekPos = -1;
 	this.selectedItem = selectedItem;
 	this.topLeftItem = topLeftItem;
 	this.genreType = null;
-	
+
 	//Load Data
 	this.ItemData = Server.getContent(url);
 	if (this.ItemData == null) { Support.processReturnURLHistory(); }
 
 	//Set Page Content
 	document.getElementById("pageContent").innerHTML = "<div id='title' class='EpisodesSeriesInfo'>"+title+"</div>" +
-			"<div id=Center class='SeriesCenter'><div id=Content></div></div>";	
-	
-	//Set Top 
+			"<div id=Center class='SeriesCenter'><div id=Content></div></div>";
+
+	//Set Top
 	GuiPage_Photos.setPadding(title);
-	
+
 	if (this.ItemData.Items.length > 0) {
 		//Set isResume based on title - used in UpdateDisplayedItems
 		this.isResume = (title == "Resume") ? true : false;
-		
+
 		//Alter to only allow indexing on certain pages??
-		this.ItemIndexData = Support.processIndexing(this.ItemData.Items); 
-	
+		this.ItemIndexData = Support.processIndexing(this.ItemData.Items);
+
 		//Display first XX series
 		this.updateDisplayedItems();
-			
+
 		//Update Selected Collection CSS
-		this.updateSelectedItems();	
-			
+		this.updateSelectedItems();
+
 		//Set Focus for Key Events
 		document.getElementById("GuiPage_Photos").focus();
 	} else {
@@ -66,14 +66,14 @@ GuiPage_Photos.start = function(title,url,selectedItem,topLeftItem) {
 		document.getElementById("Counter").innerHTML = "";
 		document.getElementById("Content").style.fontSize="1.7em";
 		document.getElementById("Content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid<br>Press return to get back to the previous screen";
-		
+
 		document.getElementById("NoItems").focus();
-	}	
+	}
 }
 
 GuiPage_Photos.updateDisplayedItems = function() {
 	var Items = this.ItemData.Items;
-	var htmlToAdd = "";	
+	var htmlToAdd = "";
 	var DivIdPrepend = "";
 	htmlToAdd += "<div class=photoAlbum><table class=photoTable><tr>";
 	for (var i = 0; i < Math.min(this.getMaxDisplay(),Items.length-this.topLeftItem); i++) {
@@ -86,7 +86,7 @@ GuiPage_Photos.updateDisplayedItems = function() {
 			if (photos){
 				photosCount = photos.TotalRecordCount;
 				if(photos.Items[0]){
-					if(photos.Items[0].ImageTags.Primary){			
+					if(photos.Items[0].ImageTags.Primary){
 						imgsrc = Server.getImageURL(photos.Items[0].Id,"Primary",(i==0?880:440),(i==0?880:440),0,false,0);
 					}
 				}
@@ -107,7 +107,7 @@ GuiPage_Photos.updateDisplayedItems = function() {
 				imgsrc = Server.getImageURL(Items[this.topLeftItem+i].Id,"Primary",(i==0?880:440),(i==0?880:440),0,false,0);
 			} else if (Items[this.topLeftItem+i].ImageTags.Thumb){
 				imgsrc = Server.getImageURL(Items[this.topLeftItem+i].Id,"Thumb",(i==0?880:440),(i==0?880:440),0,false,0);
-			} else { 
+			} else {
 				imgsrc = "images/film-93x105.png";
 			}
 			htmlToAdd += (i==0?"<td class=photoThumbLarge colspan=2 rowspan=2>":"<td class=photoThumbSmall>")+"<div id="+ DivIdPrepend + Items[this.topLeftItem+i].Id + " style=background-color:rgba(0,0,0,0.5);background-image:url(" +imgsrc+ ");width:"+(i==0?572:270)+"px;height:"+(i==0?572:270)+"px><div class=photoTitle style=font-size:"+(i==0?36:28)+"px>"+ title + "</div>";
@@ -120,7 +120,7 @@ GuiPage_Photos.updateDisplayedItems = function() {
 				imgsrc = Server.getImageURL(Items[this.topLeftItem+i].Id,"Primary",(i==0?880:440),(i==0?880:440),0,false,0);
 			} else if (Items[this.topLeftItem+i].ImageTags.Thumb){
 				imgsrc = Server.getImageURL(Items[this.topLeftItem+i].Id,"Thumb",(i==0?880:440),(i==0?880:440),0,false,0);
-			} else { 
+			} else {
 				imgsrc = "images/menu/photos-54x54.png";
 			}
 			htmlToAdd += (i==0?"<td class=photoThumbLarge colspan=2 rowspan=2>":"<td class=photoThumbSmall>")+"<div id="+ DivIdPrepend + Items[this.topLeftItem+i].Id + " style=background-color:rgba(0,0,0,0.5);background-image:url(" +imgsrc+ ");width:"+(i==0?572:270)+"px;height:"+(i==0?572:270)+"px>";
@@ -134,11 +134,11 @@ GuiPage_Photos.updateDisplayedItems = function() {
 		}
 	}
 	htmlToAdd += "</tr></table></div>";
-	document.getElementById("Content").innerHTML = htmlToAdd;	
+	document.getElementById("Content").innerHTML = htmlToAdd;
 }
 
 GuiPage_Photos.updateOneDisplayedItem = function(item,selectedItem) {
-	var htmlToAdd = "";	
+	var htmlToAdd = "";
 	if (item.Type == "PhotoAlbum" || item.Type == "Folder") {
 		var title = item.Name;
 		htmlToAdd += "<div class=photoTitle style=font-size:"+(this.selectedItem==this.topLeftItem?36:28)+"px>"+ title + "</div>";
@@ -170,53 +170,53 @@ GuiPage_Photos.keyDown = function() {
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
-	
+
 	//Update Screensaver Timer
 	Support.screensaver();
-	
-	//If screensaver is running 
+
+	//If screensaver is running
 	if (Main.getIsScreensaverRunning()) {
 		//Update Main.js isScreensaverRunning - Sets to True
 		Main.setIsScreensaverRunning();
-		
+
 		//End Screensaver
 		GuiImagePlayer_Screensaver.stopScreensaver();
-		
+
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
-	
+
 	switch(keyCode) {
 		//Need Logout Key
 		case tvKey.KEY_LEFT:
-			alert("LEFT");	
+			alert("LEFT");
 			this.processLeftKey();
 			break;
 		case tvKey.KEY_RIGHT:
-			alert("RIGHT");	
+			alert("RIGHT");
 			this.processRightKey();
-			break;		
+			break;
 		case tvKey.KEY_UP:
 			alert("UP");
 			this.processUpKey();
-			break;	
+			break;
 		case tvKey.KEY_DOWN:
 			alert("DOWN");
 			this.processDownKey();
-			break;	
-		case tvKey.KEY_PANEL_CH_UP: 
-		case tvKey.KEY_CH_UP: 
+			break;
+		case tvKey.KEY_PANEL_CH_UP:
+		case tvKey.KEY_CH_UP:
 			this.processChannelUpKey();
-			break;			
-		case tvKey.KEY_PANEL_CH_DOWN: 
-		case tvKey.KEY_CH_DOWN: 
+			break;
+		case tvKey.KEY_PANEL_CH_DOWN:
+		case tvKey.KEY_CH_DOWN:
 			this.processChannelDownKey();
-			break;	
+			break;
 		case tvKey.KEY_RETURN:
 			alert("RETURN");
 			widgetAPI.blockNavigation(event);
 			Support.processReturnURLHistory();
-			break;	
+			break;
 		case tvKey.KEY_ENTER:
 		case tvKey.KEY_PANEL_ENTER:
 			alert("ENTER");
@@ -224,11 +224,11 @@ GuiPage_Photos.keyDown = function() {
 			break;
 		case tvKey.KEY_PLAY:
 			this.playSelectedItem();
-			break;	
+			break;
 		case tvKey.KEY_GREEN:
 			//Watched - Not needed on this page
 			break;
-		case tvKey.KEY_RED:	
+		case tvKey.KEY_RED:
 			if (this.ItemData.Items[this.selectedItem].UserData.IsFavorite == true) {
 				Server.deleteFavourite(this.ItemData.Items[this.selectedItem].Id);
 				this.ItemData.Items[this.selectedItem].UserData.IsFavorite = false;
@@ -239,8 +239,8 @@ GuiPage_Photos.keyDown = function() {
 				//GuiNotifications.setNotification ("Item has been added to<br>favourites","Favourites");
 			}
 			this.updateOneDisplayedItem(this.ItemData.Items[this.selectedItem],this.selectedItem)
-			break;	
-		case tvKey.KEY_BLUE:	
+			break;
+		case tvKey.KEY_BLUE:
 			GuiMusicPlayer.showMusicPlayer("GuiPage_Photos",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
 			break;
 		case tvKey.KEY_TOOLS:
@@ -249,14 +249,14 @@ GuiPage_Photos.keyDown = function() {
 			break;
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY");
-			widgetAPI.sendExitEvent(); 
+			widgetAPI.sendExitEvent();
 			break;
 	}
 }
 
 GuiPage_Photos.processSelectedItem = function() {
 	clearTimeout(this.backdropTimeout);
-	Support.processSelectedItem("GuiPage_Photos",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null,this.genreType,this.isLatest); 
+	Support.processSelectedItem("GuiPage_Photos",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null,this.genreType,this.isLatest);
 }
 
 GuiPage_Photos.playSelectedItem = function () {
@@ -311,7 +311,7 @@ GuiPage_Photos.processUpKey = function() {
 			this.updateDisplayedItems();
 		} else {
 			this.selectedItem = 0;
-		}		
+		}
 	} else if (this.selectedItem - this.topLeftItem == 1) {
 		if (this.selectedItem > 1) {
 			this.selectedItem = Math.max(this.selectedItem-4,0);
@@ -358,18 +358,18 @@ GuiPage_Photos.processUpKey = function() {
 		this.selectedItem = this.topLeftItem;
 	} else if (this.selectedItem - this.topLeftItem == 11) {
 		this.selectedItem = this.topLeftItem+5;
-	} else if (this.selectedItem - this.topLeftItem == 12) { 
+	} else if (this.selectedItem - this.topLeftItem == 12) {
 		this.selectedItem = this.topLeftItem+6;
 	} else if (this.selectedItem - this.topLeftItem == 13) {
 		this.selectedItem = this.topLeftItem+7;
-	} else if (this.selectedItem - this.topLeftItem == 14) { 
+	} else if (this.selectedItem - this.topLeftItem == 14) {
 		this.selectedItem = this.topLeftItem+8;
 	}
 	this.updateSelectedItems();
 }
 
 GuiPage_Photos.processDownKey = function() {
-	if (this.selectedItem - this.topLeftItem == 0 && this.ItemData.Items.length-1 > this.selectedItem+9) { 
+	if (this.selectedItem - this.topLeftItem == 0 && this.ItemData.Items.length-1 > this.selectedItem+9) {
 		this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem+9);
 	} else if (this.selectedItem - this.topLeftItem == 1 && this.ItemData.Items.length-1 > this.selectedItem+3) {
 		this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem+5);
@@ -388,27 +388,27 @@ GuiPage_Photos.processDownKey = function() {
 	} else if (this.selectedItem - this.topLeftItem == 8 && this.ItemData.Items.length-1 > this.selectedItem) {
 			this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem+14);
 	} else if (this.selectedItem - this.topLeftItem == 9 && this.ItemData.Items.length-1 > this.selectedItem+5) {
-			this.topLeftItem = this.selectedItem; 
+			this.topLeftItem = this.selectedItem;
 			this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem+9);
 			this.updateDisplayedItems();
 	} else if (this.selectedItem - this.topLeftItem == 10 && this.ItemData.Items.length-1 > this.selectedItem+4) {
-			this.topLeftItem = this.selectedItem-1; 
+			this.topLeftItem = this.selectedItem-1;
 			this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem+10);
 			this.updateDisplayedItems();
 	} else if (this.selectedItem - this.topLeftItem == 11 && this.ItemData.Items.length-1 > this.selectedItem+3) {
-			this.topLeftItem = this.selectedItem-2; 
+			this.topLeftItem = this.selectedItem-2;
 			this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem+11);
 			this.updateDisplayedItems();
-	} else if (this.selectedItem - this.topLeftItem == 12 && this.ItemData.Items.length-1 > this.selectedItem+2) { 
-			this.topLeftItem = this.selectedItem-3; 
+	} else if (this.selectedItem - this.topLeftItem == 12 && this.ItemData.Items.length-1 > this.selectedItem+2) {
+			this.topLeftItem = this.selectedItem-3;
 			this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem+12);
 			this.updateDisplayedItems();
 	} else if (this.selectedItem - this.topLeftItem == 13 && this.ItemData.Items.length-1 > this.selectedItem+1) {
-			this.topLeftItem = this.selectedItem-4; 
+			this.topLeftItem = this.selectedItem-4;
 			this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem+13);
 			this.updateDisplayedItems();
 	} else if (this.selectedItem - this.topLeftItem == 14 && this.ItemData.Items.length-1 > this.selectedItem) {
-			this.topLeftItem = this.selectedItem-5; 
+			this.topLeftItem = this.selectedItem-5;
 			this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem+14);
 			this.updateDisplayedItems();
 	}

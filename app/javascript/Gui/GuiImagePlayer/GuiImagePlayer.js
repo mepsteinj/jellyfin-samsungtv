@@ -1,32 +1,32 @@
-var GuiImagePlayer = {	
+var GuiImagePlayer = {
 		ImageViewer : null,
 		newItemData : null,
-		
+
 		Timeout : null,
 		infoTimer : null,
 		Paused : false,
-		
-		overlayFormat : 0, // 0 - date, 1 - date:time, 2 - off 
-		
+
+		overlayFormat : 0, // 0 - date, 1 - date:time, 2 - off
+
 		photos : [],
-		
+
 		images : [],
 		overlay : [],
-        imageIdx : 0,		// Image index
-        effectIdx : 0,		// Transition effect index
-        effectNames : ['FADE1', 'FADE2', 'BLIND', 'SPIRAL','CHECKER', 'LINEAR', 'STAIRS', 'WIPE', 'RANDOM']
+		imageIdx : 0,       // Image index
+		effectIdx : 0,      // Transition effect index
+		effectNames : ['FADE1', 'FADE2', 'BLIND', 'SPIRAL','CHECKER', 'LINEAR', 'STAIRS', 'WIPE', 'RANDOM']
 }
 
 //ImageViewer.destroy doesn't work. Set it to null instead.
 GuiImagePlayer.kill = function() {
 	if (this.ImageViewer != null) {
-		this.ImageViewer = null;	
+		this.ImageViewer = null;
 	}
 }
 
 GuiImagePlayer.start = function(ItemData,selectedItem,isPhotoCollection) {
 	alert("Page Enter : GuiImagePlayer");
-	
+
 	//Show colour buttons on screen for a few seconds when a slideshow starts.
 	document.getElementById("GuiImagePlayer_ScreensaverOverlay").style.visibility="hidden";
 	document.getElementById("guiButtonShade").style.visibility = "";
@@ -43,17 +43,17 @@ GuiImagePlayer.start = function(ItemData,selectedItem,isPhotoCollection) {
 
 	var url = "";
 	if (isPhotoCollection) {
-		url = Server.getChildItemsURL(ItemData.Items[selectedItem].Id,"&Recursive=true&SortBy=Random&SortOrder=Ascending&IncludeItemTypes=Photo&fields=SortName,Overview&Limit=2500");	
+		url = Server.getChildItemsURL(ItemData.Items[selectedItem].Id,"&Recursive=true&SortBy=Random&SortOrder=Ascending&IncludeItemTypes=Photo&fields=SortName,Overview&Limit=2500");
 	} else {
-		url = Server.getChildItemsURL(ItemData.Items[selectedItem].ParentId,"&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Photo&fields=SortName,Overview&Limit=2500");	
+		url = Server.getChildItemsURL(ItemData.Items[selectedItem].ParentId,"&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Photo&fields=SortName,Overview&Limit=2500");
 	}
-	
+
 	var result = Server.getContent(url);
 	if (result == null) { return; }
 	this.newItemData = result; //Misleading I know!
 
 	Support.styleSubtitles("GuiImagePlayer_ScreensaverOverlay")
-	
+
 	//Create ARRAY of all URL's!
 	//Order from starting selectedItem!
 	imageIdx = 0;
@@ -61,7 +61,7 @@ GuiImagePlayer.start = function(ItemData,selectedItem,isPhotoCollection) {
 		//Dont use server function here to prevent these large images caching!
 		var temp = Server.getServerAddr() + "/Items/"+ this.newItemData.Items[index].Id +"/Images/Primary/0?maxwidth=1920&maxheight=1080&quality=90";
 		this.images.push(temp);
-		
+
 		if (this.newItemData.Items[index].PremiereDate !== undefined) {
 			this.overlay.push(Support.formatDateTime(this.newItemData.Items[index].PremiereDate,1))
 		} else {
@@ -74,20 +74,20 @@ GuiImagePlayer.start = function(ItemData,selectedItem,isPhotoCollection) {
 
 	//Initialte new instance, set Frame Area & Set Notifications
 	this.ImageViewer = new CImageViewer('Common ImageViewer');
-	this.ImageViewer.setFrameArea(0, 0, Main.width, Main.height); 
-	
+	this.ImageViewer.setFrameArea(0, 0, Main.width, Main.height);
+
 	this.ImageViewer.setOnNetworkError(function() {
 		GuiNotifications.setNotification("Network Error");
 	});
-	
+
 	this.ImageViewer.setOnRenderError(function() {
 		GuiNotifications.setNotification("Render Error");
 	});
-	
-	
+
+
 	//Set Focus for Key Events
-	document.getElementById("GuiImagePlayer").focus();	
-	
+	document.getElementById("GuiImagePlayer").focus();
+
 	//Start Slide Show
 	this.ImageViewer.show();
 	this.setSlideshowMode();
@@ -97,34 +97,34 @@ GuiImagePlayer.start = function(ItemData,selectedItem,isPhotoCollection) {
 // Set normal mode
 // You can play images on the area you set.
 GuiImagePlayer.setNormalMode = function() {
-	
+
 	sf.service.ImageViewer.setPosition({
 		left: 0,
 		top: 0,
 		width: 1920,
 		height: 1080,
 	});
-	
+
 	sf.service.ImageViewer.show();
-	
+
 	for (var i=0; i < this.newItemData.Items.length; i++){
 		//Dont use server function here to prevent these large images caching!
 		var ImageUrl = Server.getServerAddr() + "/Items/"+ this.newItemData.Items[i].Id +"/Images/Primary/0?maxwidth=1920&maxheight=1080&quality=90";
 		this.photos[i] = {
-		        url: ImageUrl,
-		        width: 1920,
-		        height: 1080,
-		        filename: this.newItemData.Items[i].name,
-		        date: '2011/06/24'	
+				url: ImageUrl,
+				width: 1920,
+				height: 1080,
+				filename: this.newItemData.Items[i].name,
+				date: '2011/06/24'
 		}
 	}
-	
+
 	// Draw the image in the specified area defined by "setPosition" function.
 	sf.service.ImageViewer.draw(this.photos[0]);
-	
-	
+
+
 	//this.ImageViewer.endSlideshow();
-    //playImage();
+	//playImage();
 }
 
 // Set Slideshow mode
@@ -132,8 +132,8 @@ GuiImagePlayer.setNormalMode = function() {
 GuiImagePlayer.setSlideshowMode = function() {
 	this.ImageViewer.startSlideshow();
 	this.ImageViewer.setOnBufferingComplete(function(){
-		GuiImagePlayer.ImageViewer.showNow();			
-    });
+		GuiImagePlayer.ImageViewer.showNow();
+	});
 	this.ImageViewer.setOnRenderingComplete(function(){
 		clearTimeout(GuiImagePlayer.Timeout);
 		Support.setImagePlayerOverlay(GuiImagePlayer.overlay[GuiImagePlayer.imageIdx], GuiImagePlayer.overlayFormat);
@@ -145,9 +145,9 @@ GuiImagePlayer.setSlideshowMode = function() {
 				}
 				GuiImagePlayer.prepImage(GuiImagePlayer.imageIdx);
 			}
-		}, File.getUserProperty("ImagePlayerImageTime"));	
-    });
-	
+		}, File.getUserProperty("ImagePlayerImageTime"));
+	});
+
 	this.ImageViewer.stop();
 	this.playImage();
 }
@@ -159,9 +159,9 @@ GuiImagePlayer.prepImage = function(imageIdx) {
 
 // Play image - only called once in slideshow!
 //SS calls  play -> BufferComplete, then the showNow will call RendComplete which starts timer for next image
-GuiImagePlayer.playImage = function() {	
+GuiImagePlayer.playImage = function() {
 	var url = GuiImagePlayer.images[GuiImagePlayer.imageIdx];
-	GuiImagePlayer.ImageViewer.play(url, 1920, 1080);	
+	GuiImagePlayer.ImageViewer.play(url, 1920, 1080);
 }
 
 
@@ -176,12 +176,12 @@ GuiImagePlayer.keyDown = function() {
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
-	
-	switch(keyCode){		
-		case tvKey.KEY_STOP:   
+
+	switch(keyCode){
+		case tvKey.KEY_STOP:
 		case tvKey.KEY_RETURN:
 			alert("RETURN");
-    		clearTimeout(this.infoTimer);
+			clearTimeout(this.infoTimer);
 			clearTimeout(this.Timeout);
 			this.Timeout = null;
 			this.images = [];
@@ -193,18 +193,18 @@ GuiImagePlayer.keyDown = function() {
 			this.ImageViewer.hide();
 			widgetAPI.blockNavigation(event);
 			GuiImagePlayer.kill();
-			
+
 			//Turn On Screensaver
 			Support.screensaverOn();
 			Support.screensaver();
-			
+
 			Support.processReturnURLHistory();
 			break;
 		case tvKey.KEY_RIGHT:
 			alert("RIGHT");
 			this.imageIdx++;
 			if (this.imageIdx == this.images.length) {
-				this.imageIdx = 0;	
+				this.imageIdx = 0;
 			}
 			GuiImagePlayer.prepImage(GuiImagePlayer.imageIdx);
 			break;
@@ -225,7 +225,7 @@ GuiImagePlayer.keyDown = function() {
 			this.Paused = false
 			GuiImagePlayer.prepImage(GuiImagePlayer.imageIdx);
 			break;
-		case tvKey.KEY_RED:	
+		case tvKey.KEY_RED:
 			if (this.newItemData.Items[this.imageIdx].UserData.IsFavorite == true) {
 				Server.deleteFavourite(this.newItemData.Items[this.imageIdx].Id);
 				this.newItemData.Items[this.imageIdx].UserData.IsFavorite = false;
@@ -247,7 +247,7 @@ GuiImagePlayer.keyDown = function() {
 		case tvKey.KEY_YELLOW:
 			GuiHelper.toggleHelp("GuiImagePlayer");
 			break;
-		case tvKey.KEY_BLUE:	
+		case tvKey.KEY_BLUE:
 			GuiMusicPlayer.showMusicPlayer("GuiImagePlayer");
 			break;
 	}

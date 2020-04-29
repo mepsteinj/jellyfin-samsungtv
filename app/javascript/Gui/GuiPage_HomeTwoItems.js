@@ -1,25 +1,25 @@
 var GuiPage_HomeTwoItems = {
-		
+
 		selectedBannerItem : -1,
-		
+
 		ItemData : null,
 		selectedItem : 0,
 		topLeftItem : 0,
 		isResume : false,
-		
+
 		ItemData2 : null,
 		selectedItem2 : -1,
 		topLeftItem2 : 0,
 		isResume2 : false,
-		
+
 		menuItems : [],
-		
+
 		MAXCOLUMNCOUNT : 3,
 		MAXROWCOUNT : 1,
-		
+
 		divprepend1 : "",
 		divprepend2 : "bottom_",
-		
+
 		startParams : [],
 		backdropTimeout : null
 }
@@ -38,18 +38,18 @@ GuiPage_HomeTwoItems.getMaxDisplayBottom = function() {
 
 GuiPage_HomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,topLeftItem,isTop) {
 	alert("Page Enter : GuiPage_HomeTwoItems");
-	
+
 	//Save Start Params
 	this.startParams = [title1, url1, title2, url2];
-	
+
 	//Load Data
 	this.ItemData = Server.getContent(url1);
 	if (this.ItemData == null) { Support.processReturnURLHistory(); }
-	
-	this.ItemData2 = Server.getContent(url2);	
+
+	this.ItemData2 = Server.getContent(url2);
 	if (this.ItemData2 == null) { return; }
-	
-	//If array like MoviesRecommended alter 
+
+	//If array like MoviesRecommended alter
 	if (title1 == "Suggested For You") {
 		if (this.ItemData[0] === undefined){
 			this.ItemData[0] = {"Items":[]}; //Create empty Items array and continue
@@ -62,7 +62,7 @@ GuiPage_HomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,to
 		}
 		this.ItemData2 = this.ItemData2[0];
 	}
-	
+
 	//Latest Page Fix
 	if (title1 == "Latest TV" || title1 == "Latest Movies") {
 		this.ItemData.Items = this.ItemData;
@@ -70,78 +70,78 @@ GuiPage_HomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,to
 	if (title2 == "Latest TV" || title2 == "Latest Movies") {
 		this.ItemData2.Items = this.ItemData2;
 	}
-	
+
 	if (this.ItemData.Items.length > 0 && this.ItemData2.Items.length > 0) {
 		//Proceed as Normal
-		
+
 		//Set TopLeft
 		if (isTop == false) {
 			this.selectedItem = -1;
-			this.selectedItem2 = selectedItem; //Prevents any item being shown as selected! 
+			this.selectedItem2 = selectedItem; //Prevents any item being shown as selected!
 			this.topLeftItem = 0;
 			this.topLeftItem2 = topLeftItem;
 			//Set Focus for Key Events
-			document.getElementById("GuiPage_HomeTwoItemsBottom").focus();	
+			document.getElementById("GuiPage_HomeTwoItemsBottom").focus();
 		} else {
 			this.selectedItem = selectedItem;
-			this.selectedItem2 = -1; //Prevents any item being shown as selected! 
+			this.selectedItem2 = -1; //Prevents any item being shown as selected!
 			this.topLeftItem = topLeftItem;
 			this.topLeftItem2 = 0;
 			//Set Focus for Key Events
-			document.getElementById("GuiPage_HomeTwoItems").focus();			
+			document.getElementById("GuiPage_HomeTwoItems").focus();
 		}
-		
+
 		//Set PageContent
 		document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='bannerMenu'></div>" +
-				"<div id=Center class='HomeOneCenter'>" + 
+				"<div id=Center class='HomeOneCenter'>" +
 				"<p style='position:relative;font-size:1.4em;padding-left:11px;z-index:5;'>"+title1+"</p><div id='TopRow' style='margin-bottom:50px'><div id=Content></div></div>" +
 				"<p style='position:relative;font-size:1.4em;padding-left:11px;z-index:5;'>"+title2+"</p><div id='BottomRow'><div id=Content2></div></div>" +
 				"</div>";
-	
+
 		//Set isResume based on title - used in UpdateDisplayedItems
 		this.isResume = (title1 == "Resume" ||  title1 == "Continue Watching" ) ? true : false;
-		
+
 		//If to determine positioning of content
 		document.getElementById("Center").style.top = "180px";
 		document.getElementById("Center").style.left = "170px";
 		document.getElementById("Center").style.width = "1620px";
-		
+
 		//Generate Banner Items
 		this.menuItems = GuiMainMenu.menuItemsHomePages;
-		
+
 		//Generate Banner display
 		for (var index = 0; index < this.menuItems.length; index++) {
 			if (index != this.menuItems.length-1) {
-				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItemHome bannerItemPadding'>"+this.menuItems[index].replace(/_/g, ' ')+"</div>";			
+				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItemHome bannerItemPadding'>"+this.menuItems[index].replace(/_/g, ' ')+"</div>";
 			} else {
-				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItemHome'>"+this.menuItems[index].replace(/_/g, ' ')+"</div>";					
+				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItemHome'>"+this.menuItems[index].replace(/_/g, ' ')+"</div>";
 			}
 		}
-		
+
 		//Display first XX series
 		this.updateDisplayedItems();
-		
+
 		//Update Selected Collection CSS
 		var updateCounter = (isTop == true) ? false : true;
-		this.updateSelectedItems(updateCounter);	
+		this.updateSelectedItems(updateCounter);
 
 		//Set isResume based on title - used in UpdateDisplayedItems
 		this.isResume2 = (title2 == "Resume" ||  title2 == "Continue Watching" ) ? true : false;
-		
+
 		//Display first XX series
 		this.updateDisplayedItems2();
-			
-		//Update Selected Collection CSS 
+
+		//Update Selected Collection CSS
 		var updateCounter2 = (isTop == true) ? true : false;
 		this.updateSelectedItems2(updateCounter2);
 		this.updateSelectedBannerItems();
-		
+
 		//Function to generate random backdrop
 		this.backdropTimeout = setTimeout(function(){
 			var randomImageURL = Server.getItemTypeURL("&SortBy=Random&IncludeItemTypes=Series,Movie&Recursive=true&CollapseBoxSetItems=false&Limit=20&EnableTotalRecordCount=false");
 			var randomImageData = Server.getContent(randomImageURL);
 			if (randomImageData == null) { return; }
-			
+
 			for (var index = 0; index < randomImageData.Items.length; index++) {
 				if (randomImageData.Items[index ].BackdropImageTags.length > 0) {
 					var imgsrc = Server.getBackgroundImageURL(randomImageData.Items[index ].Id,"Backdrop",Main.backdropWidth,Main.backdropHeight,0,false,0,randomImageData.Items[index ].BackdropImageTags.length);
@@ -150,7 +150,7 @@ GuiPage_HomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,to
 				}
 			}
 		}, 500);
-		
+
 	} else if (this.ItemData.Items.length > 0 && this.ItemData2.Items.length == 0) {
 		GuiPage_HomeOneItem.start(title1,url1,0,0);
 	} else if (this.ItemData.Items.length == 0 && this.ItemData2.Items.length > 0) {
@@ -183,7 +183,7 @@ GuiPage_HomeTwoItems.updateSelectedBannerItems = function() {
 				document.getElementById("bannerItem"+index).className = "bannerItemHome bannerItemPadding highlight"+Main.highlightColour+"Text";
 			} else {
 				document.getElementById("bannerItem"+index).className = "bannerItemHome highlight"+Main.highlightColour+"Text";
-			}		
+			}
 		} else {
 			if (index != this.menuItems.length-1) {
 					document.getElementById("bannerItem"+index).className = "bannerItemHome bannerItemPadding offWhite";
@@ -206,22 +206,22 @@ GuiPage_HomeTwoItems.keyDown = function()
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
-	
+
 	//Update Screensaver Timer
 	Support.screensaver();
-	
-	//If screensaver is running 
+
+	//If screensaver is running
 	if (Main.getIsScreensaverRunning()) {
 		//Update Main.js isScreensaverRunning - Sets to True
 		Main.setIsScreensaverRunning();
-		
+
 		//End Screensaver
 		GuiImagePlayer_Screensaver.stopScreensaver();
-		
+
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
-	
+
 	switch(keyCode)
 	{
 		case tvKey.KEY_LEFT:
@@ -229,7 +229,7 @@ GuiPage_HomeTwoItems.keyDown = function()
 			this.processLeftKey();
 			break;
 		case tvKey.KEY_RIGHT:
-			alert("RIGHT");	
+			alert("RIGHT");
 			if (this.selectedItem == -2) {
 				this.selectedBannerItem++;
 				if (this.selectedBannerItem >= this.menuItems.length) {
@@ -249,7 +249,7 @@ GuiPage_HomeTwoItems.keyDown = function()
 				}
 			}
 			break;
-		case tvKey.KEY_UP:	
+		case tvKey.KEY_UP:
 			this.selectedBannerItem = 0;
 			this.selectedItem = -2;
 			if (this.topLeftItem != 0) {
@@ -257,17 +257,17 @@ GuiPage_HomeTwoItems.keyDown = function()
 				if (this.ItemData.Items.length > 0) {
 					this.updateDisplayedItems();
 				}
-			}	
-			this.updateSelectedItems(true);	
+			}
+			this.updateSelectedItems(true);
 			this.updateSelectedBannerItems();
-			break;	
+			break;
 		case tvKey.KEY_DOWN:
 			alert ("DOWN");
 			if (this.selectedItem == -2) {
 				this.selectedItem = 0;
 				this.selectedBannerItem = -1;
 				this.updateSelectedBannerItems();
-				this.updateSelectedItems(false);	
+				this.updateSelectedItems(false);
 			} else {
 				//1st row to 2nd row items
 				if (this.ItemData2.Items.length > 0) {
@@ -279,14 +279,14 @@ GuiPage_HomeTwoItems.keyDown = function()
 							this.updateDisplayedItems();
 						}
 					}
-						
+
 					this.selectedItem = -1;
-					this.updateSelectedItems(true);		
+					this.updateSelectedItems(true);
 					this.selectedItem = 0;
-					
+
 					//Set Focus
 					document.getElementById("GuiPage_HomeTwoItemsBottom").focus();
-					//Update Selected 
+					//Update Selected
 					this.selectedItem2 = 0;
 					this.updateSelectedItems2(false);
 				}
@@ -296,13 +296,13 @@ GuiPage_HomeTwoItems.keyDown = function()
 		case tvKey.KEY_PANEL_ENTER:
 			alert("ENTER");
 			this.processSelectedItem(this.ItemData,true);
-			break;	
+			break;
 		case tvKey.KEY_PLAY:
 			alert ("PLAY");
 			this.playSelectedItem(this.ItemData.Items,true);
 			break;
 		case tvKey.KEY_TOOLS:
-			widgetAPI.blockNavigation(event);	
+			widgetAPI.blockNavigation(event);
 			GuiPage_HomeTwoItems.openMenu();
 			break;
 		case tvKey.KEY_RETURN:
@@ -312,7 +312,7 @@ GuiPage_HomeTwoItems.keyDown = function()
 			break;
 		case tvKey.KEY_YELLOW:
 			GuiHelper.toggleHelp("GuiPage_HomeTwoItems");
-			break;	
+			break;
 		case tvKey.KEY_GREEN:
 			if (this.ItemData.Items[this.selectedItem].MediaType == "Video") {
 				if (this.ItemData.Items[this.selectedItem].UserData.Played == true) {
@@ -327,8 +327,8 @@ GuiPage_HomeTwoItems.keyDown = function()
 					GuiPage_HomeTwoItems.updateSelectedItems();
 				}, 250);
 			}
-			break;	
-		case tvKey.KEY_RED:	
+			break;
+		case tvKey.KEY_RED:
 			if (this.selectedItem > -1) {
 				if (this.ItemData.Items[this.selectedItem].UserData.IsFavorite == true) {
 					Server.deleteFavourite(this.ItemData.Items[this.selectedItem].Id);
@@ -342,18 +342,18 @@ GuiPage_HomeTwoItems.keyDown = function()
 					GuiPage_HomeTwoItems.updateSelectedItems();
 				}, 250);
 			}
-			break;		
+			break;
 		case tvKey.KEY_BLUE:
-			if (this.selectedItem == -2) {		
+			if (this.selectedItem == -2) {
 				if (this.selectedBannerItem == this.menuItems.length-1) {
 					GuiMusicPlayer.showMusicPlayer("GuiPage_HomeTwoItems","bannerItem"+this.selectedBannerItem,"bannerItemHome highlight"+Main.highlightColour+"Text");
 				} else {
 					GuiMusicPlayer.showMusicPlayer("GuiPage_HomeTwoItems","bannerItem"+this.selectedBannerItem,"bannerItemHome bannerItemPadding highlight"+Main.highlightColour+"Text");
 				}
 			} else {
-				GuiMusicPlayer.showMusicPlayer("GuiPage_HomeTwoItems",this.divprepend1 + this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.divprepend1 + this.ItemData.Items[this.selectedItem].Id).className);			
+				GuiMusicPlayer.showMusicPlayer("GuiPage_HomeTwoItems",this.divprepend1 + this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.divprepend1 + this.ItemData.Items[this.selectedItem].Id).className);
 			}
-			break;	
+			break;
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY");
 			widgetAPI.sendExitEvent();
@@ -362,7 +362,7 @@ GuiPage_HomeTwoItems.keyDown = function()
 }
 
 GuiPage_HomeTwoItems.openMenu = function() {
-	if (this.selectedItem == -2) {		
+	if (this.selectedItem == -2) {
 		Support.updateURLHistory("GuiPage_HomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem,this.topLeftItem,true);
 		if (this.selectedBannerItem == this.menuItems.length-1) {
 			GuiMainMenu.requested("GuiPage_HomeTwoItems","bannerItem"+this.selectedBannerItem,"bannerItemHome highlight"+Main.highlightColour+"Text");
@@ -383,7 +383,7 @@ GuiPage_HomeTwoItems.processLeftKey = function() {
 			this.openMenu(); //Going left from the end of the banner menu.
 		} else {
 			this.updateSelectedBannerItems();
-		}	
+		}
 	} else {
 		this.selectedItem--;
 		if (this.selectedItem == -1) {
@@ -430,31 +430,31 @@ GuiPage_HomeTwoItems.bottomKeyDown = function()
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
-	
+
 	//Update Screensaver Timer
 	Support.screensaver();
-	
-	//If screensaver is running 
+
+	//If screensaver is running
 	if (Main.getIsScreensaverRunning()) {
 		//Update Main.js isScreensaverRunning - Sets to True
 		Main.setIsScreensaverRunning();
-		
+
 		//End Screensaver
 		GuiImagePlayer_Screensaver.stopScreensaver();
-		
+
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
-	
+
 	switch(keyCode)
 	{
 		case tvKey.KEY_LEFT:
-			alert("LEFT BOTTOM");	
+			alert("LEFT BOTTOM");
 			this.selectedItem2--;
 			if (this.selectedItem2 == -1) {
 				this.selectedItem2 = 0; //Going left from bottom items row.
 				//Open the menu
-				Support.updateURLHistory("GuiPage_HomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem2,this.topLeftItem2,false);				
+				Support.updateURLHistory("GuiPage_HomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem2,this.topLeftItem2,false);
 				GuiMainMenu.requested("GuiPage_HomeTwoItemsBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id);
 			} else {
 				if (this.selectedItem2 < this.topLeftItem2) {
@@ -463,12 +463,12 @@ GuiPage_HomeTwoItems.bottomKeyDown = function()
 						this.topLeftItem2 = 0;
 					}
 					this.updateDisplayedItems2();
-				}	
+				}
 				this.updateSelectedItems2();
 			}
 			break;
 		case tvKey.KEY_RIGHT:
-			alert("RIGHT BOTTOM");	
+			alert("RIGHT BOTTOM");
 			this.selectedItem2++;
 			if (this.selectedItem2 >= this.ItemData2.Items.length) {
 				this.selectedItem2--;
@@ -476,7 +476,7 @@ GuiPage_HomeTwoItems.bottomKeyDown = function()
 				if (this.selectedItem2 >= this.topLeftItem2+this.getMaxDisplayBottom() ) {
 					this.topLeftItem2++;
 					this.updateDisplayedItems2();
-				}			
+				}
 			}
 			this.updateSelectedItems2();
 			break;
@@ -489,14 +489,14 @@ GuiPage_HomeTwoItems.bottomKeyDown = function()
 						this.updateDisplayedItems2();
 					}
 				}
-				
+
 				this.selectedItem2 = -1;
-				this.updateSelectedItems2(true);		
+				this.updateSelectedItems2(true);
 				this.selectedItem2 = 0;
 
 				//Set Focus
 				document.getElementById("GuiPage_HomeTwoItems").focus();
-				//Update Selected 
+				//Update Selected
 				this.selectedItem = 0;
 				this.updateSelectedItems(false);
 			}
@@ -505,13 +505,13 @@ GuiPage_HomeTwoItems.bottomKeyDown = function()
 		case tvKey.KEY_PANEL_ENTER:
 			alert("ENTER BOTTOM");
 			this.processSelectedItem(this.ItemData2,false);
-			break;	
+			break;
 		case tvKey.KEY_PLAY:
 			this.playSelectedItem(this.ItemData2.Items,false);
-			break;	
+			break;
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
-			Support.updateURLHistory("GuiPage_HomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem2,this.topLeftItem2,false);				
+			Support.updateURLHistory("GuiPage_HomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem2,this.topLeftItem2,false);
 			GuiMainMenu.requested("GuiPage_HomeTwoItemsBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id);
 			break;
 		case tvKey.KEY_RETURN:
@@ -537,7 +537,7 @@ GuiPage_HomeTwoItems.bottomKeyDown = function()
 				}, 250);
 			}
 			break;
-		case tvKey.KEY_RED:	
+		case tvKey.KEY_RED:
 			if (this.selectedItem > -1) {
 				if (this.ItemData2.Items[this.selectedItem2].UserData.IsFavorite == true) {
 					Server.deleteFavourite(this.ItemData2.Items[this.selectedItem2].Id);
@@ -551,10 +551,10 @@ GuiPage_HomeTwoItems.bottomKeyDown = function()
 					GuiPage_HomeTwoItems.updateSelectedItems2();
 				}, 250);
 			}
-			break;		
+			break;
 		case tvKey.KEY_BLUE:
 			GuiMusicPlayer.showMusicPlayer("GuiPage_HomeTwoItemsBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id,document.getElementById(this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id).className);
-			break;	
+			break;
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY BOTTOM");
 			widgetAPI.sendExitEvent();
@@ -573,7 +573,7 @@ GuiPage_HomeTwoItems.processSelectedItem = function (array,isTop) {
 		var selectedItem = 0;
 		var topLeftItem = 0;
 		var isLatest = false;
-		
+
 		if (isTop == true) {
 			selectedItem = this.selectedItem;
 			topLeftItem = this.topLeftItem;
@@ -587,15 +587,15 @@ GuiPage_HomeTwoItems.processSelectedItem = function (array,isTop) {
 				isLatest = true;
 			}
 		}
-		Support.processSelectedItem("GuiPage_HomeTwoItems",array,this.startParams,selectedItem,topLeftItem,isTop,null,isLatest); 
+		Support.processSelectedItem("GuiPage_HomeTwoItems",array,this.startParams,selectedItem,topLeftItem,isTop,null,isLatest);
 	}
 }
 
 GuiPage_HomeTwoItems.playSelectedItem = function (array,isTop) {
 	if (isTop == true) {
-		Support.playSelectedItem("GuiPage_HomeTwoItems",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,isTop);	
+		Support.playSelectedItem("GuiPage_HomeTwoItems",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,isTop);
 	} else {
-		Support.playSelectedItem("GuiPage_HomeTwoItems",this.ItemData2,this.startParams,this.selectedItem2,this.topLeftItem2,isTop);	
+		Support.playSelectedItem("GuiPage_HomeTwoItems",this.ItemData2,this.startParams,this.selectedItem2,this.topLeftItem2,isTop);
 	}
-	
+
 }

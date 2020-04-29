@@ -754,7 +754,7 @@
 			"nativeName":"Saɯ cueŋƅ, Saw cuengh"
 		}
 	}
-	
+
 	var getLanguageName = function(key) {
 		var lang = isoLangs[key];
 		return lang ? lang.name : undefined;

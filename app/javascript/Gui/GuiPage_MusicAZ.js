@@ -2,13 +2,13 @@ var GuiPage_MusicAZ = {
 		Letters : ["#","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","?"],
 		selectedItem : 0,
 		topLeftItem : 0,
-		
+
 		bannerItems : [],
 		tvBannerItems : ["Series","Latest","Upcoming","Genre","A-Z"],
 		movieBannerItems : ["All","Unwatched","Latest","Genre","A-Z"],
 		musicBannerItems : ["Recent","Frequent","Album","Album Artist", "Artist"],
 		selectedBannerItem : 0,
-		
+
 		MAXCOLUMNCOUNT : 10,
 		MAXROWCOUNT : 4,
 
@@ -27,10 +27,10 @@ GuiPage_MusicAZ.getMaxDisplay = function() {
 
 GuiPage_MusicAZ.start = function(entryView,selectedItem) {
 	alert("Page Enter : GuiPage_MusicAZ");
-	
+
 	//Save Start Vars
 	this.startParams = [entryView];
-	
+
 	switch (entryView) {
 	case "TV":
 		this.bannerItems = this.tvBannerItems;
@@ -42,42 +42,42 @@ GuiPage_MusicAZ.start = function(entryView,selectedItem) {
 		this.bannerItems = this.musicBannerItems;
 		break;
 	}
-		
+
 	//Reset Vars
 	this.selectedItem = (selectedItem == -1) ? 0 : selectedItem;
 	alert ("MusixcAZ Selected: " + this.selectedItem);
 	this.topLeftItem = 0;
-	
-	//Proceed as Normal	
+
+	//Proceed as Normal
 	//Update Padding on pageContent
 	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='bannerMenu'></div><div id=Center class='SeriesCenter'><div id=Content style='padding-top:40px;'></div></div>";
-		
+
 	//Set banner Styling
 	document.getElementById("bannerSelection").style.paddingTop="25px";
 	document.getElementById("bannerSelection").style.paddingBottom="5px";
-		
+
 	//Display first XX series
 	this.updateDisplayedItems();
-		
+
 	//Update Selected Collection CSS
 	this.updateSelectedItems(false);
-		
+
 	//Set Banner Items
 	for (var index = 0; index < this.bannerItems.length; index++) {
 		if (index != this.bannerItems.length-1) {
-			document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem bannerItemPadding'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";			
+			document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem bannerItemPadding'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";
 		} else {
-			document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";					
+			document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";
 		}
 	}
-	
+
 	//Update Selected Banner Item
 	this.selectedBannerItem = -1;
 	this.updateSelectedBannerItems();
-	this.selectedBannerItem = 0; 
-	
+	this.selectedBannerItem = 0;
+
 	//Set Focus for Key Events
-	document.getElementById("GuiPage_MusicAZ").focus();	
+	document.getElementById("GuiPage_MusicAZ").focus();
 }
 
 //---------------------------------------------------------------------------------------------------
@@ -93,21 +93,21 @@ GuiPage_MusicAZ.updateDisplayedItems = function() {
 
 //Function sets CSS Properties so show which user is selected
 GuiPage_MusicAZ.updateSelectedItems = function (bypassCounter) {
-	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.Letters.length); index++){	
+	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.Letters.length); index++){
 		if (index == this.selectedItem) {
 			document.getElementById(this.Letters[index]).style.zIndex = "5";
-			document.getElementById( this.Letters[index]).className = "Letter seriesSelected";			
+			document.getElementById( this.Letters[index]).className = "Letter seriesSelected";
 		} else {
 			document.getElementById(this.Letters[index]).style.zIndex = "2";
-			document.getElementById(this.Letters[index]).className = "Letter";		
-		}			
-    }
-	
+			document.getElementById(this.Letters[index]).className = "Letter";
+		}
+	}
+
 	//Update Counter DIV
 	if (this.Letters.length == 0) {
 		document.getElementById("Counter").innerHTML = "";
 	} else {
-		document.getElementById("Counter").innerHTML = (this.selectedItem + 1) + "/" + this.Letters.length;	
+		document.getElementById("Counter").innerHTML = (this.selectedItem + 1) + "/" + this.Letters.length;
 	}
 }
 
@@ -118,7 +118,7 @@ GuiPage_MusicAZ.updateSelectedBannerItems = function() {
 				document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text";
 			} else {
 				document.getElementById("bannerItem"+index).className = "bannerItem highlight"+Main.highlightColour+"Text";
-			}		
+			}
 		} else {
 			if (index != this.bannerItems.length-1) {
 				if (this.bannerItems[index] == "A-Z") {
@@ -151,29 +151,29 @@ GuiPage_MusicAZ.keyDown = function() {
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
-	
+
 	//Update Screensaver Timer
 	Support.screensaver();
-	
-	//If screensaver is running 
+
+	//If screensaver is running
 	if (Main.getIsScreensaverRunning()) {
 		//Update Main.js isScreensaverRunning - Sets to True
 		Main.setIsScreensaverRunning();
-		
+
 		//End Screensaver
 		GuiImagePlayer_Screensaver.stopScreensaver();
-		
+
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
-	
+
 	switch(keyCode){
 		case tvKey.KEY_LEFT:
-			alert("LEFT");	
+			alert("LEFT");
 			this.processTopMenuLeftKey();
 			break;
 		case tvKey.KEY_RIGHT:
-			alert("RIGHT");	
+			alert("RIGHT");
 			this.processTopMenuRightKey();
 			break;
 		case tvKey.KEY_DOWN:
@@ -184,12 +184,12 @@ GuiPage_MusicAZ.keyDown = function() {
 		case tvKey.KEY_PANEL_ENTER:
 			alert("ENTER");
 			this.processTopMenuEnterKey();
-			break;		
+			break;
 		case tvKey.KEY_RED:
 			//Disabled v0.570d
 			//this.processIndexing();
-			break;	
-		case tvKey.KEY_UP:	
+			break;
+		case tvKey.KEY_UP:
 			this.processTopMenuUpKey();
 			break;
 		case tvKey.KEY_TOOLS:
@@ -200,10 +200,10 @@ GuiPage_MusicAZ.keyDown = function() {
 			alert("RETURN");
 			widgetAPI.blockNavigation(event);
 			Support.processReturnURLHistory();
-			break;		
+			break;
 		case tvKey.KEY_BLUE:
 			//Focus the music player
-			if (this.selectedItem == -1) {		
+			if (this.selectedItem == -1) {
 				if (this.selectedBannerItem == this.bannerItems.length-1) {
 					GuiMusicPlayer.showMusicPlayer("GuiPage_MusicAZ","bannerItem"+this.selectedBannerItem,"bannerItem highlight"+Main.highlightColour+"Text");
 				} else {
@@ -212,7 +212,7 @@ GuiPage_MusicAZ.keyDown = function() {
 			} else {
 				GuiMusicPlayer.showMusicPlayer("GuiPage_MusicAZ",this.Letters[this.selectedItem],document.getElementById(this.Letters[this.selectedItem]).className);
 			}
-			break;	
+			break;
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY");
 			widgetAPI.sendExitEvent();
@@ -268,7 +268,7 @@ GuiPage_MusicAZ.processTopMenuRightKey = function() {
 		if (this.selectedBannerItem >= this.bannerItems.length) {
 			this.selectedBannerItem--;
 		}
-		this.updateSelectedBannerItems();	
+		this.updateSelectedBannerItems();
 	} else {
 		this.selectedItem++;
 		if (this.selectedItem >= this.Letters.length) {
@@ -292,9 +292,9 @@ GuiPage_MusicAZ.processTopMenuUpKey = function() {
 	if (this.selectedItem < 0) {
 		this.selectedBannerItem = 0;
 		this.selectedItem = -1;
-		this.updateSelectedItems();	
+		this.updateSelectedItems();
 		//update selected banner item
-		this.updateSelectedBannerItems();	
+		this.updateSelectedBannerItems();
 	} else {
 		if (this.selectedItem < this.topLeftItem) {
 			if (this.topLeftItem - this.MAXCOLUMNCOUNT < 0) {
@@ -305,7 +305,7 @@ GuiPage_MusicAZ.processTopMenuUpKey = function() {
 			this.updateDisplayedItems();
 		}
 		this.updateSelectedItems();
-	}	
+	}
 }
 
 GuiPage_MusicAZ.processTopMenuDownKey = function() {
@@ -319,23 +319,23 @@ GuiPage_MusicAZ.processTopMenuDownKey = function() {
 		} else {
 			this.selectedItem = this.selectedItem + this.MAXCOLUMNCOUNT -1; //Moving down to the bottom row.
 		}
-		
+
 		if (this.selectedItem >= this.Letters.length) {
 			if (this.totalRecordCount > this.Letters.length) {
 				this.loadMoreItems();
-				
+
 				if (this.selectedItem >= (this.topLeftItem + this.getMaxDisplay())) {
 					this.topLeftItem = this.topLeftItem + this.MAXCOLUMNCOUNT;
 					this.updateDisplayedItems();
 				}
-				
+
 			} else {
 				this.selectedItem = (this.Letters.length-1);
 				if (this.selectedItem >= (this.topLeftItem  + this.getMaxDisplay())) {
 					this.topLeftItem = this.topLeftItem + this.getMaxDisplay();
 					this.updateDisplayedItems();
 				}
-			}	
+			}
 		} else {
 			if (this.selectedItem >= (this.topLeftItem + this.getMaxDisplay())) {
 				this.topLeftItem = this.topLeftItem + this.MAXCOLUMNCOUNT;
@@ -349,13 +349,13 @@ GuiPage_MusicAZ.processTopMenuDownKey = function() {
 GuiPage_MusicAZ.processTopMenuEnterKey = function() {
 	alert ("TopMenuEnterKey");
 	clearTimeout(this.backdropTimeout);
-	
+
 	//Add URL History
 	Support.updateURLHistory("GuiPage_MusicAZ",this.startParams[0],null,null,null,this.selectedItem,this.topLeftItem,null);
-	
+
 	if (this.selectedItem == -1) {
 		switch (this.bannerItems[this.selectedBannerItem]) {
-		case "All":		
+		case "All":
 			var url = Server.getItemTypeURL("&IncludeItemTypes=Movie"+Server.getMoviesViewQueryPart()+"&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
 			GuiDisplay_Series.start("All Movies",url,0,0);
 			break;
@@ -364,10 +364,10 @@ GuiPage_MusicAZ.processTopMenuEnterKey = function() {
 			GuiDisplay_Series.start("All TV",url,0,0);
 			break;
 		case "Unwatched":
-			if (GuiDisplay_Series.isTvOrMovies == 1) {	
+			if (GuiDisplay_Series.isTvOrMovies == 1) {
 				var url = Server.getItemTypeURL("&IncludeItemTypes=Movie"+Server.getMoviesViewQueryPart()+"&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true&Filters=IsUnPlayed");
 				GuiDisplay_Series.start("Unwatched Movies",url,0,0);
-			}	else {
+			}   else {
 				var url = Server.getItemTypeURL("&IncludeItemTypes=Series"+Server.getTvViewQueryPart()+"&SortBy=SortName&SortOrder=Ascending&isPlayed=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
 				GuiDisplay_Series.start("Unwatched TV",url,0,0);
 			}
@@ -375,7 +375,7 @@ GuiPage_MusicAZ.processTopMenuEnterKey = function() {
 		case "Upcoming":
 			GuiTV_Upcoming.start();
 			break;
-		case "Latest":		
+		case "Latest":
 			if (GuiDisplay_Series.isTvOrMovies == 1) {
 				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&IncludeItemTypes=Movie"+Server.getMoviesViewQueryPart()+"&isPlayed=false&IsFolder=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
 				GuiDisplay_Series.start("Latest Movies",url,0,0);
@@ -385,22 +385,22 @@ GuiPage_MusicAZ.processTopMenuEnterKey = function() {
 			} else {
 				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&IncludeItemTypes=Audio&Limit=21&fields=SortName,Genres");
 				GuiDisplay_Series.start("Latest Music",url,0,0);
-			}			
+			}
 			break;
 		case "Genre":
-			if (GuiDisplay_Series.isTvOrMovies == 1) {	
+			if (GuiDisplay_Series.isTvOrMovies == 1) {
 				var url1 = Server.getCustomURL("/Genres?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Movie"+Server.getMoviesViewQueryPart()+"&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,ItemCounts&userId=" + Server.getUserID());
 				GuiDisplay_Series.start("Genre Movies",url1,0,0);
 			} else {
 				var url1 = Server.getCustomURL("/Genres?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Series"+Server.getTvViewQueryPart()+"&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,ItemCounts&userId=" + Server.getUserID());
 				GuiDisplay_Series.start("Genre TV",url1,0,0);
-			}		
+			}
 			break;
-		case "Album":	
-		case "Album Artist":	
-		case "Artist":	
+		case "Album":
+		case "Album Artist":
+		case "Artist":
 			Support.removeLatestURL(); //Staying on the same page
-			GuiPage_MusicAZ.start(this.bannerItems[this.selectedBannerItem],this.selectedItem);		
+			GuiPage_MusicAZ.start(this.bannerItems[this.selectedBannerItem],this.selectedItem);
 			break;
 		case"A-Z":
 			Support.removeLatestURL(); //Staying on the same page
@@ -417,8 +417,8 @@ GuiPage_MusicAZ.processTopMenuEnterKey = function() {
 		case "Frequent": //Music Only
 			var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items?format=json&SortBy=PlayCount&SortOrder=Descending&IncludeItemTypes=Audio&Limit=21&Filters=IsPlayed&Recursive=true&fields=SortName,Genres");
 			GuiDisplay_Series.start("Frequent Music",url,0,0);
-			break;	
-		}	
+			break;
+		}
 	} else {
 		var urlString = (this.selectedItem == 0) ? "&NameLessThan=A" : "&NameStartsWith=" + this.Letters[this.selectedItem];
 		urlString = (this.selectedItem == 27) ? "&NameStartsWithOrGreater=~" : urlString;
@@ -436,18 +436,18 @@ GuiPage_MusicAZ.processTopMenuEnterKey = function() {
 				var url = Server.getCustomURL("/Artists?format=json&SortBy=SortName&SortOrder=Ascending&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,Genres,ItemCounts&userId=" + Server.getUserID() + urlString);
 				GuiDisplay_Series.start("Artist Music",url,0,0);
 				break;
-			case "TV":				
+			case "TV":
 				var url = Server.getCustomURL("/Items?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Series"+Server.getTvViewQueryPart()+"&Recursive=true&CollapseBoxSetItems=false&fields=SortName,Overview,Genres,RunTimeTicks&userId=" + Server.getUserID() + urlString);
-				GuiDisplay_Series.start("Letter TV",url,0,0);		
-				break;	
-			case "Movies":				
+				GuiDisplay_Series.start("Letter TV",url,0,0);
+				break;
+			case "Movies":
 				var url = Server.getCustomURL("/Items?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Movie"+Server.getMoviesViewQueryPart()+"&Recursive=true&CollapseBoxSetItems=false&fields=SortName,Overview,Genres,RunTimeTicks&userId=" + Server.getUserID() + urlString);
-				GuiDisplay_Series.start("Letter Movies",url,0,0);		
-				break;		
+				GuiDisplay_Series.start("Letter Movies",url,0,0);
+				break;
 			default:
 				break;
 		}
-	}		
+	}
 }
 
 GuiPage_MusicAZ.returnFromMusicPlayer = function() {

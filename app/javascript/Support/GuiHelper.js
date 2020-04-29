@@ -11,10 +11,10 @@ GuiHelper.toggleHelp = function(helpPage) {
 		document.getElementById("GuiImagePlayer_ScreensaverOverlay").style.visibility = "hidden";
 	}
 	GuiHelper.setHelpPage(helpPage);
-	
+
 	//Unhide help window
 	document.getElementById("Help").style.visibility = "";
-	
+
 	//Set focus
 	document.getElementById("GuiHelper").focus();
 }
@@ -22,27 +22,27 @@ GuiHelper.toggleHelp = function(helpPage) {
 GuiHelper.keyDown = function() {
 	var keyCode;
 	if (event) {
-	 keyCode = event.keyCode;	
+	 keyCode = event.keyCode;
 	} else {
 		return;
 	}
-	
+
 	switch(keyCode) {
 		case tvKey.KEY_YELLOW:
 		case tvKey.KEY_RETURN:
-			
+
 			//Stops Return causing the app to exit when closing help text.
 			widgetAPI.blockNavigation(event);
-			
+
 			if (document.getElementById("GuiImagePlayer_ScreensaverOverlay").style.visibility == "hidden"){
 				document.getElementById("GuiImagePlayer_ScreensaverOverlay").style.visibility = "";
 			}
-			
+
 			//If required for Screensaver call in GuiImagePlayer_Screensaver
 			if (document.getElementById("Help").style.visibility == "") {
 				//Hide help window
 				document.getElementById("Help").style.visibility = "hidden";
-				
+
 				//Set focus back to original page
 				document.getElementById(this.helpPage).focus();
 			}
@@ -91,7 +91,7 @@ GuiHelper.generateDisplayOneItemHelp = function() {
 		"Ch. Up/Down - Skips one page of content. ";
 	}
 	return htmlToAdd;
-	
+
 }
 
 GuiHelper.setControlButtons = function(redText,greenText,yellowText,blueText,returnText) {
@@ -99,7 +99,7 @@ GuiHelper.setControlButtons = function(redText,greenText,yellowText,blueText,ret
 	//Each parameter is the button text. A null value means the button is hidden, 0 means don't change it.
 	//The position value is calculated to group the visible buttons on the right.
 	//The offset allows for longer labels.
-	
+
 	//Get the current text if needed.
 	if (redText == 0){
 		redText = document.getElementById("guiRedButton").innerHTML;
@@ -131,33 +131,33 @@ GuiHelper.setControlButtons = function(redText,greenText,yellowText,blueText,ret
 			returnText = null;
 		}
 	}
-	
+
 	//Calculate an offset value if the label is longer than 5 characters.
 	var redOffset = 0;
-	if (redText != null){ 
+	if (redText != null){
 		redOffset = (redText.length > 5) ? (redText.length *6)+5 : 0;
 	}
-	
+
 	var greenOffset = 0;
 	if (greenText != null){
 		greenOffset = (greenText.length > 5) ? (greenText.length *6)+5  : 0;
 	}
-	
+
 	var yellowOffset = 0;
 	if (yellowText != null){
 		yellowOffset = (yellowText.length > 5) ? (yellowText.length *6)+5 : 0;
 	}
-	
+
 	var blueOffset = 0;
 	if (blueText != null){
 		blueOffset = (blueText.length > 5) ? (blueText.length *6)+5 : 0;
 	}
-	
+
 	var returnOffset = 0;
 	if (returnText != null){
 		returnOffset = (returnText.length > 5) ? (returnText.length *6)+5 : 0;
 	}
-	
+
 	//Add the offset values to item's standard position.
 	var redPos = (redText == null) ? 0 : 602;
 	redPos = redPos + redOffset + greenOffset + yellowOffset + blueOffset + returnOffset;
@@ -169,7 +169,7 @@ GuiHelper.setControlButtons = function(redText,greenText,yellowText,blueText,ret
 	bluePos = bluePos + blueOffset + returnOffset;
 	var returnPos = (returnText == null) ? 0 : 75;
 	returnPos = returnPos + returnOffset;
-	
+
 	//This section moves the items right if some are not being displayed.
 	if (returnText == null){
 		bluePos = bluePos -90;
@@ -189,7 +189,7 @@ GuiHelper.setControlButtons = function(redText,greenText,yellowText,blueText,ret
 	if (greenText == null){
 		redPos = redPos -150;
 	}
-	
+
 	//Set control button visibility, inner text and position.
 	if (redText == null){
 		document.getElementById("guiRedButton").style.visibility = "hidden";

@@ -4,12 +4,12 @@ var GuiPlayer_Versions = {
 		resumeTicks : 0,
 		playedFromPage : "",
 		previousCounter : "",
-		
+
 		//Display Details
 		selectedItem : 0,
 		topLeftItem : 0,
 		maxDisplay : 5,
-		
+
 		//Holds MediaStream Indexes of Primary Video Audio for each MediaOption
 		MediaOptions : [],
 
@@ -27,46 +27,46 @@ GuiPlayer_Versions.start = function(playerData,resumeTicks,playedFromPage) {
 	this.MediaSelections.length = 0;
 	this.selectedItem = 0,
 	this.topLeftItem = 0,
-	
+
 	//Set Class Vars
 	this.PlayerData = playerData;
 	this.resumeTicks = resumeTicks;
 	this.playedFromPage = playedFromPage;
 
 	FileLog.write("Video : Loading " + this.PlayerData.Name);
-	
+
 	//Check if HTTP
 	if (this.PlayerData.MediaSources[0].Protocol.toLowerCase() == "http") {
-		FileLog.write("Video : Is HTTP : Generate URL Directly");	
-		
+		FileLog.write("Video : Is HTTP : Generate URL Directly");
+
 		var audioCodec = (File.getTVProperty("Dolby") && File.getTVProperty("AACtoDolby")) ? "ac3" : "aac";
-		
-		var streamparams = '/Stream.ts?VideoCodec=h264&Profile=high&Level=41&MaxVideoBitDepth=8&MaxWidth=1920&VideoBitrate=10000000&AudioCodec='+audioCodec+'&audioBitrate=360000&MaxAudioChannels=6&MediaSourceId='+this.PlayerData.MediaSources[0].Id + '&api_key=' + Server.getAuthToken();	
+
+		var streamparams = '/Stream.ts?VideoCodec=h264&Profile=high&Level=41&MaxVideoBitDepth=8&MaxWidth=1920&VideoBitrate=10000000&AudioCodec='+audioCodec+'&audioBitrate=360000&MaxAudioChannels=6&MediaSourceId='+this.PlayerData.MediaSources[0].Id + '&api_key=' + Server.getAuthToken();
 		var url = Server.getServerAddr() + '/Videos/' + this.PlayerData.Id + streamparams + '&DeviceId='+Server.getDeviceID();
 		var httpPlayback = [0,url,"Transcode",-1,-1,-1];
 		GuiPlayer.startPlayback(httpPlayback,resumeTicks);
-		return;	
+		return;
 	}
-		
+
 	//Loop through all media sources and determine which is best
-	
+
 	FileLog.write("Video : Find Media Streams");
 	for(var index = 0; index < this.PlayerData.MediaSources.length;index++) {
 		this.getMainStreamIndex(this.PlayerData.MediaSources[index],index);
 	}
-	
+
 	//Loop through all options and see if transcode is required, generate URL blah...
 	FileLog.write("Video : Determine Playback of Media Streams");
 	for (var index = 0; index < this.MediaOptions.length; index++) {
 		var result = GuiPlayer_Transcoding.start(this.PlayerData.Id, this.PlayerData.MediaSources[this.MediaOptions[index][0]],this.MediaOptions[index][0],
 			this.MediaOptions[index][1],this.MediaOptions[index][2],this.MediaOptions[index][3],this.MediaOptions[index][4]);
 			FileLog.write("Video : Playback Added")
-			this.MediaPlayback.push(result);	
+			this.MediaPlayback.push(result);
 	}
-	
+
 	//Setup Gui
 	this.previousCounter = document.getElementById("Counter").innerHTML;
-	
+
 	//MediaSource,Url,hasVideo,hasAudio,hasSubtitle,videoIndex,audioIndex,subtitleIndex
 	if (this.MediaPlayback.length <= 0) {
 		FileLog.write("Video : No Playback Options");
@@ -78,7 +78,7 @@ GuiPlayer_Versions.start = function(playerData,resumeTicks,playedFromPage) {
 		//Return Focus!
 		document.getElementById(this.playedFromPage).focus();
 	} else if (this.MediaPlayback.length == 1) { //Added in check to play only non transcoded stuff
-		//Play file 
+		//Play file
 		FileLog.write("Video : One Playback Option - Player Loaded")
 		GuiPlayer.startPlayback(this.MediaPlayback[0],resumeTicks); //Need to change
 	} else {
@@ -90,7 +90,7 @@ GuiPlayer_Versions.start = function(playerData,resumeTicks,playedFromPage) {
 				this.MediaSelections.push(this.MediaPlayback[index]);
 			}
 		}
-		
+
 		//If more than 1 loop through and generate GUI asking user
 		if (this.MediaSelections.length == 1) {
 			FileLog.write("Video : One Direct Stream - Player Loaded")
@@ -109,7 +109,7 @@ GuiPlayer_Versions.start = function(playerData,resumeTicks,playedFromPage) {
 					this.MediaSelections.push(this.MediaPlayback[index]);
 				}
 			}
-			
+
 			//If more than 1 loop through and generate GUI asking user
 			if (this.MediaSelections.length == 1) {
 				FileLog.write("Video : One Audio Only Transcode - Player Loaded")
@@ -119,7 +119,7 @@ GuiPlayer_Versions.start = function(playerData,resumeTicks,playedFromPage) {
 				document.getElementById("GuiPlayer_Versions").focus();
 				this.updateDisplayedItems();
 				this.updateSelectedItems();
-			} else {	
+			} else {
 				//Just use 1st Source and give up!
 				FileLog.write("Video : None Audio Only Transcode - Use First Media Source - Player Started")
 				GuiPlayer.startPlayback(this.MediaSelections[0],resumeTicks);
@@ -131,21 +131,21 @@ GuiPlayer_Versions.start = function(playerData,resumeTicks,playedFromPage) {
 GuiPlayer_Versions.updateDisplayedItems = function() {
 	document.getElementById("guiPlayer_Versions_Playables").style.visibility = "";
 	document.getElementById("guiPlayer_Versions_Playables").innerHTML = "";
-	
+
 	for (var index = this.topLeftItem; index < Math.min(this.MediaSelections.length,this.topLeftItem + this.maxDisplay);index++) {
 		document.getElementById("guiPlayer_Versions_Playables").innerHTML += "<div id="+this.MediaSelections[index][0].Id+" class=videoVersionOption>"+this.MediaSelections[index][0].Name
-		+ "<div class=videoVersionType>D</div></div>";	
+		+ "<div class=videoVersionType>D</div></div>";
 	}
 }
 
 GuiPlayer_Versions.updateSelectedItems = function() {
-	for (var index = this.topLeftItem; index < Math.min(this.MediaSelections.length,this.topLeftItem + this.maxDisplay); index++){	
+	for (var index = this.topLeftItem; index < Math.min(this.MediaSelections.length,this.topLeftItem + this.maxDisplay); index++){
 		if (index == this.selectedItem) {
-			document.getElementById(this.MediaSelections[index][0].Id).style.color = "#27a436";	
-		} else {	
-			document.getElementById(this.MediaSelections[index][0].Id).style.color = "white";		
-		}		
-	} 
+			document.getElementById(this.MediaSelections[index][0].Id).style.color = "#27a436";
+		} else {
+			document.getElementById(this.MediaSelections[index][0].Id).style.color = "white";
+		}
+	}
 	document.getElementById("Counter").innerHTML = (this.selectedItem + 1) + "/" + this.MediaSelections.length;
 }
 
@@ -156,22 +156,22 @@ GuiPlayer_Versions.getMainStreamIndex = function(MediaSource, MediaSourceIndex) 
 	var videoStreamIfNoDefault = 0;
 	var videoIndex = -1, audioIndex = -1, subtitleIndex = -1;
 	var indexOfFirstAudio = -1;
-	
+
 	var userURL = Server.getServerAddr() + "/Users/" + Server.getUserID() + "?format=json";
 	var UserData = Server.getContent(userURL);
 	if (UserData == null) { return; }
-	
+
 	var AudioLanguagePreferenece = (UserData.Configuration.AudioLanguagePreference !== undefined) ? UserData.Configuration.AudioLanguagePreference : "none";
 	var PlayDefaultAudioTrack = (UserData.Configuration.PlayDefaultAudioTrack !== undefined) ? UserData.Configuration.PlayDefaultAudioTrack: false;
-	
+
 	var SubtitlePreference = (UserData.Configuration.SubtitleMode !== undefined) ? UserData.Configuration.SubtitleMode : "Default";
 	var SubtitleLanguage = (UserData.Configuration.SubtitleLanguagePreference !== undefined) ? UserData.Configuration.SubtitleLanguagePreference : "eng";
-	
+
 	FileLog.write("Video : Audio Play Default Track Setting: " + PlayDefaultAudioTrack);
 	FileLog.write("Video : Audio Language Preference Setting: " + AudioLanguagePreferenece);
 	FileLog.write("Video : Subtitle Preference: " + SubtitlePreference);
 	FileLog.write("Video : Subtitle Language: " + SubtitleLanguage);
-	
+
 	var MediaStreams = MediaSource.MediaStreams;
 	//---------------------------------------------------------------------------
 	//Find 1st Audio Stream
@@ -181,9 +181,9 @@ GuiPlayer_Versions.getMainStreamIndex = function(MediaSource, MediaSourceIndex) 
 			indexOfFirstAudio = index;
 			FileLog.write("Video : First Audio Index : " + indexOfFirstAudio);
 			break;
-		} 
+		}
 	}
-	
+
 	for (var index = 0;index < MediaStreams.length;index++) {
 		var Stream = MediaStreams[index];
 		if (Stream.Type == "Video") {
@@ -192,8 +192,8 @@ GuiPlayer_Versions.getMainStreamIndex = function(MediaSource, MediaSourceIndex) 
 				videoIndex = index;
 				FileLog.write("Video : Default Video Index Found : " + videoIndex);
 			}
-		} 
-		
+		}
+
 		if (Stream.Type == "Audio") {
 			if (PlayDefaultAudioTrack == false) {
 				if (audioIndex == -1 && Stream.Language == AudioLanguagePreferenece) {
@@ -208,7 +208,7 @@ GuiPlayer_Versions.getMainStreamIndex = function(MediaSource, MediaSourceIndex) 
 			}
 		}
 	}
-	
+
 	//If there was no default video track use first one
 	if (videoIndex == -1) {
 		videoIndex = videoStreamIfNoDefault;
@@ -216,7 +216,7 @@ GuiPlayer_Versions.getMainStreamIndex = function(MediaSource, MediaSourceIndex) 
 	}
 
 	//If there was no default audio track find others
-	if (audioIndex == -1) {	
+	if (audioIndex == -1) {
 		for (var index = 0;index < MediaStreams.length;index++) {
 			var Stream = MediaStreams[index];
 			if (Stream.Type == "Audio") {
@@ -227,9 +227,9 @@ GuiPlayer_Versions.getMainStreamIndex = function(MediaSource, MediaSourceIndex) 
 		}
 	}
 	FileLog.write("Video : Audio language " + (MediaStreams[audioIndex].Language === undefined ? "unknown, defaulting to " + AudioLanguagePreferenece : MediaStreams[audioIndex].Language));
-	
+
 	//---------------------------------------------------------------------------
-	
+
 	//Search Subtitles - the order of these is important.
 	//Subtitle Mode = Only Forced Subtitles
 	// these are reported by the server to be always on (unless specified by the user)
@@ -238,7 +238,7 @@ GuiPlayer_Versions.getMainStreamIndex = function(MediaSource, MediaSourceIndex) 
 			return Stream.IsTextSubtitleStream && Stream.IsForced;
 		});
 	}
-	
+
 	//Subtitle Mode = Default
 	// display native subtitles only if the audio stream (else server default) is not in the users native language
 	if (subtitleIndex == -1) {
@@ -247,11 +247,11 @@ GuiPlayer_Versions.getMainStreamIndex = function(MediaSource, MediaSourceIndex) 
 				if (Stream.IsTextSubtitleStream) {
 					var audioLanguage = MediaStreams[audioIndex].Language == null ? AudioLanguagePreferenece : MediaStreams[audioIndex].Language;
 					return audioLanguage !== SubtitleLanguage && Stream.Language === SubtitleLanguage;
-				} 
+				}
 			});
 		}
 	}
-	
+
 	//Subtitle Mode = Always Play Subtitles
 	if (subtitleIndex == -1) {
 		if (SubtitlePreference == "Always") {
@@ -266,9 +266,9 @@ GuiPlayer_Versions.getMainStreamIndex = function(MediaSource, MediaSourceIndex) 
 					return Stream.IsTextSubtitleStream;
 				});
 			}
-		}	
+		}
 	}
-	
+
 	//---------------------------------------------------------------------------
 
 	var audioStreamFirst = (audioIndex == indexOfFirstAudio) ? true : false;
@@ -287,15 +287,15 @@ GuiPlayer_Versions.getMainStreamIndex = function(MediaSource, MediaSourceIndex) 
 			//Not 3D
 			FileLog.write("Video : Media Stream Added : 2D " + MediaSourceIndex + "," + videoIndex + "," + audioIndex + "," + audioStreamFirst+ "," + subtitleIndex)
 			this.MediaOptions.push([MediaSourceIndex,videoIndex,audioIndex,audioStreamFirst,subtitleIndex]); // Index != Id!!!
-		}				
+		}
 	} else {
 		if (videoIndex == -1) {
 			FileLog.write("Video : No Video Index Found - Not Added");
 		}
 		if (audioIndex == -1) {
-			FileLog.write("Video : No Audio Index Found - Not Added");	
+			FileLog.write("Video : No Audio Index Found - Not Added");
 		}
-	}	
+	}
 }
 
 GuiPlayer_Versions.keyDown = function() {
@@ -309,7 +309,7 @@ GuiPlayer_Versions.keyDown = function() {
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
-	
+
 	switch(keyCode) {
 		case tvKey.KEY_UP:
 			this.selectedItem--;
@@ -341,13 +341,13 @@ GuiPlayer_Versions.keyDown = function() {
 			document.getElementById("guiPlayer_Loading").style.visibility = "hidden";
 			document.getElementById("guiPlayer_Versions_Playables").style.visibility = "hidden";
 			document.getElementById("guiPlayer_Versions_Playables").innerHTML = "";
-			
+
 			//Remove Last URL History - as we didn't navigate away from the page!
 			Support.removeLatestURL();
-			
+
 			//Reset counter to existing value
 			document.getElementById("Counter").innerHTML = this.previousCounter;
-			
+
 			//Set focus back to existing page
 			document.getElementById(this.playedFromPage).focus();
 			break;
@@ -359,13 +359,13 @@ GuiPlayer_Versions.keyDown = function() {
 			document.getElementById("Counter").innerHTML = this.previousCounter;
 			document.getElementById(this.playedFromPage).focus();
 			GuiPlayer.startPlayback(this.MediaSelections[this.selectedItem],this.resumeTicks);
-			break;	
+			break;
 		case tvKey.KEY_BLUE:
 			alert("BLUE");
 			document.getElementById("guiPlayer_Loading").style.visibility = "hidden";
 			File.deleteFile();
 			widgetAPI.sendExitEvent()
-			break;	
+			break;
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY");
 			document.getElementById("guiPlayer_Loading").style.visibility = "hidden";
