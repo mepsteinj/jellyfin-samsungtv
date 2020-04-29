@@ -1,13 +1,13 @@
 var ServerVersion = {
 		ServerInfo : null
-}
+};
 
 ServerVersion.start = function() {
 	document.getElementById("pageContent").innerHTML = "<div class='padding60' style='text-align:center'> \
 		<p style='padding-bottom:5px;'>The Samsung app requires a later version of the Server - Please update it and restart the app</p>";
 
 	document.getElementById("ServerVersion").focus();
-}
+};
 
 ServerVersion.checkServerVersion = function() {
 	var url = Server.getCustomURL("/System/Info/Public?format=json");
@@ -22,7 +22,7 @@ ServerVersion.checkServerVersion = function() {
 	} else {
 		return false;
 	}
-}
+};
 
 ServerVersion.keyDown = function() {
 	var keyCode = event.keyCode;
@@ -41,4 +41,4 @@ ServerVersion.keyDown = function() {
 			widgetAPI.sendExitEvent();
 			break;
 	}
-}
+};

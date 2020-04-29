@@ -18,15 +18,15 @@ var GuiPage_HomeOneItem = {
 
 		startParams : [],
 		backdropTimeout : null
-}
+};
 
 GuiPage_HomeOneItem.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
-}
+};
 
 GuiPage_HomeOneItem.onFocus = function() {
 	GuiHelper.setControlButtons("Favourite","Watched","Help",GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Exit  ");
-}
+};
 
 GuiPage_HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
 	alert("Page Enter : GuiPage_HomeOneItem");
@@ -50,7 +50,7 @@ GuiPage_HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
 
 	//If all user selected homepages are blank try media items
 	if (this.ItemData.Items.length == 0) {
-		title = "Media Folders"
+		title = "Media Folders";
 		var newURL = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&CollapseBoxSetItems=false&fields=SortName");
 		this.ItemData = Server.getContent(newURL);
 		if (this.ItemData == null) { Support.processReturnURLHistory(); }
@@ -129,18 +129,18 @@ GuiPage_HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
 		//As no content focus on menu bar and null null means user can't return off the menu bar
 		GuiMainMenu.requested(null,null);
 	}
-}
+};
 
 GuiPage_HomeOneItem.updateDisplayedItems = function() {
 	Support.updateDisplayedItems(this.ItemData.Items,this.selectedItem,this.topLeftItem,
 			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Content","",this.isResume,null,true);
-}
+};
 
 //Function sets CSS Properties so show which user is selected
 GuiPage_HomeOneItem.updateSelectedItems = function (bypassCounter) {
 	Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
 			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"homePagePoster Collection Selected highlight"+Main.highlightColour+"Boarder","homePagePoster Collection","",bypassCounter);
-}
+};
 
 GuiPage_HomeOneItem.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.menuItems.length; index++) {
@@ -158,7 +158,7 @@ GuiPage_HomeOneItem.updateSelectedBannerItems = function() {
 			}
 		}
 	}
-}
+};
 
 GuiPage_HomeOneItem.keyDown = function() {
 	var keyCode = event.keyCode;
@@ -233,10 +233,10 @@ GuiPage_HomeOneItem.keyDown = function() {
 			if (this.ItemData.Items[this.selectedItem].MediaType == "Video") {
 				if (this.ItemData.Items[this.selectedItem].UserData.Played == true) {
 					Server.deleteWatchedStatus(this.ItemData.Items[this.selectedItem].Id);
-					this.ItemData.Items[this.selectedItem].UserData.Played = false
+					this.ItemData.Items[this.selectedItem].UserData.Played = false;
 				} else {
 					Server.setWatchedStatus(this.ItemData.Items[this.selectedItem].Id);
-					this.ItemData.Items[this.selectedItem].UserData.Played = true
+					this.ItemData.Items[this.selectedItem].UserData.Played = true;
 				}
 				setTimeout(function(){
 					GuiPage_HomeOneItem.updateDisplayedItems();
@@ -279,7 +279,7 @@ GuiPage_HomeOneItem.keyDown = function() {
 			widgetAPI.sendExitEvent();
 			break;
 	}
-}
+};
 
 GuiPage_HomeOneItem.processSelectedItem = function() {
 	clearTimeout(this.backdropTimeout);
@@ -289,11 +289,11 @@ GuiPage_HomeOneItem.processSelectedItem = function() {
 	} else {
 		Support.processSelectedItem("GuiPage_HomeOneItem",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null,null,this.isLatest);
 	}
-}
+};
 
 GuiPage_HomeOneItem.playSelectedItem = function () {
 	Support.playSelectedItem("GuiPage_HomeOneItem",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null);
-}
+};
 
 GuiPage_HomeOneItem.openMenu = function() {
 	if (this.selectedItem == -1) {
@@ -307,7 +307,7 @@ GuiPage_HomeOneItem.openMenu = function() {
 		Support.updateURLHistory("GuiPage_HomeOneItem",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
 		GuiMainMenu.requested("GuiPage_HomeOneItem",this.ItemData.Items[this.selectedItem].Id);
 	}
-}
+};
 
 GuiPage_HomeOneItem.processLeftKey = function() {
 	if (this.selectedItem == -1) {
@@ -335,7 +335,7 @@ GuiPage_HomeOneItem.processLeftKey = function() {
 		}
 		this.updateSelectedItems();
 	}
-}
+};
 
 GuiPage_HomeOneItem.processRightKey = function() {
 	if (this.selectedItem == -1) {
@@ -356,7 +356,7 @@ GuiPage_HomeOneItem.processRightKey = function() {
 		}
 		this.updateSelectedItems();
 	}
-}
+};
 
 GuiPage_HomeOneItem.processUpKey = function() {
 	this.selectedItem = this.selectedItem - this.MAXCOLUMNCOUNT;
@@ -364,7 +364,7 @@ GuiPage_HomeOneItem.processUpKey = function() {
 		this.selectedBannerItem = 0;
 		this.selectedItem = -1;
 		//Hide red
-		this.updateSelectedItems(true)
+		this.updateSelectedItems(true);
 		//update selected banner item
 		this.updateSelectedBannerItems();
 	} else {
@@ -378,7 +378,7 @@ GuiPage_HomeOneItem.processUpKey = function() {
 		}
 		this.updateSelectedItems();
 	}
-}
+};
 
 GuiPage_HomeOneItem.processDownKey = function() {
 	if (this.selectedItem == -1) {
@@ -401,7 +401,7 @@ GuiPage_HomeOneItem.processDownKey = function() {
 		}
 	}
 	this.updateSelectedItems();
-}
+};
 
 GuiPage_HomeOneItem.processChannelUpKey = function() {
 	this.selectedItem = this.selectedItem - this.getMaxDisplay();
@@ -418,7 +418,7 @@ GuiPage_HomeOneItem.processChannelUpKey = function() {
 		this.updateDisplayedItems();
 	}
 	this.updateSelectedItems();
-}
+};
 
 GuiPage_HomeOneItem.processChannelDownKey = function() {
 	this.selectedItem = this.selectedItem + this.getMaxDisplay();
@@ -433,10 +433,10 @@ GuiPage_HomeOneItem.processChannelDownKey = function() {
 		this.updateDisplayedItems();
 	}
 	this.updateSelectedItems();
-}
+};
 
 GuiPage_HomeOneItem.returnFromMusicPlayer = function() {
 	this.selectedItem = 0;
 	this.updateDisplayedItems();
 	this.updateSelectedItems();
-}
+};

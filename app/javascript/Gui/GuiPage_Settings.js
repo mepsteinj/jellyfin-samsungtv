@@ -82,15 +82,15 @@ var GuiPage_Settings = {
 
 		HighlightColourOptions : ["Green","Silver","Red","Navy","Aqua","Purple"],
 		HighlightColourValues : [1,2,3,4,5,6]
-}
+};
 
 GuiPage_Settings.onFocus = function() {
 	GuiHelper.setControlButtons(null,null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
-}
+};
 
 GuiPage_Settings.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
-}
+};
 
 GuiPage_Settings.initiateViewValues = function() {
 	this.View1Options = ["Next Up","All Favourites","Favourite Movies","Favourite Series","Favourite Episodes","Suggested For You","Media Folders","Latest TV","Latest Movies"];
@@ -100,7 +100,7 @@ GuiPage_Settings.initiateViewValues = function() {
 
 	this.SettingsDefaults[2] = "TVNextUp";
 	this.SettingsDefaults[3] = "LatestMovies";
-}
+};
 
 GuiPage_Settings.start = function(viewToDisplay) {
 	alert("Page Enter : GuiPage_Settings");
@@ -177,7 +177,7 @@ GuiPage_Settings.start = function(viewToDisplay) {
 	this.updateSelectedBannerItems();
 
 	document.getElementById("GuiPage_Settings").focus();
-}
+};
 
 GuiPage_Settings.checkSettingsInFile = function() {
 	var changed = false;
@@ -362,7 +362,7 @@ GuiPage_Settings.updateDisplayedItems = function() {
 				}
 			}
 			if (Setting == "") {
-				Setting = this.ServerUserData.Configuration.AudioLanguagePreference
+				Setting = this.ServerUserData.Configuration.AudioLanguagePreference;
 			}
 			break;
 		case "PlayDefaultAudioTrack":
@@ -381,7 +381,7 @@ GuiPage_Settings.updateDisplayedItems = function() {
 				}
 			}
 			if (Setting == "") {
-				Setting = this.ServerUserData.Configuration.SubtitleLanguagePreference
+				Setting = this.ServerUserData.Configuration.SubtitleLanguagePreference;
 			}
 			break;
 		case "SubtitleMode":
@@ -428,7 +428,7 @@ GuiPage_Settings.updateDisplayedItems = function() {
 		htmlToAdd += "<tr class=guiSettingsRow><td id="+index+">" + this.currentViewSettingsName[index] + "</td><td id=Value"+index+" class='guiSettingsTD'>"+Setting+"</td></tr>";
 	}
 	document.getElementById("guiPage_Settings_Settings").innerHTML = htmlToAdd + "</table>";
-}
+};
 
 GuiPage_Settings.updateSelectedItems = function() {
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.currentViewSettings.length); index++) {
@@ -445,7 +445,7 @@ GuiPage_Settings.updateSelectedItems = function() {
 		document.getElementById("Counter").innerHTML = (this.selectedItem + 1) + "/" + (this.currentViewSettingsName.length);
 		this.setOverview();
 	}
-}
+};
 
 GuiPage_Settings.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.bannerItems.length; index++) {
@@ -478,7 +478,7 @@ GuiPage_Settings.updateSelectedBannerItems = function() {
 		document.getElementById("Counter").innerHTML = (this.selectedItem + 1) + "/" + (this.currentViewSettingsName.length);
 		this.setOverview();
 	}
-}
+};
 
 GuiPage_Settings.processSelectedItem = function() {
 	if (this.selectedItem == -1) {
@@ -691,7 +691,7 @@ GuiPage_Settings.keyDown = function() {
 			widgetAPI.sendExitEvent();
 			break;
 	}
-}
+};
 
 GuiPage_Settings.openMenu = function() {
 	if (this.selectedItem == -1) {
@@ -705,7 +705,7 @@ GuiPage_Settings.openMenu = function() {
 		document.getElementById(this.selectedItem).className = "guiSettingsTD GuiPage_Setting_UnSelected";
 		GuiMainMenu.requested("GuiPage_Settings",this.selectedItem,"guiSettingsTD highlight"+Main.highlightColour+"Background");
 	}
-}
+};
 
 GuiPage_Settings.processUpKey = function() {
 	this.selectedItem = this.selectedItem - this.MAXCOLUMNCOUNT;
@@ -726,7 +726,7 @@ GuiPage_Settings.processUpKey = function() {
 		}
 		this.updateSelectedItems();
 	}
-}
+};
 
 GuiPage_Settings.processDownKey = function() {
 	if (this.selectedItem == -1) {
@@ -749,7 +749,7 @@ GuiPage_Settings.processDownKey = function() {
 		}
 	}
 	this.updateSelectedItems();
-}
+};
 
 GuiPage_Settings.processLeftKey = function() {
 	if (this.selectedItem == -1) {
@@ -763,7 +763,7 @@ GuiPage_Settings.processLeftKey = function() {
 	} else {
 		this.openMenu();
 	}
-}
+};
 
 GuiPage_Settings.processRightKey = function() {
 	if (this.selectedItem == -1) {
@@ -776,7 +776,7 @@ GuiPage_Settings.processRightKey = function() {
 	} else {
 		this.processSelectedItem();
 	}
-}
+};
 
 //------------------------------------------------------------------------------------------------------------------------
 
@@ -948,7 +948,7 @@ GuiPage_Settings.processSelectedSubItem = function() {
 	document.getElementById("Value"+this.selectedItem).className = "guiSettingsTD GuiPage_Setting_UnSelected";
 	document.getElementById(this.selectedItem).className = "guiSettingsTD highlight"+Main.highlightColour+"Background";
 	document.getElementById("GuiPage_Settings").focus();
-}
+};
 
 
 GuiPage_Settings.bottomKeyDown = function() {
@@ -1029,7 +1029,7 @@ GuiPage_Settings.bottomKeyDown = function() {
 			widgetAPI.sendExitEvent();
 			break;
 	}
-}
+};
 
 GuiPage_Settings.setOverview = function() {
 	switch (this.currentViewSettings[this.selectedItem]) {
@@ -1188,10 +1188,10 @@ GuiPage_Settings.setOverview = function() {
 			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "When displaying movie lists, movies belonging to a collection will be displayed as one grouped item<br><br>This is a server option and will affect your Jellyfin experience on all clients";
 			break;
 	}
-}
+};
 
 GuiPage_Settings.returnFromMusicPlayer = function() {
 	this.selectedItem = 0;
 	this.updateDisplayedItems();
 	this.updateSelectedItems();
-}
+};

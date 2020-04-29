@@ -13,15 +13,15 @@ var GuiPage_AddToPlaylist = {
 
 		MAXCOLUMNCOUNT : 1,
 		MAXROWCOUNT : 5
-}
+};
 
 GuiPage_AddToPlaylist.onFocus = function() {
 	GuiHelper.setControlButtons(null,null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
-}
+};
 
 GuiPage_AddToPlaylist.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
-}
+};
 
 GuiPage_AddToPlaylist.start=function(itemId, playedFromPage, mediaType) {
 	alert("Page Enter : GuiPage_AddToPlaylist");
@@ -72,7 +72,7 @@ GuiPage_AddToPlaylist.start=function(itemId, playedFromPage, mediaType) {
 
 	//Display Playlist Div
 	document.getElementById("guiPlayListContainer").style.visibility = "";
-}
+};
 
 GuiPage_AddToPlaylist.updateDisplayedItems = function() {
 	var htmlToAdd = "<table style='padding-top:20px;padding-left:80px;'><th style='width:460px'>Playlist</th><th style='width:200px'>Exists in Playlist</th>";
@@ -81,7 +81,7 @@ GuiPage_AddToPlaylist.updateDisplayedItems = function() {
 		htmlToAdd += "<tr><td id='"+this.ItemData.Items[index].Id+"'>"+ this.ItemData.Items[index].Name + "</td><td>"+existsInPlaylist+"</tr>";
 	}
 	document.getElementById("guiPlayListExisting").innerHTML = htmlToAdd + "</table>";
-}
+};
 
 GuiPage_AddToPlaylist.updateSelectedItems = function() {
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length);index++) {
@@ -91,7 +91,7 @@ GuiPage_AddToPlaylist.updateSelectedItems = function() {
 			document.getElementById(this.ItemData.Items[index].Id).style.color = "#f9f9f9";
 		}
 	}
-}
+};
 
 GuiPage_AddToPlaylist.keyDown = function() {
 	var keyCode = event.keyCode;
@@ -144,7 +144,7 @@ GuiPage_AddToPlaylist.keyDown = function() {
 		default:
 			break;
 	}
-}
+};
 
 GuiPage_AddToPlaylist.processSelectedItem = function() {
 	if (this.hasItemInPlaylist[this.selectedItem] == false) {
@@ -165,7 +165,7 @@ GuiPage_AddToPlaylist.processSelectedItem = function() {
 		document.getElementById("guiPlayListResult").innerHTML = "";
 		document.getElementById(GuiPage_AddToPlaylist.playedFromPage).focus();
 	}, 2000);
-}
+};
 
 GuiPage_AddToPlaylist.processUpKey = function() {
 	this.selectedItem = this.selectedItem - this.MAXCOLUMNCOUNT;
@@ -182,7 +182,7 @@ GuiPage_AddToPlaylist.processUpKey = function() {
 		}
 		this.updateSelectedItems();
 	}
-}
+};
 
 GuiPage_AddToPlaylist.processDownKey = function() {
 	if (this.selectedItem == this.ItemData.Items.length - 1) {
@@ -205,7 +205,7 @@ GuiPage_AddToPlaylist.processDownKey = function() {
 		}
 		this.updateSelectedItems();
 	}
-}
+};
 
 
 //////////////////////////////////////////////////////////////////
@@ -215,7 +215,7 @@ var GuiPage_AddToPlaylist_Input  = function(id) {
 	var imeReady = function(imeObject) {
 		installFocusKeyCallbacks();
 		document.getElementById(id).focus();
-	}
+	};
 
 	var ime = new IMEShell("guiPlayListNew", imeReady,this);
 	ime.setKeypadPos(1360,180);
@@ -285,5 +285,5 @@ var GuiPage_AddToPlaylist_Input  = function(id) {
 		ime.setKeyFunc(tvKey.KEY_EXIT, function (keyCode) {
 			widgetAPI.sendExitEvent();
 		});
-	}
-}
+	};
+};

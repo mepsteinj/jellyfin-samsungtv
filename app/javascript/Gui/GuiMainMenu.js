@@ -12,11 +12,11 @@ var GuiMainMenu = {
 		isMusicPlaying : false,
 
 		clockVar : null
-}
+};
 
 GuiMainMenu.getSelectedMainMenuItem = function() {
 	return this.selectedMainMenuItem;
-}
+};
 
 //Entry Point from User Menu - ONLY RUN ONCE PER USER LOGIN
 GuiMainMenu.start = function() {
@@ -89,7 +89,7 @@ GuiMainMenu.start = function() {
 
 	//Load Home Page
 	Support.processHomePageMenu("Home");
-}
+};
 
 //Entry Point when called from any page displaying the menu
 GuiMainMenu.requested = function(pageSelected, selectedDivId, selectedDivClass) {
@@ -125,7 +125,7 @@ GuiMainMenu.requested = function(pageSelected, selectedDivId, selectedDivClass) 
 
 	//Set Focus
 	document.getElementById("GuiMainMenu").focus();
-}
+};
 
 GuiMainMenu.updateSelectedItems = function () {
 	for (var index = 0; index < this.menuItems.length; index++){
@@ -135,7 +135,7 @@ GuiMainMenu.updateSelectedItems = function () {
 			document.getElementById(this.menuItems[index]).className = "menu-item";
 		}
 	}
-}
+};
 
 //-------------------------------------------------------------
 //      Main Menu Key Handling
@@ -201,7 +201,7 @@ GuiMainMenu.keyDown = function()
 			widgetAPI.sendExitEvent();
 			break;
 	}
-}
+};
 
 GuiMainMenu.processSelectedItems = function() {
 
@@ -225,7 +225,7 @@ GuiMainMenu.processSelectedItems = function() {
 	setTimeout(function(){
 		Support.processHomePageMenu(GuiMainMenu.menuItems[GuiMainMenu.selectedMainMenuItem]);
 	}, 200);
-}
+};
 
 GuiMainMenu.playSelectedItem = function() {
 	//Pressing play on Photos in the main menu plays a random slideshow.
@@ -243,7 +243,7 @@ GuiMainMenu.playSelectedItem = function() {
 			}
 		}
 	}
-}
+};
 
 GuiMainMenu.processReturnKey = function() {
 	if (this.pageSelected != null) {
@@ -285,7 +285,7 @@ GuiMainMenu.processReturnKey = function() {
 
 		document.getElementById(this.pageSelected).focus();
 	}
-}
+};
 
 GuiMainMenu.processUpKey = function() {
 	this.selectedMainMenuItem--;
@@ -293,7 +293,7 @@ GuiMainMenu.processUpKey = function() {
 		this.selectedMainMenuItem = this.menuItems.length-1;
 	}
 	this.updateSelectedItems();
-}
+};
 
 GuiMainMenu.processDownKey = function() {
 	this.selectedMainMenuItem++;
@@ -301,7 +301,7 @@ GuiMainMenu.processDownKey = function() {
 		this.selectedMainMenuItem = 0;
 	}
 	this.updateSelectedItems();
-}
+};
 
 GuiMainMenu.toggleTestMode = function() {
 	if (this.testModeCount < 2) {
@@ -309,11 +309,11 @@ GuiMainMenu.toggleTestMode = function() {
 		clearTimeout (this.testModeTimeout);
 		this.testModeTimeout = setTimeout(function() {
 			GuiMainMenu.testModeCount = 0;
-		},3000)
+		},3000);
 	} else {
 		clearTimeout (this.testModeTimeout);
 		Main.setTestMode();
 		GuiNotifications.setNotification("Test mode is now: " + Main.getTestMode(),"Test Mode");
 		this.testModeCount = 0;
 	}
-}
+};

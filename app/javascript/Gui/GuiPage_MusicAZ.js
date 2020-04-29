@@ -14,15 +14,15 @@ var GuiPage_MusicAZ = {
 
 		startParams : [],
 		backdropTimeout : null
-}
+};
 
 GuiPage_MusicAZ.onFocus = function() {
 	GuiHelper.setControlButtons(null,null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
-}
+};
 
 GuiPage_MusicAZ.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
-}
+};
 
 
 GuiPage_MusicAZ.start = function(entryView,selectedItem) {
@@ -78,7 +78,7 @@ GuiPage_MusicAZ.start = function(entryView,selectedItem) {
 
 	//Set Focus for Key Events
 	document.getElementById("GuiPage_MusicAZ").focus();
-}
+};
 
 //---------------------------------------------------------------------------------------------------
 //      TOP ITEMS HANDLERS
@@ -89,7 +89,7 @@ GuiPage_MusicAZ.updateDisplayedItems = function() {
 		htmlToAdd += "<div id="+this.Letters[index] + "><div style='text-align:center;font-size:2.5em;padding-top:30px;'>"+this.Letters[index] + "</div></div>";
 	}
 	document.getElementById("Content").innerHTML = htmlToAdd;
-}
+};
 
 //Function sets CSS Properties so show which user is selected
 GuiPage_MusicAZ.updateSelectedItems = function (bypassCounter) {
@@ -109,7 +109,7 @@ GuiPage_MusicAZ.updateSelectedItems = function (bypassCounter) {
 	} else {
 		document.getElementById("Counter").innerHTML = (this.selectedItem + 1) + "/" + this.Letters.length;
 	}
-}
+};
 
 GuiPage_MusicAZ.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.bannerItems.length; index++) {
@@ -138,7 +138,7 @@ GuiPage_MusicAZ.updateSelectedBannerItems = function() {
 	if (this.selectedItem == -1) {
 		document.getElementById("Counter").innerHTML = (this.selectedBannerItem+1) + "/" + this.bannerItems.length;
 	}
-}
+};
 
 GuiPage_MusicAZ.keyDown = function() {
 	var keyCode = event.keyCode;
@@ -218,7 +218,7 @@ GuiPage_MusicAZ.keyDown = function() {
 			widgetAPI.sendExitEvent();
 			break;
 	}
-}
+};
 
 GuiPage_MusicAZ.openMenu = function() {
 	if (this.selectedItem == -1) {
@@ -232,7 +232,7 @@ GuiPage_MusicAZ.openMenu = function() {
 		Support.updateURLHistory("GuiPage_MusicAZ",this.startParams[0],null,null,null,this.selectedItem,this.topLeftItem,true);
 		GuiMainMenu.requested("GuiPage_MusicAZ",this.Letters[this.selectedItem],document.getElementById(this.Letters[this.selectedItem]).className);
 	}
-}
+};
 
 GuiPage_MusicAZ.processTopMenuLeftKey = function() {
 	if (this.selectedItem == -1) {
@@ -260,7 +260,7 @@ GuiPage_MusicAZ.processTopMenuLeftKey = function() {
 		}
 		this.updateSelectedItems();
 	}
-}
+};
 
 GuiPage_MusicAZ.processTopMenuRightKey = function() {
 	if (this.selectedItem == -1) {
@@ -281,7 +281,7 @@ GuiPage_MusicAZ.processTopMenuRightKey = function() {
 		}
 		this.updateSelectedItems();
 	}
-}
+};
 
 GuiPage_MusicAZ.processTopMenuUpKey = function() {
 	if (this.selectedItem > (this.MAXCOLUMNCOUNT *2) -1){
@@ -306,7 +306,7 @@ GuiPage_MusicAZ.processTopMenuUpKey = function() {
 		}
 		this.updateSelectedItems();
 	}
-}
+};
 
 GuiPage_MusicAZ.processTopMenuDownKey = function() {
 	if (this.selectedItem == -1) {
@@ -344,7 +344,7 @@ GuiPage_MusicAZ.processTopMenuDownKey = function() {
 		}
 	}
 	this.updateSelectedItems();
-}
+};
 
 GuiPage_MusicAZ.processTopMenuEnterKey = function() {
 	alert ("TopMenuEnterKey");
@@ -448,10 +448,10 @@ GuiPage_MusicAZ.processTopMenuEnterKey = function() {
 				break;
 		}
 	}
-}
+};
 
 GuiPage_MusicAZ.returnFromMusicPlayer = function() {
 	this.selectedItem = 0;
 	this.updateDisplayedItems();
 	this.updateSelectedItems();
-}
+};

@@ -29,7 +29,7 @@ var GuiDisplay_Series = {
 
 		startParams : [],
 		isLatest : false
-}
+};
 
 GuiDisplay_Series.onFocus = function() {
 	switch (this.currentMediaType) {
@@ -44,11 +44,11 @@ GuiDisplay_Series.onFocus = function() {
 	default:
 		GuiHelper.setControlButtons("Favourite",null,"Next Index",GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
 	}
-}
+};
 
 GuiDisplay_Series.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
-}
+};
 
 GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem,items) {
 	alert("Page Enter : GuiDisplay_Series");
@@ -245,7 +245,7 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem,items) {
 
 		document.getElementById("NoItems").focus();
 	}
-}
+};
 
 GuiDisplay_Series.updateDisplayedItems = function() {
 	if (this.topLeftItem + this.getMaxDisplay() > this.ItemData.Items.length) {
@@ -256,7 +256,7 @@ GuiDisplay_Series.updateDisplayedItems = function() {
 
 Support.updateDisplayedItems(this.ItemData.Items,this.selectedItem,this.topLeftItem,
 		Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Content","",this.isResume,this.genreType);
-}
+};
 
 //Function sets CSS Properties so show which user is selected
 GuiDisplay_Series.updateSelectedItems = function () {
@@ -406,7 +406,7 @@ GuiDisplay_Series.updateSelectedItems = function () {
 			}
 		}, 1000);
 	}
-}
+};
 
 GuiDisplay_Series.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.bannerItems.length; index++) {
@@ -435,7 +435,7 @@ GuiDisplay_Series.updateSelectedBannerItems = function() {
 	if (this.selectedItem == -1) {
 		document.getElementById("Counter").innerHTML = (this.selectedBannerItem+1) + "/" + this.bannerItems.length;
 	}
-}
+};
 
 GuiDisplay_Series.keyDown = function() {
 	var keyCode = event.keyCode;
@@ -549,7 +549,7 @@ GuiDisplay_Series.keyDown = function() {
 			widgetAPI.sendExitEvent();
 			break;
 	}
-}
+};
 
 GuiDisplay_Series.processSelectedItem = function() {
 	if (this.selectedItem == -1) {
@@ -629,7 +629,7 @@ GuiDisplay_Series.processSelectedItem = function() {
 	} else {
 		Support.processSelectedItem("GuiDisplay_Series",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null,this.genreType,this.isLatest);
 	}
-}
+};
 
 GuiDisplay_Series.toggleWatchedStatus = function () {
 	if (this.selectedItem > -1) {
@@ -670,11 +670,11 @@ GuiDisplay_Series.toggleWatchedStatus = function () {
 			break;
 		}
 	}
-}
+};
 
 GuiDisplay_Series.playSelectedItem = function () {
 	Support.playSelectedItem("GuiDisplay_Series",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null);
-}
+};
 
 GuiDisplay_Series.openMenu = function() {
 	if (this.selectedItem == -1) { //Banner menu
@@ -692,7 +692,7 @@ GuiDisplay_Series.openMenu = function() {
 		Support.updateURLHistory("GuiDisplay_Series",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
 		GuiMainMenu.requested("GuiDisplay_Series",this.ItemData.Items[this.selectedItem].Id,(File.getUserProperty("LargerView") == true) ? "SeriesPortraitLarge Selected" : "SeriesPortrait Selected");
 	}
-}
+};
 
 GuiDisplay_Series.processLeftKey = function() {
 	if (this.selectedItem == -1) {
@@ -719,7 +719,7 @@ GuiDisplay_Series.processLeftKey = function() {
 		}
 		this.updateSelectedItems();
 	}
-}
+};
 
 GuiDisplay_Series.processRightKey = function() {
 	if (this.selectedItem == -1) {
@@ -748,7 +748,7 @@ GuiDisplay_Series.processRightKey = function() {
 		}
 		this.updateSelectedItems();
 	}
-}
+};
 
 GuiDisplay_Series.processUpKey = function() {
 	this.selectedItem = this.selectedItem - this.MAXCOLUMNCOUNT;
@@ -789,7 +789,7 @@ GuiDisplay_Series.processUpKey = function() {
 		}
 		this.updateSelectedItems();
 	}
-}
+};
 
 GuiDisplay_Series.processDownKey = function() {
 	if (this.selectedItem == -1) {
@@ -822,7 +822,7 @@ GuiDisplay_Series.processDownKey = function() {
 		}
 	}
 	this.updateSelectedItems();
-}
+};
 
 GuiDisplay_Series.processChannelUpKey = function() {
 	if (this.selectedItem > -1) {
@@ -841,7 +841,7 @@ GuiDisplay_Series.processChannelUpKey = function() {
 		}
 		this.updateSelectedItems();
 	}
-}
+};
 
 GuiDisplay_Series.processChannelDownKey = function() {
 	if (this.selectedItem > -1) {
@@ -868,7 +868,7 @@ GuiDisplay_Series.processChannelDownKey = function() {
 		}
 		this.updateSelectedItems();
 	}
-}
+};
 
 GuiDisplay_Series.processIndexing = function() {
 	if (this.currentMediaType == "LiveTV") {
@@ -927,7 +927,7 @@ GuiDisplay_Series.processIndexing = function() {
 
 
 	}
-}
+};
 
 GuiDisplay_Series.loadMoreItems = function() {
 	if (this.totalRecordCount > this.ItemData.Items.length) {
@@ -940,7 +940,7 @@ GuiDisplay_Series.loadMoreItems = function() {
 		document.getElementById("NoKeyInput").focus();
 
 		//Load Data
-		var originalLength = this.ItemData.Items.length
+		var originalLength = this.ItemData.Items.length;
 		var ItemDataRemaining = Server.getContent(this.startParams[1] + "&Limit="+File.getTVProperty("ItemPaging") + "&StartIndex=" + originalLength);
 		if (ItemDataRemaining == null) { return; }
 		Support.pageLoadTimes("GuiDisplay_Series","GotRemainingItems",false);
@@ -961,10 +961,10 @@ GuiDisplay_Series.loadMoreItems = function() {
 
 		Support.pageLoadTimes("GuiDisplay_Series","AddedRemainingItems",false);
 	}
-}
+};
 
 GuiDisplay_Series.returnFromMusicPlayer = function() {
 	this.selectedItem = 0;
 	this.updateDisplayedItems();
 	this.updateSelectedItems();
-}
+};

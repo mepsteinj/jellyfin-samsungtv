@@ -58,7 +58,7 @@ File.loadFile = function() {
 
 File.checkVersion = function(fileContent) {
 	if (fileContent.Version === undefined) {
-		return "Undefined"
+		return "Undefined";
 	} else {
 		return fileContent.Version;
 	}
@@ -81,7 +81,7 @@ File.saveServerToFile = function(Id,Name,ServerIP) {
 		}
 
 		if (serverExists == false) {
-			this.ServerEntry = fileJson.Servers.length
+			this.ServerEntry = fileJson.Servers.length;
 			fileJson.Servers[fileJson.Servers.length] = {"Id":Id,"Name":Name,"Path":ServerIP,"Default":false,"Users":[]};
 			var openWrite = fileSystemObj.openCommonFile(curWidget.id + '/MB3_Settings.json', 'w');
 			if (openWrite) {

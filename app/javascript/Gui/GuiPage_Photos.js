@@ -11,15 +11,15 @@ var GuiPage_Photos = {
 		startParams : [],
 		isLatest : false,
 		backdropTimeout : null
-}
+};
 
 GuiPage_Photos.onFocus = function() {
 	GuiHelper.setControlButtons("Favourite",null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
-}
+};
 
 GuiPage_Photos.getMaxDisplay = function() {
 		return 15;
-}
+};
 
 GuiPage_Photos.start = function(title,url,selectedItem,topLeftItem) {
 	alert("Page Enter : GuiPage_Photos");
@@ -69,7 +69,7 @@ GuiPage_Photos.start = function(title,url,selectedItem,topLeftItem) {
 
 		document.getElementById("NoItems").focus();
 	}
-}
+};
 
 GuiPage_Photos.updateDisplayedItems = function() {
 	var Items = this.ItemData.Items;
@@ -135,7 +135,7 @@ GuiPage_Photos.updateDisplayedItems = function() {
 	}
 	htmlToAdd += "</tr></table></div>";
 	document.getElementById("Content").innerHTML = htmlToAdd;
-}
+};
 
 GuiPage_Photos.updateOneDisplayedItem = function(item,selectedItem) {
 	var htmlToAdd = "";
@@ -151,13 +151,13 @@ GuiPage_Photos.updateOneDisplayedItem = function(item,selectedItem) {
 		htmlToAdd += "<div class=photoItemCount>"+itemCount+"</div>";
 	}
 	document.getElementById(item.Id).innerHTML = htmlToAdd;
-}
+};
 
 //Function sets CSS Properties to show which item is selected.
 GuiPage_Photos.updateSelectedItems = function () {
 		Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
 				Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"photo Selected","photo","");
-}
+};
 
 GuiPage_Photos.keyDown = function() {
 	var keyCode = event.keyCode;
@@ -238,7 +238,7 @@ GuiPage_Photos.keyDown = function() {
 				this.ItemData.Items[this.selectedItem].UserData.IsFavorite = true;
 				//GuiNotifications.setNotification ("Item has been added to<br>favourites","Favourites");
 			}
-			this.updateOneDisplayedItem(this.ItemData.Items[this.selectedItem],this.selectedItem)
+			this.updateOneDisplayedItem(this.ItemData.Items[this.selectedItem],this.selectedItem);
 			break;
 		case tvKey.KEY_BLUE:
 			GuiMusicPlayer.showMusicPlayer("GuiPage_Photos",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
@@ -252,23 +252,23 @@ GuiPage_Photos.keyDown = function() {
 			widgetAPI.sendExitEvent();
 			break;
 	}
-}
+};
 
 GuiPage_Photos.processSelectedItem = function() {
 	clearTimeout(this.backdropTimeout);
 	Support.processSelectedItem("GuiPage_Photos",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null,this.genreType,this.isLatest);
-}
+};
 
 GuiPage_Photos.playSelectedItem = function () {
 	clearTimeout(this.backdropTimeout);
 	Support.playSelectedItem("GuiPage_Photos",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null);
-}
+};
 
 GuiPage_Photos.openMenu = function() {
 	Support.updateURLHistory("GuiPage_Photos",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
 	alert(this.selectedItem);
 	GuiMainMenu.requested("GuiPage_Photos",this.ItemData.Items[this.selectedItem].Id);
-}
+};
 
 GuiPage_Photos.processLeftKey = function() {
 	if (this.selectedItem - this.topLeftItem == 0 || this.selectedItem - this.topLeftItem == 9) {
@@ -287,7 +287,7 @@ GuiPage_Photos.processLeftKey = function() {
 		}
 		this.updateSelectedItems();
 	}
-}
+};
 
 GuiPage_Photos.processRightKey = function() {
 	this.selectedItem++;
@@ -300,7 +300,7 @@ GuiPage_Photos.processRightKey = function() {
 		}
 	}
 	this.updateSelectedItems();
-}
+};
 
 //Moving up and down on an irregular shaped grid is imprecise. Handle each case individually.
 GuiPage_Photos.processUpKey = function() {
@@ -366,7 +366,7 @@ GuiPage_Photos.processUpKey = function() {
 		this.selectedItem = this.topLeftItem+8;
 	}
 	this.updateSelectedItems();
-}
+};
 
 GuiPage_Photos.processDownKey = function() {
 	if (this.selectedItem - this.topLeftItem == 0 && this.ItemData.Items.length-1 > this.selectedItem+9) {
@@ -413,14 +413,14 @@ GuiPage_Photos.processDownKey = function() {
 			this.updateDisplayedItems();
 	}
 	this.updateSelectedItems();
-}
+};
 
 GuiPage_Photos.setPadding = function(title) {
 		document.getElementById("Center").style.top = "100px";
-}
+};
 
 GuiPage_Photos.returnFromMusicPlayer = function() {
 	this.selectedItem = 0;
 	this.updateDisplayedItems();
 	this.updateSelectedItems();
-}
+};

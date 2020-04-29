@@ -10,11 +10,11 @@ var GuiUsers = {
 	topLeftItem : 0,
 	MAXCOLUMNCOUNT : 3,
 	MAXROWCOUNT : 1
-}
+};
 
 GuiUsers.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
-}
+};
 
 GuiUsers.start = function(runAutoLogin) {
 	alert("Page Enter : GuiUsers");
@@ -95,7 +95,7 @@ GuiUsers.start = function(runAutoLogin) {
 			document.getElementById("GuiUsers").focus();
 		}
 	}
-}
+};
 
 GuiUsers.updateDisplayedUsers = function() {
 	var htmltoadd = "";
@@ -110,13 +110,13 @@ GuiUsers.updateDisplayedUsers = function() {
 
 	//Set Content to Server Data
 	document.getElementById("guiUsers_allusers").innerHTML = htmltoadd;
-}
+};
 
 //Function sets CSS Properties so show which user is selected
 GuiUsers.updateSelectedUser = function () {
 	Support.updateSelectedNEW(this.UserData,this.selectedUser,this.topLeftItem,
 			Math.min(this.topLeftItem + GuiUsers.getMaxDisplay(),this.UserData.length),"User Selected highlight1Boarder","User","");
-}
+};
 
 //Function executes on the selection of a user - should log user in or generate error message on screen
 GuiUsers.processSelectedUser = function () {
@@ -193,9 +193,7 @@ GuiUsers.processSelectedUser = function () {
 			}
 		}
 	}
-
-
-}
+};
 
 GuiUsers.keyDown = function()
 {
@@ -335,7 +333,7 @@ var GuiUsers_Input  = function(id) {
 		installFocusKeyCallbacks();
 		document.getElementById("guiUsers_pwd").style.visibility="";
 		document.getElementById("guiUsers_Password").focus();
-	}
+	};
 
 	var ime = new IMEShell(id, imeReady,'en');
 	ime.setKeypadPos(1300,90);
@@ -373,8 +371,8 @@ var GuiUsers_Input  = function(id) {
 		ime.setKeyFunc(tvKey.KEY_EXIT, function (keyCode) {
 			widgetAPI.sendExitEvent();
 		});
-	}
-}
+	};
+};
 
 //Run from IME if user has password - Run in GuiUsers for ease of access to class variables
 GuiUsers.IMEAuthenticate = function(password) {
@@ -397,7 +395,7 @@ GuiUsers.IMEAuthenticate = function(password) {
 		document.getElementById("guiUsers_Password").focus();
 		GuiNotifications.setNotification("Bad password or network error.","Logon Error");
 	}
-}
+};
 
 GuiUsers.keyDownPassword = function() {
 		var keyCode = event.keyCode;

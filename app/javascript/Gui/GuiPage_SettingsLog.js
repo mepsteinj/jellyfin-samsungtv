@@ -7,15 +7,15 @@ var GuiPage_SettingsLog = {
 		MAXROWCOUNT : 20,
 
 		bannerItems : ["User Settings","Server Settings","TV Settings","Log","About"],
-}
+};
 
 GuiPage_SettingsLog.onFocus = function() {
 	GuiHelper.setControlButtons("Clear Log",null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
-}
+};
 
 GuiPage_SettingsLog.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
-}
+};
 
 GuiPage_SettingsLog.start = function() {
 	alert("Page Enter : GuiPage_SettingsLog");
@@ -51,7 +51,7 @@ GuiPage_SettingsLog.start = function() {
 	this.updateDisplayedItems();
 	this.updateSelectedBannerItems();
 	document.getElementById("GuiPage_SettingsLog").focus();
-}
+};
 
 GuiPage_SettingsLog.updateDisplayedItems = function() {
 	var htmlToAdd = "<table>";
@@ -59,7 +59,7 @@ GuiPage_SettingsLog.updateDisplayedItems = function() {
 		htmlToAdd += "<tr><td style='word-wrap:break-word;word-break:break-all;width:1500px;'>" + this.logArray[index] + "</td></tr>";
 	}
 	document.getElementById("guiPage_Settings_Settings").innerHTML = htmlToAdd + "</table>";
-}
+};
 
 GuiPage_SettingsLog.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.bannerItems.length; index++) {
@@ -86,7 +86,7 @@ GuiPage_SettingsLog.updateSelectedBannerItems = function() {
 		}
 	}
 	document.getElementById("Counter").innerHTML = (this.selectedBannerItem + 1) + "/" + (this.bannerItems.length);
-}
+};
 
 GuiPage_SettingsLog.keyDown = function() {
 	var keyCode = event.keyCode;
@@ -140,7 +140,7 @@ GuiPage_SettingsLog.keyDown = function() {
 		case tvKey.KEY_RED:
 			FileLog.empty();
 			FileLog.write("---------------------------------------------------------------------",true);
-			FileLog.write("Log File Emptied by User")
+			FileLog.write("Log File Emptied by User");
 			GuiPage_SettingsLog.start(); //relead
 			break;
 		case tvKey.KEY_BLUE:
@@ -154,7 +154,7 @@ GuiPage_SettingsLog.keyDown = function() {
 			widgetAPI.sendExitEvent();
 			break;
 	}
-}
+};
 
 GuiPage_SettingsLog.processUpKey = function() {
 	this.topLeftItem = this.topLeftItem - this.MAXCOLUMNCOUNT;
@@ -163,7 +163,7 @@ GuiPage_SettingsLog.processUpKey = function() {
 	} else {
 		this.updateDisplayedItems();
 	}
-}
+};
 
 GuiPage_SettingsLog.processDownKey = function() {
 	this.topLeftItem = this.topLeftItem + this.MAXCOLUMNCOUNT;
@@ -172,7 +172,7 @@ GuiPage_SettingsLog.processDownKey = function() {
 	} else {
 		this.updateDisplayedItems();
 	}
-}
+};
 
 GuiPage_SettingsLog.processLeftKey = function() {
 	this.selectedBannerItem--;
@@ -182,12 +182,12 @@ GuiPage_SettingsLog.processLeftKey = function() {
 	} else {
 		this.updateSelectedBannerItems();
 	}
-}
+};
 
 GuiPage_SettingsLog.openMenu = function() {
 	document.getElementById("bannerItem0").className = "bannerItem bannerItemPadding";
 	GuiMainMenu.requested("GuiPage_SettingsLog","bannerItem0","bannerItem bannerItemPadding green");
-}
+};
 
 GuiPage_SettingsLog.processRightKey = function() {
 	this.selectedBannerItem++;
@@ -196,7 +196,7 @@ GuiPage_SettingsLog.processRightKey = function() {
 	} else {
 		this.updateSelectedBannerItems();
 	}
-}
+};
 
 GuiPage_SettingsLog.processSelectedItem = function() {
 	if (this.bannerItems[this.selectedBannerItem] == "About") {
@@ -205,10 +205,10 @@ GuiPage_SettingsLog.processSelectedItem = function() {
 	} else if (this.bannerItems[this.selectedBannerItem] != "Log") {
 		GuiPage_Settings.start(this.bannerItems[this.selectedBannerItem]);
 	}
-}
+};
 
 GuiPage_SettingsLog.setText = function() {
 	document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Log Viewer";
 	document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Press the up arrow to navigate to earlier entries in the log, and down to view later entries. The log opens at the last items in the log. <br><br> Press the red button to clear the log.";
-}
+};
 

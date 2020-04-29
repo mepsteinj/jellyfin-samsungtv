@@ -13,16 +13,16 @@ var GuiPage_Music = {
 
 		topMenuItems : ["PlayAll","QueueAll","ShuffleAll","InstantMix"],
 		playItems : ["Play_","Queue_","Mix_"]
-}
+};
 
 GuiPage_Music.onFocus = function() {
 	this.updateSelectedItems();
 	GuiHelper.setControlButtons(null,null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
-}
+};
 
 GuiPage_Music.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
-}
+};
 
 GuiPage_Music.start = function(title,url,type) { //Type is either MusicAlbum or MusicArtist
 	alert("Page Enter : GuiPage_Music");
@@ -82,7 +82,7 @@ GuiPage_Music.start = function(title,url,type) { //Type is either MusicAlbum or 
 
 	//Set Focus for Key Events
 	document.getElementById("GuiPage_Music").focus();
-}
+};
 
 GuiPage_Music.updateDisplayedItems = function() {
 	var htmlToAdd = "<table class=table><th style='width:66px'></th><th style='width:100px'></th><th style='width:90px'></th><th style='width:66px'></th><th style='width:560px'></th><th style='width:130px'></th>";
@@ -106,7 +106,7 @@ GuiPage_Music.updateDisplayedItems = function() {
 						"<td class='guiMusic_TableTd'>"+Support.convertTicksToTimeSingle(this.AlbumData.Items[index].RunTimeTicks/10000,true)+"</td></tr>";
 	}
 	document.getElementById("GuiPage_Music_Options").innerHTML = htmlToAdd + "</table>";
-}
+};
 
 //Function sets CSS Properties so show which user is selected
 GuiPage_Music.updateSelectedItems = function () {
@@ -151,7 +151,7 @@ GuiPage_Music.updateSelectedItems = function () {
 		document.getElementById("Counter").innerHTML = (this.selectedItem + 1) + "/" + this.AlbumData.Items.length;
 	}
 
-}
+};
 
 GuiPage_Music.keyDown = function() {
 	var keyCode = event.keyCode;
@@ -214,7 +214,7 @@ GuiPage_Music.keyDown = function() {
 			widgetAPI.sendExitEvent();
 			break;
 	}
-}
+};
 
 GuiPage_Music.openMenu = function() {
 	Support.updateURLHistory("GuiPage_Music",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,true);
@@ -224,7 +224,7 @@ GuiPage_Music.openMenu = function() {
 	} else {
 		GuiMainMenu.requested("GuiPage_Music",this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id,"guiMusic_TableTd highlight"+Main.highlightColour+"Background");
 	}
-}
+};
 
 GuiPage_Music.processUpKey = function() {
 	this.selectedItem--;
@@ -250,7 +250,7 @@ GuiPage_Music.processUpKey = function() {
 		}
 		this.updateSelectedItems();
 	}
-}
+};
 
 GuiPage_Music.processDownKey = function() {
 	this.selectedItem++;
@@ -270,7 +270,7 @@ GuiPage_Music.processDownKey = function() {
 		}
 	}
 	this.updateSelectedItems();
-}
+};
 
 GuiPage_Music.processLeftKey = function() {
 	this.selectedItem2--;
@@ -280,7 +280,7 @@ GuiPage_Music.processLeftKey = function() {
 	} else {
 		this.updateSelectedItems();
 	}
-}
+};
 
 GuiPage_Music.processRightKey = function() {
 	this.selectedItem2++;
@@ -297,7 +297,7 @@ GuiPage_Music.processRightKey = function() {
 			this.updateSelectedItems();
 		}
 	}
-}
+};
 
 GuiPage_Music.processSelectedItem = function() {
 	if (this.selectedItem == -1) {
@@ -315,7 +315,7 @@ GuiPage_Music.processSelectedItem = function() {
 		case 2:
 			//Shuffle
 			document.getElementById(this.topMenuItems[this.selectedItem2]).className = document.getElementById(this.topMenuItems[this.selectedItem2]).className.replace("highlight"+Main.highlightColour+"Background","");
-			var url = this.startParams[1].replace("SortBy=SortName","SortBy=Random")
+			var url = this.startParams[1].replace("SortBy=SortName","SortBy=Random");
 			GuiMusicPlayer.start("Album",url + "&Fields=MediaSources","GuiPage_Music",false);
 			break;
 		case 3:
@@ -351,4 +351,4 @@ GuiPage_Music.processSelectedItem = function() {
 	//http://192.168.1.108:28067/jellyfin/MusicGenres/Anime/InstantMix?UserId=4b4c128121aa642086bb225659a7d471&Fields=MediaSources%2CChapters&Limit=50
 	//Artist Instant Mix
 	//Artist/NameID/InstatnMix?
-}
+};

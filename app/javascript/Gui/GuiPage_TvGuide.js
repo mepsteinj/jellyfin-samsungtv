@@ -23,11 +23,11 @@ var GuiPage_TvGuide = {
 		bannerItems : ["Guide","Channels","Recordings"],
 		currentView : "Guide",
 		startParams : []
-}
+};
 
 GuiPage_TvGuide.onFocus = function() {
 	GuiHelper.setControlButtons("Record  ",null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
-}
+};
 
 GuiPage_TvGuide.start = function(title,url,selectedRow,selectedColumn,topChannel,startTime) {
 	//Save Start Params
@@ -95,7 +95,6 @@ GuiPage_TvGuide.start = function(title,url,selectedRow,selectedColumn,topChannel
 		//Maximum start time. (24hour after the minimum end time).
 		var maxStart = new Date();
 		maxStart.setTime( minEnd.getTime() + 60*60*24*1000 - 60000);
-		var maxStartYear = maxStart.getUTCFullYear();
 		var maxStartMonth = maxStart.getUTCMonth()+1;
 		var maxStartDay = maxStart.getUTCDate();
 		var maxStartHour = maxStart.getUTCHours();
@@ -126,7 +125,7 @@ GuiPage_TvGuide.start = function(title,url,selectedRow,selectedColumn,topChannel
 	}
 	//Set Focus for Key Events
 	document.getElementById("GuiPage_TvGuide").focus();
-}
+};
 
 GuiPage_TvGuide.updateDisplayedItems = function() {
 	//Create Table
@@ -239,7 +238,7 @@ GuiPage_TvGuide.updateDisplayedItems = function() {
 	var timeLinePos = 355 + (Support.tvGuideOffsetMins() * 7.9);
 	htmlToAdd += "<div id='tvGuideCurrentTime' class='tvGuideCurrentTime' style='height:" + timeLineHeight + "px;left:" + timeLinePos + "px;'>";
 	document.getElementById("tvGuide").innerHTML = htmlToAdd;
-}
+};
 
 GuiPage_TvGuide.updateSelectedItems = function () {
 	//Check in case the defaults point to a channel line with no program data.
@@ -342,7 +341,7 @@ GuiPage_TvGuide.updateSelectedItems = function () {
 			document.getElementById("tvGuideOverview").innerHTML = overview;
 		}
 	}
-}
+};
 
 GuiPage_TvGuide.getProgramFromId = function(programId){
 	var program = null;
@@ -352,7 +351,7 @@ GuiPage_TvGuide.getProgramFromId = function(programId){
 		}
 	}
 	return program;
-}
+};
 
 GuiPage_TvGuide.keyDown = function() {
 	var keyCode = event.keyCode;
@@ -446,7 +445,7 @@ GuiPage_TvGuide.keyDown = function() {
 			widgetAPI.sendExitEvent();
 			break;
 	}
-}
+};
 
 GuiPage_TvGuide.openMenu = function() {
 	if (this.selectedRow == -1) { //Banner menu
@@ -456,7 +455,7 @@ GuiPage_TvGuide.openMenu = function() {
 		document.getElementById(this.Channels.Items[this.selectedRow + this.topChannel].Id).className = "tvGuideChannelName tvGuideChannelNameBg";
 		GuiMainMenu.requested("GuiPage_TvGuide",this.Channels.Items[this.selectedRow + this.topChannel].Id,"tvGuideChannelName highlight"+Main.highlightColour+"Background");
 	}
-}
+};
 
 GuiPage_TvGuide.processLeftKey = function() {
 	var nowTime = new Date();
@@ -485,7 +484,7 @@ GuiPage_TvGuide.processLeftKey = function() {
 		guideTime.setTime(this.guideStartTime.getTime() - 9000000); //move the clock back 2.5 hours.
 		GuiPage_TvGuide.start("Guide",this.startParams[1],this.selectedRow,0,this.topChannel,guideTime);
 	}
-}
+};
 
 GuiPage_TvGuide.processRightKey = function() {
 	if (this.selectedRow < 0) {
@@ -507,7 +506,7 @@ GuiPage_TvGuide.processRightKey = function() {
 	} else {
 		//Nowhere to move right to.
 	}
-}
+};
 
 GuiPage_TvGuide.processUpKey = function() {
 	if (this.selectedRow > 0) { //Move up a row.
@@ -530,7 +529,7 @@ GuiPage_TvGuide.processUpKey = function() {
 		}
 		this.updateSelectedItems();
 	}
-}
+};
 
 GuiPage_TvGuide.processChannelUpKey = function() {
 	if (this.topChannel > 0) { //Scroll up a page.
@@ -547,7 +546,7 @@ GuiPage_TvGuide.processChannelUpKey = function() {
 			GuiPage_TvGuide.start("Guide",this.startParams[1],0,0,0,this.guideStartTime);
 		}
 	}
-}
+};
 
 GuiPage_TvGuide.processDownKey = function() {
 	if (this.selectedRow < this.programGrid.length-1) { //Move down a row.
@@ -564,7 +563,7 @@ GuiPage_TvGuide.processDownKey = function() {
 			GuiPage_TvGuide.start("Guide",this.startParams[1],0,0,newTopChannel,this.guideStartTime);
 		}
 	}
-}
+};
 
 GuiPage_TvGuide.processChannelDownKey = function() {
 	if (this.Channels.Items.length > this.topChannel + 7) { //Scroll down a page.
@@ -578,7 +577,7 @@ GuiPage_TvGuide.processChannelDownKey = function() {
 		this.selectedRow = this.Channels.Items.length % 8;
 		this.updateSelectedItems();
 	}
-}
+};
 
 GuiPage_TvGuide.processRecord = function () {
 	if (this.selectedRow >= 0 && this.selectedColumn >= 0) {
@@ -601,7 +600,7 @@ GuiPage_TvGuide.processRecord = function () {
 			}
 		}
 	}
-}
+};
 
 GuiPage_TvGuide.getTimers = function() {
 	var url = Server.getServerAddr() + "/LiveTv/Timers";
@@ -631,7 +630,7 @@ GuiPage_TvGuide.createLiveTvTimer = function (item) {
 	setTimeout(function(){
 		GuiPage_TvGuide.start("Guide",GuiPage_TvGuide.startParams[1],GuiPage_TvGuide.selectedRow,GuiPage_TvGuide.selectedColumn,GuiPage_TvGuide.topChannel,GuiPage_TvGuide.guideStartTime);
 	}, 1250);
-}
+};
 
 GuiPage_TvGuide.createLiveTvSeriesTimer = function (item) {
 
@@ -647,7 +646,7 @@ GuiPage_TvGuide.createLiveTvSeriesTimer = function (item) {
 	setTimeout(function(){
 		GuiPage_TvGuide.start("Guide",GuiPage_TvGuide.startParams[1],GuiPage_TvGuide.selectedRow,GuiPage_TvGuide.selectedColumn,GuiPage_TvGuide.topChannel,GuiPage_TvGuide.guideStartTime);
 	}, 1250);
-}
+};
 
 GuiPage_TvGuide.cancelLiveTvSeriesTimer = function (id) {
 
@@ -663,7 +662,7 @@ GuiPage_TvGuide.cancelLiveTvSeriesTimer = function (id) {
 	setTimeout(function(){
 		GuiPage_TvGuide.start("Guide",GuiPage_TvGuide.startParams[1],GuiPage_TvGuide.selectedRow,GuiPage_TvGuide.selectedColumn,GuiPage_TvGuide.topChannel,GuiPage_TvGuide.guideStartTime);
 	}, 1250);
-}
+};
 
 GuiPage_TvGuide.cancelLiveTvTimer = function (id) {
 
@@ -679,7 +678,7 @@ GuiPage_TvGuide.cancelLiveTvTimer = function (id) {
 	setTimeout(function(){
 		GuiPage_TvGuide.start("Guide",GuiPage_TvGuide.startParams[1],GuiPage_TvGuide.selectedRow,GuiPage_TvGuide.selectedColumn,GuiPage_TvGuide.topChannel,GuiPage_TvGuide.guideStartTime);
 	}, 1250);
-}
+};
 
 
 GuiPage_TvGuide.processSelectedItem = function () {
@@ -707,7 +706,7 @@ GuiPage_TvGuide.processSelectedItem = function () {
 	} else {
 		this.playCurrentChannel();
 	}
-}
+};
 
 GuiPage_TvGuide.playCurrentChannel = function () {
 	if (this.selectedRow >= 0) {
@@ -715,10 +714,10 @@ GuiPage_TvGuide.playCurrentChannel = function () {
 		var url = Server.getItemInfoURL(this.Channels.Items[this.selectedRow + this.topChannel].Id,"");
 		GuiPlayer.start("PLAY",url,0,page);
 	}
-}
+};
 
 GuiPage_TvGuide.returnFromMusicPlayer = function() {
 	this.selectedRow = 0;
 	this.updateDisplayedItems();
 	this.updateselectedRows();
-}
+};

@@ -5,7 +5,7 @@ var Server = {
 	Device : "Samsung Smart TV",
 	DeviceID : "00000000000000000000000000000000",
 	AuthenticationToken : null,
-}
+};
 
 //------------------------------------------------------------
 //		Getter & Setter Functions
@@ -13,57 +13,57 @@ var Server = {
 
 Server.getAuthToken = function() {
 	return this.AuthenticationToken;
-}
+};
 
 Server.getServerAddr = function() {
 	return this.serverAddr;
-}
+};
 
 Server.setServerAddr = function(serverAddr) {
 	this.serverAddr = serverAddr;
-}
+};
 
 Server.getUserID = function() {
 	return this.UserID;
-}
+};
 
 Server.setUserID = function(UserID) {
 	this.UserID = UserID;
-}
+};
 
 Server.getUserName = function() {
 	return this.UserName;
-}
+};
 
 Server.setUserName = function(UserName) {
 	this.UserName = UserName;
-}
+};
 
 Server.setUserFavourites = function(UserFavourites) {
 	this.UserFavourites = UserFavourites;
-}
+};
 
 Server.getUserFavourites = function(UserFavourites) {
 	return this.UserFavourites;
-}
+};
 
 Server.setDevice = function(Device) {
 	this.Device = Device;
-}
+};
 
 //Used in Settings
 Server.getDevice = function() {
 	return this.Device;
-}
+};
 
 Server.setDeviceID = function(DeviceID) {
 	this.DeviceID = DeviceID;
-}
+};
 
 //Required in Transcoding functions + guiPlayer
 Server.getDeviceID = function() {
 	return this.DeviceID;
-}
+};
 //------------------------------------------------------------
 //		Generic Functions
 //------------------------------------------------------------
@@ -73,7 +73,7 @@ Server.getCustomURL = function(SortParams) {
 	} else {
 		return	Server.getServerAddr();
 	}
-}
+};
 
 Server.getItemTypeURL = function(SortParams) {
 	if (SortParams != null){
@@ -81,11 +81,11 @@ Server.getItemTypeURL = function(SortParams) {
 	} else {
 		return	Server.getServerAddr() + "/Users/" + Server.getUserID() + "/Items?format=json";
 	}
-}
+};
 
 Server.getThemeMedia = function(ItemID) {
-	return	Server.getServerAddr() + "/Items/" + ItemID + "/ThemeMedia?UserId=" + Server.getUserID() + "&InheritFromParent=true&format=json"
-}
+	return	Server.getServerAddr() + "/Items/" + ItemID + "/ThemeMedia?UserId=" + Server.getUserID() + "&InheritFromParent=true&format=json";
+};
 
 Server.getChildItemsURL = function(ParentID, SortParams) {
 	if (SortParams != null){
@@ -93,7 +93,7 @@ Server.getChildItemsURL = function(ParentID, SortParams) {
 	} else {
 		return	Server.getServerAddr() + "/Users/" + Server.getUserID() + "/Items?ParentId="+ParentID+"&format=json";
 	}
-}
+};
 
 Server.getItemInfoURL = function(ParentID, SortParams) {
 	if (SortParams != null){
@@ -101,28 +101,28 @@ Server.getItemInfoURL = function(ParentID, SortParams) {
 	} else {
 		return	Server.getServerAddr() + "/Users/" + Server.getUserID() + "/Items/"+ParentID+"?format=json";
 	}
-}
+};
 
 Server.getItemIntrosUrl = function(itemId, SortParams) {
 	return	Server.getServerAddr() + "/Users/" + Server.getUserID() + "/Items/"+itemId+"/Intros"; //?format=json";
-}
+};
 
 Server.getSearchURL = function(searchTermString) {
 	var parsedSearchTermString = Support.parseSearchTerm(searchTermString);
 	return Server.getServerAddr() + "/Search/Hints?format=json&UserId=" + Server.getUserID() + "&SearchTerm=" + parsedSearchTermString;
-}
+};
 
 Server.getAdditionalPartsURL = function(ShowID) {
 	return	Server.getServerAddr() + "/Videos/" + ShowID +	"/AdditionalParts?format=json&userId="+Server.getUserID();
-}
+};
 
 Server.getAdjacentEpisodesURL = function(ShowID,SeasonID,EpisodeID) {
 	return	Server.getServerAddr() + "/Shows/" + ShowID +  "/Episodes?format=json&ImageTypeLimit=1&seasonId="+SeasonID+"&userId="+Server.getUserID() +"&AdjacentTo=" + EpisodeID;
-}
+};
 
 Server.getSeasonEpisodesURL = function(ShowID,SeasonID) {
 	return	Server.getServerAddr() + "/Shows/" + ShowID +  "/Episodes?format=json&ImageTypeLimit=1&seasonId="+SeasonID+"&userId="+Server.getUserID();
-}
+};
 
 Server.getImageURL = function(itemId,imagetype,maxwidth,maxheight,unplayedcount,played,playedpercentage,chapter) {
 	var query = "";
@@ -189,7 +189,7 @@ Server.getImageURL = function(itemId,imagetype,maxwidth,maxheight,unplayedcount,
 	} else {
 		return Server.getServerAddr() +	 query;
 	}
-}
+};
 
 Server.getScreenSaverImageURL = function(itemId,imagetype,maxwidth,maxheight) {
 	var query = "";
@@ -202,7 +202,7 @@ Server.getScreenSaverImageURL = function(itemId,imagetype,maxwidth,maxheight) {
 			break;
 	}
 	return query;
-}
+};
 
 Server.getBackgroundImageURL = function(itemId,imagetype,maxwidth,maxheight,unplayedcount,played,playedpercentage,totalbackdrops) {
 	var query = "";
@@ -218,13 +218,13 @@ Server.getBackgroundImageURL = function(itemId,imagetype,maxwidth,maxheight,unpl
 	query = query + "&Quality=90";
 
 	return query;
-}
+};
 
 Server.getStreamUrl = function(itemId,mediaSourceId){
 	var streamparams = '/Stream.ts?VideoCodec=h264&Profile=high&Level=41&MaxVideoBitDepth=8&MaxWidth=1920&VideoBitrate=10000000&AudioCodec=aac&audioBitrate=360000&MaxAudioChannels=6&MediaSourceId='+mediaSourceId + '&api_key=' + Server.getAuthToken();
 	var streamUrl = Server.getServerAddr() + '/Videos/' + itemId + streamparams + '&DeviceId='+Server.getDeviceID();
 	return streamUrl;
-}
+};
 
 
 Server.setRequestHeaders = function (xmlHttp,UserId) {
@@ -239,7 +239,7 @@ Server.setRequestHeaders = function (xmlHttp,UserId) {
 	xmlHttp.setRequestHeader("Content-Type", 'application/json; charset=UTF-8');
 	//xmlHttp.setRequestHeader("Accept-Charset", 'utf-8');
 	return xmlHttp;
-}
+};
 
 Server.getMoviesViewQueryPart = function() {
 	var ParentId = Server.getUserViewId("movies", "UserView");
@@ -249,7 +249,7 @@ Server.getMoviesViewQueryPart = function() {
 	} else {
 		return "&ParentId="+ParentId;
 	}
-}
+};
 
 Server.getTvViewQueryPart = function() {
 	var ParentId = Server.getUserViewId("tvshows", "UserView");
@@ -259,7 +259,7 @@ Server.getTvViewQueryPart = function() {
 	} else {
 		return "&ParentId="+ParentId;
 	}
-}
+};
 
 Server.getUserViewId = function (collectionType, Type) {
 	var folderId = null;
@@ -270,17 +270,18 @@ Server.getUserViewId = function (collectionType, Type) {
 		}
 	}
 	return folderId;
-}
+};
 
 Server.getUserViews = function () {
 	var url = this.serverAddr + "/Users/" + Server.getUserID() + "/Views?format=json&SortBy=SortName&SortOrder=Ascending";
 	var userViews = Server.getContent(url);
 	return userViews;
-}
+};
 
 //------------------------------------------------------------
 //		Settings Functions
 //------------------------------------------------------------
+
 Server.updateUserConfiguration = function(contentToPost) {
 	var url = this.serverAddr + "/Users/" + Server.getUserID() + "/Configuration";
 	xmlHttp = new XMLHttpRequest();
@@ -289,11 +290,12 @@ Server.updateUserConfiguration = function(contentToPost) {
 		xmlHttp = this.setRequestHeaders(xmlHttp);
 		xmlHttp.send(contentToPost);
 	}
-}
+};
 
 //------------------------------------------------------------
 //		Player Functions
 //------------------------------------------------------------
+
 Server.getSubtitles = function(url) {
 	xmlHttp = new XMLHttpRequest();
 	if (xmlHttp) {
@@ -314,8 +316,7 @@ Server.getSubtitles = function(url) {
 		GuiUsers.start(true);
 		return null;
 	}
-}
-
+};
 
 Server.videoStarted = function(showId,MediaSourceID,PlayMethod) {
 	var url = this.serverAddr + "/Sessions/Playing";
@@ -326,7 +327,7 @@ Server.videoStarted = function(showId,MediaSourceID,PlayMethod) {
 		xmlHttp = this.setRequestHeaders(xmlHttp);
 		xmlHttp.send(contentToPost);
 	}
-}
+};
 
 Server.videoStopped = function(showId,MediaSourceID,ticks,PlayMethod) {
 	var url = this.serverAddr + "/Sessions/Playing/Stopped";
@@ -337,7 +338,7 @@ Server.videoStopped = function(showId,MediaSourceID,ticks,PlayMethod) {
 		xmlHttp = this.setRequestHeaders(xmlHttp);
 		xmlHttp.send(contentToPost);
 	}
-}
+};
 
 Server.videoPaused = function(showId,MediaSourceID,ticks,PlayMethod) {
 	var url = this.serverAddr + "/Sessions/Playing/Progress";
@@ -348,7 +349,7 @@ Server.videoPaused = function(showId,MediaSourceID,ticks,PlayMethod) {
 		xmlHttp = this.setRequestHeaders(xmlHttp);
 		xmlHttp.send(contentToPost);
 	}
-}
+};
 
 Server.videoTime = function(showId,MediaSourceID,ticks,PlayMethod) {
 	var url = this.serverAddr + "/Sessions/Playing/Progress";
@@ -359,7 +360,7 @@ Server.videoTime = function(showId,MediaSourceID,ticks,PlayMethod) {
 		xmlHttp = this.setRequestHeaders(xmlHttp);
 		xmlHttp.send(contentToPost);
 	}
-}
+};
 
 Server.stopHLSTranscode = function() {
 	var url = this.serverAddr + "/Videos/ActiveEncodings?DeviceId="+this.DeviceID;
@@ -369,7 +370,7 @@ Server.stopHLSTranscode = function() {
 		xmlHttp = this.setRequestHeaders(xmlHttp);
 		xmlHttp.send(null);
 	}
-}
+};
 
 //------------------------------------------------------------
 //		Item Watched Status Functions
@@ -383,7 +384,7 @@ Server.setWatchedStatus = function(id) {
 		xmlHttp = this.setRequestHeaders(xmlHttp);
 		xmlHttp.send(null);
 	}
-}
+};
 
 Server.deleteWatchedStatus = function(id) {
 	var url = this.serverAddr + "/Users/" + this.UserID + "/PlayedItems/" + id;
@@ -393,8 +394,7 @@ Server.deleteWatchedStatus = function(id) {
 		xmlHttp = this.setRequestHeaders(xmlHttp);
 		xmlHttp.send(null);
 	}
-}
-
+};
 
 //------------------------------------------------------------
 //		 Item Favourite Status Functions
@@ -408,7 +408,7 @@ Server.setFavourite = function(id) {
 		xmlHttp = this.setRequestHeaders(xmlHttp);
 		xmlHttp.send(null);
 	}
-}
+};
 
 Server.deleteFavourite = function(id) {
 	var url = this.serverAddr + "/Users/" + this.UserID + "/FavoriteItems/" + id;
@@ -418,11 +418,12 @@ Server.deleteFavourite = function(id) {
 		xmlHttp = this.setRequestHeaders(xmlHttp);
 		xmlHttp.send(null);
 	}
-}
+};
 
 //------------------------------------------------------------
 //		 GuiIP Functions
 //------------------------------------------------------------
+
 Server.createPlaylist = function(name, ids, mediaType) {
 	var url = this.serverAddr + "/Playlists?Name=" + name + "&Ids=" + ids + "&userId="+Server.getUserID() + "&MediaType=" + mediaType;
 	xmlHttp = new XMLHttpRequest();
@@ -431,7 +432,7 @@ Server.createPlaylist = function(name, ids, mediaType) {
 		xmlHttp = this.setRequestHeaders(xmlHttp);
 		xmlHttp.send(null);
 	}
-}
+};
 
 Server.deletePlaylist = function(playlistId) {
 	var url = this.serverAddr + "/Items/"+playlistId;
@@ -441,7 +442,7 @@ Server.deletePlaylist = function(playlistId) {
 		xmlHttp = this.setRequestHeaders(xmlHttp);
 		xmlHttp.send(null);
 	}
-}
+};
 
 Server.addToPlaylist = function(playlistId, ids) {
 	var url = this.serverAddr + "/Playlists/"+ playlistId + "/Items?Ids=" + ids + "&userId="+Server.getUserID();
@@ -451,18 +452,18 @@ Server.addToPlaylist = function(playlistId, ids) {
 		xmlHttp = this.setRequestHeaders(xmlHttp);
 		xmlHttp.send(null);
 	}
-}
+};
 
 Server.removeFromPlaylist = function(playlistId, ids) {
 	var url = this.serverAddr + "/Playlists/"+ playlistId + "/Items?EntryIds=" + ids + "&userId="+Server.getUserID();
-	alert(url)
+	alert(url);
 	xmlHttp = new XMLHttpRequest();
 	if (xmlHttp) {
 		xmlHttp.open("DELETE", url , true); //must be true!
 		xmlHttp = this.setRequestHeaders(xmlHttp);
 		xmlHttp.send(null);
 	}
-}
+};
 
 Server.POST = function(url, item) {
 	xmlHttp = new XMLHttpRequest();
@@ -475,7 +476,7 @@ Server.POST = function(url, item) {
 			xmlHttp.send(null);
 		}
 	}
-}
+};
 
 Server.DELETE = function(url, item) {
 	xmlHttp = new XMLHttpRequest();
@@ -488,7 +489,8 @@ Server.DELETE = function(url, item) {
 			xmlHttp.send(null);
 		}
 	}
-}
+};
+
 //------------------------------------------------------------
 //		GuiIP Functions
 //------------------------------------------------------------
@@ -546,7 +548,7 @@ Server.testConnectionSettings = function (server,fromFile) {
 	} else {
 		alert("Failed to create XHR");
 	}
-}
+};
 
 //------------------------------------------------------------
 //		GuiUsers Functions
@@ -572,7 +574,7 @@ Server.Authenticate = function(UserId, UserName, Password) {
 		FileLog.write("User "+ UserName +" authenticated. ");
 		return true;
 	}
-}
+};
 
 Server.Logout = function() {
 	var url = this.serverAddr + "/Sessions/Logout";
@@ -589,7 +591,7 @@ Server.Logout = function() {
 	GuiMusicPlayer.stopOnAppExit();
 	GuiPlayer.stopOnAppExit();
 	FileLog.write("---------------------------------------------------------------------");
-}
+};
 
 //------------------------------------------------------------
 //		Get Content - JSON REQUESTS
@@ -617,4 +619,4 @@ Server.getContent = function(url) {
 		GuiUsers.start(true);
 		return null;
 	}
-}
+};

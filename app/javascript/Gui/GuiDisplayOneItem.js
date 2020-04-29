@@ -14,15 +14,15 @@ var GuiDisplayOneItem = {
 		startParams : [],
 		isLatest : false,
 		backdropTimeout : null
-}
+};
 
 GuiDisplayOneItem.onFocus = function() {
 	GuiHelper.setControlButtons(null,null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
-}
+};
 
 GuiDisplayOneItem.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
-}
+};
 
 GuiDisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
 	alert("Page Enter : GuiDisplayOneItem");
@@ -99,12 +99,12 @@ GuiDisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
 
 		document.getElementById("NoItems").focus();
 	}
-}
+};
 
 GuiDisplayOneItem.updateDisplayedItems = function() {
 	Support.updateDisplayedItems(this.ItemData.Items,this.selectedItem,this.topLeftItem,
 			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Content","",this.isResume,this.genreType,true);
-}
+};
 
 //Function sets CSS Properties so show which user is selected
 GuiDisplayOneItem.updateSelectedItems = function () {
@@ -116,7 +116,7 @@ GuiDisplayOneItem.updateSelectedItems = function () {
 		Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
 				Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Series Selected highlight"+Main.highlightColour+"Boarder","Series","");
 	}
-}
+};
 
 GuiDisplayOneItem.keyDown = function() {
 	var keyCode = event.keyCode;
@@ -202,22 +202,22 @@ GuiDisplayOneItem.keyDown = function() {
 			widgetAPI.sendExitEvent();
 			break;
 	}
-}
+};
 
 GuiDisplayOneItem.processSelectedItem = function() {
 	clearTimeout(this.backdropTimeout);
 	Support.processSelectedItem("GuiDisplayOneItem",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null,this.genreType,this.isLatest);
-}
+};
 
 GuiDisplayOneItem.playSelectedItem = function () {
 	clearTimeout(this.backdropTimeout);
 	Support.playSelectedItem("GuiDisplayOneItem",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null);
-}
+};
 
 GuiDisplayOneItem.openMenu = function() {
 	Support.updateURLHistory("GuiDisplayOneItem",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
 	GuiMainMenu.requested("GuiDisplayOneItem",this.ItemData.Items[this.selectedItem].Id);
-}
+};
 
 GuiDisplayOneItem.processLeftKey = function() {
 	if (this.selectedItem % this.MAXCOLUMNCOUNT == 0){
@@ -238,7 +238,7 @@ GuiDisplayOneItem.processLeftKey = function() {
 		}
 		this.updateSelectedItems();
 	}
-}
+};
 
 GuiDisplayOneItem.processRightKey = function() {
 	this.selectedItem++;
@@ -251,7 +251,7 @@ GuiDisplayOneItem.processRightKey = function() {
 		}
 	}
 	this.updateSelectedItems();
-}
+};
 
 GuiDisplayOneItem.processUpKey = function() {
 	this.selectedItem = this.selectedItem - this.MAXCOLUMNCOUNT;
@@ -269,7 +269,7 @@ GuiDisplayOneItem.processUpKey = function() {
 		}
 	}
 	this.updateSelectedItems();
-}
+};
 
 GuiDisplayOneItem.processDownKey = function() {
 	this.selectedItem = this.selectedItem + this.MAXCOLUMNCOUNT;
@@ -286,7 +286,7 @@ GuiDisplayOneItem.processDownKey = function() {
 		}
 	}
 	this.updateSelectedItems();
-}
+};
 
 GuiDisplayOneItem.processChannelUpKey = function() {
 	this.selectedItem = this.selectedItem - this.getMaxDisplay();
@@ -303,7 +303,7 @@ GuiDisplayOneItem.processChannelUpKey = function() {
 		this.updateDisplayedItems();
 	}
 	this.updateSelectedItems();
-}
+};
 
 GuiDisplayOneItem.processChannelDownKey = function() {
 	this.selectedItem = this.selectedItem + this.getMaxDisplay();
@@ -318,10 +318,9 @@ GuiDisplayOneItem.processChannelDownKey = function() {
 		this.updateDisplayedItems();
 	}
 	this.updateSelectedItems();
-}
+};
 
 GuiDisplayOneItem.processIndexing = function() {
-	var indexLetter = this.ItemIndexData[0];
 	var indexPos = this.ItemIndexData[1];
 
 	this.indexSeekPos++;
@@ -335,7 +334,7 @@ GuiDisplayOneItem.processIndexing = function() {
 
 	this.updateDisplayedItems();
 	this.updateSelectedItems();
-}
+};
 
 GuiDisplayOneItem.setPadding = function(title) {
 	switch (title) {
@@ -364,10 +363,10 @@ GuiDisplayOneItem.setPadding = function(title) {
 		}
 		break;
 	}
-}
+};
 
 GuiDisplayOneItem.returnFromMusicPlayer = function() {
 	this.selectedItem = 0;
 	this.updateDisplayedItems();
 	this.updateSelectedItems();
-}
+};

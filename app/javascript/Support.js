@@ -32,7 +32,7 @@ var Support = {
 		LatestTV : null,
 		LatestMovies : null
 
-}
+};
 
 Support.clock = function() {
 	var date = new Date();
@@ -49,14 +49,14 @@ Support.clock = function() {
 	document.getElementById('guiPlayer_clock').innerHTML = time;
 	document.getElementById('guiPlayer_clock2').innerHTML = time;
 	this.clockVar = setTimeout(function(){Support.clock();},900);
-}
+};
 
 Support.loading = function(mSecs) {
 	document.getElementById("loading").style.visibility = "";
 	setTimeout(function(){
 		document.getElementById("loading").style.visibility = "hidden";
 	}, mSecs);
-}
+};
 
 Support.logout = function() {
 
@@ -72,7 +72,7 @@ Support.logout = function() {
 	Server.setUserName("");
 	Server.Logout();
 	GuiUsers.start(false);
-}
+};
 
 Support.updateHomePageURLs = function (title,url,title2Name,isURL1) {
 	this.previousPageDetails[0][0] = "GuiPage_HomeTwoItems";
@@ -88,7 +88,7 @@ Support.updateHomePageURLs = function (title,url,title2Name,isURL1) {
 	if (title2Name == "None") {
 		this.previousPageDetails[0][0] = "GuiPage_HomeOneItem";
 	}
-}
+};
 
 Support.updateURLHistory = function(page,title,url,title2,url2,selectedItem,topLeftItem,isTop) {
 	//Only add new page if going to new page (if url's are the same don't add) - Length must be greater than 0
@@ -111,17 +111,17 @@ Support.updateURLHistory = function(page,title,url,title2,url2,selectedItem,topL
 		this.previousPageDetails.push([page,title,url,title2,url2,selectedItem,topLeftItem,isTop]);
 		alert ("Adding new item: " + this.previousPageDetails.length);
 	}
-}
+};
 
 //Below method used for Main Menu & Playlist Deletion
 Support.removeLatestURL = function() {
 	this.previousPageDetails.pop();
 	alert ("Removed item: " + this.previousPageDetails.length);
-}
+};
 
 Support.removeAllURLs = function() {
 	this.previousPageDetails.length = 0;
-}
+};
 
 Support.processReturnURLHistory = function() {
 	alert ("Just before removing item" + this.previousPageDetails.length);
@@ -214,11 +214,11 @@ Support.processReturnURLHistory = function() {
 	} else {
 		widgetAPI.sendReturnEvent();
 	}
-}
+};
 
 Support.destroyURLHistory = function() {
 	this.previousPageDetails.length = 0;
-}
+};
 
 
 Support.processIndexing = function(ItemsArray) {
@@ -259,7 +259,7 @@ Support.processIndexing = function(ItemsArray) {
 	}
 	var returnArrays = [indexLetter, indexPosition];
 	return  returnArrays;
-}
+};
 
 //-----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -276,7 +276,7 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 					title = this.getNameFormat("", Items[index].ParentIndexNumber, Items[index].Name, Items[index].IndexNumber);
 					imgsrc = Server.getImageURL(Items[index].SeriesId,"Thumb",Main.posterWidth,Main.posterHeight,0,false);
 				} else if (Items[index].ParentBackdropImageTags.length > 0) {
-					title = title = this.getNameFormat(Items[index].SeriesName, Items[index].ParentIndexNumber, Items[index].Name, Items[index].IndexNumber,  Items[index].SeriesStudio?Items[index].SeriesStudio:undefined, Items[index].AirTime?Items[index].AirTime:undefined);
+					title = this.getNameFormat(Items[index].SeriesName, Items[index].ParentIndexNumber, Items[index].Name, Items[index].IndexNumber,  Items[index].SeriesStudio?Items[index].SeriesStudio:undefined, Items[index].AirTime?Items[index].AirTime:undefined);
 					imgsrc = Server.getImageURL(Items[index].ParentBackdropItemId,"Backdrop",Main.posterWidth,Main.posterHeight,0,false);
 				} else if (Items[index].ImageTags.Primary) {
 					imgsrc = Server.getImageURL(Items[index].Id,"Primary",Main.posterWidth,Main.posterHeight,0,false);
@@ -340,7 +340,7 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 				} else if (Items[index].ParentBackdropImageTags.length > 0) {
 					var imgsrc = Server.getImageURL(Items[index].ParentBackdropItemId,"Backdrop",Main.posterWidth,Main.posterHeight,0,false);
 					imageData = "'background-image:url(" +imgsrc+ ");background-size:contain'";
-					title = title = this.getNameFormat(Items[index].SeriesName, Items[index].ParentIndexNumber, Items[index].Name, Items[index].IndexNumber,  Items[index].SeriesStudio?Items[index].SeriesStudio:undefined, Items[index].AirTime?Items[index].AirTime:undefined);
+					title = this.getNameFormat(Items[index].SeriesName, Items[index].ParentIndexNumber, Items[index].Name, Items[index].IndexNumber,  Items[index].SeriesStudio?Items[index].SeriesStudio:undefined, Items[index].AirTime?Items[index].AirTime:undefined);
 				} else  if (Items[index].ImageTags.Primary) {
 					var imgsrc = Server.getImageURL(Items[index].Id,"Primary",Main.posterWidth,Main.posterHeight,0,Items[index].UserData.Played,0);
 					imageData = "'background-image:url(" +imgsrc+ ");background-size:contain'";
@@ -586,7 +586,7 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 				}
 			//----------------------------------------------------------------------------------------------
 			} else {
-				alert("Unhandled Item type: "+Items[index].Type)
+				alert("Unhandled Item type: "+Items[index].Type);
 				var title = Items[index].Name;
 				if (Items[index].ImageTags.Thumb) {
 					var imgsrc = Server.getImageURL(Items[index].Id,"Thumb",Main.posterWidth,Main.posterHeight,0,false,0);
@@ -601,12 +601,12 @@ Support.updateDisplayedItems = function(Items,selectedItemID,startPos,endPos,Div
 		}
 	}
 	document.getElementById(DivIdUpdate).innerHTML = htmlToAdd;
-}
+};
 
 //-----------------------------------------------------------------------------------------------------------------------------------------
 
 Support.getNameFormat = function(SeriesName, SeriesNo, EpisodeName, EpisodeNo, SeriesStudio, AirTime) {
-	var nameLabel;
+	var nameLabel = ""; //WARN IGNORY
 	if (File.getUserProperty("SeasonLabel")){
 		if (SeriesName == "" || SeriesName == null) {
 			if (SeriesNo !== undefined && EpisodeNo !== undefined) {
@@ -687,7 +687,7 @@ Support.getNameFormat = function(SeriesName, SeriesNo, EpisodeName, EpisodeNo, S
 		nameLabel += SeriesStudio;
 	}
 	return nameLabel;
-}
+};
 
 //-----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -716,7 +716,7 @@ Support.updateSelectedNEW = function(Array,selectedItemID,startPos,endPos,strIfS
 			}
 		}
 	}
-}
+};
 
 //-----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -866,7 +866,7 @@ Support.processSelectedItem = function(page,ItemData,startParams,selectedItem,to
 			break;
 		}
 	}
-}
+};
 
 //-----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -915,11 +915,11 @@ Support.playSelectedItem = function(page,ItemData,startParams,selectedItem,topLe
 		GuiImagePlayer.start(ItemData,selectedItem,true);
 	} else if (ItemData.Items[selectedItem].Type == "Series") {
 		Support.updateURLHistory(page,startParams[0],startParams[1],null,null,selectedItem,topLeftItem,null);
-		var url= Server.getChildItemsURL(ItemData.Items[selectedItem].Id,"&ExcludeLocationTypes=Virtual&IncludeItemTypes=Episode&Recursive=true&SortBy=SortName&SortOrder=Ascending&Fields=ParentId,SortName,MediaSources")
+		var url= Server.getChildItemsURL(ItemData.Items[selectedItem].Id,"&ExcludeLocationTypes=Virtual&IncludeItemTypes=Episode&Recursive=true&SortBy=SortName&SortOrder=Ascending&Fields=ParentId,SortName,MediaSources");
 		GuiPlayer.start("PlayAll",url,0,page);
 	} else if (ItemData.Items[selectedItem].Type == "Season") {
 		Support.updateURLHistory(page,startParams[0],startParams[1],null,null,selectedItem,topLeftItem,null);
-		var urlToPlay= Server.getChildItemsURL(ItemData.Items[selectedItem].Id,"&ExcludeLocationTypes=Virtual&IncludeItemTypes=Episode&Recursive=true&SortBy=SortName&SortOrder=Ascending&Fields=ParentId,SortName,MediaSources")
+		var urlToPlay= Server.getChildItemsURL(ItemData.Items[selectedItem].Id,"&ExcludeLocationTypes=Virtual&IncludeItemTypes=Episode&Recursive=true&SortBy=SortName&SortOrder=Ascending&Fields=ParentId,SortName,MediaSources");
 		GuiPlayer.start("PlayAll",urlToPlay,0,page);
 	} else if (ItemData.Items[selectedItem].Type == "Movie" || ItemData.Items[selectedItem].Type == "Episode") {
 		Support.updateURLHistory(page,startParams[0],startParams[1],null,null,selectedItem,topLeftItem,null);
@@ -934,7 +934,7 @@ Support.playSelectedItem = function(page,ItemData,startParams,selectedItem,topLe
 		var url = Server.getItemInfoURL(ItemData.Items[selectedItem].Id);
 		GuiMusicPlayer.start("Song",url,"GuiDisplay_Series",false);
 	}
-}
+};
 
 //-----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -964,7 +964,7 @@ Support.scrollingText = function(divToScroll) {
 			}
 		}, 200); //Scrolling speed
 	}, 10000);  //Intial delay
-}
+};
 
 Support.generateMainMenu = function() {
 
@@ -1068,7 +1068,7 @@ Support.generateMainMenu = function() {
 	}
 
 	return menuItems;
-}
+};
 
 Support.generateTopMenu = function() {
 
@@ -1109,7 +1109,7 @@ Support.generateTopMenu = function() {
 	}
 
 	return menuItems;
-}
+};
 
 Support.initViewUrls = function() {
 	alert("Initialising View URL's for this user");
@@ -1122,13 +1122,13 @@ Support.initViewUrls = function() {
 	this.MediaFolders = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&CollapseBoxSetItems=false&fields=SortName");
 	this.LatestTV = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&IncludeItemTypes=Episode&IsFolder=false&fields=SortName,Overview,Genres,RunTimeTicks");
 	this.LatestMovies = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&IncludeItemTypes=Movie"+Server.getMoviesViewQueryPart()+"&IsFolder=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
-}
+};
 
 Support.getViewUrl = function(viewName) {
 	alert("returning url for "+viewName+" : "+this[viewName]);
 
 	return this[viewName];
-}
+};
 
 Support.removeSplashScreen = function () {
 	setTimeout(function(){
@@ -1138,30 +1138,33 @@ Support.removeSplashScreen = function () {
 		}, 1600);
 	}, 2000);
 	//FileLog.write("Removing the splash screen.");
-}
+};
 
 //-----------------------------------------------------------------------------------------------------------------------------------------
 Support.processHomePageMenu = function (menuItem) {
+	var url1 = "";
+	var url2 = "";
+	var title1 = "";
+	var title2 = "";
 	switch (menuItem) {
 	case "Home":
 		Support.removeAllURLs();
-
 		var url = Server.getServerAddr() + "/Users/"+Server.getUserID()+"/Items?SortBy=DatePlayed&SortOrder=Descending&MediaTypes=Video&Filters=IsResumable&Limit=10&Recursive=true&Fields=PrimaryImageAspectRatio,BasicSyncInfo&CollapseBoxSetItems=false&ExcludeLocationTypes=Virtual&ImageTypeLimit=1&EnableImageTypes=Primary,Backdrop,Banner,Thumb&EnableTotalRecordCount=false";
 		resumeItems = Server.getContent(url);
 		if (resumeItems.Items.length > 0 && File.getUserProperty("ContinueWatching") == true){
-			var url1 = url;
-			var title1 = "Continue Watching";
-			var url2 = Support.getViewUrl(File.getUserProperty("View1"));
-			var title2 = File.getUserProperty("View1Name");
+			url1 = url;
+			title1 = "Continue Watching";
+			url2 = Support.getViewUrl(File.getUserProperty("View1"));
+			title2 = File.getUserProperty("View1Name");
 			FileLog.write("HV1 Title: " + title1);
 			FileLog.write("HV2 Title: " + title2);
 		} else {
-			var url1 = Support.getViewUrl(File.getUserProperty("View1"));
-			var title1 = File.getUserProperty("View1Name");
+			url1 = Support.getViewUrl(File.getUserProperty("View1"));
+			title1 = File.getUserProperty("View1Name");
 			FileLog.write("HV1 Title: " + title1);
 			if (File.getUserProperty("View2") != null) {
-				var url2 = Support.getViewUrl(File.getUserProperty("View2"));
-				var title2 = File.getUserProperty("View2Name");
+				url2 = Support.getViewUrl(File.getUserProperty("View2"));
+				title2 = File.getUserProperty("View2Name");
 				FileLog.write("HV2 Title: " + title2);
 			}
 		}
@@ -1219,9 +1222,6 @@ Support.processHomePageMenu = function (menuItem) {
 		guideTime.setTime(startTime);
 		GuiPage_TvGuide.start("Guide",url,0,0,0,guideTime);
 		break;
-		/*var url = Server.getCustomURL("/LiveTV/Channels?StartIndex=0&EnableFavoriteSorting=true&userId=" + Server.getUserID());
-		GuiDisplay_Series.start("Channels LiveTV",url,0,0);
-		break;*/
 	case "Home_Movies":
 		var homeVideosFolderId = Server.getUserViewId("homevideos");
 		if (homeVideosFolderId != null){
@@ -1243,7 +1243,7 @@ Support.processHomePageMenu = function (menuItem) {
 		Support.logout();
 		break;
 	}
-}
+};
 
 Support.enterMusicPage = function(musicView) {
 	if (File.getUserProperty("SkipMusicAZ")){
@@ -1286,13 +1286,13 @@ Support.enterMusicPage = function(musicView) {
 				break;
 		}
 	}
-}
+};
 
 Support.parseSearchTerm = function(searchTermString) {
 	var parsedString = searchTermString.replace(/ /gi, "%20");
 	//Probably more chars to parse here!
 	return parsedString;
-}
+};
 
 Support.fadeImage = function(imgsrc) {
 	var bg = $('#pageBackground').css('background-image');
@@ -1313,7 +1313,7 @@ Support.fadeImage = function(imgsrc) {
 			document.getElementById("pageBackground").style.opacity = "1";
 		}, 350);
 	}
-}
+};
 
 //-----------------------------------------------------------------------------------------------------------------------------------------
 Support.screensaver = function () {
@@ -1325,11 +1325,11 @@ Support.screensaver = function () {
 			}
 		}, File.getUserProperty("ScreensaverTimeout"));
 	}
-}
+};
 
 Support.screensaverOn = function () {
 	this.isScreensaverOn = true;
-}
+};
 
 Support.screensaverOff = function () {
 	if (Main.isScreensaverEnabled()) {
@@ -1341,7 +1341,7 @@ Support.screensaverOff = function () {
 			GuiImagePlayer_Screensaver.stopScreensaver(); //Kill Screensaver
 		}
 	}
-}
+};
 
 //-----------------------------------------------------------------------------------------------------------------------------------------
 Support.pageLoadTimes = function(page,process,reset) {
@@ -1372,7 +1372,7 @@ Support.pageLoadTimes = function(page,process,reset) {
 			break;
 		}
 	}
-}
+};
 
 
 //-----------------------------------------------------------------------------------------------------------------------------------------
@@ -1415,7 +1415,7 @@ Support.noitemskeyDown = function() {
 			widgetAPI.sendExitEvent();
 			break;
 	}
-}
+};
 
 //-----------------------------------------------------------------------------------------------------------------------------------------
 Support.convertTicksToTime = function (currentTime, duration) {
@@ -1461,7 +1461,7 @@ Support.convertTicksToTime = function (currentTime, duration) {
 		timeHTML += totalTimeSecond;
 
 	return timeHTML;
-}
+};
 
 
 Support.convertTicksToTimeSingle = function (currentTime) {
@@ -1492,12 +1492,12 @@ Support.convertTicksToTimeSingle = function (currentTime) {
    }
 
    return timeHTML;
-}
+};
 
 Support.convertTicksToMinutes = function (currentTime) {
 	timeMinute = Math.floor((currentTime / 3600000) * 60);
 	return timeMinute + " mins";
-}
+};
 
 //-------------------------------------------------------------------------------------------------------------
 
@@ -1521,7 +1521,7 @@ Support.SeriesRun = function(type, prodyear, status, enddate) {
 		}
 		return output;
 	}
-}
+};
 
 //Cannot parse the date from the API into a Date Object
 //Substring out relevant areas
@@ -1552,7 +1552,6 @@ Support.AirDate = function(apiDate, type) {
 	shortWeekday[4] = "Thurs.";
 	shortWeekday[5] = "Fri.";
 	shortWeekday[6] = "Sat.";
-	var shortDayName = shortWeekday[d.getDay()];
 
 	if (type == "Recording"){
 		dateString = day + '/' + month + '/' + year + " " + hour + ":" + min;
@@ -1562,7 +1561,7 @@ Support.AirDate = function(apiDate, type) {
 		dateString = dayName + " " + day + '/' + month + '/' + year;
 	}
 	return dateString;
-}
+};
 
 Support.FutureDate = function(apiDate,airTime) {
 	var year = apiDate.substring(0,4);
@@ -1595,7 +1594,7 @@ Support.FutureDate = function(apiDate,airTime) {
 	} else {
 		return false;
 	}
-}
+};
 
 //
 //Replaced with AirDate Function
@@ -1619,67 +1618,66 @@ Support.formatDateTime = function(apiDate, formatOption) {
 
 	//Should never get here!!!!!
 	return day + "/" + month + "/" + year;
-}
+};
 
 Support.setImagePlayerOverlay = function(string, format) {
 	switch (format) {
 	case 0:
-		document.getElementById("GuiImagePlayer_ScreensaverOverlay").innerHTML = string.substring(0,10)
+		document.getElementById("GuiImagePlayer_ScreensaverOverlay").innerHTML = string.substring(0,10);
 		break;
 	case 1:
-		document.getElementById("GuiImagePlayer_ScreensaverOverlay").innerHTML = string
+		document.getElementById("GuiImagePlayer_ScreensaverOverlay").innerHTML = string;
 		break;
 	case 2:
-		document.getElementById("GuiImagePlayer_ScreensaverOverlay").innerHTML = ""
+		document.getElementById("GuiImagePlayer_ScreensaverOverlay").innerHTML = "";
 		break;
 	}
-
-}
+};
 
 Support.styleSubtitles = function (element) {
 	document.getElementById(element).style.color = File.getUserProperty("SubtitleColour");
 	document.getElementById(element).style.fontSize = File.getUserProperty("SubtitleSize");
 	document.getElementById(element).style.textShadow = "0px 0px 10px rgba(0, 0, 0, 1)";
-}
+};
 
 Support.getStarRatingImage = function(rating) {
 	switch (Math.round(rating)) {
 	case 0:
 	default:
-		return "<img src='images/Star_Empty.png'><img src='images/Star_Empty.png'><img src='images/Star_Empty.png'><img src='images/Star_Empty.png'><img src='images/Star_Empty.png'>"
+		return "<img src='images/Star_Empty.png'><img src='images/Star_Empty.png'><img src='images/Star_Empty.png'><img src='images/Star_Empty.png'><img src='images/Star_Empty.png'>";
 		break;
 	case 1:
-		return "<img src='images/Star_Half.png'><img src='images/Star_Empty.png'><img src='images/Star_Empty.png'><img src='images/Star_Empty.png'><img src='images/Star_Empty.png'>"
+		return "<img src='images/Star_Half.png'><img src='images/Star_Empty.png'><img src='images/Star_Empty.png'><img src='images/Star_Empty.png'><img src='images/Star_Empty.png'>";
 		break;
 	case 2:
-		return "<img src='images/Star_Full.png'><img src='images/Star_Empty.png'><img src='images/Star_Empty.png'><img src='images/Star_Empty.png'><img src='images/Star_Empty.png'>"
+		return "<img src='images/Star_Full.png'><img src='images/Star_Empty.png'><img src='images/Star_Empty.png'><img src='images/Star_Empty.png'><img src='images/Star_Empty.png'>";
 		break;
 	case 3:
-		return "<img src='images/Star_Full.png'><img src='images/Star_Half.png'><img src='images/Star_Empty.png'><img src='images/Star_Empty.png'><img src='images/Star_Empty.png'>"
+		return "<img src='images/Star_Full.png'><img src='images/Star_Half.png'><img src='images/Star_Empty.png'><img src='images/Star_Empty.png'><img src='images/Star_Empty.png'>";
 		break;
 	case 4:
-		return "<img src='images/Star_Full.png'><img src='images/Star_Full.png'><img src='images/Star_Empty.png'><img src='images/Star_Empty.png'><img src='images/Star_Empty.png'>"
+		return "<img src='images/Star_Full.png'><img src='images/Star_Full.png'><img src='images/Star_Empty.png'><img src='images/Star_Empty.png'><img src='images/Star_Empty.png'>";
 		break;
 	case 5:
-		return "<img src='images/Star_Full.png'><img src='images/Star_Full.png'><img src='images/Star_Half.png'><img src='images/Star_Empty.png'><img src='images/Star_Empty.png'>"
+		return "<img src='images/Star_Full.png'><img src='images/Star_Full.png'><img src='images/Star_Half.png'><img src='images/Star_Empty.png'><img src='images/Star_Empty.png'>";
 		break;
 	case 6:
-		return "<img src='images/Star_Full.png'><img src='images/Star_Full.png'><img src='images/Star_Full.png'><img src='images/Star_Empty.png'><img src='images/Star_Empty.png'>"
+		return "<img src='images/Star_Full.png'><img src='images/Star_Full.png'><img src='images/Star_Full.png'><img src='images/Star_Empty.png'><img src='images/Star_Empty.png'>";
 		break;
 	case 7:
-		return "<img src='images/Star_Full.png'><img src='images/Star_Full.png'><img src='images/Star_Full.png'><img src='images/Star_Half.png'><img src='images/Star_Empty.png'>"
+		return "<img src='images/Star_Full.png'><img src='images/Star_Full.png'><img src='images/Star_Full.png'><img src='images/Star_Half.png'><img src='images/Star_Empty.png'>";
 		break;
 	case 8:
-		return "<img src='images/Star_Full.png'><img src='images/Star_Full.png'><img src='images/Star_Full.png'><img src='images/Star_Full.png'><img src='images/Star_Empty.png'>"
+		return "<img src='images/Star_Full.png'><img src='images/Star_Full.png'><img src='images/Star_Full.png'><img src='images/Star_Full.png'><img src='images/Star_Empty.png'>";
 		break;
 	case 9:
-		return "<img src='images/Star_Full.png'><img src='images/Star_Full.png'><img src='images/Star_Full.png'><img src='images/Star_Full.png'><img src='images/Star_Half.png'>"
+		return "<img src='images/Star_Full.png'><img src='images/Star_Full.png'><img src='images/Star_Full.png'><img src='images/Star_Full.png'><img src='images/Star_Half.png'>";
 		break;
 	case 10:
-		return "<img src='images/Star_Full.png'><img src='images/Star_Full.png'><img src='images/Star_Full.png'><img src='images/Star_Full.png'><img src='images/Star_Full.png'>"
+		return "<img src='images/Star_Full.png'><img src='images/Star_Full.png'><img src='images/Star_Full.png'><img src='images/Star_Full.png'><img src='images/Star_Full.png'>";
 		break;
 	}
-}
+};
 
 ///Returns the number of minutes since a program started or 0 if it hasn't started yet.
 Support.tvGuideProgramElapsedMins = function(program) {
@@ -1693,7 +1691,7 @@ Support.tvGuideProgramElapsedMins = function(program) {
 		elapsed = 0;
 	}
 	return elapsed;
-}
+};
 
 ///Returns the number of minutes of guide space the program should ocupy.
 Support.tvGuideProgramDurationMins = function(program) {
@@ -1705,7 +1703,7 @@ Support.tvGuideProgramDurationMins = function(program) {
 		duration = 0;
 	}
 	return duration;
-}
+};
 
 ///Returns a date object with the minutes reset to the most recent hour or half hour.
 Support.tvGuideStartTime = function(date) {
@@ -1718,12 +1716,12 @@ Support.tvGuideStartTime = function(date) {
 	}
 	date.setMinutes(mins);
 	return (date);
-}
+};
 
 ///Returns the number of minutes between the time shown at the start of the TV guide and now.
 Support.tvGuideOffsetMins = function(date) {
 	var now = new Date();
 	var offset = (now.getTime() - GuiPage_TvGuide.guideStartTime.getTime()) / 60000;
 	return(~~offset);
-}
+};
 

@@ -9,7 +9,7 @@ var GuiPlayer_TranscodeParams = {
 		audiocodec : null,
 		audiocontainer : null,
 		audiochannels : null
-}
+};
 
 // Special Thanks to gbone8106 for providing the H series Transcode Settings!
 
@@ -435,7 +435,7 @@ GuiPlayer_TranscodeParams.getParameters = function(codec,videoWidth) {
 		break;
 	}
 	return [this.codec,this.container,this.resolution,this.bitrate,this.framerate,this.level,this.profile];
-}
+};
 
 
 GuiPlayer_TranscodeParams.getAudioParameters = function(audiocodec) {
@@ -696,4 +696,4 @@ GuiPlayer_TranscodeParams.getAudioParameters = function(audiocodec) {
 		break;
 	}
 	return [this.audiocodec,this.audiocontainer,this.audiochannels];
-}
+};

@@ -4,7 +4,7 @@ var FileLog = {
 FileLog.deleteFile = function() {
 	var fileSystemObj = new FileSystem();
 	fileSystemObj.deleteCommonFile(curWidget.id + '/MB3_Log.txt');
-}
+};
 
 FileLog.loadFile = function(returnContents) {
 	var fileSystemObj = new FileSystem();
@@ -48,7 +48,7 @@ FileLog.write = function (toWrite,noDate) {
 		openWrite.writeLine(toWrite);
 		fileSystemObj.closeCommonFile(openWrite);
 	}
-}
+};
 
 FileLog.empty = function () {
 	var fileSystemObj = new FileSystem();
@@ -56,7 +56,7 @@ FileLog.empty = function () {
 	if (openWrite) {
 		fileSystemObj.closeCommonFile(openWrite);
 	}
-}
+};
 
 FileLog.getTimeStamp = function () {
 	var date = new Date();
@@ -73,4 +73,4 @@ FileLog.getTimeStamp = function () {
 	var m=date.getMinutes();
 	if (m<10) {m = "0" + m;};
 	return day + "/" + month + "/" + year + " " + h+':'+m;
-}
+};

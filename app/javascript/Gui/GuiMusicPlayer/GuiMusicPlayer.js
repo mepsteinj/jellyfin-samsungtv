@@ -20,11 +20,11 @@ var GuiMusicPlayer = {
 
 		isThemeMusicPlaying : false,
 		showThemeId : null,
-}
+};
 
 GuiMusicPlayer.onFocus = function() {
 	GuiHelper.setControlButtons(null,null,null,null,"Return");
-}
+};
 
 GuiMusicPlayer.init = function() {
 	GuiPlayer.stopOnAppExit();
@@ -44,7 +44,7 @@ GuiMusicPlayer.init = function() {
 
 	//Set Display Size to 0
 	this.pluginMusic.SetDisplayArea(0, 0, 0, 0);
-}
+};
 
 GuiMusicPlayer.showMusicPlayer = function(playedFromPage,selectedDivId,selectedDivClass) {
 	if (this.Status != "STOPPED") {
@@ -82,7 +82,7 @@ GuiMusicPlayer.showMusicPlayer = function(playedFromPage,selectedDivId,selectedD
 		document.getElementById("Counter").style.visibility = "hidden";
 		document.getElementById("GuiMusicPlayer").focus();
 	}
-}
+};
 
 GuiMusicPlayer.start = function(title,url,playedFromPage,isQueue,showThemeId,itemId) {
 	this.selectedItem = 0;
@@ -167,7 +167,7 @@ GuiMusicPlayer.start = function(title,url,playedFromPage,isQueue,showThemeId,ite
 			this.showMusicPlayer(playedFromPage,itemId,"Music seriesSelected");
 		}
 	}
-}
+};
 
 GuiMusicPlayer.updateSelectedItem = function() {
 	/*document.getElementById("guiMusicPlayerNowPlaying").style.color = "white";*/
@@ -183,7 +183,7 @@ GuiMusicPlayer.updateSelectedItem = function() {
 			document.getElementById("guiMusicPlayerNowPlaying").className = "guiMusicPlayerNowPlaying highlight"+Main.highlightColour+"Background";
 			break;
 		}
-}
+};
 
 //--------------------------------------------------------------------------------------------------
 
@@ -312,7 +312,7 @@ GuiMusicPlayer.keyDown = function() {
 			widgetAPI.sendExitEvent();
 			break;
 	}
-}
+};
 
 GuiMusicPlayer.handlePlayKey = function() {
 	if (this.Status != "PLAYING") {
@@ -332,7 +332,7 @@ GuiMusicPlayer.handlePlayKey = function() {
 		document.getElementById("guiMusicPlayerPause").style.backgroundImage="url('images/musicplayer/pause-32x37.png')";
 		this.Status = "PLAYING";
 	}
-}
+};
 
 GuiMusicPlayer.handlePauseKey = function() {
 	this.pluginMusic.Pause();
@@ -340,7 +340,7 @@ GuiMusicPlayer.handlePauseKey = function() {
 	document.getElementById("guiMusicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-29x37.png')";
 	document.getElementById("guiMusicPlayerPause").style.backgroundImage="url('images/musicplayer/pause-active-32x37.png')";
 	this.Status = "PAUSED";
-}
+};
 
 GuiMusicPlayer.stopPlayback = function() {
 	//Reset everything
@@ -359,14 +359,14 @@ GuiMusicPlayer.stopPlayback = function() {
 	setTimeout(function(){
 		document.getElementById("guiMusicPlayerStop").style.backgroundImage="url('images/musicplayer/stop-37x37.png')";
 	}, 400);
-}
+};
 
 GuiMusicPlayer.handleStopKey = function() {
 	alert ("STOPPING PLAYBACK");
 	this.stopPlayback();
 	GuiHelper.setControlButtons(0,0,0,null,0);
 	this.returnToPage();
-}
+};
 
 GuiMusicPlayer.returnToPage = function() {
 	//Reset NAVI - Works
@@ -395,7 +395,7 @@ GuiMusicPlayer.returnToPage = function() {
 		}
 	}
 	document.getElementById(this.playedFromPage).focus();
-}
+};
 
 GuiMusicPlayer.handleNextKey = function() {
 
@@ -423,7 +423,7 @@ GuiMusicPlayer.handleNextKey = function() {
 		document.getElementById("guiMusicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-active-29x37.png')";
 		document.getElementById("guiMusicPlayerNext").style.backgroundImage="url('images/musicplayer/skip-next-36x37.png')";
 	}, 300);
-}
+};
 
 GuiMusicPlayer.handlePreviousKey = function() {
 	//Stop Any Playback
@@ -456,13 +456,13 @@ GuiMusicPlayer.handlePreviousKey = function() {
 		document.getElementById("guiMusicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-active-29x37.png')";
 		document.getElementById("guiMusicPlayerPrevious").style.backgroundImage="url('images/musicplayer/skip-previous-36x37.png')";
 	}, 300);
-}
+};
 GuiMusicPlayer.handleScreenKey = function() {
 	 //Turn off screensaver
 	Support.screensaverOff();
 
 	document.getElementById("everything").style.visibility="hidden";
-}
+};
 
 GuiMusicPlayer.handlePlaylistKey = function() {
 	//Redo another day
@@ -478,34 +478,34 @@ GuiMusicPlayer.handlePlaylistKey = function() {
 		document.getElementById("guiMusicPlayerShowPlaylistContent").innerHTML += this.queuedItems[index].Name;
 	}
 	*/
-}
+};
 
 //--------------------------------------------------------------------------------------------------
 
 GuiMusicPlayer.handleOnRenderingComplete = function() {
-	alert ("File complete")
+	alert ("File complete");
 	this.handleNextKey();
-}
+};
 
 GuiMusicPlayer.handleOnNetworkDisconnected = function() {
-	alert ("Network Disconnect")
-}
+	alert ("Network Disconnect");
+};
 
 GuiMusicPlayer.handleConnectionFailed = function() {
-	alert ("Connection Failed")
-}
+	alert ("Connection Failed");
+};
 
 GuiMusicPlayer.handleAuthenticationFailed = function() {
-	alert ("Authentication Failed")
-}
+	alert ("Authentication Failed");
+};
 
 GuiMusicPlayer.handleRenderError = function(RenderErrorType) {
-	alert ("Render Error")
-}
+	alert ("Render Error");
+};
 
 GuiMusicPlayer.handleStreamNotFound = function() {
-	alert ("Stream not found")
-}
+	alert ("Stream not found");
+};
 
 GuiMusicPlayer.setCurrentTime = function(time){
 	if (this.Status == "PLAYING") {
@@ -524,7 +524,7 @@ GuiMusicPlayer.setCurrentTime = function(time){
 			document.getElementById("guiMusicPlayerTime").innerHTML = Support.convertTicksToTime(this.currentTime, (this.queuedItems[this.currentPlayingItem].RunTimeTicks / 10000));
 		}
 	}
-}
+};
 
 GuiMusicPlayer.OnStreamInfoReady = function() {
 	var playingTitle = "";
@@ -536,7 +536,6 @@ GuiMusicPlayer.OnStreamInfoReady = function() {
 				playingTitle = " - " + this.queuedItems[this.currentPlayingItem].IndexNumber+" - ";
 			}
 		}
-		var songName = this.queuedItems[this.currentPlayingItem].Name;
 		var title = "";
 		if (this.queuedItems[this.currentPlayingItem].Artists) {
 			title += this.queuedItems[this.currentPlayingItem].Artists + " ";
@@ -568,7 +567,7 @@ GuiMusicPlayer.OnStreamInfoReady = function() {
 	pluginAPI.unregistKey(tvKey.KEY_VOL_UP);
 	pluginAPI.unregistKey(tvKey.KEY_VOL_DOWN);
 	pluginAPI.unregistKey(tvKey.KEY_MUTE);
-}
+};
 
 GuiMusicPlayer.stopOnAppExit = function() {
 	if (this.pluginMusic != null) {
@@ -576,4 +575,4 @@ GuiMusicPlayer.stopOnAppExit = function() {
 		this.pluginMusic = null;
 		this.pluginAudioMusic = null;
 	}
-}
+};

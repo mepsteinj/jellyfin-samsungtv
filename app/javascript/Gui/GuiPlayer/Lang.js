@@ -753,16 +753,18 @@
 			"name":"Zhuang, Chuang",
 			"nativeName":"Saɯ cueŋƅ, Saw cuengh"
 		}
-	}
+	};
 
 	var getLanguageName = function(key) {
 		var lang = isoLangs[key];
 		return lang ? lang.name : undefined;
-	}
+	};
+	
 	var getLanguageNativeName = function(key) {
 		var lang = isoLangs[key];
 		return lang ? lang.nativeName : undefined;
-	}
+	};
+	
 	window.getLanguageName = getLanguageName;
 	window.getLanguageNativeName = getLanguageNativeName;
 })();

@@ -14,15 +14,15 @@ var GuiDisplay_Episodes = {
 
 		startParams : [],
 		isLatest : false
-}
+};
 
 GuiDisplay_Episodes.onFocus = function() {
 	GuiHelper.setControlButtons("Favourite","Watched",null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
-}
+};
 
 GuiDisplay_Episodes.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
-}
+};
 
 GuiDisplay_Episodes.start = function(title,url,selectedItem,topLeftItem) {
 	alert("Page Enter : GuiDisplay_Episodes");
@@ -103,7 +103,7 @@ GuiDisplay_Episodes.start = function(title,url,selectedItem,topLeftItem) {
 		//As no content focus on menu bar and null null means user can't return off the menu bar
 		GuiMainMenu.requested(null,null);
 	}
-}
+};
 
 GuiDisplay_Episodes.updateDisplayedItems = function() {
 	var htmlToAdd = "";
@@ -159,7 +159,7 @@ GuiDisplay_Episodes.updateDisplayedItems = function() {
 			document.getElementById("title_"+this.ItemData.Items[index].Id).style.paddingTop = "18px";
 		}
 	}
-}
+};
 
 //Function sets CSS Properties so show which user is selected
 GuiDisplay_Episodes.updateSelectedItems = function () {
@@ -253,7 +253,7 @@ GuiDisplay_Episodes.updateSelectedItems = function () {
 			}
 		}, 500);
 	}
-}
+};
 
 
 GuiDisplay_Episodes.updateSelectedBannerItems = function() {
@@ -268,7 +268,7 @@ GuiDisplay_Episodes.updateSelectedBannerItems = function() {
 			document.getElementById("bannerItem"+index).className = "button";
 		}
 	}
-}
+};
 
 GuiDisplay_Episodes.keyDown = function() {
 	var keyCode = event.keyCode;
@@ -340,10 +340,10 @@ GuiDisplay_Episodes.keyDown = function() {
 				if (this.ItemData.Items[this.selectedItem].MediaType == "Video") {
 					if (this.ItemData.Items[this.selectedItem].UserData.Played == true) {
 						Server.deleteWatchedStatus(this.ItemData.Items[this.selectedItem].Id);
-						this.ItemData.Items[this.selectedItem].UserData.Played = false
+						this.ItemData.Items[this.selectedItem].UserData.Played = false;
 					} else {
 						Server.setWatchedStatus(this.ItemData.Items[this.selectedItem].Id);
-						this.ItemData.Items[this.selectedItem].UserData.Played = true
+						this.ItemData.Items[this.selectedItem].UserData.Played = true;
 					}
 					this.updateDisplayedItems();
 					this.updateSelectedItems();
@@ -380,7 +380,7 @@ GuiDisplay_Episodes.keyDown = function() {
 			widgetAPI.sendExitEvent();
 			break;
 	}
-}
+};
 
 GuiDisplay_Episodes.processSelectedItem = function() {
 	if (this.selectedItem == -1) {
@@ -393,22 +393,22 @@ GuiDisplay_Episodes.processSelectedItem = function() {
 	if (this.selectedItem == -1) {
 		if (this.selectedBannerItem == 0) {
 			//Play All Episodes in Show
-			var urlToPlay= Server.getChildItemsURL(this.ItemData.Items[0].SeasonId,"&ExcludeLocationTypes=Virtual&IncludeItemTypes=Episode&Recursive=true&SortBy=SortName&SortOrder=Ascending&Fields=ParentId,SortName,MediaSources")
+			var urlToPlay= Server.getChildItemsURL(this.ItemData.Items[0].SeasonId,"&ExcludeLocationTypes=Virtual&IncludeItemTypes=Episode&Recursive=true&SortBy=SortName&SortOrder=Ascending&Fields=ParentId,SortName,MediaSources");
 			GuiPlayer.start("PlayAll",urlToPlay,0,"GuiDisplay_Episodes");
 		} else if (this.selectedBannerItem == 1) {
 			//Shuffle All Episodes in Show
-			var urlToPlay= Server.getChildItemsURL(this.ItemData.Items[0].SeasonId,"&ExcludeLocationTypes=Virtual&IncludeItemTypes=Episode&Recursive=true&SortBy=Random&SortOrder=Ascending&Fields=ParentId,SortName,MediaSources")
+			var urlToPlay= Server.getChildItemsURL(this.ItemData.Items[0].SeasonId,"&ExcludeLocationTypes=Virtual&IncludeItemTypes=Episode&Recursive=true&SortBy=Random&SortOrder=Ascending&Fields=ParentId,SortName,MediaSources");
 			GuiPlayer.start("PlayAll",urlToPlay,0,"GuiDisplay_Episodes");
 		}
 	} else {
 		var url = Server.getItemInfoURL(this.ItemData.Items[this.selectedItem].Id,null);
 		GuiPage_ItemDetails.start(this.ItemData.Items[this.selectedItem].Name,url,0);
 	}
-}
+};
 
 GuiDisplay_Episodes.playSelectedItem = function () {
 	Support.playSelectedItem("GuiDisplay_Episodes",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null);
-}
+};
 
 GuiDisplay_Episodes.processUpKey = function() {
 	this.selectedItem = this.selectedItem - this.MAXCOLUMNCOUNT;
@@ -428,7 +428,7 @@ GuiDisplay_Episodes.processUpKey = function() {
 		}
 		this.updateSelectedItems();
 	}
-}
+};
 
 GuiDisplay_Episodes.processDownKey = function() {
 	this.selectedItem = this.selectedItem + this.MAXCOLUMNCOUNT;
@@ -450,7 +450,7 @@ GuiDisplay_Episodes.processDownKey = function() {
 		}
 		this.updateSelectedItems();
 	}
-}
+};
 
 
 
@@ -471,7 +471,7 @@ GuiDisplay_Episodes.processChannelUpKey = function() {
 		}
 		this.updateSelectedItems();
 	}
-}
+};
 
 GuiDisplay_Episodes.openMenu = function() {
 	Support.updateURLHistory("GuiDisplay_Episodes",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
@@ -484,7 +484,7 @@ GuiDisplay_Episodes.openMenu = function() {
 	} else {
 		GuiMainMenu.requested("GuiDisplay_Episodes",this.ItemData.Items[this.selectedItem].Id,"EpisodeListSingle highlight"+Main.highlightColour+"Background");
 	}
-}
+};
 
 GuiDisplay_Episodes.processLeftKey = function() {
 	if (this.selectedItem == -1) {
@@ -496,7 +496,7 @@ GuiDisplay_Episodes.processLeftKey = function() {
 	} else {
 		this.openMenu(); //There's no left/right in the list of episodes, always open the menu.
 	}
-}
+};
 
 GuiDisplay_Episodes.processRightKey = function() {
 	if (this.selectedItem == -1) {
@@ -505,7 +505,7 @@ GuiDisplay_Episodes.processRightKey = function() {
 			this.updateSelectedBannerItems();
 		}
 	}
-}
+};
 
 
 GuiDisplay_Episodes.processChannelDownKey = function() {
@@ -521,10 +521,9 @@ GuiDisplay_Episodes.processChannelDownKey = function() {
 		this.updateDisplayedItems();
 	}
 	this.updateSelectedItems();
-}
+};
 
 GuiDisplay_Episodes.processIndexing = function() {
-	var indexLetter = this.ItemIndexData[0];
 	var indexPos = this.ItemIndexData[1];
 
 	this.indexSeekPos++;
@@ -538,10 +537,10 @@ GuiDisplay_Episodes.processIndexing = function() {
 
 	this.updateDisplayedItems();
 	this.updateSelectedItems();
-}
+};
 
 GuiDisplay_Episodes.returnFromMusicPlayer = function() {
 	this.selectedItem = 0;
 	this.updateDisplayedItems();
 	this.updateSelectedItems();
-}
+};

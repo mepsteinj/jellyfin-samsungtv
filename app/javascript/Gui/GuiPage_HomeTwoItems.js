@@ -22,19 +22,19 @@ var GuiPage_HomeTwoItems = {
 
 		startParams : [],
 		backdropTimeout : null
-}
+};
 
 GuiPage_HomeTwoItems.onFocus = function() {
 	GuiHelper.setControlButtons("Favourite","Watched","Help",GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Exit  ");
-}
+};
 
 GuiPage_HomeTwoItems.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
-}
+};
 
 GuiPage_HomeTwoItems.getMaxDisplayBottom = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
-}
+};
 
 GuiPage_HomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,topLeftItem,isTop) {
 	alert("Page Enter : GuiPage_HomeTwoItems");
@@ -160,7 +160,7 @@ GuiPage_HomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,to
 		//Generate Media Collections title & URL!
 		GuiPage_HomeOneItem.start(title1,url1,0,0);
 	}
-}
+};
 
 //---------------------------------------------------------------------------------------------------
 //      TOP ITEMS HANDLERS
@@ -168,13 +168,13 @@ GuiPage_HomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,to
 GuiPage_HomeTwoItems.updateDisplayedItems = function() {
 		Support.updateDisplayedItems(this.ItemData.Items,this.selectedItem,this.topLeftItem,
 				Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Content",this.divprepend1,this.isResume,null,true);
-}
+};
 
 //Function sets CSS Properties so show which user is selected
 GuiPage_HomeTwoItems.updateSelectedItems = function (bypassCounter) {
 	Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
 			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"homePagePoster Collection Selected highlight"+Main.highlightColour+"Boarder","homePagePoster Collection",this.divprepend1,bypassCounter);
-}
+};
 
 GuiPage_HomeTwoItems.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.menuItems.length; index++) {
@@ -192,7 +192,7 @@ GuiPage_HomeTwoItems.updateSelectedBannerItems = function() {
 			}
 		}
 	}
-}
+};
 
 GuiPage_HomeTwoItems.keyDown = function()
 {
@@ -317,10 +317,10 @@ GuiPage_HomeTwoItems.keyDown = function()
 			if (this.ItemData.Items[this.selectedItem].MediaType == "Video") {
 				if (this.ItemData.Items[this.selectedItem].UserData.Played == true) {
 					Server.deleteWatchedStatus(this.ItemData.Items[this.selectedItem].Id);
-					this.ItemData.Items[this.selectedItem].UserData.Played = false
+					this.ItemData.Items[this.selectedItem].UserData.Played = false;
 				} else {
 					Server.setWatchedStatus(this.ItemData.Items[this.selectedItem].Id);
-					this.ItemData.Items[this.selectedItem].UserData.Played = true
+					this.ItemData.Items[this.selectedItem].UserData.Played = true;
 				}
 				setTimeout(function(){
 					GuiPage_HomeTwoItems.updateDisplayedItems();
@@ -359,7 +359,7 @@ GuiPage_HomeTwoItems.keyDown = function()
 			widgetAPI.sendExitEvent();
 			break;
 	}
-}
+};
 
 GuiPage_HomeTwoItems.openMenu = function() {
 	if (this.selectedItem == -2) {
@@ -373,7 +373,7 @@ GuiPage_HomeTwoItems.openMenu = function() {
 		Support.updateURLHistory("GuiPage_HomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem,this.topLeftItem,true);
 		GuiMainMenu.requested("GuiPage_HomeTwoItems",this.divprepend1 + this.ItemData.Items[this.selectedItem].Id);
 	}
-}
+};
 
 GuiPage_HomeTwoItems.processLeftKey = function() {
 	if (this.selectedItem == -2) {
@@ -400,7 +400,7 @@ GuiPage_HomeTwoItems.processLeftKey = function() {
 			this.updateSelectedItems();
 		}
 	}
-}
+};
 
 //---------------------------------------------------------------------------------------------------
 //      BOTTOM ITEMS HANDLERS
@@ -409,13 +409,13 @@ GuiPage_HomeTwoItems.processLeftKey = function() {
 GuiPage_HomeTwoItems.updateDisplayedItems2 = function() {
 	Support.updateDisplayedItems(this.ItemData2.Items,this.selectedItem2,this.topLeftItem2,
 			Math.min(this.topLeftItem2 + this.getMaxDisplayBottom(),this.ItemData2.Items.length),"Content2",this.divprepend2,this.isResume2,null,true);
-}
+};
 
 //Function sets CSS Properties so show which user is selected
 GuiPage_HomeTwoItems.updateSelectedItems2 = function (bypassCounter) {
 	Support.updateSelectedNEW(this.ItemData2.Items,this.selectedItem2,this.topLeftItem2,
 			Math.min(this.topLeftItem2 + this.getMaxDisplayBottom(),this.ItemData2.Items.length),"homePagePoster Collection Selected highlight"+Main.highlightColour+"Boarder","homePagePoster Collection",this.divprepend2,bypassCounter);
-}
+};
 
 
 GuiPage_HomeTwoItems.bottomKeyDown = function()
@@ -526,10 +526,10 @@ GuiPage_HomeTwoItems.bottomKeyDown = function()
 			if (this.ItemData2.Items[this.selectedItem2].MediaType == "Video") {
 				if (this.ItemData2.Items[this.selectedItem2].UserData.Played == true) {
 					Server.deleteWatchedStatus(this.ItemData2.Items[this.selectedItem2].Id);
-					this.ItemData2.Items[this.selectedItem2].UserData.Played = false
+					this.ItemData2.Items[this.selectedItem2].UserData.Played = false;
 				} else {
 					Server.setWatchedStatus(this.ItemData2.Items[this.selectedItem2].Id);
-					this.ItemData2.Items[this.selectedItem2].UserData.Played = true
+					this.ItemData2.Items[this.selectedItem2].UserData.Played = true;
 				}
 				setTimeout(function(){
 					GuiPage_HomeTwoItems.updateDisplayedItems2();
@@ -560,7 +560,7 @@ GuiPage_HomeTwoItems.bottomKeyDown = function()
 			widgetAPI.sendExitEvent();
 			break;
 	}
-}
+};
 
 //--------------------------------------------------------------------------------------------------------
 
@@ -589,7 +589,7 @@ GuiPage_HomeTwoItems.processSelectedItem = function (array,isTop) {
 		}
 		Support.processSelectedItem("GuiPage_HomeTwoItems",array,this.startParams,selectedItem,topLeftItem,isTop,null,isLatest);
 	}
-}
+};
 
 GuiPage_HomeTwoItems.playSelectedItem = function (array,isTop) {
 	if (isTop == true) {
@@ -597,5 +597,4 @@ GuiPage_HomeTwoItems.playSelectedItem = function (array,isTop) {
 	} else {
 		Support.playSelectedItem("GuiPage_HomeTwoItems",this.ItemData2,this.startParams,this.selectedItem2,this.topLeftItem2,isTop);
 	}
-
-}
+};

@@ -6,11 +6,11 @@ var GuiPage_CastMember = {
 		topLeftItem : 0,
 		MAXCOLUMNCOUNT : 9,
 		MAXROWCOUNT : 1,
-}
+};
 
 GuiPage_CastMember.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
-}
+};
 
 GuiPage_CastMember.start = function(title,url,selectedItem,topLeftItem) {
 	alert("Page Enter : GuiPage_CastMember");
@@ -83,11 +83,10 @@ GuiPage_CastMember.start = function(title,url,selectedItem,topLeftItem) {
 		//Cannot happen as link can only be generated from a Cast member - thus at minimum it will return 1 result (itself)
 		document.getElementById("GuiPage_CastMember").focus();
 	}
-}
+};
 
 GuiPage_CastMember.updateDisplayedItems = function() {
 	var htmlToAdd = "";
-	var htmlToAdd2 ="";
 	for (var index = this.topLeftItem;index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length); index++) {
 		var imgsrc = "images/menu/Play-46x37.png";
 		if (this.ItemData.Items[index].Type == "Episode"){
@@ -104,7 +103,7 @@ GuiPage_CastMember.updateDisplayedItems = function() {
 		htmlToAdd += "<div id="+this.ItemData.Items[index].Id+" class='GuiPage_CastMember_ListSingle'><div class='GuiPage_CastMember_ListSingleImage' style=background-image:url(" +imgsrc+ ")></div><div class='GuiPage_CastMember_ListSingleTitle'>"+this.ItemData.Items[index].Name+"</div></div>";
 	}
 	document.getElementById("GuiPage_CastMember_List").innerHTML = htmlToAdd;
-}
+};
 
 //Function sets CSS Properties so show which user is selected
 GuiPage_CastMember.updateSelectedItems = function () {
@@ -141,7 +140,7 @@ GuiPage_CastMember.updateSelectedItems = function () {
 		}
 	}
 	document.getElementById("Counter").innerHTML = (this.selectedItem + 1) + "/" + this.ItemData.Items.length;
-}
+};
 
 GuiPage_CastMember.keyDown = function()
 {
@@ -215,16 +214,16 @@ GuiPage_CastMember.keyDown = function()
 			widgetAPI.sendExitEvent();
 			break;
 	}
-}
+};
 
 GuiPage_CastMember.openMenu = function() {
 	Support.updateURLHistory("GuiPage_CastMember",null,null,null,null,null,null,null);
 	GuiMainMenu.requested("GuiPage_CastMember",null);
-}
+};
 
 GuiPage_CastMember.processSelectedItem = function() {
-	Support.processSelectedItem("GuiPage_CastMember",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null,null)
-}
+	Support.processSelectedItem("GuiPage_CastMember",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null,null);
+};
 
 GuiPage_CastMember.playSelectedItem = function () {
 	if (this.ItemData.Items[this.selectedItem].MediaType == "Video") {
@@ -232,7 +231,7 @@ GuiPage_CastMember.playSelectedItem = function () {
 		var url = Server.getItemInfoURL(this.ItemData.Items[this.selectedItem].Id);
 		GuiPlayer.start("PLAY",url,this.ItemData.Items[this.selectedItem].UserData.PlaybackPositionTicks / 10000);
 	}
-}
+};
 
 GuiPage_CastMember.processUpKey = function() {
 	this.selectedItem--;
@@ -249,7 +248,7 @@ GuiPage_CastMember.processUpKey = function() {
 		this.updateSelectedItems();
 	}
 
-}
+};
 
 GuiPage_CastMember.processDownKey = function() {
 	this.selectedItem++;
@@ -262,10 +261,10 @@ GuiPage_CastMember.processDownKey = function() {
 		}
 	}
 	this.updateSelectedItems();
-}
+};
 
 GuiPage_CastMember.returnFromMusicPlayer = function() {
 	this.selectedItem = 0;
 	this.updateDisplayedItems();
 	this.updateSelectedItems();
-}
+};

@@ -10,20 +10,20 @@ var GuiImagePlayer_Screensaver = {
 		imageIdx : 0,       // Image index
 		effectIdx : 0,      // Transition effect index
 		effectNames : ['FADE1', 'FADE2', 'BLIND', 'SPIRAL','CHECKER', 'LINEAR', 'STAIRS', 'WIPE', 'RANDOM'],
-}
+};
 
 GuiImagePlayer_Screensaver.kill = function() {
 	if (this.ImageViewer != null) {
 		this.ImageViewer.destroy();
 	}
-}
+};
 
 GuiImagePlayer_Screensaver.start = function() {
 	this.imagesToUse = File.getUserProperty("ScreensaverImages");
 	alert(this.imagesToUse);
-	this.images = []
-	this.overlay = []
-	this.imageIdx = 0
+	this.images = [];
+	this.overlay = [];
+	this.imageIdx = 0;
 	//alert("imagestouse - " + this.imagesToUse)
 	//Update Main.js isScreensaverRunning - Sets to True
 	Main.setIsScreensaverRunning();
@@ -37,7 +37,7 @@ GuiImagePlayer_Screensaver.start = function() {
 		sf.service.VideoPlayer.hide();
 	}
 
-	Support.styleSubtitles("GuiImagePlayer_ScreensaverOverlay")
+	Support.styleSubtitles("GuiImagePlayer_ScreensaverOverlay");
 
 	if (this.imagesToUse == "Media") {
 		var randomImageURL = Server.getItemTypeURL("&SortBy=Random&MediaTypes=Photo&Recursive=true&CollapseBoxSetItems=false&Limit=1000");
@@ -50,7 +50,7 @@ GuiImagePlayer_Screensaver.start = function() {
 				var imgsrc = Server.getScreenSaverImageURL(randomImageData.Items[index].Id,"Primary",1920,1080);
 				this.images.push(imgsrc);
 				if (randomImageData.Items[index].PremiereDate !== undefined) {
-					this.overlay.push(Support.formatDateTime(randomImageData.Items[index].PremiereDate,1))
+					this.overlay.push(Support.formatDateTime(randomImageData.Items[index].PremiereDate,1));
 				} else {
 					this.overlay.push(""); //Need to push something to keep indexes matched up!
 				}
@@ -67,7 +67,7 @@ GuiImagePlayer_Screensaver.start = function() {
 				var imgsrc = Server.getScreenSaverImageURL(randomImageData.Items[index ].Id,"Backdrop",1920,1080);
 				this.images.push(imgsrc);
 				if (randomImageData.Items[index].Name !== undefined) {
-					this.overlay.push(randomImageData.Items[index].Name)
+					this.overlay.push(randomImageData.Items[index].Name);
 				} else {
 					this.overlay.push(""); //Need to push something to keep indexes matched up!
 				}
@@ -94,7 +94,7 @@ GuiImagePlayer_Screensaver.start = function() {
 	//Start Slide Show
 	this.ImageViewer.show();
 	this.setSlideshowMode();
-}
+};
 
 // Set Slideshow mode
 // You can use Transtion effect
@@ -122,14 +122,14 @@ GuiImagePlayer_Screensaver.setSlideshowMode = function() {
 
 	this.ImageViewer.stop();
 	this.playImage();
-}
+};
 
 // Play image - only called once in slideshow!
 //SS calls  play -> BufferComplete, then the showNow will call RendComplete which starts timer for next image
 GuiImagePlayer_Screensaver.playImage = function() {
 	var url = GuiImagePlayer_Screensaver.images[GuiImagePlayer_Screensaver.imageIdx];
 	GuiImagePlayer_Screensaver.ImageViewer.play(url, 1920, 1080);
-}
+};
 
 GuiImagePlayer_Screensaver.stopScreensaver = function() {
 	clearTimeout(this.Timeout);
@@ -142,4 +142,4 @@ GuiImagePlayer_Screensaver.stopScreensaver = function() {
 	document.getElementById("GuiImagePlayer_ScreensaverOverlay").innerHTML = "";
 	//Show Page Contents
 	document.getElementById("everything").style.visibility="";
-}
+};

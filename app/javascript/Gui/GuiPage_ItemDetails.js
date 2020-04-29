@@ -24,7 +24,7 @@ GuiPage_ItemDetails.onFocus = function() {
 	GuiHelper.setControlButtons("Favourite","Watched",GuiPage_ItemDetails.trailerState == sf.service.VideoPlayer.STATE_PLAYING ||
 			GuiPage_ItemDetails.trailerState == sf.service.VideoPlayer.STATE_BUFFERING ? "Full Screen" : null,GuiMusicPlayer.Status == "PLAYING" ||
 					GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
-}
+};
 
 GuiPage_ItemDetails.getMaxDisplay2 = function() {
 	return this.MAXCOLUMNCOUNT2 * this.MAXROWCOUNT2;
@@ -578,13 +578,13 @@ GuiPage_ItemDetails.updateItemUserStatus = function(item) { //Watched and Favour
 	var title = Support.getNameFormat("", this.ItemData.ParentIndexNumber, this.ItemData.Name, this.ItemData.IndexNumber);
 	document.getElementById("guiTV_Show_Title").innerHTML = (this.ItemData.Type == "Episode") ? title : this.itemName;
 	document.getElementById("guiTV_Show_Title").innerHTML += addSpan;
-}
+};
 
 GuiPage_ItemDetails.openMenu = function() {
 	Support.updateURLHistory("GuiPage_ItemDetails",this.startParams[0],this.startParams[1],null,null,this.selectedItem,null,true);
 	document.getElementById(this.menuItems[this.selectedItem]).className = "FilmListSingle";
 	GuiMainMenu.requested("GuiPage_ItemDetails",this.menuItems[this.selectedItem],"FilmListSingle highlight"+Main.highlightColour+"Background");
-}
+};
 
 GuiPage_ItemDetails.processLeftKey = function() {
 	if (this.trailerState == sf.service.VideoPlayer.STATE_PLAYING ||
@@ -618,7 +618,6 @@ GuiPage_ItemDetails.processSelectedItem = function() {
 	case "guiTV_Episode_Resume":
 		if (this.ItemData.Type == "Trailer" && this.trailersEnabled){
 			//Trailer playback
-			var htmlToAdd = "";
 			if (this.trailerState == sf.service.VideoPlayer.STATE_PLAYING ||
 					this.trailerState == sf.service.VideoPlayer.STATE_BUFFERING ||
 					this.trailerState == sf.service.VideoPlayer.STATE_PAUSED) {
@@ -1017,7 +1016,7 @@ GuiPage_ItemDetails.playSelectedItem2 = function() {
 	} else {
 		return;
 	}
-}
+};
 
 GuiPage_ItemDetails.setTrailerPosition = function() {
 	// Sets the mini-player position.
@@ -1027,7 +1026,7 @@ GuiPage_ItemDetails.setTrailerPosition = function() {
 		width: 800,
 		height: 600
 	});
-}
+};
 
 GuiPage_ItemDetails.getTrailerEvents = function() {
 	var opt = {};
@@ -1064,7 +1063,7 @@ GuiPage_ItemDetails.getTrailerEvents = function() {
 		_THIS_.trailerState = state;
 	};
 	return (opt);
-}
+};
 
 GuiPage_ItemDetails.setTrailerStateHandlers = function() {
 	//Set miniplayer vars.
@@ -1079,7 +1078,7 @@ GuiPage_ItemDetails.setTrailerStateHandlers = function() {
 	this.state2String[sf.service.VideoPlayer.STATE_PAUSED] = 'Paused';
 	this.state2String[sf.service.VideoPlayer.STATE_BUFFERING] = 'Buffering';
 	this.state2String[sf.service.VideoPlayer.STATE_SCANNING] = 'Scanning';
-}
+};
 
 GuiPage_ItemDetails.setTrailerKeyHandlers = function() {
 	//Key handlers for fullscreen mode.
@@ -1140,7 +1139,7 @@ GuiPage_ItemDetails.setTrailerKeyHandlers = function() {
 	});
 	sf.service.VideoPlayer.setKeyHandler(sf.key.REW, function () {
 	});
-}
+};
 
 GuiPage_ItemDetails.playTrailer = function(trailerUrl) {
 	//Handle Music player
@@ -1166,7 +1165,7 @@ GuiPage_ItemDetails.playTrailer = function(trailerUrl) {
 		url: trailerUrl,
 		fullScreen: false
 	});
-}
+};
 
 GuiPage_ItemDetails.getMediaInfo = function() {
 	//this.ItemData.MediaSources[0].Video3DFormat is reported as either HalfSideBySide or HalfTopAndBottom.

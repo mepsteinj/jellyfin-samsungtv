@@ -15,14 +15,14 @@ var GuiImagePlayer = {
 		imageIdx : 0,       // Image index
 		effectIdx : 0,      // Transition effect index
 		effectNames : ['FADE1', 'FADE2', 'BLIND', 'SPIRAL','CHECKER', 'LINEAR', 'STAIRS', 'WIPE', 'RANDOM']
-}
+};
 
 //ImageViewer.destroy doesn't work. Set it to null instead.
 GuiImagePlayer.kill = function() {
 	if (this.ImageViewer != null) {
 		this.ImageViewer = null;
 	}
-}
+};
 
 GuiImagePlayer.start = function(ItemData,selectedItem,isPhotoCollection) {
 	alert("Page Enter : GuiImagePlayer");
@@ -52,7 +52,7 @@ GuiImagePlayer.start = function(ItemData,selectedItem,isPhotoCollection) {
 	if (result == null) { return; }
 	this.newItemData = result; //Misleading I know!
 
-	Support.styleSubtitles("GuiImagePlayer_ScreensaverOverlay")
+	Support.styleSubtitles("GuiImagePlayer_ScreensaverOverlay");
 
 	//Create ARRAY of all URL's!
 	//Order from starting selectedItem!
@@ -63,7 +63,7 @@ GuiImagePlayer.start = function(ItemData,selectedItem,isPhotoCollection) {
 		this.images.push(temp);
 
 		if (this.newItemData.Items[index].PremiereDate !== undefined) {
-			this.overlay.push(Support.formatDateTime(this.newItemData.Items[index].PremiereDate,1))
+			this.overlay.push(Support.formatDateTime(this.newItemData.Items[index].PremiereDate,1));
 		} else {
 			this.overlay.push(""); //Need to push something to keep indexes matched up!
 		}
@@ -92,7 +92,7 @@ GuiImagePlayer.start = function(ItemData,selectedItem,isPhotoCollection) {
 	this.ImageViewer.show();
 	this.setSlideshowMode();
 	//this.setNormalMode();
-}
+};
 
 // Set normal mode
 // You can play images on the area you set.
@@ -116,7 +116,7 @@ GuiImagePlayer.setNormalMode = function() {
 				height: 1080,
 				filename: this.newItemData.Items[i].name,
 				date: '2011/06/24'
-		}
+		};
 	}
 
 	// Draw the image in the specified area defined by "setPosition" function.
@@ -125,7 +125,7 @@ GuiImagePlayer.setNormalMode = function() {
 
 	//this.ImageViewer.endSlideshow();
 	//playImage();
-}
+};
 
 // Set Slideshow mode
 // You can use Transtion effect
@@ -150,19 +150,19 @@ GuiImagePlayer.setSlideshowMode = function() {
 
 	this.ImageViewer.stop();
 	this.playImage();
-}
+};
 
 //Prepare next image
 GuiImagePlayer.prepImage = function(imageIdx) {
 	this.ImageViewer.prepareNext(GuiImagePlayer.images[imageIdx], this.ImageViewer.Effect.FADE1);
-}
+};
 
 // Play image - only called once in slideshow!
 //SS calls  play -> BufferComplete, then the showNow will call RendComplete which starts timer for next image
 GuiImagePlayer.playImage = function() {
 	var url = GuiImagePlayer.images[GuiImagePlayer.imageIdx];
 	GuiImagePlayer.ImageViewer.play(url, 1920, 1080);
-}
+};
 
 
 GuiImagePlayer.keyDown = function() {
@@ -217,12 +217,12 @@ GuiImagePlayer.keyDown = function() {
 			GuiImagePlayer.prepImage(GuiImagePlayer.imageIdx);
 			break;
 		case tvKey.KEY_PAUSE:
-			alert("PAUSE")
-			this.Paused = true
+			alert("PAUSE");
+			this.Paused = true;
 			break;
 		case tvKey.KEY_PLAY:
-			alert("PLAY")
-			this.Paused = false
+			alert("PLAY");
+			this.Paused = false;
 			GuiImagePlayer.prepImage(GuiImagePlayer.imageIdx);
 			break;
 		case tvKey.KEY_RED:
@@ -251,5 +251,5 @@ GuiImagePlayer.keyDown = function() {
 			GuiMusicPlayer.showMusicPlayer("GuiImagePlayer");
 			break;
 	}
-}
+};
 

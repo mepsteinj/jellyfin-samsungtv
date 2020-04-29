@@ -1,6 +1,6 @@
 var GuiHelper = {
 		helpPage : null
-}
+};
 
 //------------------------------------------------------------------------------------------------
 //GUIHelper isn't its own window, it just controls the help contents at the bottom of the screen
@@ -17,7 +17,7 @@ GuiHelper.toggleHelp = function(helpPage) {
 
 	//Set focus
 	document.getElementById("GuiHelper").focus();
-}
+};
 
 GuiHelper.keyDown = function() {
 	var keyCode;
@@ -48,7 +48,7 @@ GuiHelper.keyDown = function() {
 			}
 			break;
 	}
-}
+};
 
 GuiHelper.setHelpPage = function(helpPage) {
 	//switch (helpPage) {
@@ -67,11 +67,12 @@ GuiHelper.setHelpPage = function(helpPage) {
 			document.getElementById("HelpContent").innerHTML = this.generateDisplayOneItemHelp();
 		//	break;
 	//}
-}
+};
 
 GuiHelper.generateDisplayOneItemHelp = function() {
+	var htmlToAdd = "";
 	if (this.helpPage == "GuiImagePlayer") {
-		var htmlToAdd = "Return, Stop - Ends slideshow and returns the user to the previous screen. <br> " +
+		htmlToAdd = "Return, Stop - Ends slideshow and returns the user to the previous screen. <br> " +
 		"Left, Right - Move 1 image backwards or forwards. <br>" +
 		"Pause - Pause slideshow. <br>" +
 		"Play - Resume slideshow. <br>" +
@@ -80,7 +81,7 @@ GuiHelper.generateDisplayOneItemHelp = function() {
 		"Yellow - Show this help message. <br>" +
 		"Blue - When music is playing, show the music player controls. ";
 		} else {
-		var htmlToAdd = "Tools - Show the main menu. <br> " +
+		htmlToAdd = "Tools - Show the main menu. <br> " +
 		"Return - Returns the user to the previous screen. <br> " +
 		"Up, Down, Left, Right - Navigation Control. <br>" +
 		"Enter - Select the highlighted item. <br>" +
@@ -92,7 +93,7 @@ GuiHelper.generateDisplayOneItemHelp = function() {
 	}
 	return htmlToAdd;
 
-}
+};
 
 GuiHelper.setControlButtons = function(redText,greenText,yellowText,blueText,returnText) {
 	//Displays the coloured remote control buttons on screen to indicate their current function.

@@ -17,15 +17,15 @@ var GuiTV_Upcoming = {
 		divprepend2 : "bottom_",
 
 		backdropTimeout : null
-}
+};
 
 GuiTV_Upcoming.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
-}
+};
 
 GuiTV_Upcoming.getMaxDisplayBottom = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
-}
+};
 
 GuiTV_Upcoming.start = function() {
 	alert("Page Enter : GuiTV_Upcoming");
@@ -121,7 +121,7 @@ GuiTV_Upcoming.start = function() {
 
 		document.getElementById("NoItems").focus();
 	}
-}
+};
 
 //---------------------------------------------------------------------------------------------------
 //      TITLE + COUNTER SETTER
@@ -129,17 +129,17 @@ GuiTV_Upcoming.start = function() {
 GuiTV_Upcoming.updateTitles = function() {
 	document.getElementById("title1").innerHTML = this.dateArray[this.topDayItem];
 	document.getElementById("title2").innerHTML = this.dateArray[this.topDayItem+1];
-}
+};
 
 GuiTV_Upcoming.updateCounter = function(isBottom) {
 	if (this.selectedItem == -2) {
-		document.getElementById("Counter").innerHTML = (this.selectedBannerItem+1) + "/" + this.bannerItems.length
+		document.getElementById("Counter").innerHTML = (this.selectedBannerItem+1) + "/" + this.bannerItems.length;
 	} else if (isBottom){
-		document.getElementById("Counter").innerHTML = (this.selectedDayItem+1) + "/" + this.upcomingData.length + " - " + (this.selectedItem2+1) + "/" + this.upcomingData[this.selectedDayItem].length
+		document.getElementById("Counter").innerHTML = (this.selectedDayItem+1) + "/" + this.upcomingData.length + " - " + (this.selectedItem2+1) + "/" + this.upcomingData[this.selectedDayItem].length;
 	} else {
-		document.getElementById("Counter").innerHTML = (this.selectedDayItem+1) + "/" + this.upcomingData.length + " - " + (this.selectedItem+1) + "/" + this.upcomingData[this.selectedDayItem].length
+		document.getElementById("Counter").innerHTML = (this.selectedDayItem+1) + "/" + this.upcomingData.length + " - " + (this.selectedItem+1) + "/" + this.upcomingData[this.selectedDayItem].length;
 	}
-}
+};
 
 //---------------------------------------------------------------------------------------------------
 //      TOP ITEMS HANDLERS
@@ -147,13 +147,13 @@ GuiTV_Upcoming.updateCounter = function(isBottom) {
 GuiTV_Upcoming.updateDisplayedItems = function() {
 	Support.updateDisplayedItems(this.upcomingData[this.topDayItem],this.selectedItem,this.topLeftItem,
 			Math.min(this.topLeftItem + this.getMaxDisplay(),this.upcomingData[this.topDayItem].length),"Content",this.divprepend1,false,null,true);
-}
+};
 
 //Function sets CSS Properties so show which user is selected
 GuiTV_Upcoming.updateSelectedItems = function () {
 	Support.updateSelectedNEW(this.upcomingData[this.topDayItem],this.selectedItem,this.topLeftItem,
 			Math.min(this.topLeftItem + this.getMaxDisplay(),this.upcomingData[this.topDayItem].length),"Series Collection Selected","Series Collection",this.divprepend1,true);
-}
+};
 
 GuiTV_Upcoming.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.bannerItems.length; index++) {
@@ -179,7 +179,7 @@ GuiTV_Upcoming.updateSelectedBannerItems = function() {
 			}
 		}
 	}
-}
+};
 
 GuiTV_Upcoming.keyDown = function()
 {
@@ -359,7 +359,7 @@ GuiTV_Upcoming.keyDown = function()
 			widgetAPI.sendExitEvent();
 			break;
 	}
-}
+};
 
 GuiTV_Upcoming.openMenu = function() {
 	if (this.selectedItem == -2) { //Banner menu
@@ -375,7 +375,7 @@ GuiTV_Upcoming.openMenu = function() {
 		Support.updateURLHistory("GuiTV_Upcoming",null,null,null,null,this.selectedItem,this.topLeftItem,true);
 		GuiMainMenu.requested("GuiTV_Upcoming",this.divprepend1 + this.upcomingData[this.selectedDayItem][this.selectedItem].Id);
 	}
-}
+};
 
 //---------------------------------------------------------------------------------------------------
 //      BOTTOM ITEMS HANDLERS
@@ -385,14 +385,14 @@ GuiTV_Upcoming.updateDisplayedItems2 = function() {
 	var item = this.topDayItem+1;
 	Support.updateDisplayedItems(this.upcomingData[item],this.selectedItem2,this.topLeftItem2,
 			Math.min(this.topLeftItem2 + this.getMaxDisplayBottom(),this.upcomingData[item].length),"Content2",this.divprepend2,false,null,true);
-}
+};
 
 //Function sets CSS Properties so show which user is selected
 GuiTV_Upcoming.updateSelectedItems2 = function () {
 	var item = this.topDayItem+1;
 	Support.updateSelectedNEW(this.upcomingData[item],this.selectedItem2,this.topLeftItem2,
 			Math.min(this.topLeftItem2 + this.getMaxDisplayBottom(),this.upcomingData[item].length),"Series Collection Selected","Series Collection",this.divprepend2,true);
-}
+};
 
 
 GuiTV_Upcoming.bottomKeyDown = function()
@@ -519,12 +519,12 @@ GuiTV_Upcoming.bottomKeyDown = function()
 			widgetAPI.sendExitEvent();
 			break;
 	}
-}
+};
 
 GuiTV_Upcoming.openMenu2 = function() {
 	Support.updateURLHistory("GuiTV_Upcoming",null,null,null,null,this.selectedItem2,this.topLeftItem2,false);
 	GuiMainMenu.requested("GuiTV_UpcomingBottom",this.divprepend2 + this.upcomingData[this.selectedDayItem][this.selectedItem2].Id);
-}
+};
 
 //--------------------------------------------------------------------------------------------------------
 
@@ -560,4 +560,4 @@ GuiTV_Upcoming.processSelectedItem = function (isBottom) {
 		var url = Server.getItemInfoURL(this.upcomingData[this.selectedDayItem][selectedItem].Id,null);
 		GuiPage_ItemDetails.start(this.upcomingData[this.selectedDayItem][selectedItem].Name,url,0);
 	}
-}
+};

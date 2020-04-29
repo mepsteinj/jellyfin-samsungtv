@@ -18,7 +18,7 @@ var GuiPlayer_Versions = {
 
 		//Holds all options to show in GUI if required
 		MediaSelections : [],
-}
+};
 
 GuiPlayer_Versions.start = function(playerData,resumeTicks,playedFromPage) {
 	//Reset Vars
@@ -60,7 +60,7 @@ GuiPlayer_Versions.start = function(playerData,resumeTicks,playedFromPage) {
 	for (var index = 0; index < this.MediaOptions.length; index++) {
 		var result = GuiPlayer_Transcoding.start(this.PlayerData.Id, this.PlayerData.MediaSources[this.MediaOptions[index][0]],this.MediaOptions[index][0],
 			this.MediaOptions[index][1],this.MediaOptions[index][2],this.MediaOptions[index][3],this.MediaOptions[index][4]);
-			FileLog.write("Video : Playback Added")
+			FileLog.write("Video : Playback Added");
 			this.MediaPlayback.push(result);
 	}
 
@@ -79,54 +79,54 @@ GuiPlayer_Versions.start = function(playerData,resumeTicks,playedFromPage) {
 		document.getElementById(this.playedFromPage).focus();
 	} else if (this.MediaPlayback.length == 1) { //Added in check to play only non transcoded stuff
 		//Play file
-		FileLog.write("Video : One Playback Option - Player Loaded")
+		FileLog.write("Video : One Playback Option - Player Loaded");
 		GuiPlayer.startPlayback(this.MediaPlayback[0],resumeTicks); //Need to change
 	} else {
 		//See how many will direct play
-		FileLog.write("Video : Multiple Playback Options - Determine Direct Play Count")
+		FileLog.write("Video : Multiple Playback Options - Determine Direct Play Count");
 		for (var index = 0; index < this.MediaPlayback.length;index++) {
 			if (this.MediaPlayback[index][2] == "Direct Play") {
-				FileLog.write("Video : Found Direct Play - Added to Selections")
+				FileLog.write("Video : Found Direct Play - Added to Selections");
 				this.MediaSelections.push(this.MediaPlayback[index]);
 			}
 		}
 
 		//If more than 1 loop through and generate GUI asking user
 		if (this.MediaSelections.length == 1) {
-			FileLog.write("Video : One Direct Stream - Player Loaded")
+			FileLog.write("Video : One Direct Stream - Player Loaded");
 			GuiPlayer.startPlayback(this.MediaSelections[0],resumeTicks);
 		} else if (this.MediaSelections.length > 1) {
-			FileLog.write("Video : Multiple Direct Stream - Option Presented to User")
+			FileLog.write("Video : Multiple Direct Stream - Option Presented to User");
 			document.getElementById("GuiPlayer_Versions").focus();
 			this.updateDisplayedItems();
 			this.updateSelectedItems();
 		} else {
 			//None Direct Play - see if any require Audio Only Transcoding
-			FileLog.write("Video : None Direct Stream - Determine Audio Only Transcode Count")
+			FileLog.write("Video : None Direct Stream - Determine Audio Only Transcode Count");
 			for (var index = 0; index < this.MediaPlayback.length;index++) {
 				if (this.MediaPlayback[index][2] == "Transcoding Audio") {
-					FileLog.write("Video : Found Audio Only Transcode - Added to Selections")
+					FileLog.write("Video : Found Audio Only Transcode - Added to Selections");
 					this.MediaSelections.push(this.MediaPlayback[index]);
 				}
 			}
 
 			//If more than 1 loop through and generate GUI asking user
 			if (this.MediaSelections.length == 1) {
-				FileLog.write("Video : One Audio Only Transcode - Player Loaded")
+				FileLog.write("Video : One Audio Only Transcode - Player Loaded");
 				GuiPlayer.startPlayback(this.MediaSelections[0],resumeTicks);
 			} else if (this.MediaSelections.length > 1) {
-				FileLog.write("Video : Multiple Audio Only Transcode - Option Presented to User")
+				FileLog.write("Video : Multiple Audio Only Transcode - Option Presented to User");
 				document.getElementById("GuiPlayer_Versions").focus();
 				this.updateDisplayedItems();
 				this.updateSelectedItems();
 			} else {
 				//Just use 1st Source and give up!
-				FileLog.write("Video : None Audio Only Transcode - Use First Media Source - Player Started")
+				FileLog.write("Video : None Audio Only Transcode - Use First Media Source - Player Started");
 				GuiPlayer.startPlayback(this.MediaSelections[0],resumeTicks);
 			}
 		}
 	}
-}
+};
 
 GuiPlayer_Versions.updateDisplayedItems = function() {
 	document.getElementById("guiPlayer_Versions_Playables").style.visibility = "";
@@ -136,7 +136,7 @@ GuiPlayer_Versions.updateDisplayedItems = function() {
 		document.getElementById("guiPlayer_Versions_Playables").innerHTML += "<div id="+this.MediaSelections[index][0].Id+" class=videoVersionOption>"+this.MediaSelections[index][0].Name
 		+ "<div class=videoVersionType>D</div></div>";
 	}
-}
+};
 
 GuiPlayer_Versions.updateSelectedItems = function() {
 	for (var index = this.topLeftItem; index < Math.min(this.MediaSelections.length,this.topLeftItem + this.maxDisplay); index++){
@@ -147,7 +147,7 @@ GuiPlayer_Versions.updateSelectedItems = function() {
 		}
 	}
 	document.getElementById("Counter").innerHTML = (this.selectedItem + 1) + "/" + this.MediaSelections.length;
-}
+};
 
 
 
@@ -278,14 +278,14 @@ GuiPlayer_Versions.getMainStreamIndex = function(MediaSource, MediaSourceIndex) 
 			//If TV Supports 3d
 			var pluginScreen = document.getElementById("pluginScreen");
 			if (pluginScreen.Flag3DEffectSupport()) {
-				FileLog.write("Video : Media Stream Added : 3D " + MediaSourceIndex + "," + videoIndex + "," + audioIndex + "," + audioStreamFirst + "," + subtitleIndex)
+				FileLog.write("Video : Media Stream Added : 3D " + MediaSourceIndex + "," + videoIndex + "," + audioIndex + "," + audioStreamFirst + "," + subtitleIndex);
 				this.MediaOptions.push([MediaSourceIndex,videoIndex,audioIndex,audioStreamFirst,subtitleIndex]); //Index != Id!!!
 			} else {
 				FileLog.write("Video : Media Stream Added : 3D - Not Added, TV does not support 3D");
 			}
 		} else {
 			//Not 3D
-			FileLog.write("Video : Media Stream Added : 2D " + MediaSourceIndex + "," + videoIndex + "," + audioIndex + "," + audioStreamFirst+ "," + subtitleIndex)
+			FileLog.write("Video : Media Stream Added : 2D " + MediaSourceIndex + "," + videoIndex + "," + audioIndex + "," + audioStreamFirst+ "," + subtitleIndex);
 			this.MediaOptions.push([MediaSourceIndex,videoIndex,audioIndex,audioStreamFirst,subtitleIndex]); // Index != Id!!!
 		}
 	} else {
@@ -296,7 +296,7 @@ GuiPlayer_Versions.getMainStreamIndex = function(MediaSource, MediaSourceIndex) 
 			FileLog.write("Video : No Audio Index Found - Not Added");
 		}
 	}
-}
+};
 
 GuiPlayer_Versions.keyDown = function() {
 	var keyCode = event.keyCode;
@@ -364,7 +364,7 @@ GuiPlayer_Versions.keyDown = function() {
 			alert("BLUE");
 			document.getElementById("guiPlayer_Loading").style.visibility = "hidden";
 			File.deleteFile();
-			widgetAPI.sendExitEvent()
+			widgetAPI.sendExitEvent();
 			break;
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY");

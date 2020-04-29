@@ -14,11 +14,11 @@ var GuiPage_Playlist = {
 		topMenuItems : ["PlayAll","ShuffleAll","Delete"],
 		playItems : ["PlayFrom_","Play_","View_","Remove_"]
 
-}
+};
 
 GuiPage_Playlist.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
-}
+};
 
 //------------------------------------------------------------
 //      Episode Functions
@@ -128,7 +128,7 @@ GuiPage_Playlist.updateDisplayedItems = function() {
 		}
 	}
 	document.getElementById("playlistOptions").innerHTML = htmlToAdd + "</table>";
-}
+};
 
 //Function sets CSS Properties so show which user is selected
 GuiPage_Playlist.updateSelectedItems = function () {
@@ -173,7 +173,7 @@ GuiPage_Playlist.updateSelectedItems = function () {
 		document.getElementById("Counter").innerHTML = (this.selectedItem + 1) + "/" + this.AlbumData.Items.length;
 	}
 
-}
+};
 
 GuiPage_Playlist.keyDown = function() {
 	var keyCode = event.keyCode;
@@ -248,7 +248,7 @@ GuiPage_Playlist.keyDown = function() {
 			widgetAPI.sendExitEvent();
 			break;
 	}
-}
+};
 
 GuiPage_Playlist.openMenu = function() {
 	Support.updateURLHistory("GuiPage_Playlist",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,true);
@@ -258,7 +258,7 @@ GuiPage_Playlist.openMenu = function() {
 	} else {
 		GuiMainMenu.requested("GuiPage_Playlist",this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id,"guiMusic_TableTd highlight"+Main.highlightColour+"Background");
 	}
-}
+};
 
 GuiPage_Playlist.processUpKey = function() {
 	this.selectedItem--;
@@ -282,7 +282,7 @@ GuiPage_Playlist.processUpKey = function() {
 		}
 		this.updateSelectedItems();
 	}
-}
+};
 
 GuiPage_Playlist.processDownKey = function() {
 	this.selectedItem++;
@@ -302,7 +302,7 @@ GuiPage_Playlist.processDownKey = function() {
 		}
 	}
 	this.updateSelectedItems();
-}
+};
 
 GuiPage_Playlist.processLeftKey = function() {
 	this.selectedItem2--;
@@ -312,7 +312,7 @@ GuiPage_Playlist.processLeftKey = function() {
 	} else {
 		this.updateSelectedItems();
 	}
-}
+};
 
 GuiPage_Playlist.processRightKey = function() {
 	this.selectedItem2++;
@@ -329,7 +329,7 @@ GuiPage_Playlist.processRightKey = function() {
 			this.updateSelectedItems();
 		}
 	}
-}
+};
 
 GuiPage_Playlist.processSelectedItem = function() {
 	alert("List item = " + this.selectedItem + " : Menu item = " + this.selectedItem2);
@@ -404,7 +404,7 @@ GuiPage_Playlist.processSelectedItem = function() {
 			break;
 		}
 	}
-}
+};
 
 GuiPage_Playlist.deletePlaylist = function (playlistId) {
 	var ids = "";
@@ -429,4 +429,4 @@ GuiPage_Playlist.deletePlaylist = function (playlistId) {
 		var url = Server.getItemTypeURL("SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Playlist&Recursive=true&Fields=SortName");
 		GuiDisplayOneItem.start("Playlists",url,0,0);
 	}, 450);
-}
+};

@@ -15,20 +15,20 @@ var GuiTV_Show = {
 
 		startParams : [],
 		isLatest : false
-}
+};
 
 GuiTV_Show.onFocus = function() {
 	GuiHelper.setControlButtons("Favourite","Watched",null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
-}
+};
 
 GuiTV_Show.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
-}
+};
 
 GuiTV_Show.GetDetail = function(itemid) {
 	var url3 = Server.getItemInfoURL(itemid);
 	this.seasondata = Server.getContent(url3);
-}
+};
 
 GuiTV_Show.start = function(title,url,selectedItem,topLeftItem) {
 	alert("Page Enter : GuiTV_Show");
@@ -130,7 +130,7 @@ GuiTV_Show.start = function(title,url,selectedItem,topLeftItem) {
 			GuiMainMenu.requested(null,null);
 		}
 	}
-}
+};
 
 GuiTV_Show.updateDisplayedItems = function() {
 	var htmlToAdd = "";
@@ -182,7 +182,7 @@ GuiTV_Show.updateDisplayedItems = function() {
 	}
 	htmlforTitle += "</tr><table></div>";
 	document.getElementById("ShowTitle").innerHTML = htmlforTitle;
-}
+};
 
 //Function sets CSS Properties so show which user is selected
 GuiTV_Show.updateSelectedItems = function () {
@@ -237,7 +237,7 @@ GuiTV_Show.updateSelectedBannerItems = function() {
 			document.getElementById("bannerItem"+index).className = "button";
 		}
 	}
-}
+};
 
 GuiTV_Show.keyDown = function() {
 	var keyCode = event.keyCode;
@@ -355,7 +355,7 @@ GuiTV_Show.keyDown = function() {
 			widgetAPI.sendExitEvent();
 			break;
 	}
-}
+};
 
 GuiTV_Show.processSelectedItem = function() {
 	if (this.selectedItem == -1) {
@@ -369,22 +369,22 @@ GuiTV_Show.processSelectedItem = function() {
 	if (this.selectedItem == -1) {
 		if (this.selectedBannerItem == 0) {
 			//Play All Episodes in Show
-			var urlToPlay= Server.getChildItemsURL(this.ShowData.Id,"&ExcludeLocationTypes=Virtual&IncludeItemTypes=Episode&Recursive=true&SortBy=SortName&SortOrder=Ascending&Fields=ParentId,SortName,MediaSources")
+			var urlToPlay= Server.getChildItemsURL(this.ShowData.Id,"&ExcludeLocationTypes=Virtual&IncludeItemTypes=Episode&Recursive=true&SortBy=SortName&SortOrder=Ascending&Fields=ParentId,SortName,MediaSources");
 			GuiPlayer.start("PlayAll",urlToPlay,0,"GuiTV_Show");
 		} else if (this.selectedBannerItem == 1) {
 			//Shuffle All Episodes in Show
-			var urlToPlay= Server.getChildItemsURL(this.ShowData.Id,"&ExcludeLocationTypes=Virtual&IncludeItemTypes=Episode&Recursive=true&SortBy=Random&SortOrder=Ascending&Fields=ParentId,SortName,MediaSources")
+			var urlToPlay= Server.getChildItemsURL(this.ShowData.Id,"&ExcludeLocationTypes=Virtual&IncludeItemTypes=Episode&Recursive=true&SortBy=Random&SortOrder=Ascending&Fields=ParentId,SortName,MediaSources");
 			GuiPlayer.start("PlayAll",urlToPlay,0,"GuiTV_Show");
 		}
 	} else {
 		var url = Server.getChildItemsURL(this.ItemData.Items[this.selectedItem].Id,"&IncludeItemTypes=Episode&fields=SortName,Overview");
 		GuiDisplay_Episodes.start(this.ShowData.Name + " " + this.ItemData.Items[this.selectedItem].Name,url,0,0);
 	}
-}
+};
 
 GuiTV_Show.playSelectedItem = function () {
 	Support.playSelectedItem("GuiTV_Show",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null);
-}
+};
 
 GuiTV_Show.processUpKey = function() {
 	this.selectedItem = this.selectedItem - this.MAXCOLUMNCOUNT;
@@ -404,7 +404,7 @@ GuiTV_Show.processUpKey = function() {
 		}
 		this.updateSelectedItems();
 	}
-}
+};
 
 GuiTV_Show.processDownKey = function() {
 	this.selectedItem = this.selectedItem + this.MAXCOLUMNCOUNT;
@@ -427,7 +427,7 @@ GuiTV_Show.processDownKey = function() {
 		this.updateSelectedItems();
 	}
 
-}
+};
 
 
 
@@ -448,7 +448,7 @@ GuiTV_Show.processChannelUpKey = function() {
 		}
 		this.updateSelectedItems();
 	}
-}
+};
 
 GuiTV_Show.openMenu = function() {
 	Support.updateURLHistory("GuiTV_Show",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
@@ -461,7 +461,7 @@ GuiTV_Show.openMenu = function() {
 	} else {
 		GuiMainMenu.requested("GuiTV_Show",this.ItemData.Items[this.selectedItem].Id,"ShowListSingle highlight"+Main.highlightColour+"Background");
 	}
-}
+};
 
 GuiTV_Show.processLeftKey = function() {
 	if (this.selectedItem == -1) {
@@ -473,7 +473,7 @@ GuiTV_Show.processLeftKey = function() {
 	} else {
 		this.openMenu(); //There's no left/right in the list of series, always open the menu.
 	}
-}
+};
 
 GuiTV_Show.processRightKey = function() {
 	if (this.selectedItem == -1) {
@@ -482,8 +482,7 @@ GuiTV_Show.processRightKey = function() {
 			this.updateSelectedBannerItems();
 		}
 	}
-}
-
+};
 
 GuiTV_Show.processChannelDownKey = function() {
 	this.selectedItem = this.selectedItem + this.getMaxDisplay();
@@ -498,11 +497,11 @@ GuiTV_Show.processChannelDownKey = function() {
 		this.updateDisplayedItems();
 	}
 	this.updateSelectedItems();
-}
+};
 
 
 GuiTV_Show.returnFromMusicPlayer = function() {
 	this.selectedItem = 0;
 	this.updateDisplayedItems();
 	this.updateSelectedItems();
-}
+};

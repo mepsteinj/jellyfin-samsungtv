@@ -32,7 +32,7 @@ var GuiPlayer_Transcoding = {
 		isAudioCodec : null,
 		isAudioContainer : null,
 		isAudioChannel : null
-}
+};
 
 //--------------------------------------------------------------------------------------
 GuiPlayer_Transcoding.start = function(showId, MediaSource,MediaSourceIndex, videoIndex, audioIndex, isFirstAudioIndex, subtitleIndex) {
@@ -84,7 +84,7 @@ GuiPlayer_Transcoding.start = function(showId, MediaSource,MediaSourceIndex, vid
 	//Return results to Versions
 	//MediaSourceId,Url,transcodeStatus,videoIndex,audioIndex
 	return [MediaSourceIndex,url,transcodeStatus,videoIndex,audioIndex,subtitleIndex];
-}
+};
 
 GuiPlayer_Transcoding.checkCodec = function() {
 	var codec = this.MediaSource.MediaStreams[this.videoIndex].Codec.toLowerCase();
@@ -114,7 +114,7 @@ GuiPlayer_Transcoding.checkCodec = function() {
 	} else {
 		this.isVideo = false;
 	}
-}
+};
 
 GuiPlayer_Transcoding.checkAudioCodec = function() {
 	var audiocodec = this.MediaSource.MediaStreams[this.audioIndex].Codec.toLowerCase();
@@ -136,7 +136,7 @@ GuiPlayer_Transcoding.checkAudioCodec = function() {
 	} else {
 		this.isAudio = false;
 	}
-}
+};
 
 GuiPlayer_Transcoding.checkAudioChannels = function(maxChannels) {
 	if (maxChannels == null) {
@@ -148,7 +148,7 @@ GuiPlayer_Transcoding.checkAudioChannels = function(maxChannels) {
 			return false;
 		}
 	}
-}
+};
 
 GuiPlayer_Transcoding.checkResolution = function(maxResolution) {
 	if (maxResolution == null) {
@@ -158,11 +158,11 @@ GuiPlayer_Transcoding.checkResolution = function(maxResolution) {
 	} else {
 		return false;
 	}
-}
+};
 
 GuiPlayer_Transcoding.checkContainer = function(supportedContainers) {
 	if (supportedContainers == null) {
-		return false
+		return false;
 	} else {
 		var isContainer = false;
 		for (var index = 0; index < supportedContainers.length; index++) {
@@ -173,7 +173,7 @@ GuiPlayer_Transcoding.checkContainer = function(supportedContainers) {
 		}
 		return isContainer;
 	}
-}
+};
 
 GuiPlayer_Transcoding.checkBitRate = function(maxBitRate) {
 	//Get Bitrate from Settings File
@@ -187,7 +187,7 @@ GuiPlayer_Transcoding.checkBitRate = function(maxBitRate) {
 	} else {
 		return true;
 	}
-}
+};
 
 GuiPlayer_Transcoding.checkFrameRate = function(maxFrameRate) {
 	if (maxFrameRate == null) {
@@ -197,10 +197,9 @@ GuiPlayer_Transcoding.checkFrameRate = function(maxFrameRate) {
 	} else {
 		return false;
 	}
-}
+};
 
 GuiPlayer_Transcoding.checkLevel = function(maxLevel) {
-	var level = this.MediaSource.MediaStreams[this.videoIndex].Level;
 	if (maxLevel == null) {
 		return false;
 	} if (maxLevel == true) {
@@ -214,7 +213,7 @@ GuiPlayer_Transcoding.checkLevel = function(maxLevel) {
 			return false;
 		}
 	}
-}
+};
 
 GuiPlayer_Transcoding.checkProfile = function(supportedProfiles) {
 	if (supportedProfiles == null) {
@@ -231,4 +230,4 @@ GuiPlayer_Transcoding.checkProfile = function(supportedProfiles) {
 		}
 		return profile;
 	}
-}
+};

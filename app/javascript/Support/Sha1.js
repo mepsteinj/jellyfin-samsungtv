@@ -41,7 +41,7 @@ Sha1.hash = function(msg, utf8encode) {
   // add length (in bits) into final pair of 32-bit integers (big-endian) [§5.1.1]
   // note: most significant word would be (len-1)*8 >>> 32, but since JS converts
   // bitwise-op args to 32 bits, we need to simulate this by arithmetic operators
-  M[N-1][14] = ((msg.length-1)*8) / Math.pow(2, 32); M[N-1][14] = Math.floor(M[N-1][14])
+  M[N-1][14] = ((msg.length-1)*8) / Math.pow(2, 32); M[N-1][14] = Math.floor(M[N-1][14]);
   M[N-1][15] = ((msg.length-1)*8) & 0xffffffff;
 
   // set initial hash value [§5.3.1]
@@ -84,7 +84,7 @@ Sha1.hash = function(msg, utf8encode) {
 
   return Sha1.toHexStr(H0) + Sha1.toHexStr(H1) +
     Sha1.toHexStr(H2) + Sha1.toHexStr(H3) + Sha1.toHexStr(H4);
-}
+};
 
 //
 // function 'f' [§4.1.1]
@@ -96,14 +96,14 @@ Sha1.f = function(s, x, y, z)  {
   case 2: return (x & y) ^ (x & z) ^ (y & z);  // Maj()
   case 3: return x ^ y ^ z;                    // Parity()
   }
-}
+};
 
 //
 // rotate left (circular left shift) value x by n positions [§3.2.5]
 //
 Sha1.ROTL = function(x, n) {
   return (x<<n) | (x>>>(32-n));
-}
+};
 
 //
 // hexadecimal representation of a number
@@ -114,8 +114,7 @@ Sha1.toHexStr = function(n) {
   var s="", v;
   for (var i=7; i>=0; i--) { v = (n>>>(i*4)) & 0xf; s += v.toString(16); }
   return s;
-}
-
+};
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
 /*  Utf8 class: encode / decode between multi-byte Unicode characters and UTF-8 multiple          */
@@ -149,7 +148,7 @@ Utf8.encode = function(strUni) {
         return String.fromCharCode(0xe0 | cc>>12, 0x80 | cc>>6&0x3F, 0x80 | cc&0x3f); }
     );
   return strUtf;
-}
+};
 
 /**
  * Decode utf-8 encoded string back into multi-byte Unicode characters
@@ -172,6 +171,6 @@ Utf8.decode = function(strUtf) {
         return String.fromCharCode(cc); }
     );
   return strUni;
-}
+};
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */

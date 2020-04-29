@@ -1,6 +1,6 @@
 var GuiNotifications = {
 		timeout : null
-}
+};
 
 GuiNotifications.setNotification = function (Message, Title,alterHeight) {
 	//Clear any existing message
@@ -44,4 +44,4 @@ GuiNotifications.setNotification = function (Message, Title,alterHeight) {
 			document.getElementById("NotificationText").innerHTML = "";
 		}, 5000);
 	}
-}
+};
