@@ -6,11 +6,11 @@ var GuiPage_Servers = {
 	isAddButton : false,
 	MAXCOLUMNCOUNT : 3,
 	MAXROWCOUNT : 1
-}
+};
 
 GuiPage_Servers.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
-}
+};
 
 GuiPage_Servers.start = function(runAutoLogin) {
 	alert("Page Enter : GuiPage_Servers");
@@ -47,7 +47,7 @@ GuiPage_Servers.start = function(runAutoLogin) {
 		document.getElementById("GuiPage_Servers").focus();
 	}
 
-}
+};
 
 GuiPage_Servers.updateDisplayedUsers = function() {
 	var htmltoadd = "";
@@ -57,13 +57,13 @@ GuiPage_Servers.updateDisplayedUsers = function() {
 
 	//Set Content to Server Data
 	document.getElementById("GuiPage_Servers_allusers").innerHTML = htmltoadd;
-}
+};
 
 //Function sets CSS Properties so show which user is selected
 GuiPage_Servers.updateSelectedUser = function () {
 	Support.updateSelectedNEW(this.ServerData.Servers,this.selectedItem,this.topLeftItem,
 			Math.min(this.topLeftItem + GuiPage_Servers.getMaxDisplay(),this.ServerData.Servers.length),"User Selected highlight1Boarder","User","");
-}
+};
 
 //Function executes on the selection of a user - should log user in or generate error message on screen
 GuiPage_Servers.processSelectedUser = function () {
@@ -73,7 +73,7 @@ GuiPage_Servers.processSelectedUser = function () {
 		File.setServerEntry(this.selectedItem);
 		Server.testConnectionSettings(this.ServerData.Servers[this.selectedItem].Path,true);
 	}
-}
+};
 
 GuiPage_Servers.keyDown = function()
 {

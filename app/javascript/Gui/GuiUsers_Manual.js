@@ -2,7 +2,7 @@ var GuiUsers_Manual = {
 	UserData : null,
 	selectedItem : 0, //0 = User, 1 = Password
 	rememberPassword : false
-}
+};
 
 GuiUsers_Manual.start = function() {
 	alert("Page Enter : GuiUsers_Manual");
@@ -30,7 +30,7 @@ GuiUsers_Manual.start = function() {
 		</div>";
 
 	new GuiUsers_Manual_Input("user");
-}
+};
 
 GuiUsers_Manual.IMEAuthenticate = function(user, password) {
 	var authenticateSuccess = Server.Authenticate(null, user, password);
@@ -66,7 +66,7 @@ GuiUsers_Manual.IMEAuthenticate = function(user, password) {
 		document.getElementById("user").focus();
 		GuiNotifications.setNotification("Wrong username, bad password or network error.","Logon Error",true);
 	}
-}
+};
 
 //////////////////////////////////////////////////////////////////
 //  Input method for entering user password.                    //
@@ -75,7 +75,7 @@ var GuiUsers_Manual_Input  = function(id) {
 	var imeReady = function(imeObject) {
 		installFocusKeyCallbacks();
 		document.getElementById(id).focus();
-	}
+	};
 
 	var ime = new IMEShell(id, imeReady,'en');
 	ime.setKeypadPos(1300,90);
@@ -133,7 +133,7 @@ var GuiUsers_Manual_Input  = function(id) {
 			document.getElementById("NoKeyInput").focus();
 			widgetAPI.sendExitEvent();
 		});
-	}
+	};
 };
 
 GuiUsers_Manual.keyDownPassword = function() {

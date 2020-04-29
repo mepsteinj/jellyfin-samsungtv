@@ -3,7 +3,7 @@ var GuiPage_NewServer = {
 	inputs : [ null,null,null,null,null],
 	ready : [ false,false,false,false,false],
 
-}
+};
 
 GuiPage_NewServer.start = function() {
 	alert("Page Enter : GuiPage_NewServer");
@@ -29,7 +29,7 @@ GuiPage_NewServer.start = function() {
 	//Prepare all input elements for IME
 	GuiPage_NewServer.createInputObjects();
 	pluginAPI.registIMEKey();
-}
+};
 
 //Prepare all input elements for IME on Load!
 GuiPage_NewServer.createInputObjects = function() {
@@ -44,7 +44,7 @@ GuiPage_NewServer.createInputObjects = function() {
 		nextIndex = (previousIndex + 2) % GuiPage_NewServer.inputs.length;
 		GuiPage_NewServer.inputs[index] = new GuiPage_NewServer_Input(this.elementIds[index],this.elementIds[previousIndex], this.elementIds[nextIndex]);
 	}
-}
+};
 
 //Function to check if IME is ready, and when so sets focus on first element in array
 GuiPage_NewServer.ready = function(id) {
@@ -63,21 +63,21 @@ GuiPage_NewServer.ready = function(id) {
 	if (ready) {
 		document.getElementById(GuiPage_NewServer.elementIds[0]).focus();
 	}
-}
+};
 
 //Function to delete all the contents of the boxes
 GuiPage_NewServer.deleteAllBoxes = function(currentId) {
 	for (var index = 0;index < GuiPage_NewServer.elementIds.length;index++) {
 		document.getElementById(GuiPage_NewServer.elementIds[index]).value="";
 	}
-}
+};
 
 //IME Key Handler
 var GuiPage_NewServer_Input  = function(id,previousId, nextId) {
 	var imeReady = function(imeObject) {
 		installFocusKeyCallbacks();
 		GuiPage_NewServer.ready(id);
-	}
+	};
 
 	var ime = new IMEShell(id, imeReady,'en');
 	ime.setKeypadPos(1300,90);
@@ -159,5 +159,5 @@ var GuiPage_NewServer_Input  = function(id,previousId, nextId) {
 			widgetAPI.sendExitEvent();
 			return false;
 		});
-	}
-}
+	};
+};
