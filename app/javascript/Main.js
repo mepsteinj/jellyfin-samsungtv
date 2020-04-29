@@ -4,9 +4,8 @@ var tvKey = new Common.API.TVKeyValue();
 	
 var Main =
 {
-		version : "v2.2.5b",
-		requiredServerVersion : "10.3.2",
-		requiredDevServerVersion : "3.0.5507.2131",
+		version : "v2.2.6a",
+		requiredServerVersion : "10.5.2",
 		
 		//TV Series Version
 		modelYear : null,
@@ -88,7 +87,7 @@ Main.onLoad = function()
 	//Setup Logging
 	FileLog.loadFile(false); // doesn't return contents, done to ensure file exists
 	FileLog.write("---------------------------------------------------------------------",true);
-	FileLog.write("Emby Application Started");
+	FileLog.write("Jellyfin Application Started");
 	
 	if (Main.isImageCaching()) {
 		var fileSystemObj = new FileSystem();
@@ -211,7 +210,7 @@ Main.onLoad = function()
 	    	}
 	    } else if (fileJson.Servers.length == 1) {
 	    	//If 1 server auto login with that
-	    	FileLog.write("Emby server name found in settings. Auto-connecting.");
+	    	FileLog.write("Jellyfin server name found in settings. Auto-connecting.");
 	    	File.setServerEntry(0);
 	    	Server.testConnectionSettings(fileJson.Servers[0].Path,true);
 	    } else {

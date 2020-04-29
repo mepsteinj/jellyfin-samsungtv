@@ -495,7 +495,7 @@ Server.DELETE = function(url, item) {
 Server.testConnectionSettings = function (server,fromFile) {	
 	xmlHttp = new XMLHttpRequest();
 	if (xmlHttp) {
-		xmlHttp.open("GET", "http://" + server + "/emby/System/Info/Public?format=json",false);
+		xmlHttp.open("GET", "http://" + server + "/jellyfin/System/Info/Public?format=json",false);
 		xmlHttp.setRequestHeader("Content-Type", 'application/json');
 		xmlHttp.onreadystatechange = function () {
 			GuiNotifications.setNotification("hello","Network Status",true);
@@ -506,7 +506,7 @@ Server.testConnectionSettings = function (server,fromFile) {
 			    		File.saveServerToFile(json.Id,json.ServerName,server); 
 			    	}
 			       	//Set Server.serverAddr!
-			       	Server.setServerAddr("http://" + server + "/emby");
+			       	Server.setServerAddr("http://" + server + "/jellyfin");
 			       	//Check Server Version
 			       	if (ServerVersion.checkServerVersion()) {
 			       		GuiUsers.start(true);
@@ -514,7 +514,7 @@ Server.testConnectionSettings = function (server,fromFile) {
 			       		ServerVersion.start();
 			       	}
 		        } else if (xmlHttp.status === 0) {
-		        	GuiNotifications.setNotification("Your Emby server is not responding.","Network Error "+xmlHttp.status,true);
+		        	GuiNotifications.setNotification("Your Jellyfin server is not responding.","Network Error "+xmlHttp.status,true);
 					Support.removeSplashScreen();
 			    	if (fromFile == true) {
 			    		setTimeout(function(){
@@ -527,7 +527,7 @@ Server.testConnectionSettings = function (server,fromFile) {
 			    		}, 3000);
 			    	}
 		        } else {
-		        	GuiNotifications.setNotification("Emby server connection error.","Network Error "+xmlHttp.status,true);
+		        	GuiNotifications.setNotification("Jellyfin server connection error.","Network Error "+xmlHttp.status,true);
 					Support.removeSplashScreen();
 			    	if (fromFile == true) {
 			    		setTimeout(function(){
