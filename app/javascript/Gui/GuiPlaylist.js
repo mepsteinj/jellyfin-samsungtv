@@ -1,22 +1,16 @@
-var GuiPage_Playlist = {
-		AlbumData : null,
-
-		selectedItem : 0, //the current row (-1 is the menu row).
-		topLeftItem : 0,
-
-		selectedItem2 : 0, //the current column.
-
-		MAXCOLUMNCOUNT : 1,
-		MAXROWCOUNT : 12, //Max = 12, causes graphical jump due to large html element, couldn't find issue,
-
-		startParams : [],
-
-		topMenuItems : ["PlayAll","ShuffleAll","Delete"],
-		playItems : ["PlayFrom_","Play_","View_","Remove_"]
-
+var GuiPlaylist = {
+	AlbumData : null,
+	selectedItem : 0, //the current row (-1 is the menu row).
+	topLeftItem : 0,
+	selectedItem2 : 0, //the current column.
+	MAXCOLUMNCOUNT : 1,
+	MAXROWCOUNT : 12, //Max = 12, causes graphical jump due to large html element, couldn't find issue,
+	startParams : [],
+	topMenuItems : ["PlayAll","ShuffleAll","Delete"],
+	playItems : ["PlayFrom_","Play_","View_","Remove_"]
 };
 
-GuiPage_Playlist.getMaxDisplay = function() {
+GuiPlaylist.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
 };
 
@@ -24,8 +18,8 @@ GuiPage_Playlist.getMaxDisplay = function() {
 //      Episode Functions
 //------------------------------------------------------------
 
-GuiPage_Playlist.start = function(title,url,type,playlistId) { //Type is either Audio or Video
-	alert("Page Enter : GuiPage_Playlist");
+GuiPlaylist.start = function(title,url,type,playlistId) { //Type is either Audio or Video
+	alert("Page Enter : GuiPlaylist");
 	GuiHelper.setControlButtons(null,null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
 
 	//Save Start Params
@@ -65,7 +59,7 @@ GuiPage_Playlist.start = function(title,url,type,playlistId) { //Type is either 
 		this.updateSelectedItems();
 
 		//Set Focus for Key Events
-		document.getElementById("GuiPage_Playlist").focus();
+		document.getElementById("GuiPlaylist").focus();
 	} else {
 		//No items in playlist
 		//Set PageContent
@@ -88,11 +82,11 @@ GuiPage_Playlist.start = function(title,url,type,playlistId) { //Type is either 
 		this.updateSelectedItems();
 
 		//Set Focus for Key Events
-		document.getElementById("GuiPage_Playlist").focus();
+		document.getElementById("GuiPlaylist").focus();
 	}
 };
 
-GuiPage_Playlist.updateDisplayedItems = function() {
+GuiPlaylist.updateDisplayedItems = function() {
 	var htmlToAdd = "";
 	if (this.startParams[2] == "Audio") {
 		htmlToAdd = "<table><th style='width:200px'></th><th style='width:66px'></th><th style='width:72px'></th><th style='width:120px'></th><th style='width:66px'></th><th style='width:500px'></th><th style='width:130px'></th>";
@@ -131,7 +125,7 @@ GuiPage_Playlist.updateDisplayedItems = function() {
 };
 
 //Function sets CSS Properties so show which user is selected
-GuiPage_Playlist.updateSelectedItems = function () {
+GuiPlaylist.updateSelectedItems = function () {
 	if (this.selectedItem == -1) {
 		//Highlight the selected global item (PlayAll, Shuffle etc.)
 		for (var index = 0; index < this.topMenuItems.length; index++) {
@@ -175,7 +169,7 @@ GuiPage_Playlist.updateSelectedItems = function () {
 
 };
 
-GuiPage_Playlist.keyDown = function() {
+GuiPlaylist.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
@@ -194,10 +188,8 @@ GuiPage_Playlist.keyDown = function() {
 	if (Main.getIsScreensaverRunning()) {
 		//Update Main.js isScreensaverRunning - Sets to True
 		Main.setIsScreensaverRunning();
-
 		//End Screensaver
-		GuiImagePlayer_Screensaver.stopScreensaver();
-
+		GuiImagePlayerScreensaver.stopScreensaver();
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
@@ -238,9 +230,9 @@ GuiPage_Playlist.keyDown = function() {
 			break;
 		case tvKey.KEY_BLUE:
 			if (this.selectedItem == -1) {
-				GuiMusicPlayer.showMusicPlayer("GuiPage_Playlist",this.topMenuItems[this.selectedItem2],"guiMusic_Global highlight"+Main.highlightColour+"Background");
+				GuiMusicPlayer.showMusicPlayer("GuiPlaylist",this.topMenuItems[this.selectedItem2],"guiMusic_Global highlight"+Main.highlightColour+"Background");
 			} else {
-				GuiMusicPlayer.showMusicPlayer("GuiPage_Playlist",this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id,"guiMusic_TableTd highlight"+Main.highlightColour+"Background");
+				GuiMusicPlayer.showMusicPlayer("GuiPlaylist",this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id,"guiMusic_TableTd highlight"+Main.highlightColour+"Background");
 			}
 			break;
 		case tvKey.KEY_EXIT:
@@ -250,17 +242,16 @@ GuiPage_Playlist.keyDown = function() {
 	}
 };
 
-GuiPage_Playlist.openMenu = function() {
-	Support.updateURLHistory("GuiPage_Playlist",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,true);
-
+GuiPlaylist.openMenu = function() {
+	Support.updateURLHistory("GuiPlaylist", this.startParams[0], this.startParams[1], null, null, this.selectedItem, this.topLeftItem, true);
 	if (this.selectedItem == -1) {
-		GuiMainMenu.requested("GuiPage_Playlist",this.topMenuItems[this.selectedItem],"guiMusic_Global green");
+		GuiMainMenu.requested("GuiPlaylist", this.topMenuItems[this.selectedItem], "guiMusicGlobal green");
 	} else {
-		GuiMainMenu.requested("GuiPage_Playlist",this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id,"guiMusic_TableTd highlight"+Main.highlightColour+"Background");
+		GuiMainMenu.requested("GuiPlaylist", this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id, "guiMusicTableTd highlight" + Main.highlightColour + "Background");
 	}
 };
 
-GuiPage_Playlist.processUpKey = function() {
+GuiPlaylist.processUpKey = function() {
 	this.selectedItem--;
 	if (this.selectedItem < -1) { //When would this even happen?
 		this.selectedItem = -1;
@@ -284,7 +275,7 @@ GuiPage_Playlist.processUpKey = function() {
 	}
 };
 
-GuiPage_Playlist.processDownKey = function() {
+GuiPlaylist.processDownKey = function() {
 	this.selectedItem++;
 	if (this.selectedItem == 0) {
 		this.selectedItem2 = 0;
@@ -304,7 +295,7 @@ GuiPage_Playlist.processDownKey = function() {
 	this.updateSelectedItems();
 };
 
-GuiPage_Playlist.processLeftKey = function() {
+GuiPlaylist.processLeftKey = function() {
 	this.selectedItem2--;
 	if (this.selectedItem2 == -1) {
 		this.selectedItem2 = 0;
@@ -314,7 +305,7 @@ GuiPage_Playlist.processLeftKey = function() {
 	}
 };
 
-GuiPage_Playlist.processRightKey = function() {
+GuiPlaylist.processRightKey = function() {
 	this.selectedItem2++;
 	if (this.selectedItem == -1) {
 		if (this.selectedItem2 > this.topMenuItems.length-1) {
@@ -331,7 +322,7 @@ GuiPage_Playlist.processRightKey = function() {
 	}
 };
 
-GuiPage_Playlist.processSelectedItem = function() {
+GuiPlaylist.processSelectedItem = function() {
 	alert("List item = " + this.selectedItem + " : Menu item = " + this.selectedItem2);
 	if (this.selectedItem == -1) {
 		//Is Top Menu Bar
@@ -340,10 +331,10 @@ GuiPage_Playlist.processSelectedItem = function() {
 			if (this.AlbumData.Items.length > 0) {
 				var url = Server.getCustomURL("/Playlists/"+this.startParams[3]+"/Items?userId="+Server.getUserID()+"&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,MediaSources&format=json");
 				if (this.startParams[2] == "Video") {
-					Support.updateURLHistory("GuiPage_Playlist",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],0,0,null);
-					GuiPlayer.start("PlayAll",url,0,"GuiPage_Playlist");
+					Support.updateURLHistory("GuiPlaylist",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],0,0,null);
+					GuiPlayer.start("PlayAll",url,0,"GuiPlaylist");
 				} else if (this.startParams[2] == "Audio") {
-					GuiMusicPlayer.start("Album",url,"GuiPage_Playlist",false);
+					GuiMusicPlayer.start("Album",url,"GuiPlaylist",false);
 				}
 			}
 			break;
@@ -351,10 +342,10 @@ GuiPage_Playlist.processSelectedItem = function() {
 			if (this.AlbumData.Items.length > 0) {
 				var url = Server.getCustomURL("/Users/"+Server.getUserID()+"/Items?userId="+Server.getUserID()+"&Fields=MediaSources,Chapters&Limit=100&Filters=IsNotFolder&Recursive=true&SortBy=Random&ParentId="+this.startParams[3]+"&ExcludeLocationTypes=Virtual&format=json");
 				if (this.startParams[2] == "Video") {
-					Support.updateURLHistory("GuiPage_Playlist",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],0,0,null);
-					GuiPlayer.start("PlayAll",url,0,"GuiPage_Playlist");
+					Support.updateURLHistory("GuiPlaylist",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],0,0,null);
+					GuiPlayer.start("PlayAll",url,0,"GuiPlaylist");
 				} else if (this.startParams[2] == "Audio") {
-					GuiMusicPlayer.start("Album",url,"GuiPage_Playlist",false);
+					GuiMusicPlayer.start("Album",url,"GuiPlaylist",false);
 				}
 			}
 			break;
@@ -367,31 +358,31 @@ GuiPage_Playlist.processSelectedItem = function() {
 		case 0:
 			var url = Server.getCustomURL("/Playlists/"+this.startParams[3]+"/Items?userId="+Server.getUserID()+"&StartIndex="+this.selectedItem+"&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,MediaSources&format=json");
 			if (this.startParams[2] == "Video") {
-				Support.updateURLHistory("GuiPage_Playlist",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],0,0,null);
-				GuiPlayer.start("PlayAll",url,0,"GuiPage_Playlist");
+				Support.updateURLHistory("GuiPlaylist",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],0,0,null);
+				GuiPlayer.start("PlayAll",url,0,"GuiPlaylist");
 			} else if (this.startParams[2] == "Audio") {
-				GuiMusicPlayer.start("Album",url,"GuiPage_Playlist",false);
+				GuiMusicPlayer.start("Album",url,"GuiPlaylist",false);
 			}
 			break;
 		case 1:
 			var url = Server.getItemInfoURL(this.AlbumData.Items[this.selectedItem].Id);
 			if (this.startParams[2] == "Video") {
-				Support.updateURLHistory("GuiPage_Playlist",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem,this.topLeftItem,null);
-				GuiPlayer.start("PLAY",url,0,"GuiPage_Playlist");
+				Support.updateURLHistory("GuiPlaylist",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem,this.topLeftItem,null);
+				GuiPlayer.start("PLAY",url,0,"GuiPlaylist");
 			} else if (this.startParams[2] == "Audio"){
-				GuiMusicPlayer.start("Song",url,"GuiPage_Playlist",false);
+				GuiMusicPlayer.start("Song",url,"GuiPlaylist",false);
 			}
 
 			break;
 		case 2:
-			Support.updateURLHistory("GuiPage_Playlist",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem,this.topLeftItem,null);
+			Support.updateURLHistory("GuiPlaylist",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem,this.topLeftItem,null);
 			if (this.startParams[2] == "Video") {
 				var url = Server.getItemInfoURL(this.AlbumData.Items[this.selectedItem].Id);
-				GuiPage_ItemDetails.start(this.AlbumData.Items[this.selectedItem].Name,url,0);
+				GuiItemDetails.start(this.AlbumData.Items[this.selectedItem].Name,url,0);
 			} else if (this.startParams[2] == "Audio"){
 				var url = Server.getChildItemsURL(this.AlbumData.Items[this.selectedItem].AlbumId,"&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Audio&Recursive=true&CollapseBoxSetItems=false");
 				alert (url);
-				GuiPage_Music.start(this.AlbumData.Items[this.selectedItem].Name,url,"MusicAlbum");
+				GuiMusic.start(this.AlbumData.Items[this.selectedItem].Name,url, "MusicAlbum");
 			}
 
 			break;
@@ -399,14 +390,14 @@ GuiPage_Playlist.processSelectedItem = function() {
 			Server.removeFromPlaylist(this.startParams[3],this.AlbumData.Items[this.selectedItem].PlaylistItemId);
 			//Timeout required to allow for action on the server!
 			setTimeout(function(){
-				GuiPage_Playlist.start(GuiPage_Playlist.startParams[0],GuiPage_Playlist.startParams[1],GuiPage_Playlist.startParams[2],GuiPage_Playlist.startParams[3]);
+				GuiPlaylist.start(GuiPlaylist.startParams[0],GuiPlaylist.startParams[1],GuiPlaylist.startParams[2],GuiPlaylist.startParams[3]);
 				},250);
 			break;
 		}
 	}
 };
 
-GuiPage_Playlist.deletePlaylist = function (playlistId) {
+GuiPlaylist.deletePlaylist = function (playlistId) {
 	var ids = "";
 	for(var index = 0; index < this.AlbumData.Items.length; index++) {
 		alert (this.AlbumData.Items[index].PlaylistItemId);

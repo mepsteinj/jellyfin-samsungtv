@@ -33,7 +33,7 @@ GuiHelper.keyDown = function() {
 			if (document.getElementById("guiImagePlayerScreenSaverOverlay").style.visibility == "hidden"){
 				document.getElementById("guiImagePlayerScreenSaverOverlay").style.visibility = "";
 			}
-			//If required for Screensaver call in GuiImagePlayer_Screensaver
+			//If required for Screensaver call in GuiImagePlayerScreensaver
 			if (document.getElementById("help").style.visibility == "") {
 				//Hide help window
 				document.getElementById("help").style.visibility = "hidden";

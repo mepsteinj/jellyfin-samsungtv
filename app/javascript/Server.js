@@ -252,7 +252,7 @@ Server.getUserViewId = function (collectionType, type) {
 	var folderId = null;
 	var userViews = Server.getUserViews();
 	for (var i = 0; i < userViews.Items.length; i++){
-		if ((Type === undefined || userViews.Items[i].Type == type) && userViews.Items[i].CollectionType == collectionType){
+		if ((type === undefined || userViews.Items[i].Type == type) && userViews.Items[i].CollectionType == collectionType){
 			folderId = userViews.Items[i].Id;
 		}
 	}
@@ -555,7 +555,7 @@ Server.Authenticate = function(userId, userName, password) {
 		var session = JSON.parse(xmlHttp.responseText);
 		this.AuthenticationToken = session.AccessToken;
 		this.setUserID(session.User.Id);
-		this.setUserName(UserName);
+		this.setUserName(userName);
 		FileLog.write("User " + userName + " authenticated. ");
 		return true;
 	}
@@ -570,7 +570,7 @@ Server.Logout = function() {
 		xmlHttp.send(null);
 	}
 	//Close down any running items
-	GuiImagePlayer_Screensaver.kill();
+	GuiImagePlayerScreensaver.kill();
 	GuiImagePlayer.kill();
 	GuiMusicPlayer.stopOnAppExit();
 	GuiPlayer.stopOnAppExit();

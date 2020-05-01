@@ -1,98 +1,76 @@
-var GuiPage_Settings = {
-		AllData : null,
-		UserData : null,
-		ServerUserData : null,
-
-		selectedItem : 0,
-		currentPage : 0,
-		selectedBannerItem : -1,
-		selectedSubItem : 0,
-		topLeftItem : 0,
-		MAXCOLUMNCOUNT : 1,
-		MAXROWCOUNT : 10,
-
-		bannerItems : ["User Settings","Server Settings","TV Settings","Log","About"],
-		currentView : null,
-		currentViewSettings : null,
-		currentViewSettingsName : null,
-		currentViewSettingsDefaults : null,
-
-		CurrentSubSettings : [],
-		CurrentSettingValue : null,
-
-		//Per Setting Type List of settings, names & defaults
-		Settings : ["Default","HighlightColour","ContinueWatching","View1","View2","LargerView","AudioTheme","MusicView","SkipMusicAZ","SkipShow","SeasonLabel","AutoPlay","EnableCinemaMode","ShowDisc","SubtitleSize","SubtitleColour","ImagePlayerImageTime","ScreensaverImages","ScreensaverTimeout","ScreensaverImageTime","ForgetSavedPassword"],
-		SettingsName : ["Default User: ","Highlight Colour: ","Continue Watching: ","Home View 1: ","Home View 2: ","Show Larger Icons: ", "Play Audio Themes: ", "Default Music View: ", "Skip Music A-Z: ", "Skip TV Show Page: ","Use Alternate Season Label: ","Auto Play Next Episode: ","Enable cinema mode: ","Show Disc Art: ","Subtitle Text Size: ","Subtitle Text Colour: ","Image Player Rotate Speed: ", "Screensaver Image Source: ", "Screensaver Timeout: ", "Screensaver Rotate Speed: ", "Forget Password at Log Out:"],
-		SettingsDefaults : [false,1,true,"ddddd","aaaaa",false,false,"Album",false,false,false,false,true,true,"50px","white",10000,"Media",300000,10000,false],
-
-		TVSettings : ["Bitrate","Dolby","DTS","AACtoDolby","ItemPaging","ClockOffset","ModelOverride"],
-		TVSettingsName : ["Max Bitrate: ","Enable Dolby Digital Playback: ","Enable DTS Playback: ","Enable AAC Transcoding to Dolby: ","Item Paging: ","Clock Offset: ","Evolution Kit: "],
-		TVSettingsDefaults : [60,false,false,false,150,0,"None"],
-
-		ServerSettings : ["DisplayMissingEpisodes","DisplayUnairedEpisodes","GroupMovieCollections","DefaultAudioLang","PlayDefaultAudioTrack","DefaultSubtitleLang", "SubtitleMode", "HidePlayedInLatest"],
-		ServerSettingsName : ["Display Missing Episodes: ", "Display Unaired Episodes: ","Group Movies into Collections: ","Default Audio Language: ","Play default audio track regardless of language: ", "Default Subtitle Language: ","Subtitle Mode:","Hide watched content from latest media:"],
-		ServerSettingsDefaults : [false,false,false,"",true,"","default",false], //Not actually Used but implemented for clean code!!! Values read from Server so no default needed!
-
-		//Per Setting Options & Values
-		DefaultOptions : ["True","False"],
-		DefaultValues : [true,false],
-
-		View1Options : [],
-		View1Values : [],
-
-		View2Options : [],
-		View2Values : [],
-
-		MusicViewOptions : ["Recent", "Frequent", "Album", "Album Artist", "Artist"],
-		MusicViewValues : ["Recent", "Frequent", "Album", "Album Artist", "Artist"],
-
-		TvConnectionOptions : ["120Mb/s","100Mb/s","80Mb/s","60Mb/s","40Mb/s","30Mb/s","20Mb/s","15Mb/s","10Mb/s","8Mb/s","6Mb/s","5Mb/s","4Mb/s","3Mb/s","2Mb/s","1Mb/s","0.5Mb/s"],
-		TvConnectionValues : [120,100,80,60,40,30,20,15,10,8,6,5,4,3,2,1,0.5],
-
-		ItemPagingOptions : [100,150,200,300,500],
-		ItemPagingValues : [100,150,200,300,500],
-
-		SubtitleSizeOptions: ["70px","66px","62px","58px","54px","50px"],
-		SubtitleSizeValues: ["70px","66px","62px","58px","54px","50px"],
-
-		SubtitleColourOptions: ["White","Red","Green","Blue","Yellow"],
-		SubtitleColourValues: ["white","red","green","blue","yellow"],
-
-		ScreensaverImagesOptions : ["Photos from Media Folders","Images from TVs or Movies"],
-		ScreensaverImagesValues : ["Media","Metadata"],
-
-		ScreensaverTimeoutOptions : ["20 Minutes", "10 Minutes", "5 Minutes", "2 Minutes", "1 Minute"],
-		ScreensaverTimeoutValues : [1200000,600000,300000,120000,60000],
-
-		ClockOffsetOptions : ["+12 hour", "+11 hours", "+10 hours", "+9 hours", "+8 hours", "+7 hours", "+6 hours", "+5 hours", "+4 hours", "+3 hours", "+2 hours", "+1 hour","0 hours", "-1 hour", "-2 hours", "-3 hours", "-4 hours", "-5 hours", "-6 hours", "-7 hours", "-8 hours", "-9 hours", "-10 hours", "-11 hours", "-12 hours"],
-		ClockOffsetValues : [12,11,10,9,8,7,6,5,4,3,2,1,0,-1,-2,-3,-4,-5,-6,-7,-8,-9,-10,-11,-12],
-
-		//Also used for Image Player - Different setting!
-		ScreensaverImageTimeOptions : ["5 Minutes", "2 Minutes", "1 Minute", "30 Seconds", "20 Seconds", "10 Seconds", "5 Seconds"],
-		ScreensaverImageTimeValues : [300000,120000,60000,30000,20000,10000,5000],
-
-		LanguageOptions : ["None","English","French","German","Spanish","Italian"],
-		LanguageValues : ["","eng","fre","ger","spa","ita"],
-
-		SubtitleModeOptions : ["Default","Only Forced Subtitles", "Always Play Subtitles", "None"],
-		SubtitleModeValues : ["Default","OnlyForced", "Always", "None"],
-
-		ModelOverrideOptions : ["None","SEK-1000","SEK-2000","SEK-2500"],
-		ModelOverrideValues : ["None","SEK1000","SEK2000","SEK2500"],
-
-		HighlightColourOptions : ["Green","Silver","Red","Navy","Aqua","Purple"],
-		HighlightColourValues : [1,2,3,4,5,6]
+var GuiSettings = {
+	AllData : null,
+	UserData : null,
+	ServerUserData : null,
+	selectedItem : 0,
+	currentPage : 0,
+	selectedBannerItem : -1,
+	selectedSubItem : 0,
+	topLeftItem : 0,
+	MAXCOLUMNCOUNT : 1,
+	MAXROWCOUNT : 10,
+	bannerItems : ["User Settings","Server Settings","TV Settings","Log","About"],
+	currentView : null,
+	currentViewSettings : null,
+	currentViewSettingsName : null,
+	currentViewSettingsDefaults : null,
+	CurrentSubSettings : [],
+	CurrentSettingValue : null,
+	//Per Setting Type List of settings, names & defaults
+	Settings : ["Default","HighlightColour","ContinueWatching","View1","View2","LargerView","AudioTheme","MusicView","SkipMusicAZ","SkipShow","SeasonLabel","AutoPlay","EnableCinemaMode","ShowDisc","SubtitleSize","SubtitleColour","ImagePlayerImageTime","ScreensaverImages","ScreensaverTimeout","ScreensaverImageTime","ForgetSavedPassword"],
+	SettingsName : ["Default User: ","Highlight Colour: ","Continue Watching: ","Home View 1: ","Home View 2: ","Show Larger Icons: ", "Play Audio Themes: ", "Default Music View: ", "Skip Music A-Z: ", "Skip TV Show Page: ","Use Alternate Season Label: ","Auto Play Next Episode: ","Enable cinema mode: ","Show Disc Art: ","Subtitle Text Size: ","Subtitle Text Colour: ","Image Player Rotate Speed: ", "Screensaver Image Source: ", "Screensaver Timeout: ", "Screensaver Rotate Speed: ", "Forget Password at Log Out:"],
+	SettingsDefaults : [false,1,true,"ddddd","aaaaa",false,false,"Album",false,false,false,false,true,true,"50px","white",10000,"Media",300000,10000,false],
+	TVSettings : ["Bitrate","Dolby","DTS","AACtoDolby","ItemPaging","ClockOffset","ModelOverride"],
+	TVSettingsName : ["Max Bitrate: ","Enable Dolby Digital Playback: ","Enable DTS Playback: ","Enable AAC Transcoding to Dolby: ","Item Paging: ","Clock Offset: ","Evolution Kit: "],
+	TVSettingsDefaults : [60,false,false,false,150,0,"None"],
+	ServerSettings : ["DisplayMissingEpisodes","DisplayUnairedEpisodes","GroupMovieCollections","DefaultAudioLang","PlayDefaultAudioTrack","DefaultSubtitleLang", "SubtitleMode", "HidePlayedInLatest"],
+	ServerSettingsName : ["Display Missing Episodes: ", "Display Unaired Episodes: ","Group Movies into Collections: ","Default Audio Language: ","Play default audio track regardless of language: ", "Default Subtitle Language: ","Subtitle Mode:","Hide watched content from latest media:"],
+	ServerSettingsDefaults : [false,false,false,"",true,"","default",false], //Not actually Used but implemented for clean code!!! Values read from Server so no default needed!
+	//Per Setting Options & Values
+	DefaultOptions : ["True","False"],
+	DefaultValues : [true,false],
+	View1Options : [],
+	View1Values : [],
+	View2Options : [],
+	View2Values : [],
+	MusicViewOptions : ["Recent", "Frequent", "Album", "Album Artist", "Artist"],
+	MusicViewValues : ["Recent", "Frequent", "Album", "Album Artist", "Artist"],
+	TvConnectionOptions : ["120Mb/s","100Mb/s","80Mb/s","60Mb/s","40Mb/s","30Mb/s","20Mb/s","15Mb/s","10Mb/s","8Mb/s","6Mb/s","5Mb/s","4Mb/s","3Mb/s","2Mb/s","1Mb/s","0.5Mb/s"],
+	TvConnectionValues : [120,100,80,60,40,30,20,15,10,8,6,5,4,3,2,1,0.5],
+	ItemPagingOptions : [100,150,200,300,500],
+	ItemPagingValues : [100,150,200,300,500],
+	SubtitleSizeOptions: ["70px","66px","62px","58px","54px","50px"],
+	SubtitleSizeValues: ["70px","66px","62px","58px","54px","50px"],
+	SubtitleColourOptions: ["White","Red","Green","Blue","Yellow"],
+	SubtitleColourValues: ["white","red","green","blue","yellow"],
+	ScreensaverImagesOptions : ["Photos from Media Folders","Images from TVs or Movies"],
+	ScreensaverImagesValues : ["Media","Metadata"],
+	ScreensaverTimeoutOptions : ["20 Minutes", "10 Minutes", "5 Minutes", "2 Minutes", "1 Minute"],
+	ScreensaverTimeoutValues : [1200000,600000,300000,120000,60000],
+	ClockOffsetOptions : ["+12 hour", "+11 hours", "+10 hours", "+9 hours", "+8 hours", "+7 hours", "+6 hours", "+5 hours", "+4 hours", "+3 hours", "+2 hours", "+1 hour","0 hours", "-1 hour", "-2 hours", "-3 hours", "-4 hours", "-5 hours", "-6 hours", "-7 hours", "-8 hours", "-9 hours", "-10 hours", "-11 hours", "-12 hours"],
+	ClockOffsetValues : [12,11,10,9,8,7,6,5,4,3,2,1,0,-1,-2,-3,-4,-5,-6,-7,-8,-9,-10,-11,-12],
+	//Also used for Image Player - Different setting!
+	ScreensaverImageTimeOptions : ["5 Minutes", "2 Minutes", "1 Minute", "30 Seconds", "20 Seconds", "10 Seconds", "5 Seconds"],
+	ScreensaverImageTimeValues : [300000,120000,60000,30000,20000,10000,5000],
+	LanguageOptions : ["None","English","French","German","Spanish","Italian"],
+	LanguageValues : ["","eng","fre","ger","spa","ita"],
+	SubtitleModeOptions : ["Default","Only Forced Subtitles", "Always Play Subtitles", "None"],
+	SubtitleModeValues : ["Default","OnlyForced", "Always", "None"],
+	ModelOverrideOptions : ["None","SEK-1000","SEK-2000","SEK-2500"],
+	ModelOverrideValues : ["None","SEK1000","SEK2000","SEK2500"],
+	HighlightColourOptions : ["Green","Silver","Red","Navy","Aqua","Purple"],
+	HighlightColourValues : [1,2,3,4,5,6]
 };
 
-GuiPage_Settings.onFocus = function() {
+GuiSettings.onFocus = function() {
 	GuiHelper.setControlButtons(null,null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
 };
 
-GuiPage_Settings.getMaxDisplay = function() {
+GuiSettings.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
 };
 
-GuiPage_Settings.initiateViewValues = function() {
+GuiSettings.initiateViewValues = function() {
 	this.View1Options = ["Next Up","All Favourites","Favourite Movies","Favourite Series","Favourite Episodes","Suggested For You","Media Folders","Latest TV","Latest Movies"];
 	this.View1Values = ["TVNextUp","Favourites","FavouriteMovies","FavouriteSeries","FavouriteEpisodes","SuggestedMovies","MediaFolders","LatestTV","LatestMovies"];
 	this.View2Options = ["None","Next Up","All Favourites","Favourite Movies","Favourite Series","Favourite Episodes","Suggested For You","Media Folders","Latest TV","Latest Movies"];
@@ -102,8 +80,8 @@ GuiPage_Settings.initiateViewValues = function() {
 	this.SettingsDefaults[3] = "LatestMovies";
 };
 
-GuiPage_Settings.start = function(viewToDisplay) {
-	alert("Page Enter : GuiPage_Settings");
+GuiSettings.start = function(viewToDisplay) {
+	alert("Page Enter : GuiSettings");
 
 	//Reset Vars
 	this.selectedItem = 0;
@@ -130,11 +108,11 @@ GuiPage_Settings.start = function(viewToDisplay) {
 
 	document.getElementById("pageContent").className = "";
 	document.getElementById("pageContent").style.color = "white";
-	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='bannerMenu'></div><div id='guiTV_Show_Title' class='guiSettingsTitle'></div>" +
-		"<div id='guiPage_Settings_Settings' class='guiSettingsSettings'></div>" +
-		"<div id='guiPage_Settings_Overview' class='guiSettingsOverview'>" +
-			"<div id=guiPage_Settings_Overview_Title></div>" +
-			"<div id=guiPage_Settings_Overview_Content></div>" +
+	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='bannerMenu'></div><div id='guiTVShowTitle' class='guiSettingsTitle'></div>" +
+		"<div id='guiSettingsSettings' class='guiSettingsSettings'></div>" +
+		"<div id='guiSettingsOverview' class='guiSettingsOverview'>" +
+			"<div id=guiSettingsOverview_Title></div>" +
+			"<div id=guiSettingsOverviewContent></div>" +
 		"</div>";
 
 	//Create Banner Items
@@ -153,14 +131,14 @@ GuiPage_Settings.start = function(viewToDisplay) {
 		this.currentViewSettings = this.Settings;
 		this.currentViewSettingsName = this.SettingsName;
 		this.currentViewSettingsDefaults = this.SettingsDefaults;
-		document.getElementById("guiTV_Show_Title").innerHTML = "User Settings for "+this.UserData.UserName;
+		document.getElementById("guiTVShowTitle").innerHTML = "User Settings for "+this.UserData.UserName;
 	} else if (viewToDisplay == "TV Settings") {
 		this.currentView = "TV Settings";
 		this.currentPage = 2;
 		this.currentViewSettings = this.TVSettings;
 		this.currentViewSettingsName = this.TVSettingsName;
 		this.currentViewSettingsDefaults = this.TVSettingsDefaults;
-		document.getElementById("guiTV_Show_Title").innerHTML = "TV Settings for " + Server.getDevice();
+		document.getElementById("guiTVShowTitle").innerHTML = "TV Settings for " + Server.getDevice();
 	} else {
 		//Set default view as the User Settings Page
 		this.currentView = "Server Settings";
@@ -168,7 +146,7 @@ GuiPage_Settings.start = function(viewToDisplay) {
 		this.currentViewSettings = this.ServerSettings;
 		this.currentViewSettingsName = this.ServerSettingsName;
 		this.currentViewSettingsDefaults = this.ServerSettingsDefaults;
-		document.getElementById("guiTV_Show_Title").innerHTML = "Server Settings for "+this.UserData.UserName;
+		document.getElementById("guiTVShowTitle").innerHTML = "Server Settings for "+this.UserData.UserName;
 	}
 
 	//Update Displayed & Updates Settings
@@ -176,10 +154,10 @@ GuiPage_Settings.start = function(viewToDisplay) {
 	this.updateSelectedItems();
 	this.updateSelectedBannerItems();
 
-	document.getElementById("GuiPage_Settings").focus();
+	document.getElementById("GuiSettings").focus();
 };
 
-GuiPage_Settings.checkSettingsInFile = function() {
+GuiSettings.checkSettingsInFile = function() {
 	var changed = false;
 
 	for (var index = 0; index < this.Settings.length;index++) {
@@ -214,7 +192,7 @@ GuiPage_Settings.checkSettingsInFile = function() {
 	}
 };
 
-GuiPage_Settings.updateDisplayedItems = function() {
+GuiSettings.updateDisplayedItems = function() {
 	var htmlToAdd = "<table class=guiSettingsTable>";
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.currentViewSettings.length); index++) {
 		//Finds the setting in the file and generates the correct current set value
@@ -427,10 +405,10 @@ GuiPage_Settings.updateDisplayedItems = function() {
 		}
 		htmlToAdd += "<tr class=guiSettingsRow><td id="+index+">" + this.currentViewSettingsName[index] + "</td><td id=Value"+index+" class='guiSettingsTD'>"+Setting+"</td></tr>";
 	}
-	document.getElementById("guiPage_Settings_Settings").innerHTML = htmlToAdd + "</table>";
+	document.getElementById("guiSettings_Settings").innerHTML = htmlToAdd + "</table>";
 };
 
-GuiPage_Settings.updateSelectedItems = function() {
+GuiSettings.updateSelectedItems = function() {
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.currentViewSettings.length); index++) {
 		if (index == this.selectedItem) {
 			document.getElementById(index).className = "guiSettingsTD highlight"+Main.highlightColour+"Background";
@@ -447,7 +425,7 @@ GuiPage_Settings.updateSelectedItems = function() {
 	}
 };
 
-GuiPage_Settings.updateSelectedBannerItems = function() {
+GuiSettings.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.bannerItems.length; index++) {
 		if (index == this.selectedBannerItem) {
 			if (index != this.bannerItems.length-1) { //Don't put padding on the last one.
@@ -480,7 +458,7 @@ GuiPage_Settings.updateSelectedBannerItems = function() {
 	}
 };
 
-GuiPage_Settings.processSelectedItem = function() {
+GuiSettings.processSelectedItem = function() {
 	if (this.selectedItem == -1) {
 		switch (this.bannerItems[this.selectedBannerItem]) {
 		case "User Settings":
@@ -488,29 +466,29 @@ GuiPage_Settings.processSelectedItem = function() {
 			this.currentViewSettings = this.Settings;
 			this.currentViewSettingsName = this.SettingsName;
 			this.currentViewSettingsDefaults = this.SettingsDefaults;
-			document.getElementById("guiTV_Show_Title").innerHTML = "User Settings for "+this.UserData.UserName;
+			document.getElementById("guiTVShowTitle").innerHTML = "User Settings for "+this.UserData.UserName;
 			break;
 		case "Server Settings":
 			this.currentPage = 1;
 			this.currentViewSettings = this.ServerSettings;
 			this.currentViewSettingsName = this.ServerSettingsName;
 			this.currentViewSettingsDefaults = this.ServerSettingsDefaults;
-			document.getElementById("guiTV_Show_Title").innerHTML = "Server Settings for "+this.UserData.UserName;
+			document.getElementById("guiTVShowTitle").innerHTML = "Server Settings for "+this.UserData.UserName;
 			break;
 		case "TV Settings":
 			this.currentPage = 2;
 			this.currentViewSettings = this.TVSettings;
 			this.currentViewSettingsName = this.TVSettingsName;
 			this.currentViewSettingsDefaults = this.TVSettingsDefaults;
-			document.getElementById("guiTV_Show_Title").innerHTML = "TV Settings for " + Server.getDevice();
+			document.getElementById("guiTVShowTitle").innerHTML = "TV Settings for " + Server.getDevice();
 			break;
 		case "Log":
-			GuiPage_SettingsLog.start();
+			GuiSettingsLog.start();
 			return;
 			break;
 		case "About":
-			Support.updateURLHistory("GuiPage_Settings",null,null,null,null,0,0,null);
-			GuiPage_Contributors.start();
+			Support.updateURLHistory("GuiSettings",null,null,null,null,0,0,null);
+			GuiContributors.start();
 			return;
 			break;
 		}
@@ -608,12 +586,12 @@ GuiPage_Settings.processSelectedItem = function() {
 				break;
 			}
 		}
-		document.getElementById("GuiPage_SettingsBottom").focus();
+		document.getElementById("GuiSettingsBottom").focus();
 	}
 };
 
 
-GuiPage_Settings.keyDown = function() {
+GuiSettings.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
@@ -632,10 +610,8 @@ GuiPage_Settings.keyDown = function() {
 	if (Main.getIsScreensaverRunning()) {
 		//Update Main.js isScreensaverRunning - Sets to True
 		Main.setIsScreensaverRunning();
-
 		//End Screensaver
-		GuiImagePlayer_Screensaver.stopScreensaver();
-
+		GuiImagePlayerScreensaver.stopScreensaver();
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
@@ -674,12 +650,12 @@ GuiPage_Settings.keyDown = function() {
 		case tvKey.KEY_BLUE:
 			if (this.selectedItem == -1) {
 				if (this.selectedBannerItem == this.bannerItems.length-1) {
-					GuiMusicPlayer.showMusicPlayer("GuiPage_Settings","bannerItem"+this.selectedBannerItem,"bannerItem highlight"+Main.highlightColour+"Text");
+					GuiMusicPlayer.showMusicPlayer("GuiSettings","bannerItem"+this.selectedBannerItem,"bannerItem highlight"+Main.highlightColour+"Text");
 				} else {
-					GuiMusicPlayer.showMusicPlayer("GuiPage_Settings","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
+					GuiMusicPlayer.showMusicPlayer("GuiSettings","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
 				}
 			} else {
-				GuiMusicPlayer.showMusicPlayer("GuiPage_Settings",this.selectedItem,document.getElementById(this.selectedItem).className);
+				GuiMusicPlayer.showMusicPlayer("GuiSettings",this.selectedItem,document.getElementById(this.selectedItem).className);
 			}
 			break;
 		case tvKey.KEY_TOOLS:
@@ -693,21 +669,21 @@ GuiPage_Settings.keyDown = function() {
 	}
 };
 
-GuiPage_Settings.openMenu = function() {
+GuiSettings.openMenu = function() {
 	if (this.selectedItem == -1) {
 		if (this.currentPage == 0){
 			document.getElementById("bannerItem0").className = "bannerItem bannerItemPadding offWhite";
 		} else {
 			document.getElementById("bannerItem0").className = "bannerItem bannerItemPadding";
 		}
-		GuiMainMenu.requested("GuiPage_Settings","bannerItem0","bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
+		GuiMainMenu.requested("GuiSettings","bannerItem0","bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
 	} else {
 		document.getElementById(this.selectedItem).className = "guiSettingsTD guiSettingUnSelected";
-		GuiMainMenu.requested("GuiPage_Settings",this.selectedItem,"guiSettingsTD highlight"+Main.highlightColour+"Background");
+		GuiMainMenu.requested("GuiSettings",this.selectedItem,"guiSettingsTD highlight"+Main.highlightColour+"Background");
 	}
 };
 
-GuiPage_Settings.processUpKey = function() {
+GuiSettings.processUpKey = function() {
 	this.selectedItem = this.selectedItem - this.MAXCOLUMNCOUNT;
 	if (this.selectedItem == -2) {
 		this.selectedItem = -1;
@@ -728,7 +704,7 @@ GuiPage_Settings.processUpKey = function() {
 	}
 };
 
-GuiPage_Settings.processDownKey = function() {
+GuiSettings.processDownKey = function() {
 	if (this.selectedItem == -1) {
 		this.selectedItem = 0;
 		this.selectedBannerItem = -1;
@@ -751,7 +727,7 @@ GuiPage_Settings.processDownKey = function() {
 	this.updateSelectedItems();
 };
 
-GuiPage_Settings.processLeftKey = function() {
+GuiSettings.processLeftKey = function() {
 	if (this.selectedItem == -1) {
 		this.selectedBannerItem--;
 		if (this.selectedBannerItem == -1) {
@@ -765,7 +741,7 @@ GuiPage_Settings.processLeftKey = function() {
 	}
 };
 
-GuiPage_Settings.processRightKey = function() {
+GuiSettings.processRightKey = function() {
 	if (this.selectedItem == -1) {
 		this.selectedBannerItem++;
 		if (this.selectedBannerItem >= this.bannerItems.length) {
@@ -780,7 +756,7 @@ GuiPage_Settings.processRightKey = function() {
 
 //------------------------------------------------------------------------------------------------------------------------
 
-GuiPage_Settings.processSelectedSubItem = function() {
+GuiSettings.processSelectedSubItem = function() {
 	switch (this.currentViewSettings[this.selectedItem]) {
 	case "Default":
 		this.UserData.Default = this.DefaultValues[this.selectedSubItem];
@@ -947,11 +923,11 @@ GuiPage_Settings.processSelectedSubItem = function() {
 	document.getElementById("Value"+this.selectedItem).innerHTML = this.CurrentSettingValue;
 	document.getElementById("Value"+this.selectedItem).className = "guiSettingsTD guiSettingUnSelected";
 	document.getElementById(this.selectedItem).className = "guiSettingsTD highlight"+Main.highlightColour+"Background";
-	document.getElementById("GuiPage_Settings").focus();
+	document.getElementById("GuiSettings").focus();
 };
 
 
-GuiPage_Settings.bottomKeyDown = function() {
+GuiSettings.bottomKeyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
@@ -970,10 +946,8 @@ GuiPage_Settings.bottomKeyDown = function() {
 	if (Main.getIsScreensaverRunning()) {
 		//Update Main.js isScreensaverRunning - Sets to True
 		Main.setIsScreensaverRunning();
-
 		//End Screensaver
-		GuiImagePlayer_Screensaver.stopScreensaver();
-
+		GuiImagePlayerScreensaver.stopScreensaver();
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
@@ -1003,7 +977,7 @@ GuiPage_Settings.bottomKeyDown = function() {
 			document.getElementById("Value"+this.selectedItem).className = "guiSettingsTD guiSettingUnSelected";
 			document.getElementById(this.selectedItem).className = "guiSettingsTD highlight"+Main.highlightColour+"Background";
 
-			document.getElementById("GuiPage_Settings").focus();
+			document.getElementById("GuiSettings").focus();
 			break;
 		case tvKey.KEY_ENTER:
 		case tvKey.KEY_PANEL_ENTER:
@@ -1011,18 +985,18 @@ GuiPage_Settings.bottomKeyDown = function() {
 			this.processSelectedSubItem();
 			break;
 		case tvKey.KEY_BLUE:
-			GuiMusicPlayer.showMusicPlayer("GuiPage_SettingsBottom","Value"+this.selectedItem,document.getElementById("Value"+this.selectedItem).className);
+			GuiMusicPlayer.showMusicPlayer("GuiSettingsBottom","Value"+this.selectedItem,document.getElementById("Value"+this.selectedItem).className);
 			break;
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
 			document.getElementById("Value"+this.selectedItem).className = "guiSettingsTD guiSettingUnSelected";
 			document.getElementById(this.selectedItem).className = "guiSettingsTD guiSettingUnSelected";
-			document.getElementById("GuiPage_Settings").focus();
-			GuiMainMenu.requested("GuiPage_Settings",this.selectedItem,"guiSettingsTD highlight"+Main.highlightColour+"Background");
+			document.getElementById("guiSettings").focus();
+			GuiMainMenu.requested("GuiSettings",this.selectedItem,"guiSettingsTD highlight"+Main.highlightColour+"Background");
 			break;
 		case tvKey.KEY_INFO:
 			alert ("INFO KEY");
-			GuiHelper.toggleHelp("GuiPage_Settings");
+			GuiHelper.toggleHelp("GuiSettings");
 			break;
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY");
@@ -1031,166 +1005,166 @@ GuiPage_Settings.bottomKeyDown = function() {
 	}
 };
 
-GuiPage_Settings.setOverview = function() {
+GuiSettings.setOverview = function() {
 	switch (this.currentViewSettings[this.selectedItem]) {
 		case "Default":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Default User";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Setting the default user to True allows for the app to sign in the user automatically." +
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Default User";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "Setting the default user to True allows for the app to sign in the user automatically." +
 					"<br><br>Changing this setting to True will change all other users to False.";
 			break;
 		case "ContinueWatching":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Continue Watching";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Show partially watched items on the home page." +
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Continue Watching";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "Show partially watched items on the home page." +
 					"<br><br>If you have any partially watched programs they will be shown on the home page along with Home View 1.";
 			break;
 		case "View1":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Home View 1";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Sets the content of the first view on the Home page." +
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Home View 1";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "Sets the content of the first view on the Home page." +
 					"<br><br>Available Choices:<br>&nbsp;<ul style='padding-left:22px'><li>Next Up</li><li>All Favourites</li><li>Favourite Movies</li><li>Favourite Series</li><li>Favourite Episodes</li><li>Suggested For You</li><li>Media Folders</li><li>Latest TV</li><li>Latest Movies</li></ul>" +
 					"<br><br>Setting Home View 2 to None will show more content in this view.";
 			break;
 		case "View2":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Home View 2";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Sets the content of the second view on the Home page." +
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Home View 2";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "Sets the content of the second view on the Home page." +
 					"<br><br>Available Choices:<br>&nbsp;<ul style='padding-left:22px'><li>None</li><li>Next Up</li><li>All Favourites</li><li>Favourite Movies</li><li>Favourite Series</li><li>Favourite Episodes</li><li>Suggested For You</li><li>Media Folders</li><li>Latest TV</li><li>Latest Movies</li></ul>" +
 					"<br><br>Setting this to None will show more content from Home View 1.";
 			break;
 		case "HighlightColour":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Highlight colour";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Sets the background and boarder colour of selected items." +
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Highlight colour";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "Sets the background and boarder colour of selected items." +
 					"<br><br>Available Choices:<br>&nbsp;<ul style='padding-left:22px'><li>Green</li><li>Silver</li><li>Red</li><li>Navy</li><li>Aqua</li><li>Purple</li></ul>";
 			break;
 		case "MusicView":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Default Music view";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Sets the default view the Music page will open up on." +
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Default Music view";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "Sets the default view the Music page will open up on." +
 					"<br><br>Available Choices:<br>&nbsp;<ul style='padding-left:22px'><li>Recent</li><li>Frequent</li><li>Album</li><li>Album Artist</li><li>Artist</li></ul>";
 			break;
 		case "SkipMusicAZ":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Skip A-Z Page When Entering Music";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Go directly to your entire music collection instead of to the A-Z page." +
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Skip A-Z Page When Entering Music";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "Go directly to your entire music collection instead of to the A-Z page." +
 					"<br><br>Only set this True if you have a workable combination of the following:<br>&nbsp;<ul style='padding-left:22px'><li>A modest size music collection.</li><li>A reasonably powerful Jellyfin server.</li><li>A little patience.</li></ul>";
 			break;
 		case "LargerView":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Display Larger View";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Enabling this changes the TV & Movies view from 9 items across to 7 items across, allowing for larger images for each item.";
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Display Larger View";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "Enabling this changes the TV & Movies view from 9 items across to 7 items across, allowing for larger images for each item.";
 			break;
 		case "AudioTheme":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Play Audio Theme";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "This option allows for audio themes to be played when viewing the details of an item." +
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Play Audio Theme";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "This option allows for audio themes to be played when viewing the details of an item." +
 					"<br><br>Default behaviour is to play the theme 3 times then stop.";
 			break;
 		case "SkipShow":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Skip TV Show Page";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "This option allows for the TV Show page to be skipped if there is only one season, taking you directly to the episodes page.";
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Skip TV Show Page";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "This option allows for the TV Show page to be skipped if there is only one season, taking you directly to the episodes page.";
 			break;
 		case "SeasonLabel":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Use Alternate Season Label";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Use an alternative format for the season and episode label formats.";
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Use Alternate Season Label";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "Use an alternative format for the season and episode label formats.";
 			break;
 		case "AutoPlay":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Auto Play Next Episode";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "If enabled, when a playing episode has finished, the next episode will automatically load.";
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Auto Play Next Episode";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "If enabled, when a playing episode has finished, the next episode will automatically load.";
 			break;
 		case "ShowDisc":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Show Disc Art";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Enable or disable the disc art on episode & film pages.";
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Show Disc Art";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "Enable or disable the disc art on episode & film pages.";
 			break;
 		case "SubtitleSize":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Subtitle Text Size";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "The font size for displayed subtitles.<br><br>Image player and screensaver overlays also use this setting.";
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Subtitle Text Size";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "The font size for displayed subtitles.<br><br>Image player and screensaver overlays also use this setting.";
 			break;
 		case "SubtitleColour":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Subtitle Text Colour";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "The font colour for displayed subtitles.<br><br>Image player and screensaver overlays also use this setting.";
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Subtitle Text Colour";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "The font colour for displayed subtitles.<br><br>Image player and screensaver overlays also use this setting.";
 			break;
 		case "ImagePlayerImageTime":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Image Player Rotate Speed";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "The amount of time an image is shown during image playback until the next one is displayed.";
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Image Player Rotate Speed";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "The amount of time an image is shown during image playback until the next one is displayed.";
 			break;
 		case "ScreensaverImages":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Screensaver Image Source";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "The screensaver can use images either from photos you have added to your library or tv & movie images.";
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Screensaver Image Source";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "The screensaver can use images either from photos you have added to your library or tv & movie images.";
 			break;
 		case "ScreensaverTimeout":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Screensaver Timeout";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "The amount of inactivity before the screensaver starts.";
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Screensaver Timeout";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "The amount of inactivity before the screensaver starts.";
 			break;
 		case "ScreensaverImageTime":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Screensaver Rotate Speed";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "The amount of time an image is shown during screensaver playback until the next one is displayed.";
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Screensaver Rotate Speed";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "The amount of time an image is shown during screensaver playback until the next one is displayed.";
 			break;
 		case "ForgetSavedPassword":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Forget Saved Password at Next Log Out";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "To remove your saved password, select this option and log out.";
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Forget Saved Password at Next Log Out";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "To remove your saved password, select this option and log out.";
 			break;
 		case "ClockOffset":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Clock Offset";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Some devices report their system time incorrectly. Use this option to apply a correction.";
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Clock Offset";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "Some devices report their system time incorrectly. Use this option to apply a correction.";
 			break;
 		case "ModelOverride":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Samsung Evolution Kit";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "If you have purchased a Samsung Evolution Kit to enhance your TV, select the model number to unlock the addition codec support provided.<br><br>Restart the Jellyfin client for the change to take affect.";
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Samsung Evolution Kit";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "If you have purchased a Samsung Evolution Kit to enhance your TV, select the model number to unlock the addition codec support provided.<br><br>Restart the Jellyfin client for the change to take affect.";
 			break;
 		case "Bitrate":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Max Bitrate";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Use this setting to select the maximum video bitrate your network can handle. If a video bitrate is higher than this, the video will be transcoded to use the max bitrate setting here.";
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Max Bitrate";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "Use this setting to select the maximum video bitrate your network can handle. If a video bitrate is higher than this, the video will be transcoded to use the max bitrate setting here.";
 			break;
 		case "Dolby":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Enable Dolby Digital Playback";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Select this option if your receiver is capable of decoding AC3 streams";
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Enable Dolby Digital Playback";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "Select this option if your receiver is capable of decoding AC3 streams";
 			break;
 		case "DTS":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Enable DTS Playback";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Select this option if your receiver is capable of decoding DTS streams";
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Enable DTS Playback";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "Select this option if your receiver is capable of decoding DTS streams";
 			break;
 		case "AACtoDolby":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Enable AAC Transcoding to Dolby";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Set this option only if you have an external receiver capable of receiving Dolby but not AAC<br><br>Will be ignored if Enable Dolby Digital Playback is false";
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Enable AAC Transcoding to Dolby";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "Set this option only if you have an external receiver capable of receiving Dolby but not AAC<br><br>Will be ignored if Enable Dolby Digital Playback is false";
 			break;
 		case "ItemPaging":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Item Paging";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "As nobody likes waiting, items on screen are loaded in batches, with each new batch called when needed, as opposed to loading everything and making you wait until its all ready.<br><br>Change the number of items loaded in a batch dependant on how fast your server is.";
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Item Paging";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "As nobody likes waiting, items on screen are loaded in batches, with each new batch called when needed, as opposed to loading everything and making you wait until its all ready.<br><br>Change the number of items loaded in a batch dependant on how fast your server is.";
 			break;
 		case "DefaultAudioLang":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Audio Language Preference";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Select the preferred audio language.<br><br>If your language is not listed, you will need to change the setting via the web app which has a full list of languages.<br><br>This is a server option and will affect your Jellyfin experience on all clients";
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Audio Language Preference";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "Select the preferred audio language.<br><br>If your language is not listed, you will need to change the setting via the web app which has a full list of languages.<br><br>This is a server option and will affect your Jellyfin experience on all clients";
 			break;
 		case "PlayDefaultAudioTrack":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Play default audio track regardless of language";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Will play the default audio track even if it doesn't match your language setting.<br><br>This is a server option and will affect your Jellyfin experience on all clients";
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Play default audio track regardless of language";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "Will play the default audio track even if it doesn't match your language setting.<br><br>This is a server option and will affect your Jellyfin experience on all clients";
 			break;
 		case "DefaultSubtitleLang":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Subtitle Language Preference";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Select the preferred subtitle language.<br><br>If your language is not listed, you will need to change the setting via the web app which has a full list of languages.<br><br>This is a server option and will affect your Jellyfin experience on all clients";
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Subtitle Language Preference";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "Select the preferred subtitle language.<br><br>If your language is not listed, you will need to change the setting via the web app which has a full list of languages.<br><br>This is a server option and will affect your Jellyfin experience on all clients";
 			break;
 		case "SubtitleMode":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Subtitle Mode";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Select the default behaviour of when subtitles are loaded<br><br>Default: Subtitles matching the language preference will be loaded when the audio is in a foreign language.<br><br>Only Forced Subtitles: Only subtitles marked as forced will be loaded.<br><br>Always Play Subtitles: Subtitles matching the language preference will be loaded regardless of the audio language.<br><br>None: Subtitles will not be loaded by default.<br><br>This is a server option and will affect your Jellyfin experience on all clients";
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Subtitle Mode";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "Select the default behaviour of when subtitles are loaded<br><br>Default: Subtitles matching the language preference will be loaded when the audio is in a foreign language.<br><br>Only Forced Subtitles: Only subtitles marked as forced will be loaded.<br><br>Always Play Subtitles: Subtitles matching the language preference will be loaded regardless of the audio language.<br><br>None: Subtitles will not be loaded by default.<br><br>This is a server option and will affect your Jellyfin experience on all clients";
 			break;
 		case "HidePlayedInLatest":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Hide watched content from latest media";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Watched items will not appear in the Latest TV or Latest Movies home views or pages.<br><br>This is a server option and will affect your Jellyfin experience on all clients";
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Hide watched content from latest media";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "Watched items will not appear in the Latest TV or Latest Movies home views or pages.<br><br>This is a server option and will affect your Jellyfin experience on all clients";
 			break;
 		case "EnableCinemaMode":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Enable cinema mode";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Cinema mode brings the theater experience straight to your living room with the ability to play trailers and custom intros before the main feature.";
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Enable cinema mode";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "Cinema mode brings the theater experience straight to your living room with the ability to play trailers and custom intros before the main feature.";
 			break;
 		case "DisplayMissingEpisodes":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Display Missing Episodes within Seasons";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Display missing episodes within TV seasons<br><br>This is a server option and will affect your Jellyfin experience on all clients";
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Display Missing Episodes within Seasons";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "Display missing episodes within TV seasons<br><br>This is a server option and will affect your Jellyfin experience on all clients";
 			break;
 		case "DisplayUnairedEpisodes":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Display Unaired Episodes within Seasons";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Display unaired episodes within TV seasons<br><br>This is a server option and will affect your Jellyfin experience on all clients";
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Display Unaired Episodes within Seasons";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "Display unaired episodes within TV seasons<br><br>This is a server option and will affect your Jellyfin experience on all clients";
 			break;
 		case "GroupMovieCollections":
-			document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Group Movies into Collections";
-			document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "When displaying movie lists, movies belonging to a collection will be displayed as one grouped item<br><br>This is a server option and will affect your Jellyfin experience on all clients";
+			document.getElementById("guiSettingsOverviewTitle").innerHTML = "Group Movies into Collections";
+			document.getElementById("guiSettingsOverviewContent").innerHTML = "When displaying movie lists, movies belonging to a collection will be displayed as one grouped item<br><br>This is a server option and will affect your Jellyfin experience on all clients";
 			break;
 	}
 };
 
-GuiPage_Settings.returnFromMusicPlayer = function() {
+GuiSettings.returnFromMusicPlayer = function() {
 	this.selectedItem = 0;
 	this.updateDisplayedItems();
 	this.updateSelectedItems();

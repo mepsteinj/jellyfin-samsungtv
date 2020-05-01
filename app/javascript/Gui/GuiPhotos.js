@@ -1,28 +1,26 @@
-var GuiPage_Photos = {
-		ItemData : null,
-
-		selectedItem : 0,
-		topLeftItem : 0,
-		MAXCOLUMNCOUNT : 4,
-		MAXROWCOUNT : 3,
-
-		isResume : false,
-		genreType : "",
-		startParams : [],
-		isLatest : false,
-		backdropTimeout : null
+var GuiPhotos = {
+	ItemData : null,
+	selectedItem : 0,
+	topLeftItem : 0,
+	MAXCOLUMNCOUNT : 4,
+	MAXROWCOUNT : 3,
+	isResume : false,
+	genreType : "",
+	startParams : [],
+	isLatest : false,
+	backdropTimeout : null
 };
 
-GuiPage_Photos.onFocus = function() {
+GuiPhotos.onFocus = function() {
 	GuiHelper.setControlButtons("Favourite",null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
 };
 
-GuiPage_Photos.getMaxDisplay = function() {
+GuiPhotos.getMaxDisplay = function() {
 		return 15;
 };
 
-GuiPage_Photos.start = function(title,url,selectedItem,topLeftItem) {
-	alert("Page Enter : GuiPage_Photos");
+GuiPhotos.start = function(title,url,selectedItem,topLeftItem) {
+	alert("Page Enter : GuiPhotos");
 
 	//Save Start Params
 	this.startParams = [title,url];
@@ -44,7 +42,7 @@ GuiPage_Photos.start = function(title,url,selectedItem,topLeftItem) {
 			"<div id=Center class='SeriesCenter'><div id=content></div></div>";
 
 	//Set Top
-	GuiPage_Photos.setPadding(title);
+	GuiPhotos.setPadding(title);
 
 	if (this.ItemData.Items.length > 0) {
 		//Set isResume based on title - used in UpdateDisplayedItems
@@ -60,7 +58,7 @@ GuiPage_Photos.start = function(title,url,selectedItem,topLeftItem) {
 		this.updateSelectedItems();
 
 		//Set Focus for Key Events
-		document.getElementById("GuiPage_Photos").focus();
+		document.getElementById("GuiPhotos").focus();
 	} else {
 		//Set message to user
 		document.getElementById("counter").innerHTML = "";
@@ -71,7 +69,7 @@ GuiPage_Photos.start = function(title,url,selectedItem,topLeftItem) {
 	}
 };
 
-GuiPage_Photos.updateDisplayedItems = function() {
+GuiPhotos.updateDisplayedItems = function() {
 	var Items = this.ItemData.Items;
 	var htmlToAdd = "";
 	var DivIdPrepend = "";
@@ -137,7 +135,7 @@ GuiPage_Photos.updateDisplayedItems = function() {
 	document.getElementById("content").innerHTML = htmlToAdd;
 };
 
-GuiPage_Photos.updateOneDisplayedItem = function(item,selectedItem) {
+GuiPhotos.updateOneDisplayedItem = function(item,selectedItem) {
 	var htmlToAdd = "";
 	if (item.Type == "PhotoAlbum" || item.Type == "Folder") {
 		var title = item.Name;
@@ -154,12 +152,12 @@ GuiPage_Photos.updateOneDisplayedItem = function(item,selectedItem) {
 };
 
 //Function sets CSS Properties to show which item is selected.
-GuiPage_Photos.updateSelectedItems = function () {
-		Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-				Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"photo Selected","photo","");
+GuiPhotos.updateSelectedItems = function () {
+		Support.updateSelectedNEW(this.ItemData.Items, this.selectedItem, this.topLeftItem,
+				Math.min(this.topLeftItem + this.getMaxDisplay(), this.ItemData.Items.length), "photo selected", "photo", "");
 };
 
-GuiPage_Photos.keyDown = function() {
+GuiPhotos.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
@@ -178,10 +176,8 @@ GuiPage_Photos.keyDown = function() {
 	if (Main.getIsScreensaverRunning()) {
 		//Update Main.js isScreensaverRunning - Sets to True
 		Main.setIsScreensaverRunning();
-
 		//End Screensaver
-		GuiImagePlayer_Screensaver.stopScreensaver();
-
+		GuiImagePlayerScreensaver.stopScreensaver();
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
@@ -241,7 +237,7 @@ GuiPage_Photos.keyDown = function() {
 			this.updateOneDisplayedItem(this.ItemData.Items[this.selectedItem],this.selectedItem);
 			break;
 		case tvKey.KEY_BLUE:
-			GuiMusicPlayer.showMusicPlayer("GuiPage_Photos",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
+			GuiMusicPlayer.showMusicPlayer("GuiPhotos", this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
 			break;
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
@@ -254,23 +250,23 @@ GuiPage_Photos.keyDown = function() {
 	}
 };
 
-GuiPage_Photos.processSelectedItem = function() {
+GuiPhotos.processSelectedItem = function() {
 	clearTimeout(this.backdropTimeout);
-	Support.processSelectedItem("GuiPage_Photos",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null,this.genreType,this.isLatest);
+	Support.processSelectedItem("GuiPhotos",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null,this.genreType,this.isLatest);
 };
 
-GuiPage_Photos.playSelectedItem = function () {
+GuiPhotos.playSelectedItem = function () {
 	clearTimeout(this.backdropTimeout);
-	Support.playSelectedItem("GuiPage_Photos",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null);
+	Support.playSelectedItem("GuiPhotos",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null);
 };
 
-GuiPage_Photos.openMenu = function() {
-	Support.updateURLHistory("GuiPage_Photos",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
+GuiPhotos.openMenu = function() {
+	Support.updateURLHistory("GuiPhotos",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
 	alert(this.selectedItem);
-	GuiMainMenu.requested("GuiPage_Photos",this.ItemData.Items[this.selectedItem].Id);
+	GuiMainMenu.requested("GuiPhotos",this.ItemData.Items[this.selectedItem].Id);
 };
 
-GuiPage_Photos.processLeftKey = function() {
+GuiPhotos.processLeftKey = function() {
 	if (this.selectedItem - this.topLeftItem == 0 || this.selectedItem - this.topLeftItem == 9) {
 		this.openMenu();
 	} else if (this.selectedItem - this.topLeftItem == 5) {
@@ -289,7 +285,7 @@ GuiPage_Photos.processLeftKey = function() {
 	}
 };
 
-GuiPage_Photos.processRightKey = function() {
+GuiPhotos.processRightKey = function() {
 	this.selectedItem++;
 	if (this.selectedItem >= this.ItemData.Items.length) {
 		this.selectedItem--;
@@ -303,7 +299,7 @@ GuiPage_Photos.processRightKey = function() {
 };
 
 //Moving up and down on an irregular shaped grid is imprecise. Handle each case individually.
-GuiPage_Photos.processUpKey = function() {
+GuiPhotos.processUpKey = function() {
 	if (this.selectedItem - this.topLeftItem == 0) {
 		if (this.selectedItem > 0) {
 			this.selectedItem = Math.max(this.selectedItem-9,0);
@@ -368,7 +364,7 @@ GuiPage_Photos.processUpKey = function() {
 	this.updateSelectedItems();
 };
 
-GuiPage_Photos.processDownKey = function() {
+GuiPhotos.processDownKey = function() {
 	if (this.selectedItem - this.topLeftItem == 0 && this.ItemData.Items.length-1 > this.selectedItem+9) {
 		this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem+9);
 	} else if (this.selectedItem - this.topLeftItem == 1 && this.ItemData.Items.length-1 > this.selectedItem+3) {
@@ -415,11 +411,11 @@ GuiPage_Photos.processDownKey = function() {
 	this.updateSelectedItems();
 };
 
-GuiPage_Photos.setPadding = function(title) {
-		document.getElementById("Center").style.top = "100px";
+GuiPhotos.setPadding = function(title) {
+	document.getElementById("Center").style.top = "100px";
 };
 
-GuiPage_Photos.returnFromMusicPlayer = function() {
+GuiPhotos.returnFromMusicPlayer = function() {
 	this.selectedItem = 0;
 	this.updateDisplayedItems();
 	this.updateSelectedItems();

@@ -258,10 +258,10 @@ File.getUserProperty = function(property) {
 		}
 		if (fileJson.Servers[this.ServerEntry].Users[this.UserEntry][property] === undefined) {
 			//Get System Default
-			for (var index = 0; index < GuiPage_Settings.Settings.length; index++) {
-				if (GuiPage_Settings.Settings[index] == property) {
+			for (var index = 0; index < GuiSettings.Settings.length; index++) {
+				if (GuiSettings.Settings[index] == property) {
 					//Write setting here?
-					fileJson.Servers[this.ServerEntry].Users[this.UserEntry][property] = GuiPage_Settings.SettingsDefaults[index];
+					fileJson.Servers[this.ServerEntry].Users[this.UserEntry][property] = GuiSettings.SettingsDefaults[index];
 					File.writeAll(fileJson);
 					break;
 				}
@@ -283,10 +283,10 @@ File.getTVProperty = function(property) {
 		}
 		if (fileJson.TV[property] === undefined) {
 			//Get System Default
-			for (var index = 0; index < GuiPage_Settings.TVSettings.length; index++) {
-				if (GuiPage_Settings.TVSettings[index] == property) {
+			for (var index = 0; index < GuiSettings.TVSettings.length; index++) {
+				if (GuiSettings.TVSettings[index] == property) {
 					//Write setting here?
-					fileJson.TV[property] = GuiPage_Settings.TVSettingsDefaults[index];
+					fileJson.TV[property] = GuiSettings.TVSettingsDefaults[index];
 					File.writeAll(fileJson);
 					break;
 				}

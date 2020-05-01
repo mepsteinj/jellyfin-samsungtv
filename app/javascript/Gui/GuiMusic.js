@@ -1,31 +1,26 @@
-var GuiPage_Music = {
-		AlbumData : null,
-
-		selectedItem : 0, //Vertical
-		topLeftItem : 0,
-
-		selectedItem2 : 0, //Horizontal
-
-		MAXCOLUMNCOUNT : 1,
-		MAXROWCOUNT : 12,
-
-		startParams : [],
-
-		topMenuItems : ["PlayAll","QueueAll","ShuffleAll","InstantMix"],
-		playItems : ["Play_","Queue_","Mix_"]
+var GuiMusic = {
+	AlbumData : null,
+	selectedItem : 0, //Vertical
+	topLeftItem : 0,
+	selectedItem2 : 0, //Horizontal
+	MAXCOLUMNCOUNT : 1,
+	MAXROWCOUNT : 12,
+	startParams : [],
+	topMenuItems : ["PlayAll","QueueAll","ShuffleAll","InstantMix"],
+	playItems : ["Play_","Queue_","Mix_"]
 };
 
-GuiPage_Music.onFocus = function() {
+GuiMusic.onFocus = function() {
 	this.updateSelectedItems();
 	GuiHelper.setControlButtons(null,null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
 };
 
-GuiPage_Music.getMaxDisplay = function() {
+GuiMusic.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
 };
 
-GuiPage_Music.start = function(title,url,type) { //Type is either MusicAlbum or MusicArtist
-	alert("Page Enter : GuiPage_Music");
+GuiMusic.start = function(title,url,type) { //Type is either MusicAlbum or MusicArtist
+	alert("Page Enter : GuiMusic");
 
 	//Save Start Params
 	this.startParams = [title,url];
@@ -41,15 +36,15 @@ GuiPage_Music.start = function(title,url,type) { //Type is either MusicAlbum or 
 
 	//Set PageContent
 	document.getElementById("pageContent").innerHTML = "<div><div id='guiMusic_Title' class='guiMusicTitle'></div> \
-		   <div id='guiMusic_Subtitle' class='guiMusicSubtitle'></div></div> \
-		   <div id='guiMusic_Details' class='guiMusicDetails'> \
-		   <div id='GuiPage_Music_Globals' class='guiMusicGlobals'> \
+		   <div id='guiMusicSubtitle' class='guiMusicSubtitle'></div></div> \
+		   <div id='guiMusicDetails' class='guiMusicDetails'> \
+		   <div id='guiMusicGlobals' class='guiMusicGlobals'> \
 		   <div id='PlayAll' class='guiMusicGlobal'>Play All</div> \
 		   <div id='QueueAll' class='guiMusicGlobal'>Queue All</div> \
 		   <div id='ShuffleAll' class='guiMusicGlobal'>Shuffle</div> \
 		   <div id='InstantMix' class='guiMusicGlobal'>Instant Mix</div></div> \
-		<div id='GuiPage_Music_Options' class='guiMusicOptions'></div></div> \
-		<div id='guiMusic_Poster' class='guiMusicPoster'></div>";
+		<div id='guiMusicOptions' class='guiMusicOptions'></div></div> \
+		<div id='guiMusicPoster' class='guiMusicPoster'></div>";
 	document.getElementById("counter").innerHTML = "1/" + this.topMenuItems.length;
 
 	//Get Episode Poster
@@ -81,10 +76,10 @@ GuiPage_Music.start = function(title,url,type) { //Type is either MusicAlbum or 
 	this.updateSelectedItems();
 
 	//Set Focus for Key Events
-	document.getElementById("GuiPage_Music").focus();
+	document.getElementById("guiMusic").focus();
 };
 
-GuiPage_Music.updateDisplayedItems = function() {
+GuiMusic.updateDisplayedItems = function() {
 	var htmlToAdd = "<table class=table><th style='width:66px'></th><th style='width:100px'></th><th style='width:90px'></th><th style='width:66px'></th><th style='width:560px'></th><th style='width:130px'></th>";
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.AlbumData.Items.length); index++){
 		if (this.AlbumData.Items[index].ParentIndexNumber && this.AlbumData.Items[index].IndexNumber) {
@@ -105,24 +100,24 @@ GuiPage_Music.updateDisplayedItems = function() {
 				"<td class='guiMusic_TableTd'>"+TrackDetails+ "</td><td id="+ this.AlbumData.Items[index].Id +" class='guiMusic_TableTd'>" + songName + "</td>" +
 						"<td class='guiMusic_TableTd'>"+Support.convertTicksToTimeSingle(this.AlbumData.Items[index].RunTimeTicks/10000,true)+"</td></tr>";
 	}
-	document.getElementById("GuiPage_Music_Options").innerHTML = htmlToAdd + "</table>";
+	document.getElementById("guiMusicOptions").innerHTML = htmlToAdd + "</table>";
 };
 
 //Function sets CSS Properties so show which user is selected
-GuiPage_Music.updateSelectedItems = function () {
+GuiMusic.updateSelectedItems = function () {
 	if (this.selectedItem == -1) {
 		//Highlight the selected global item (PlayAll, Shuffle etc.)
 		for (var index = 0; index < this.topMenuItems.length; index++) {
 			if (index == this.selectedItem2) {
-				document.getElementById(this.topMenuItems[index]).className = "guiMusic_Global highlight"+Main.highlightColour+"Background";
+				document.getElementById(this.topMenuItems[index]).className = "guiMusicGlobal highlight" + Main.highlightColour + "Background";
 			} else {
-				document.getElementById(this.topMenuItems[index]).className = "guiMusic_Global";
+				document.getElementById(this.topMenuItems[index]).className = "guiMusicGlobal";
 			}
 		}
 	} else {
 		//Reset the global items.
 		for (var index = 0; index < this.topMenuItems.length; index++) {
-			document.getElementById(this.topMenuItems[index]).className = "guiMusic_Global";
+			document.getElementById(this.topMenuItems[index]).className = "guiMusicGlobal";
 		}
 
 		//Highlight the selected list item.
@@ -130,9 +125,9 @@ GuiPage_Music.updateSelectedItems = function () {
 			if (index == this.selectedItem) {
 				for (var index2 = 0; index2 < this.playItems.length; index2++) {
 					if (index2 == this.selectedItem2) {
-						document.getElementById(this.playItems[index2]+this.AlbumData.Items[index].Id).className = "guiMusic_TableTd highlight"+Main.highlightColour+"Background";
+						document.getElementById(this.playItems[index2]+this.AlbumData.Items[index].Id).className = "guiMusicTableTd highlight" + Main.highlightColour + "Background";
 					} else {
-						document.getElementById(this.playItems[index2]+this.AlbumData.Items[index].Id).className = "guiMusic_TableTd";
+						document.getElementById(this.playItems[index2]+this.AlbumData.Items[index].Id).className = "guiMusicTableTd";
 					}
 				}
 			} else {
@@ -153,7 +148,7 @@ GuiPage_Music.updateSelectedItems = function () {
 
 };
 
-GuiPage_Music.keyDown = function() {
+GuiMusic.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
@@ -164,10 +159,8 @@ GuiPage_Music.keyDown = function() {
 	if (Main.getIsScreensaverRunning()) {
 		//Update Main.js isScreensaverRunning - Sets to True
 		Main.setIsScreensaverRunning();
-
 		//End Screensaver
-		GuiImagePlayer_Screensaver.stopScreensaver();
-
+		GuiImagePlayerScreensaver.stopScreensaver();
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
@@ -204,9 +197,9 @@ GuiPage_Music.keyDown = function() {
 			break;
 		case tvKey.KEY_BLUE:
 			if (this.selectedItem == -1) {
-				GuiMusicPlayer.showMusicPlayer("GuiPage_Music",this.topMenuItems[this.selectedItem2],"guiMusic_Global highlight"+Main.highlightColour+"Background");
+				GuiMusicPlayer.showMusicPlayer("GuiMusic",this.topMenuItems[this.selectedItem2],"guiMusicGlobal highlight"+Main.highlightColour+"Background");
 			} else {
-				GuiMusicPlayer.showMusicPlayer("GuiPage_Music",this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id,"guiMusic_TableTd highlight"+Main.highlightColour+"Background");
+				GuiMusicPlayer.showMusicPlayer("GuiMusic",this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id,"guiMusic_TableTd highlight"+Main.highlightColour+"Background");
 			}
 			break;
 		case tvKey.KEY_EXIT:
@@ -216,17 +209,17 @@ GuiPage_Music.keyDown = function() {
 	}
 };
 
-GuiPage_Music.openMenu = function() {
-	Support.updateURLHistory("GuiPage_Music",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,true);
+GuiMusic.openMenu = function() {
+	Support.updateURLHistory("GuiMusic",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,true);
 
 	if (this.selectedItem == -1) {
-		GuiMainMenu.requested("GuiPage_Music",this.topMenuItems[this.selectedItem2],"guiMusic_Global highlight"+Main.highlightColour+"Background");
+		GuiMainMenu.requested("Guiusic", this.topMenuItems[this.selectedItem2],"guiMusicGlobal highlight"+Main.highlightColour+"Background");
 	} else {
-		GuiMainMenu.requested("GuiPage_Music",this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id,"guiMusic_TableTd highlight"+Main.highlightColour+"Background");
+		GuiMainMenu.requested("GuiMusic", this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id,"guiMusicTableTd highlight"+Main.highlightColour+"Background");
 	}
 };
 
-GuiPage_Music.processUpKey = function() {
+GuiMusic.processUpKey = function() {
 	this.selectedItem--;
 	if (this.selectedItem < -1) {
 		this.selectedItem = -1;
@@ -252,7 +245,7 @@ GuiPage_Music.processUpKey = function() {
 	}
 };
 
-GuiPage_Music.processDownKey = function() {
+GuiMusic.processDownKey = function() {
 	this.selectedItem++;
 	if (this.selectedItem == 0) {
 		this.selectedItem2 = 0;
@@ -272,7 +265,7 @@ GuiPage_Music.processDownKey = function() {
 	this.updateSelectedItems();
 };
 
-GuiPage_Music.processLeftKey = function() {
+GuiMusic.processLeftKey = function() {
 	this.selectedItem2--;
 	if (this.selectedItem2 == -1) {
 		this.selectedItem2 = 0;
@@ -282,7 +275,7 @@ GuiPage_Music.processLeftKey = function() {
 	}
 };
 
-GuiPage_Music.processRightKey = function() {
+GuiMusic.processRightKey = function() {
 	this.selectedItem2++;
 	if (this.selectedItem == -1) {
 		if (this.selectedItem2 > this.topMenuItems.length-1) {
@@ -299,30 +292,30 @@ GuiPage_Music.processRightKey = function() {
 	}
 };
 
-GuiPage_Music.processSelectedItem = function() {
+GuiMusic.processSelectedItem = function() {
 	if (this.selectedItem == -1) {
 		//Is Top Menu Bar
 		switch (this.selectedItem2) {
 		case 0:
 			//Play All
 			document.getElementById(this.topMenuItems[this.selectedItem2]).className = document.getElementById(this.topMenuItems[this.selectedItem2]).className.replace("highlight"+Main.highlightColour+"Background","");
-			GuiMusicPlayer.start("Album",this.startParams[1] + "&Fields=MediaSources","GuiPage_Music",false);
+			GuiMusicPlayer.start("Album",this.startParams[1] + "&Fields=MediaSources","GuiMusic",false);
 			break;
 		case 1:
 			//Queue All
-			GuiMusicPlayer.start("Album",this.startParams[1] + "&Fields=MediaSources","GuiPage_Music",true);
+			GuiMusicPlayer.start("Album",this.startParams[1] + "&Fields=MediaSources","GuiMusic",true);
 			break;
 		case 2:
 			//Shuffle
 			document.getElementById(this.topMenuItems[this.selectedItem2]).className = document.getElementById(this.topMenuItems[this.selectedItem2]).className.replace("highlight"+Main.highlightColour+"Background","");
 			var url = this.startParams[1].replace("SortBy=SortName","SortBy=Random");
-			GuiMusicPlayer.start("Album",url + "&Fields=MediaSources","GuiPage_Music",false);
+			GuiMusicPlayer.start("Album",url + "&Fields=MediaSources","GuiMusic",false);
 			break;
 		case 3:
 			//Instant Mix
 			document.getElementById(this.topMenuItems[this.selectedItem2]).className = document.getElementById(this.topMenuItems[this.selectedItem2]).className.replace("highlight"+Main.highlightColour+"Background","");
 			var url = Server.getCustomURL("/Albums/"+this.AlbumData.Items[0].AlbumId + "/InstantMix?format=json&Limit=50&UserId="+Server.getUserID());
-			GuiMusicPlayer.start("Album",url + "&Fields=MediaSources","GuiPage_Music",false);
+			GuiMusicPlayer.start("Album",url + "&Fields=MediaSources","GuiMusic",false);
 			break;
 		}
 	} else {
@@ -331,18 +324,18 @@ GuiPage_Music.processSelectedItem = function() {
 			//Play
 			document.getElementById(this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id).className = document.getElementById(this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id).className.replace("highlight"+Main.highlightColour+"Background","");
 			var url = Server.getItemInfoURL(this.AlbumData.Items[this.selectedItem].Id);
-			GuiMusicPlayer.start("Song",url,"GuiPage_Music",false);
+			GuiMusicPlayer.start("Song",url,"GuiMusic",false);
 			break;
 		case 1:
 			//Queue
 			var url = Server.getItemInfoURL(this.AlbumData.Items[this.selectedItem].Id);
-			GuiMusicPlayer.start("Song",url,"GuiPage_Music",true);
+			GuiMusicPlayer.start("Song",url,"Guiusic",true);
 			break;
 		case 2:
 			//Mix
 			document.getElementById(this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id).className = document.getElementById(this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id).className.replace("highlight"+Main.highlightColour+"Background","");
 			var url = Server.getCustomURL("/Songs/"+this.AlbumData.Items[this.selectedItem].Id + "/InstantMix?format=json&Limit=50&UserId="+Server.getUserID());
-			GuiMusicPlayer.start("Album",url + "&Fields=MediaSources","GuiPage_Music",false);
+			GuiMusicPlayer.start("Album",url + "&Fields=MediaSources","GuiMusic",false);
 			break;
 		}
 	}

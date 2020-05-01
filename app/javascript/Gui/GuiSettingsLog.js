@@ -1,36 +1,34 @@
-var GuiPage_SettingsLog = {
-		logArray : null,
-		selectedBannerItem : 0,
-		topLeftItem : 0,
-
-		MAXCOLUMNCOUNT : 1,
-		MAXROWCOUNT : 20,
-
-		bannerItems : ["User Settings","Server Settings","TV Settings","Log","About"],
+var GuiSettingsLog = {
+	logArray : null,
+	selectedBannerItem : 0,
+	topLeftItem : 0,
+	MAXCOLUMNCOUNT : 1,
+	MAXROWCOUNT : 20,
+	bannerItems : ["User Settings","Server Settings","TV Settings","Log","About"],
 };
 
-GuiPage_SettingsLog.onFocus = function() {
+GuiSettingsLog.onFocus = function() {
 	GuiHelper.setControlButtons("Clear Log",null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
 };
 
-GuiPage_SettingsLog.getMaxDisplay = function() {
+GuiSettingsLog.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
 };
 
-GuiPage_SettingsLog.start = function() {
-	alert("Page Enter : GuiPage_SettingsLog");
+GuiSettingsLog.start = function() {
+	alert("Page Enter : GuiSettingsLog");
 
 	//Reset Vars
 	this.selectedBannerItem = 3; //match Logs
 
 	//Load Data
 	this.logArray = FileLog.loadFile(true);
-	this.topLeftItem = this.logArray.length - GuiPage_SettingsLog.getMaxDisplay();
+	this.topLeftItem = this.logArray.length - GuiSettingsLog.getMaxDisplay();
 	this.topLeftItem = (this.topLeftItem < 0) ? 0 : this.topLeftItem;
 
 	//Load Settings
 	document.getElementById("pageContent").className = "";
-	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='bannerMenu'></div><div id='guiTV_Show_Title' class='guiSettingsTitle'>Log</div>\ \
+	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='bannerMenu'></div><div id='guiTVShowTitle' class='guiSettingsTitle'>Log</div>\ \
 		<div id='guiPage_Settings_Settings' class='guiSettingsSettings'></div>";// +
 		/*"<div id='guiPage_Settings_Overview' class='guiSettingsOverview'>" +
 			"<div id=guiPage_Settings_Overview_Title></div>" +
@@ -50,10 +48,10 @@ GuiPage_SettingsLog.start = function() {
 	//this.setText();
 	this.updateDisplayedItems();
 	this.updateSelectedBannerItems();
-	document.getElementById("GuiPage_SettingsLog").focus();
+	document.getElementById("GuiSettingsLog").focus();
 };
 
-GuiPage_SettingsLog.updateDisplayedItems = function() {
+GuiSettingsLog.updateDisplayedItems = function() {
 	var htmlToAdd = "<table>";
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.logArray.length); index++) {
 		htmlToAdd += "<tr><td style='word-wrap:break-word;word-break:break-all;width:1500px;'>" + this.logArray[index] + "</td></tr>";
@@ -61,7 +59,7 @@ GuiPage_SettingsLog.updateDisplayedItems = function() {
 	document.getElementById("guiPage_Settings_Settings").innerHTML = htmlToAdd + "</table>";
 };
 
-GuiPage_SettingsLog.updateSelectedBannerItems = function() {
+GuiSettingsLog.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.bannerItems.length; index++) {
 		if (index == this.selectedBannerItem) {
 			if (index != this.bannerItems.length-1) { //Don't put padding on the last one.
@@ -88,7 +86,7 @@ GuiPage_SettingsLog.updateSelectedBannerItems = function() {
 	document.getElementById("counter").innerHTML = (this.selectedBannerItem + 1) + "/" + (this.bannerItems.length);
 };
 
-GuiPage_SettingsLog.keyDown = function() {
+GuiSettingsLog.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
@@ -107,10 +105,8 @@ GuiPage_SettingsLog.keyDown = function() {
 	if (Main.getIsScreensaverRunning()) {
 		//Update Main.js isScreensaverRunning - Sets to True
 		Main.setIsScreensaverRunning();
-
 		//End Screensaver
-		GuiImagePlayer_Screensaver.stopScreensaver();
-
+		GuiImagePlayerScreensaver.stopScreensaver();
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
@@ -141,14 +137,14 @@ GuiPage_SettingsLog.keyDown = function() {
 			FileLog.empty();
 			FileLog.write("---------------------------------------------------------------------",true);
 			FileLog.write("Log File Emptied by User");
-			GuiPage_SettingsLog.start(); //relead
+			GuiSettingsLog.start(); //relead
 			break;
 		case tvKey.KEY_BLUE:
-			GuiMusicPlayer.showMusicPlayer("GuiPage_SettingsLog","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
+			GuiMusicPlayer.showMusicPlayer("GuiSettingsLog","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
 			break;
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
-			GuiMainMenu.requested("GuiPage_SettingsLog",null);
+			GuiMainMenu.requested("GuiSettingsLog",null);
 			break;
 		case tvKey.KEY_EXIT:
 			widgetAPI.sendExitEvent();
@@ -156,7 +152,7 @@ GuiPage_SettingsLog.keyDown = function() {
 	}
 };
 
-GuiPage_SettingsLog.processUpKey = function() {
+GuiSettingsLog.processUpKey = function() {
 	this.topLeftItem = this.topLeftItem - this.MAXCOLUMNCOUNT;
 	if (this.topLeftItem == -1) {
 		this.topLeftItem = 0;
@@ -165,7 +161,7 @@ GuiPage_SettingsLog.processUpKey = function() {
 	}
 };
 
-GuiPage_SettingsLog.processDownKey = function() {
+GuiSettingsLog.processDownKey = function() {
 	this.topLeftItem = this.topLeftItem + this.MAXCOLUMNCOUNT;
 	if (this.topLeftItem > this.logArray.length - this.getMaxDisplay()) {
 		this.topLeftItem = this.topLeftItem - this.MAXCOLUMNCOUNT;
@@ -174,7 +170,7 @@ GuiPage_SettingsLog.processDownKey = function() {
 	}
 };
 
-GuiPage_SettingsLog.processLeftKey = function() {
+GuiSettingsLog.processLeftKey = function() {
 	this.selectedBannerItem--;
 	if (this.selectedBannerItem < 0) {
 		this.selectedBannerItem = 0;
@@ -184,12 +180,12 @@ GuiPage_SettingsLog.processLeftKey = function() {
 	}
 };
 
-GuiPage_SettingsLog.openMenu = function() {
+GuiSettingsLog.openMenu = function() {
 	document.getElementById("bannerItem0").className = "bannerItem bannerItemPadding";
-	GuiMainMenu.requested("GuiPage_SettingsLog","bannerItem0","bannerItem bannerItemPadding green");
+	GuiMainMenu.requested("GuiSettingsLog","bannerItem0","bannerItem bannerItemPadding green");
 };
 
-GuiPage_SettingsLog.processRightKey = function() {
+GuiSettingsLog.processRightKey = function() {
 	this.selectedBannerItem++;
 	if (this.selectedBannerItem >= this.bannerItems.length) {
 		this.selectedBannerItem--;
@@ -198,17 +194,17 @@ GuiPage_SettingsLog.processRightKey = function() {
 	}
 };
 
-GuiPage_SettingsLog.processSelectedItem = function() {
+GuiSettingsLog.processSelectedItem = function() {
 	if (this.bannerItems[this.selectedBannerItem] == "About") {
-		Support.updateURLHistory("GuiPage_Settings",null,null,null,null,0,0,null);
-		GuiPage_Contributors.start();
+		Support.updateURLHistory("GuiSettings",null,null,null,null,0,0,null);
+		GuiContributors.start();
 	} else if (this.bannerItems[this.selectedBannerItem] != "Log") {
 		GuiPage_Settings.start(this.bannerItems[this.selectedBannerItem]);
 	}
 };
 
-GuiPage_SettingsLog.setText = function() {
-	document.getElementById("guiPage_Settings_Overview_Title").innerHTML = "Log Viewer";
-	document.getElementById("guiPage_Settings_Overview_Content").innerHTML = "Press the up arrow to navigate to earlier entries in the log, and down to view later entries. The log opens at the last items in the log. <br><br> Press the red button to clear the log.";
+GuiSettingsLog.setText = function() {
+	document.getElementById("guiSettingsOverviewTitle").innerHTML = "Log Viewer";
+	document.getElementById("guiSettingsOverviewContent").innerHTML = "Press the up arrow to navigate to earlier entries in the log, and down to view later entries. The log opens at the last items in the log. <br><br> Press the red button to clear the log.";
 };
 

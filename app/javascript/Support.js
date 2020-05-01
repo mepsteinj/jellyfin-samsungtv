@@ -71,7 +71,7 @@ Support.logout = function() {
 };
 
 Support.updateHomePageURLs = function (title, url, title2Name, isURL1) {
-	this.previousPageDetails[0][0] = "GuiPage_HomeTwoItems";
+	this.previousPageDetails[0][0] = "GuiHomeTwoItems";
 	if (isURL1 == true) {
 		this.previousPageDetails[0][1] = title;
 		this.previousPageDetails[0][2] = url;
@@ -80,7 +80,7 @@ Support.updateHomePageURLs = function (title, url, title2Name, isURL1) {
 		this.previousPageDetails[0][4] = url;
 	}
 	if (title2Name == "None") {
-		this.previousPageDetails[0][0] = "GuiPage_HomeOneItem";
+		this.previousPageDetails[0][0] = "GuiHomeOneItem";
 	}
 };
 
@@ -132,67 +132,67 @@ Support.processReturnURLHistory = function() {
 		var isTop = array[7];
 		//Handle Navigation?
 		switch (page) {
-			case "GuiPage_HomeOneItem":
-				GuiPage_HomeOneItem.start(title,url,selectedItem,topLeftItem);
+			case "GuiHomeOneItem":
+				GuiHomeOneItem.start(title, url, selectedItem, topLeftItem);
 				break;
-			case "GuiPage_HomeTwoItems":
-				GuiPage_HomeTwoItems.start(title,url,title2,url2,selectedItem,topLeftItem,isTop);
+			case "GuiHomeTwoItems":
+				GuiHomeTwoItems.start(title, url, title2, url2, selectedItem, topLeftItem, isTop);
 				break;
-			case "GuiDisplay_Series":
-				GuiDisplay_Series.start(title,url,selectedItem,topLeftItem);
+			case "GuiDisplaySeries":
+				GuiDisplaySeries.start(title,url,selectedItem,topLeftItem);
 				break;
-			case "GuiDisplay_Episodes":
-				GuiDisplay_Episodes.start(title,url,selectedItem,topLeftItem);
+			case "GuiDisplayEpisodes":
+				GuiDisplayEpisodes.start(title,url,selectedItem,topLeftItem);
 				break;
 			case "GuiDisplayOneItem":
 				GuiDisplayOneItem.start(title,url,selectedItem,topLeftItem);
 				break;
-			case "GuiTV_Show":
-				GuiTV_Show.start(title,url,selectedItem,topLeftItem);
+			case "GuiTVShow":
+				GuiTVShow.start(title,url,selectedItem,topLeftItem);
 				break;
-			case "GuiTV_Upcoming":
-				GuiTV_Upcoming.start();
+			case "GuiTVUpcoming":
+				GuiTVUpcoming.start();
 				break;
-			case "GuiPage_ItemDetails":
-				GuiPage_ItemDetails.start(title,url,selectedItem);
+			case "GuiItemDetails":
+				GuiItemDetails.start(title,url,selectedItem);
 				break;
 			case "GuiDisplayTwoItems":
 				GuiDisplayTwoItems.start(title,url,title2,url2,selectedItem,topLeftItem,isTop);
 				break;
-			case "GuiPage_MusicArtist":
-				GuiPage_MusicArtist.start(title,url,selectedItem, topLeftItem);
+			case "GuiMusicArtist":
+				GuiMusicArtist.start(title,url,selectedItem, topLeftItem);
 				break;
-			case "GuiPage_MusicAZ":
-				GuiPage_MusicAZ.start(title,selectedItem);//Not actually Title - Holds page!
+			case "GuiMusicAZ":
+				GuiMusicAZ.start(title,selectedItem);//Not actually Title - Holds page!
 				break;
-			case "GuiPage_Music":
-				GuiPage_Music.start(title,url);
+			case "GuiMusic":
+				GuiMusic.start(title,url);
 				break;
-			case "GuiPage_CastMember":
-				GuiPage_CastMember.start(title,url,selectedItem,topLeftItem);
+			case "GuiCastMember":
+				GuiCastMember.start(title,url,selectedItem,topLeftItem);
 				break;
-			case "GuiPage_Photos":
-				GuiPage_Photos.start(title,url,selectedItem,topLeftItem);
+			case "GuiPhotos":
+				GuiPhotos.start(title,url,selectedItem,topLeftItem);
 				break;
 			case "GuiPage_PhotoNavigation":
 				GuiPage_PhotoNavigation.start(title,url,selectedItem,topLeftItem);
 				break;
-			case "GuiPage_Playlist": //Params 3 = type, saved in url2, Param 4 = playlistid, saved as title2
-				GuiPage_Playlist.start(title,url,title2,url2);
+			case "GuiPlaylist": //Params 3 = type, saved in url2, Param 4 = playlistid, saved as title2
+				GuiPlaylist.start(title,url,title2,url2);
 				break;
-			case "GuiPage_Search":
-				GuiPage_Search.start(title,url);
+			case "GuiSearch":
+				GuiSearch.start(title,url);
 				break;
-			case "GuiPage_Settings":
-				GuiPage_Settings.start();
+			case "GuiSettings":
+				GuiSettings.start();
 				break;
-			case "GuiPage_TvGuide":
+			case "GuiTVGuide":
 				var url = Server.getCustomURL("/LiveTV/Channels?StartIndex=0&Limit=100&EnableFavoriteSorting=true&UserId=" + Server.getUserID());
 				var guideTime = new Date();
 				var timeMsec = guideTime.getTime();
 				var startTime = timeMsec - 900000; //rewind the clock fifteen minutes.
 				guideTime.setTime(startTime);
-				GuiPage_TvGuide.start("Guide",url,0,0,0,guideTime);
+				GuiTVGuide.start("Guide",url,0,0,0,guideTime);
 				break;
 			default:
 				break;
@@ -592,7 +592,7 @@ Support.getNameFormat = function(seriesName, seriesNo, episodeName, episodeNo, s
 	if (File.getUserProperty("SeasonLabel")){
 		if (seriesName == "" || seriesName == null) {
 			if (seriesNo !== undefined && episodeNo !== undefined) {
-				var seasonNumber = SeriesNo;
+				var seasonNumber = seriesNo;
 				var seasonString = "";
 				if (seasonNumber < 10){
 					seasonString = "0" + seasonNumber;
@@ -609,14 +609,14 @@ Support.getNameFormat = function(seriesName, seriesNo, episodeName, episodeNo, s
 				if (episodeName == "" || episodeName == null) {
 					nameLabel = "S" + seasonString + "E" + episodeString;
 				} else {
-					nameLabel = "S" + seasonString + "E" + episodeString + " - " + EpisodeName;
+					nameLabel = "S" + seasonString + "E" + episodeString + " - " + episodeName;
 				}
 			} else {
 				return episodeName;
 			}
 		} else {
 			if (seriesNo !== undefined && episodeNo !== undefined) {
-				var seasonNumber = SeriesNo;
+				var seasonNumber = seriesNo;
 				var seasonString = "";
 				if (seasonNumber < 10){
 					seasonString = "0" + seasonNumber;
@@ -636,7 +636,7 @@ Support.getNameFormat = function(seriesName, seriesNo, episodeName, episodeNo, s
 			}
 		}
 	} else {
-		 if (seriesName == "" || SeriesName == null) {
+		 if (seriesName == "" || seriesName == null) {
 				if (seriesNo !== undefined && episodeNo !== undefined) {
 					if (episodeName == "" || episodeName == null) {
 						nameLabel = "S" + seriesNo + ",E" + episodeNo;
@@ -660,7 +660,7 @@ Support.getNameFormat = function(seriesName, seriesNo, episodeName, episodeNo, s
 	if (airTime !== undefined && aeriesStudio !== undefined){
 		nameLabel += " on ";
 	}
-	if (SeriesStudio !== undefined){
+	if (seriesStudio !== undefined){
 		nameLabel += aeriesStudio;
 	}
 	return nameLabel;
@@ -697,7 +697,7 @@ Support.updateSelectedNEW = function(array, selectedItemID, startPos, endPos, st
 //-----------------------------------------------------------------------------------------------------------------------------------------
 
 Support.processSelectedItem = function(page, itemData, startParams, selectedItem, topLeftItem, isTop, genreType, isLatest) {
-	if (page == "GuiPage_HomeTwoItems") {
+	if (page == "GuiHomeTwoItems") {
 		Support.updateURLHistory(page, startParams[0], startParams[1], startParams[2], startParams[3], selectedItem, topLeftItem, isTop);
 	} else {
 		if (startParams == null) {
@@ -712,27 +712,27 @@ Support.processSelectedItem = function(page, itemData, startParams, selectedItem
 		case "boxsets":
 			//URL Below IS TEMPORARY TO GRAB SERIES OR FILMS ONLY - IN FUTURE SHOULD DISPLAY ALL
 			var url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
-			GuiDisplay_Series.start("All Collections",url,0,0);
+			GuiDisplaySeries.start("All Collections",url,0,0);
 			break;
 		case "tvshows" :
 			var url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Series&Recursive=true&CollapseBoxSetItems=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
-			GuiDisplay_Series.start("All TV",url,0,0);
+			GuiDisplaySeries.start("All TV",url,0,0);
 			break;
 		case "movies" :
 			var url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Movie&Recursive=true&CollapseBoxSetItems=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
-			GuiDisplay_Series.start("All Movies", url, 0, 0);
+			GuiDisplaySeries.start("All Movies", url, 0, 0);
 			break;
 		case "music" :
 			if (Main.isMusicEnabled()) {
 				var url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&IncludeItemTypes=MusicAlbum&Recursive=true&ExcludeLocationTypes=Virtual&fields=ParentId,SortName&CollapseBoxSetItems=false");
-				GuiDisplay_Series.start("Album Music", url, 0, 0);
+				GuiDisplaySeries.start("Album Music", url, 0, 0);
 			} else {
 				Support.removeLatestURL();
 			}
 			break;
 		case "photos" :
 			var url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&SortBy=SortName&SortOrder=Ascending&fields=PrimaryImageAspectRatio,SortName");
-			GuiPage_Photos.start(itemData.Items[selectedItem].Name, url, 0, 0);
+			GuiPhotos.start(itemData.Items[selectedItem].Name, url, 0, 0);
 			break;
 		case "playlists":
 			var url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&SortBy=SortName&SortOrder=Ascending&fields=SortName");
@@ -740,8 +740,8 @@ Support.processSelectedItem = function(page, itemData, startParams, selectedItem
 			break;
 		default:
 			var url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&SortBy=SortName&SortOrder=Ascending&fields=PrimaryImageAspectRatio,SortName");
-			if (page == "GuiPage_Photos"){
-				GuiPage_Photos.start(itemData.Items[selectedItem].Name, url, 0, 0);
+			if (page == "GuiPhotos"){
+				GuiPhotos.start(itemData.Items[selectedItem].Name, url, 0, 0);
 			} else {
 				GuiDisplayOneItem.start(itemData.Items[selectedItem].Name, url, 0, 0);
 			}
@@ -752,55 +752,55 @@ Support.processSelectedItem = function(page, itemData, startParams, selectedItem
 		switch (itemData.Items[selectedItem].Type) {
 		case "ManualCollectionsFolder":
 			var url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
-			GuiDisplay_Series.start("All Collections", url, 0, 0);
+			GuiDisplaySeries.start("All Collections", url, 0, 0);
 			break;
 		case "BoxSet":
 			var url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
-			GuiDisplay_Series.start("All Collections", url, 0, 0);
+			GuiDisplaySeries.start("All Collections", url, 0, 0);
 			break;
 		case "Series":
 			//Is Latest Items Screen - If so skip to Episode view of latest episodes
 			if (isLatest) {
 				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&Limit=" + itemData.Items[selectedItem].ChildCount + "&ParentId=" + itemData.Items[selectedItem].Id+"&isPlayed=false&IsFolder=false&GroupItems=false&fields=SortName,Overview,Genres,RunTimeTicks");
-				GuiDisplay_Episodes.start("New TV", url, 0, 0);
+				GuiDisplayEpisodes.start("New TV", url, 0, 0);
 			} else {
 				var url = Server.getItemInfoURL(itemData.Items[selectedItem].Id, null);
-				GuiTV_Show.start(itemData.Items[selectedItem].Name, url, 0, 0);
+				GuiTVShow.start(itemData.Items[selectedItem].Name, url, 0, 0);
 			}
 			break;
 		case "Movie":
 			var url = Server.getItemInfoURL(itemData.Items[selectedItem].Id,null);
-			if (page == "GuiDisplay_Series"){
-				GuiPage_ItemDetails.start(itemData.Items[selectedItem].Name, url, 0);
+			if (page == "GuiDisplaySeries"){
+				GuiItemDetails.start(itemData.Items[selectedItem].Name, url, 0);
 			} else {
-				GuiPage_ItemDetails.start(itemData.Items[selectedItem].Name, url, 0);
+				GuiItemDetails.start(itemData.Items[selectedItem].Name, url, 0);
 			}
 			break;
 		case "Episode":
 			var url = Server.getItemInfoURL(itemData.Items[selectedItem].Id, null);
-			GuiPage_ItemDetails.start(itemData.Items[selectedItem].Name, url, 0);
+			GuiItemDetails.start(itemData.Items[selectedItem].Name, url, 0);
 			break;
 		case "Genre":
 			var url = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=" + genreType + "&Recursive=true&CollapseBoxSetItems=false&fields=ParentId,SortName,Overview,RunTimeTicks&Genres=" + itemData.Items[selectedItem].Name);
 			var name = (genreType == "Series") ? "Genre TV" : "Genre Movies";
-			GuiDisplay_Series.start(name, url, 0, 0);
+			GuiDisplaySeries.start(name, url, 0, 0);
 			break;
 		case "MusicArtist":
 			var artist = itemData.Items[selectedItem].Name.replace(/ /g, '+');
 			artist = artist.replace(/&/g, '%26');
 			var url = Server.getItemTypeURL("&SortBy=Album%2CSortName&SortOrder=Ascending&IncludeItemTypes=Audio&Recursive=true&CollapseBoxSetItems=false&Artists=" + artist);
-			GuiPage_Music.start(itemData.Items[selectedItem].Name, url, itemData.Items[selectedItem].Type);
+			GuiMusic.start(itemData.Items[selectedItem].Name, url, itemData.Items[selectedItem].Type);
 			break;
 		case "MusicAlbum":
 			var url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Audio&Recursive=true&CollapseBoxSetItems=false");
-			GuiPage_Music.start(itemData.Items[selectedItem].Name, url, itemData.Items[selectedItem].Type);
+			GuiMusic.start(itemData.Items[selectedItem].Name, url, itemData.Items[selectedItem].Type);
 			break;
 		case "Folder":
 		case "PhotoAlbum":
 		case "CollectionFolder":
 			var url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&SortBy=SortName&SortOrder=Ascending&fields=PrimaryImageAspectRatio,SortName,ParentId");
-			if (page == "GuiPage_Photos"){
-				GuiPage_Photos.start(itemData.Items[selectedItem].Name, url, 0, 0);
+			if (page == "GuiPhotos"){
+				GuiPhotos.start(itemData.Items[selectedItem].Name, url, 0, 0);
 			} else {
 				GuiDisplayOneItem.start(itemData.Items[selectedItem].Name, url, 0, 0);
 			}
@@ -814,11 +814,11 @@ Support.processSelectedItem = function(page, itemData, startParams, selectedItem
 			GuiDisplayOneItem.start(itemData.Items[selectedItem].Name,url,0,0);
 			break;
 		case "TvChannel":
-			this.playSelectedItem("GuiDisplay_Series", itemData, startParams, selectedItem, topLeftItem, null);
+			this.playSelectedItem("GuiDisplaySeries", itemData, startParams, selectedItem, topLeftItem, null);
 			break;
 		case "Playlist":
 			var url = Server.getCustomURL("/Playlists/" + itemData.Items[selectedItem].Id + "/Items?userId=" + Server.getUserID() + "&fields=SortName&SortBy=SortName&SortOrder=Ascending&format=json");
-			GuiPage_Playlist.start(itemData.Items[selectedItem].Name, url, itemData.Items[selectedItem].MediaType, itemData.Items[selectedItem].Id);
+			GuiPlaylist.start(itemData.Items[selectedItem].Name, url, itemData.Items[selectedItem].MediaType, itemData.Items[selectedItem].Id);
 			break;
 		default:
 			switch (itemData.Items[selectedItem].MediaType) {
@@ -827,7 +827,7 @@ Support.processSelectedItem = function(page, itemData, startParams, selectedItem
 				break;
 			case "Video":
 				var url = Server.getItemInfoURL(itemData.Items[selectedItem].Id, null);
-				GuiPage_ItemDetails.start(itemData.Items[selectedItem].Name, url, 0);
+				GuiItemDetails.start(itemData.Items[selectedItem].Name, url, 0);
 				break;
 			case "Audio":
 				Support.removeLatestURL(); //Music player loads within the previous page - thus remove!
@@ -852,7 +852,7 @@ Support.playSelectedItem = function(page, itemData, startParams, selectedItem, t
 	alert("playSelectedItem: MediaType " + itemData.Items[selectedItem].MediaType);
 	alert("playSelectedItem: Type " + itemData.Items[selectedItem].Type);
 	if (itemData.Items[selectedItem].Type == "Folder") {
-		if (page == "GuiPage_Photos") {
+		if (page == "GuiPhotos") {
 			Support.updateURLHistory(page,startParams[0], startParams[1], startParams[2], startParams[3], selectedItem, topLeftItem, isTop);
 			GuiImagePlayer.start(itemData, selectedItem, true);
 		}
@@ -902,11 +902,11 @@ Support.playSelectedItem = function(page, itemData, startParams, selectedItem, t
 	} else if (itemData.Items[selectedItem].Type == "MusicAlbum") {
 		Support.updateURLHistory(page, startParams[0], startParams[1], null, null, selectedItem, topLeftItem, null);
 		var url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Audio&Recursive=true&CollapseBoxSetItems=false&Fields=MediaSources");
-		GuiMusicPlayer.start("Album", url, "GuiDisplay_Series", false);
+		GuiMusicPlayer.start("Album", url, "GuiDisplaySeries", false);
 	} else if (itemData.Items[selectedItem].Type == "Audio") {
 		Support.updateURLHistory(page, startParams[0], startParams[1], null, null, selectedItem, topLeftItem, null);
 		var url = Server.getItemInfoURL(itemData.Items[selectedItem].Id);
-		GuiMusicPlayer.start("Song", url, "GuiDisplay_Series", false);
+		GuiMusicPlayer.start("Song", url, "GuiDisplaySeries", false);
 	}
 };
 
@@ -1125,9 +1125,9 @@ Support.processHomePageMenu = function (menuItem) {
 			}
 		}
 		if (url2 != null) {
-			GuiPage_HomeTwoItems.start( title1, url1, title2, url2, 0, 0, true);
+			GuiHomeTwoItems.start(title1, url1, title2, url2, 0, 0, true);
 		} else {
-			GuiPage_HomeOneItem.start(title1, url1, 0, 0);
+			GuiHomeOneItem.start(title1, url1, 0, 0);
 		}
 		break;
 	case "Favourites":
@@ -1144,15 +1144,15 @@ Support.processHomePageMenu = function (menuItem) {
 		break;
 	case "Collections":
 		var url = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=BoxSet&Recursive=true&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
-		GuiDisplay_Series.start("All Collections", url,0,0);
+		GuiDisplaySeries.start("All Collections", url,0,0);
 		break;
 	case "TV":
 		var url = Server.getItemTypeURL("&IncludeItemTypes=Series"+Server.getTvViewQueryPart()+"&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
-		GuiDisplay_Series.start("All TV",url,0,0);
+		GuiDisplaySeries.start("All TV",url,0,0);
 		break;
 	case "Movies":
 		var url = Server.getItemTypeURL("&IncludeItemTypes=Movie" + Server.getMoviesViewQueryPart() + "&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
-		GuiDisplay_Series.start("All Movies", url, 0, 0);
+		GuiDisplaySeries.start("All Movies", url, 0, 0);
 		break;
 	case "Music":
 		this.enterMusicPage(File.getUserProperty("MusicView"));
@@ -1165,7 +1165,7 @@ Support.processHomePageMenu = function (menuItem) {
 		var photosFolderId = Server.getUserViewId("photos");
 		if (photosFolderId != null){
 			var url = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&Fields=SortName&StartIndex=0&Limit=500&Recursive=false&IncludeItemTypes=&MediaTypes=&ParentId=" + photosFolderId);
-			GuiPage_Photos.start("Photos", url, 0, 0);
+			GuiPhotos.start("Photos", url, 0, 0);
 		}
 		break;
 	case "Live_TV":
@@ -1174,7 +1174,7 @@ Support.processHomePageMenu = function (menuItem) {
 		var timeMsec = guideTime.getTime();
 		var startTime = timeMsec - 300000; //rewind the clock five minutes.
 		guideTime.setTime(startTime);
-		GuiPage_TvGuide.start("Guide", url, 0, 0, 0, guideTime);
+		GuiTVGuide.start("Guide", url, 0, 0, 0, guideTime);
 		break;
 	case "Home_Movies":
 		var homeVideosFolderId = Server.getUserViewId("homevideos");
@@ -1184,10 +1184,10 @@ Support.processHomePageMenu = function (menuItem) {
 		}
 		break;
 	case "Search":
-		GuiPage_Search.start();
+		GuiSearch.start();
 		break;
 	case "Settings":
-		GuiPage_Settings.start();
+		GuiSettings.start();
 		break;
 	case "Log_Out":
 		if (File.getUserProperty("ForgetSavedPassword")) {
@@ -1205,23 +1205,23 @@ Support.enterMusicPage = function(musicView) {
 		switch (musicView) {
 			case "Album":
 				var url = Server.getItemTypeURL("&IncludeItemTypes=MusicAlbum&Recursive=true&SortBy=SortName&SortOrder=Ascending&ExcludeLocationTypes=Virtual&fields=SortName,Genres&CollapseBoxSetItems=false");
-				GuiDisplay_Series.start("Album Music", url, 0, 0);
+				GuiDisplaySeries.start("Album Music", url, 0, 0);
 				break;
 			case "Album Artist":
 				var url = Server.getCustomURL("/Artists/AlbumArtists?format=json&SortBy=SortName&SortOrder=Ascending&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,Genres,ItemCounts&userId=" + Server.getUserID());
-				GuiPage_MusicArtist.start("Album Artist", url, 0, 0);
+				GuiMusicArtist.start("Album Artist", url, 0, 0);
 				break;
 			case "Artist":
 				var url = Server.getCustomURL("/Artists?format=json&SortBy=SortName&SortOrder=Ascending&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,Genres,ItemCounts&userId=" + Server.getUserID());
-				GuiDisplay_Series.start("Artist Music", url, 0, 0);
+				GuiDisplaySeries.start("Artist Music", url, 0, 0);
 				break;
 			case "Recent":
 				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items?format=json&SortBy=DatePlayed&SortOrder=Descending&IncludeItemTypes=Audio&Filters=IsPlayed&Limit=21&Recursive=true&fields=SortName,Genres");
-				GuiDisplay_Series.start("Recent Music", url, 0, 0);
+				GuiDisplaySeries.start("Recent Music", url, 0, 0);
 				break;
 			case "Frequent":
 				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items?format=json&SortBy=PlayCount&SortOrder=Descending&IncludeItemTypes=Audio&Limit=21&Filters=IsPlayed&Recursive=true&fields=SortName,Genres");
-				GuiDisplay_Series.start("Frequent Music", url, 0, 0);
+				GuiDisplaySeries.start("Frequent Music", url, 0, 0);
 				break;
 		}
 	} else {
@@ -1229,15 +1229,15 @@ Support.enterMusicPage = function(musicView) {
 			case "Album":
 			case "Album Artist":
 			case "Artist":
-				GuiPage_MusicAZ.start(musicView,0);
+				GuiMusicAZ.start(musicView,0);
 				break;
 			case "Recent":
 				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items?format=json&SortBy=DatePlayed&SortOrder=Descending&IncludeItemTypes=Audio&Filters=IsPlayed&Limit=21&Recursive=true&fields=SortName,Genres");
-				GuiDisplay_Series.start("Recent Music", url, 0, 0);
+				GuiDisplaySeries.start("Recent Music", url, 0, 0);
 				break;
 			case "Frequent":
 				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items?format=json&SortBy=PlayCount&SortOrder=Descending&IncludeItemTypes=Audio&Limit=21&Filters=IsPlayed&Recursive=true&fields=SortName,Genres");
-				GuiDisplay_Series.start("Frequent Music", url, 0, 0);
+				GuiDisplaySeries.start("Frequent Music", url, 0, 0);
 				break;
 		}
 	}
@@ -1279,7 +1279,7 @@ Support.screensaver = function () {
 		clearTimeout(this.screensaverVar);
 		this.screensaverVar  = setTimeout(function(){
 			if (Support.isScreensaverOn == true) {
-				GuiImagePlayer_Screensaver.start();
+				GuiImagePlayerScreensaver.start();
 			}
 		}, File.getUserProperty("ScreensaverTimeout"));
 	}
@@ -1298,7 +1298,7 @@ Support.screensaverOff = function () {
 
 		if (Main.getIsScreensaverRunning()) {
 			Main.setIsScreensaverRunning(); //Sets to False
-			GuiImagePlayer_Screensaver.stopScreensaver(); //Kill Screensaver
+			GuiImagePlayerScreensaver.stopScreensaver(); //Kill Screensaver
 		}
 	}
 };
@@ -1356,7 +1356,7 @@ Support.noItemsKeyDown = function() {
 		//Update Main.js isScreensaverRunning - Sets to True
 		Main.setIsScreensaverRunning();
 		//End Screensaver
-		GuiImagePlayer_Screensaver.stopScreensaver();
+		GuiImagePlayerScreensaver.stopScreensaver();
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
@@ -1672,7 +1672,7 @@ Support.tvGuideStartTime = function(date) {
 
 Support.tvGuideOffsetMins = function(date) {
 	var now = new Date();
-	var offset = (now.getTime() - GuiPage_TvGuide.guideStartTime.getTime()) / 60000;
+	var offset = (now.getTime() - GuiTVGuide.guideStartTime.getTime()) / 60000;
 	return(~~offset);
 };
 

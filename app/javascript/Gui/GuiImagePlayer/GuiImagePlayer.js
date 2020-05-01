@@ -1,20 +1,16 @@
 var GuiImagePlayer = {
-		ImageViewer : null,
-		newItemData : null,
-
-		Timeout : null,
-		infoTimer : null,
-		Paused : false,
-
-		overlayFormat : 0, // 0 - date, 1 - date:time, 2 - off
-
-		photos : [],
-
-		images : [],
-		overlay : [],
-		imageIdx : 0,       // Image index
-		effectIdx : 0,      // Transition effect index
-		effectNames : ['FADE1', 'FADE2', 'BLIND', 'SPIRAL','CHECKER', 'LINEAR', 'STAIRS', 'WIPE', 'RANDOM']
+	ImageViewer : null,
+	newItemData : null,
+	Timeout : null,
+	infoTimer : null,
+	Paused : false,
+	overlayFormat : 0, // 0 - date, 1 - date:time, 2 - off
+	photos : [],
+	images : [],
+	overlay : [],
+	imageIdx : 0,       // Image index
+	effectIdx : 0,      // Transition effect index
+	effectNames : ['FADE1', 'FADE2', 'BLIND', 'SPIRAL','CHECKER', 'LINEAR', 'STAIRS', 'WIPE', 'RANDOM']
 };
 
 //ImageViewer.destroy doesn't work. Set it to null instead.
@@ -26,34 +22,28 @@ GuiImagePlayer.kill = function() {
 
 GuiImagePlayer.start = function(ItemData,selectedItem,isPhotoCollection) {
 	alert("Page Enter : GuiImagePlayer");
-
 	//Show colour buttons on screen for a few seconds when a slideshow starts.
 	document.getElementById("guiImagePlayerScreenSaverOverlay").style.visibility="hidden";
 	document.getElementById("guiButtonShade").style.visibility = "";
-	GuiHelper.setControlButtons("Favourite","Date/Time","Help",GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
+	GuiHelper.setControlButtons("Favourite", "Date/Time","Help", GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
 	this.infoTimer = setTimeout(function(){
 		GuiHelper.setControlButtons(null,null,null,null,null);
 		document.getElementById("clock").style.visibility = "hidden";
 		document.getElementById("guiButtonShade").style.visibility = "hidden";
 		document.getElementById("guiImagePlayerScreenSaverOverlay").style.visibility="";
 	}, 6000);
-
 	//Turn off screensaver
 	Support.screensaverOff();
-
 	var url = "";
 	if (isPhotoCollection) {
 		url = Server.getChildItemsURL(ItemData.Items[selectedItem].Id,"&Recursive=true&SortBy=Random&SortOrder=Ascending&IncludeItemTypes=Photo&fields=SortName,Overview&Limit=2500");
 	} else {
 		url = Server.getChildItemsURL(ItemData.Items[selectedItem].ParentId,"&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Photo&fields=SortName,Overview&Limit=2500");
 	}
-
 	var result = Server.getContent(url);
 	if (result == null) { return; }
 	this.newItemData = result; //Misleading I know!
-
 	Support.styleSubtitles("guiImagePlayerScreenSaverOverlay");
-
 	//Create ARRAY of all URL's!
 	//Order from starting selectedItem!
 	imageIdx = 0;
@@ -61,7 +51,6 @@ GuiImagePlayer.start = function(ItemData,selectedItem,isPhotoCollection) {
 		//Dont use server function here to prevent these large images caching!
 		var temp = Server.getServerAddr() + "/Items/"+ this.newItemData.Items[index].Id +"/Images/Primary/0?maxwidth=1920&maxheight=1080&quality=90";
 		this.images.push(temp);
-
 		if (this.newItemData.Items[index].PremiereDate !== undefined) {
 			this.overlay.push(Support.formatDateTime(this.newItemData.Items[index].PremiereDate,1));
 		} else {
@@ -71,23 +60,17 @@ GuiImagePlayer.start = function(ItemData,selectedItem,isPhotoCollection) {
 			this.imageIdx = index;
 		}
 	}
-
 	//Initialte new instance, set Frame Area & Set Notifications
 	this.ImageViewer = new CImageViewer('Common ImageViewer');
 	this.ImageViewer.setFrameArea(0, 0, Main.width, Main.height);
-
 	this.ImageViewer.setOnNetworkError(function() {
 		GuiNotifications.setNotification("Network Error");
 	});
-
 	this.ImageViewer.setOnRenderError(function() {
 		GuiNotifications.setNotification("Render Error");
 	});
-
-
 	//Set Focus for Key Events
-	document.getElementById("GuiImagePlayer").focus();
-
+	document.getElementById("guiImagePlayer").focus();
 	//Start Slide Show
 	this.ImageViewer.show();
 	this.setSlideshowMode();
@@ -168,15 +151,13 @@ GuiImagePlayer.playImage = function() {
 GuiImagePlayer.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
-
 	if (document.getElementById("notifications").style.visibility == "") {
 		document.getElementById("notifications").style.visibility = "hidden";
-		document.getElementById("notificationText").innerHTML = "";
+		Support.widgetPutInnerHTML("notificationText", "");
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
-
 	switch(keyCode){
 		case tvKey.KEY_STOP:
 		case tvKey.KEY_RETURN:

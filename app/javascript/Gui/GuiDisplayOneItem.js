@@ -39,13 +39,13 @@ GuiDisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
 	//Load Data
 	this.ItemData = Server.getContent(url + "&Limit="+File.getTVProperty("ItemPaging"));
 	if (this.ItemData == null) { Support.processReturnURLHistory(); }
-	//Once we've browsed the channels down to a content folder we should display them using GuiDisplay_Series.
+	//Once we've browsed the channels down to a content folder we should display them using GuiDisplaySeries.
 	if (this.ItemData.TotalRecordCount >0){
 		if (this.ItemData.Items[0].Type == "ChannelVideoItem" ||
 				this.ItemData.Items[0].Type == "ChannelAudioItem" ||
 				this.ItemData.Items[0].Type == "Trailer" ||
 				this.ItemData.Items[0].Type == "AudioPodcast") {
-			GuiDisplay_Series.start("All "+this.ItemData.Items[0].Type,url,selectedItem,topLeftItem,this.ItemData);
+			GuiDisplaySeries.start("All "+this.ItemData.Items[0].Type,url,selectedItem,topLeftItem,this.ItemData);
 			return;
 		}
 	}
@@ -110,11 +110,11 @@ GuiDisplayOneItem.updateDisplayedItems = function() {
 GuiDisplayOneItem.updateSelectedItems = function () {
 	if (this.MAXCOLUMNCOUNT == 3) {
 		//Add Collections Class to add more margin
-		Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-				Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Series Collection Selected highlight"+Main.highlightColour+"Boarder","Series Collection","");
+		Support.updateSelectedNEW(this.ItemData.Items, this.selectedItem, this.topLeftItem,
+				Math.min(this.topLeftItem + this.getMaxDisplay(), this.ItemData.Items.length),"series collection selected highlight" + Main.highlightColour + "Boarder","series collection","");
 	} else {
-		Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-				Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Series Selected highlight"+Main.highlightColour+"Boarder","Series","");
+		Support.updateSelectedNEW(this.ItemData.Items, this.selectedItem, this.topLeftItem,
+				Math.min(this.topLeftItem + this.getMaxDisplay(), this.ItemData.Items.length),"series selected highlight" + Main.highlightColour + "Boarder","series","");
 	}
 };
 
@@ -139,8 +139,7 @@ GuiDisplayOneItem.keyDown = function() {
 		Main.setIsScreensaverRunning();
 
 		//End Screensaver
-		GuiImagePlayer_Screensaver.stopScreensaver();
-
+		GuiImagePlayerScreensaver.stopScreensaver();
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}

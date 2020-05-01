@@ -1,43 +1,36 @@
-var GuiPage_HomeTwoItems = {
-
-		selectedBannerItem : -1,
-
-		ItemData : null,
-		selectedItem : 0,
-		topLeftItem : 0,
-		isResume : false,
-
-		ItemData2 : null,
-		selectedItem2 : -1,
-		topLeftItem2 : 0,
-		isResume2 : false,
-
-		menuItems : [],
-
-		MAXCOLUMNCOUNT : 3,
-		MAXROWCOUNT : 1,
-
-		divprepend1 : "",
-		divprepend2 : "bottom_",
-
-		startParams : [],
-		backdropTimeout : null
+var GuiHomeTwoItems = {
+	selectedBannerItem : -1,
+	ItemData : null,
+	selectedItem : 0,
+	topLeftItem : 0,
+	isResume : false,
+	ItemData2 : null,
+	selectedItem2 : -1,
+	topLeftItem2 : 0,
+	isResume2 : false,
+	menuItems : [],
+	MAXCOLUMNCOUNT : 3,
+	MAXROWCOUNT : 1,
+	divprepend1 : "",
+	divprepend2 : "bottom_",
+	startParams : [],
+	backdropTimeout : null
 };
 
-GuiPage_HomeTwoItems.onFocus = function() {
+GuiHomeTwoItems.onFocus = function() {
 	GuiHelper.setControlButtons("Favourite","Watched","Help",GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Exit  ");
 };
 
-GuiPage_HomeTwoItems.getMaxDisplay = function() {
+GuiHomeTwoItems.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
 };
 
-GuiPage_HomeTwoItems.getMaxDisplayBottom = function() {
+GuiHomeTwoItems.getMaxDisplayBottom = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
 };
 
-GuiPage_HomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,topLeftItem,isTop) {
-	alert("Page Enter : GuiPage_HomeTwoItems");
+GuiHomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,topLeftItem,isTop) {
+	alert("Page Enter : GuiHomeTwoItems");
 
 	//Save Start Params
 	this.startParams = [title1, url1, title2, url2];
@@ -81,14 +74,14 @@ GuiPage_HomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,to
 			this.topLeftItem = 0;
 			this.topLeftItem2 = topLeftItem;
 			//Set Focus for Key Events
-			document.getElementById("GuiPage_HomeTwoItemsBottom").focus();
+			document.getElementById("GuiHomeTwoItemsBottom").focus();
 		} else {
 			this.selectedItem = selectedItem;
 			this.selectedItem2 = -1; //Prevents any item being shown as selected!
 			this.topLeftItem = topLeftItem;
 			this.topLeftItem2 = 0;
 			//Set Focus for Key Events
-			document.getElementById("GuiPage_HomeTwoItems").focus();
+			document.getElementById("GuiHomeTwoItems").focus();
 		}
 
 		//Set PageContent
@@ -152,31 +145,32 @@ GuiPage_HomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,to
 		}, 500);
 
 	} else if (this.ItemData.Items.length > 0 && this.ItemData2.Items.length == 0) {
-		GuiPage_HomeOneItem.start(title1,url1,0,0);
+		GuiHomeOneItem.start(title1, url1, 0, 0);
 	} else if (this.ItemData.Items.length == 0 && this.ItemData2.Items.length > 0) {
-		GuiPage_HomeOneItem.start(title2,url2,0,0);
+		GuiHomeOneItem.start(title2,url2, 0, 0);
 	} else if (this.ItemData.Items.length == 0 && this.ItemData2.Items.length == 0) {
 		//No data to Show at all!!
 		//Generate Media Collections title & URL!
-		GuiPage_HomeOneItem.start(title1,url1,0,0);
+		GuiHomeOneItem.start(title1, url1, 0, 0);
 	}
 };
 
 //---------------------------------------------------------------------------------------------------
 //      TOP ITEMS HANDLERS
 //---------------------------------------------------------------------------------------------------
-GuiPage_HomeTwoItems.updateDisplayedItems = function() {
+
+GuiHomeTwoItems.updateDisplayedItems = function() {
 		Support.updateDisplayedItems(this.ItemData.Items,this.selectedItem,this.topLeftItem,
 				Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Content",this.divprepend1,this.isResume,null,true);
 };
 
 //Function sets CSS Properties so show which user is selected
-GuiPage_HomeTwoItems.updateSelectedItems = function (bypassCounter) {
-	Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"homePagePoster Collection Selected highlight"+Main.highlightColour+"Boarder","homePagePoster Collection",this.divprepend1,bypassCounter);
+GuiHomeTwoItems.updateSelectedItems = function (bypassCounter) {
+	Support.updateSelectedNEW(this.ItemData.Items, this.selectedItem, this.topLeftItem,
+			Math.min(this.topLeftItem + this.getMaxDisplay(), this.ItemData.Items.length), "homePagePoster collection selected highlight" + Main.highlightColour + "Boarder", "homePagePoster collection", this.divprepend1, bypassCounter);
 };
 
-GuiPage_HomeTwoItems.updateSelectedBannerItems = function() {
+GuiHomeTwoItems.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.menuItems.length; index++) {
 		if (index == this.selectedBannerItem && this.selectedItem == -2) {
 			if (index != this.menuItems.length-1) {
@@ -194,7 +188,7 @@ GuiPage_HomeTwoItems.updateSelectedBannerItems = function() {
 	}
 };
 
-GuiPage_HomeTwoItems.keyDown = function()
+GuiHomeTwoItems.keyDown = function()
 {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
@@ -214,10 +208,8 @@ GuiPage_HomeTwoItems.keyDown = function()
 	if (Main.getIsScreensaverRunning()) {
 		//Update Main.js isScreensaverRunning - Sets to True
 		Main.setIsScreensaverRunning();
-
 		//End Screensaver
-		GuiImagePlayer_Screensaver.stopScreensaver();
-
+		GuiImagePlayerScreensaver.stopScreensaver();
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
@@ -285,7 +277,7 @@ GuiPage_HomeTwoItems.keyDown = function()
 					this.selectedItem = 0;
 
 					//Set Focus
-					document.getElementById("GuiPage_HomeTwoItemsBottom").focus();
+					document.getElementById("GuiHomeTwoItemsBottom").focus();
 					//Update Selected
 					this.selectedItem2 = 0;
 					this.updateSelectedItems2(false);
@@ -303,7 +295,7 @@ GuiPage_HomeTwoItems.keyDown = function()
 			break;
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
-			GuiPage_HomeTwoItems.openMenu();
+			GuiHomeTwoItems.openMenu();
 			break;
 		case tvKey.KEY_RETURN:
 			alert("RETURN");
@@ -311,7 +303,7 @@ GuiPage_HomeTwoItems.keyDown = function()
 			Support.processReturnURLHistory();
 			break;
 		case tvKey.KEY_YELLOW:
-			GuiHelper.toggleHelp("GuiPage_HomeTwoItems");
+			GuiHelper.toggleHelp("GuiHomeTwoItems");
 			break;
 		case tvKey.KEY_GREEN:
 			if (this.ItemData.Items[this.selectedItem].MediaType == "Video") {
@@ -323,8 +315,8 @@ GuiPage_HomeTwoItems.keyDown = function()
 					this.ItemData.Items[this.selectedItem].UserData.Played = true;
 				}
 				setTimeout(function(){
-					GuiPage_HomeTwoItems.updateDisplayedItems();
-					GuiPage_HomeTwoItems.updateSelectedItems();
+					GuiHomeTwoItems.updateDisplayedItems();
+					GuiHomeTwoItems.updateSelectedItems();
 				}, 250);
 			}
 			break;
@@ -338,20 +330,20 @@ GuiPage_HomeTwoItems.keyDown = function()
 					this.ItemData.Items[this.selectedItem].UserData.IsFavorite = true;
 				}
 				setTimeout(function(){
-					GuiPage_HomeTwoItems.updateDisplayedItems();
-					GuiPage_HomeTwoItems.updateSelectedItems();
+					GuiHomeTwoItems.updateDisplayedItems();
+					GuiHomeTwoItems.updateSelectedItems();
 				}, 250);
 			}
 			break;
 		case tvKey.KEY_BLUE:
 			if (this.selectedItem == -2) {
 				if (this.selectedBannerItem == this.menuItems.length-1) {
-					GuiMusicPlayer.showMusicPlayer("GuiPage_HomeTwoItems","bannerItem"+this.selectedBannerItem,"bannerItemHome highlight"+Main.highlightColour+"Text");
+					GuiMusicPlayer.showMusicPlayer("GuiHomeTwoItems","bannerItem"+this.selectedBannerItem,"bannerItemHome highlight"+Main.highlightColour+"Text");
 				} else {
-					GuiMusicPlayer.showMusicPlayer("GuiPage_HomeTwoItems","bannerItem"+this.selectedBannerItem,"bannerItemHome bannerItemPadding highlight"+Main.highlightColour+"Text");
+					GuiMusicPlayer.showMusicPlayer("GuiHomeTwoItems","bannerItem"+this.selectedBannerItem,"bannerItemHome bannerItemPadding highlight"+Main.highlightColour+"Text");
 				}
 			} else {
-				GuiMusicPlayer.showMusicPlayer("GuiPage_HomeTwoItems",this.divprepend1 + this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.divprepend1 + this.ItemData.Items[this.selectedItem].Id).className);
+				GuiMusicPlayer.showMusicPlayer("GuiHomeTwoItems",this.divprepend1 + this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.divprepend1 + this.ItemData.Items[this.selectedItem].Id).className);
 			}
 			break;
 		case tvKey.KEY_EXIT:
@@ -361,21 +353,21 @@ GuiPage_HomeTwoItems.keyDown = function()
 	}
 };
 
-GuiPage_HomeTwoItems.openMenu = function() {
+GuiHomeTwoItems.openMenu = function() {
 	if (this.selectedItem == -2) {
-		Support.updateURLHistory("GuiPage_HomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem,this.topLeftItem,true);
+		Support.updateURLHistory("GuiHomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem,this.topLeftItem,true);
 		if (this.selectedBannerItem == this.menuItems.length-1) {
-			GuiMainMenu.requested("GuiPage_HomeTwoItems","bannerItem"+this.selectedBannerItem,"bannerItemHome highlight"+Main.highlightColour+"Text");
+			GuiMainMenu.requested("GuiHomeTwoItems","bannerItem"+this.selectedBannerItem,"bannerItemHome highlight"+Main.highlightColour+"Text");
 		} else {
-			GuiMainMenu.requested("GuiPage_HomeTwoItems","bannerItem"+this.selectedBannerItem,"bannerItemHome bannerItemPadding highlight"+Main.highlightColour+"Text");
+			GuiMainMenu.requested("GuiHomeTwoItems","bannerItem"+this.selectedBannerItem,"bannerItemHome bannerItemPadding highlight"+Main.highlightColour+"Text");
 		}
 	} else {
-		Support.updateURLHistory("GuiPage_HomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem,this.topLeftItem,true);
-		GuiMainMenu.requested("GuiPage_HomeTwoItems",this.divprepend1 + this.ItemData.Items[this.selectedItem].Id);
+		Support.updateURLHistory("GuiHomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem,this.topLeftItem,true);
+		GuiMainMenu.requested("GuiHomeTwoItems",this.divprepend1 + this.ItemData.Items[this.selectedItem].Id);
 	}
 };
 
-GuiPage_HomeTwoItems.processLeftKey = function() {
+GuiHomeTwoItems.processLeftKey = function() {
 	if (this.selectedItem == -2) {
 		this.selectedBannerItem--;
 		if (this.selectedBannerItem == -1) {
@@ -406,19 +398,18 @@ GuiPage_HomeTwoItems.processLeftKey = function() {
 //      BOTTOM ITEMS HANDLERS
 //---------------------------------------------------------------------------------------------------
 
-GuiPage_HomeTwoItems.updateDisplayedItems2 = function() {
+GuiHomeTwoItems.updateDisplayedItems2 = function() {
 	Support.updateDisplayedItems(this.ItemData2.Items,this.selectedItem2,this.topLeftItem2,
 			Math.min(this.topLeftItem2 + this.getMaxDisplayBottom(),this.ItemData2.Items.length),"Content2",this.divprepend2,this.isResume2,null,true);
 };
 
 //Function sets CSS Properties so show which user is selected
-GuiPage_HomeTwoItems.updateSelectedItems2 = function (bypassCounter) {
-	Support.updateSelectedNEW(this.ItemData2.Items,this.selectedItem2,this.topLeftItem2,
-			Math.min(this.topLeftItem2 + this.getMaxDisplayBottom(),this.ItemData2.Items.length),"homePagePoster Collection Selected highlight"+Main.highlightColour+"Boarder","homePagePoster Collection",this.divprepend2,bypassCounter);
+GuiHomeTwoItems.updateSelectedItems2 = function (bypassCounter) {
+	Support.updateSelectedNEW(this.ItemData2.Items, this.selectedItem2, this.topLeftItem2,
+			Math.min(this.topLeftItem2 + this.getMaxDisplayBottom(), this.ItemData2.Items.length), "homePagePoster collection selected highlight" + Main.highlightColour + "Boarder", "homePagePoster collection", this.divprepend2, bypassCounter);
 };
 
-
-GuiPage_HomeTwoItems.bottomKeyDown = function()
+GuiHomeTwoItems.bottomKeyDown = function()
 {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
@@ -438,10 +429,8 @@ GuiPage_HomeTwoItems.bottomKeyDown = function()
 	if (Main.getIsScreensaverRunning()) {
 		//Update Main.js isScreensaverRunning - Sets to True
 		Main.setIsScreensaverRunning();
-
 		//End Screensaver
-		GuiImagePlayer_Screensaver.stopScreensaver();
-
+		GuiImagePlayerScreensaver.stopScreensaver();
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
@@ -454,8 +443,8 @@ GuiPage_HomeTwoItems.bottomKeyDown = function()
 			if (this.selectedItem2 == -1) {
 				this.selectedItem2 = 0; //Going left from bottom items row.
 				//Open the menu
-				Support.updateURLHistory("GuiPage_HomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem2,this.topLeftItem2,false);
-				GuiMainMenu.requested("GuiPage_HomeTwoItemsBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id);
+				Support.updateURLHistory("GuiHomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem2,this.topLeftItem2,false);
+				GuiMainMenu.requested("GuiHomeTwoItemsBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id);
 			} else {
 				if (this.selectedItem2 < this.topLeftItem2) {
 					this.topLeftItem2--;
@@ -495,7 +484,7 @@ GuiPage_HomeTwoItems.bottomKeyDown = function()
 				this.selectedItem2 = 0;
 
 				//Set Focus
-				document.getElementById("GuiPage_HomeTwoItems").focus();
+				document.getElementById("GuiHomeTwoItems").focus();
 				//Update Selected
 				this.selectedItem = 0;
 				this.updateSelectedItems(false);
@@ -511,8 +500,8 @@ GuiPage_HomeTwoItems.bottomKeyDown = function()
 			break;
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
-			Support.updateURLHistory("GuiPage_HomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem2,this.topLeftItem2,false);
-			GuiMainMenu.requested("GuiPage_HomeTwoItemsBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id);
+			Support.updateURLHistory("GuiHomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem2,this.topLeftItem2,false);
+			GuiMainMenu.requested("GuiHomeTwoItemsBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id);
 			break;
 		case tvKey.KEY_RETURN:
 			alert("RETURN BOTTOM");
@@ -520,7 +509,7 @@ GuiPage_HomeTwoItems.bottomKeyDown = function()
 			Support.processReturnURLHistory();
 			break;
 		case tvKey.KEY_YELLOW:
-			GuiHelper.toggleHelp("GuiPage_HomeTwoItems");
+			GuiHelper.toggleHelp("GuiHomeTwoItems");
 			break;
 		case tvKey.KEY_GREEN:
 			if (this.ItemData2.Items[this.selectedItem2].MediaType == "Video") {
@@ -532,8 +521,8 @@ GuiPage_HomeTwoItems.bottomKeyDown = function()
 					this.ItemData2.Items[this.selectedItem2].UserData.Played = true;
 				}
 				setTimeout(function(){
-					GuiPage_HomeTwoItems.updateDisplayedItems2();
-					GuiPage_HomeTwoItems.updateSelectedItems2();
+					GuiHomeTwoItems.updateDisplayedItems2();
+					GuiHomeTwoItems.updateSelectedItems2();
 				}, 250);
 			}
 			break;
@@ -547,13 +536,13 @@ GuiPage_HomeTwoItems.bottomKeyDown = function()
 					this.ItemData2.Items[this.selectedItem2].UserData.IsFavorite = true;
 				}
 				setTimeout(function(){
-					GuiPage_HomeTwoItems.updateDisplayedItems2();
-					GuiPage_HomeTwoItems.updateSelectedItems2();
+					GuiHomeTwoItems.updateDisplayedItems2();
+					GuiHomeTwoItems.updateSelectedItems2();
 				}, 250);
 			}
 			break;
 		case tvKey.KEY_BLUE:
-			GuiMusicPlayer.showMusicPlayer("GuiPage_HomeTwoItemsBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id,document.getElementById(this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id).className);
+			GuiMusicPlayer.showMusicPlayer("GuiHomeTwoItemsBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id,document.getElementById(this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id).className);
 			break;
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY BOTTOM");
@@ -564,10 +553,10 @@ GuiPage_HomeTwoItems.bottomKeyDown = function()
 
 //--------------------------------------------------------------------------------------------------------
 
-GuiPage_HomeTwoItems.processSelectedItem = function (array,isTop) {
+GuiHomeTwoItems.processSelectedItem = function (array,isTop) {
 	clearTimeout(this.backdropTimeout);
 	if (this.selectedItem == -2) {
-		Support.updateURLHistory("GuiPage_HomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],0,0,true);
+		Support.updateURLHistory("GuiHomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],0,0,true);
 		Support.processHomePageMenu(this.menuItems[this.selectedBannerItem]);
 	} else {
 		var selectedItem = 0;
@@ -587,14 +576,14 @@ GuiPage_HomeTwoItems.processSelectedItem = function (array,isTop) {
 				isLatest = true;
 			}
 		}
-		Support.processSelectedItem("GuiPage_HomeTwoItems",array,this.startParams,selectedItem,topLeftItem,isTop,null,isLatest);
+		Support.processSelectedItem("GuiHomeTwoItems",array,this.startParams,selectedItem,topLeftItem,isTop,null,isLatest);
 	}
 };
 
-GuiPage_HomeTwoItems.playSelectedItem = function (array,isTop) {
+GuiHomeTwoItems.playSelectedItem = function(array, isTop) {
 	if (isTop == true) {
-		Support.playSelectedItem("GuiPage_HomeTwoItems",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,isTop);
+		Support.playSelectedItem("GuiHomeTwoItems",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,isTop);
 	} else {
-		Support.playSelectedItem("GuiPage_HomeTwoItems",this.ItemData2,this.startParams,this.selectedItem2,this.topLeftItem2,isTop);
+		Support.playSelectedItem("GuiHomeTwoItems",this.ItemData2,this.startParams,this.selectedItem2,this.topLeftItem2,isTop);
 	}
 };

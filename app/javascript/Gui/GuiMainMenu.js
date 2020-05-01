@@ -21,7 +21,9 @@ GuiMainMenu.start = function() {
 	this.menuItemsHomePages.length = 0;
 	//Generate main menu items
 	this.menuItemsHomePages = Support.generateTopMenu();
+	FileLog.write(this.menuItemsHomePages);
 	this.menuItems = Support.generateMainMenu();
+	FileLog.write(this.menuItems);
 	//Get user details.
 	//document.getElementById("menuUserName").innerHTML = "<br>"+Server.getUserName()+"<br><br>";
 	var userURL = Server.getServerAddr() + "/Users/" + Server.getUserID() + "?format=json&Fields=PrimaryImageTag";
@@ -37,18 +39,18 @@ GuiMainMenu.start = function() {
 	//Add menu entries
 	var htmlToAdd = "";
 	for (var index = 0; index < this.menuItems.length;index++) {
-		htmlToAdd += "<div id='" + this.menuItems[index] + "' class='menuItem'><div id='menuIcon' class='menuIcon' style='background-image:url(images/menu/" + this.menuItems[index] + "-46x37.png)'></div>" + this.menuItems[index].replace(/_/g, ' ')+ "</div>";
+		htmlToAdd += "<div id='" + this.menuItems[index] + "' class='menuItem'><div id='menuIcon' class='menuIcon' style='background-image:url(images/menu/" + this.menuItems[index] + "-46x37.png)'></div>" + this.menuItems[index].replace(/_/g, ' ') + "</div>";
 	}
 	document.getElementById("menuItems").innerHTML = htmlToAdd;
 	//Add settings and logout
-	htmlToAdd = "";
+	htmlToAddAdv = "";
 	this.menuItems.push("Search");
-	htmlToAdd += "<div id=Search class='menuItem'><div id='menuIcon' class='menuIcon' style='background-image:url(images/menu/Search-46x37.png)'></div>Search</div>";
+	htmlToAddAdv += "<div id=Search class='menuItem'><div id='menuIcon' class='menuIcon' style='background-image:url(images/menu/Search-46x37.png)'></div>Search</div>";
 	this.menuItems.push("Settings");
-	htmlToAdd += "<div id=Settings class='menuItem'><div id='menuIcon' class='menuIcon' style='background-image:url(images/menu/Settings-46x37.png)'></div>Settings</div>";
+	htmlToAddAdv += "<div id=Settings class='menuItem'><div id='menuIcon' class='menuIcon' style='background-image:url(images/menu/Settings-46x37.png)'></div>Settings</div>";
 	this.menuItems.push("Log_Out");
-	htmlToAdd += "<div id=Log_Out class='menuItem'><div id='menuIcon' class='menuIcon' style='background-image:url(images/menu/Logout-46x37.png)'></div>Log Out</div>";
-	document.getElementById("menuItems").innerHTML += htmlToAdd;
+	htmlToAddAdv += "<div id=Log_Out class='menuItem'><div id='menuIcon' class='menuIcon' style='background-image:url(images/menu/Logout-46x37.png)'></div>Log Out</div>";
+	Support.widgetPutInnerHTML("menuItems", htmlToAdd + htmlToAddAdv);
 	//Turn On Screensaver
 	Support.screensaverOn();
 	Support.screensaver();
@@ -71,7 +73,7 @@ GuiMainMenu.start = function() {
 	//Initialise view URL's
 	Support.initViewUrls();
 	//Set the page highlight colour
-	Main.highlightColour = File.getUserProperty("HighlightColour");
+	Main.highlightColour = File.getUserProperty("HighlightColour");	
 	//Load Home Page
 	Support.processHomePageMenu("Home");
 };
@@ -91,11 +93,11 @@ GuiMainMenu.requested = function(pageSelected, selectedDivId, selectedDivClass) 
 		} else {
 			this.selectedDivClass = selectedDivClass;
 		}
-		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("GuiPage_Setting_Changing arrowUpDown","");
+		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("guiSettingChanging arrowUpDown",""); //?????
 		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("highlight" + Main.highlightColour + "Background","");
 		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("highlight" + Main.highlightColour + "Text","");
 		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("seriesSelected","");
-		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("Selected","");
+		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("selected","");
 	}
 	//Show Menu
 	document.getElementById("menu").style.visibility = "";
@@ -104,7 +106,7 @@ GuiMainMenu.requested = function(pageSelected, selectedDivId, selectedDivClass) 
 	//Show submenu dependant on selectedMainMenuItem
 	this.updateSelectedItems();
 	//Set Focus
-	document.getElementById("GuiMainMenu").focus();
+	document.getElementById("guiMainMenu").focus();
 };
 
 GuiMainMenu.updateSelectedItems = function () {
@@ -126,7 +128,7 @@ GuiMainMenu.keyDown = function() {
 	alert("Key pressed: " + keyCode);
 	if (document.getElementById("notifications").style.visibility == "") {
 		document.getElementById("notifications").style.visibility = "hidden";
-		document.getElementById("notificationText").innerHTML = "";
+		Support.widgetPutInnerHTML("notificationText", "");
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -138,7 +140,7 @@ GuiMainMenu.keyDown = function() {
 		//Update Main.js isScreensaverRunning - Sets to True
 		Main.setIsScreensaverRunning();
 		//End Screensaver
-		GuiImagePlayer_Screensaver.stopScreensaver();
+		GuiImagePlayerScreensaver.stopScreensaver();
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
@@ -179,12 +181,12 @@ GuiMainMenu.keyDown = function() {
 GuiMainMenu.processSelectedItems = function() {
 	//Selecting home when you came from home just closes the menu.
 	if  (this.menuItems[this.selectedMainMenuItem] == "Home" &&
-		(this.pageSelected == "GuiPage_HomeOneItem" || this.pageSelected == "GuiPage_HomeTwoItems")) {
+		(this.pageSelected == "GuiHomeOneItem" || this.pageSelected == "GuiHomeTwoItems")) {
 			this.processReturnKey();
 			return;
 	}
 	//If a trailer was paused when we arrived in the menu, stop it now.
-	if (GuiPage_ItemDetails.trailerState == sf.service.VideoPlayer.STATE_PAUSED) {
+	if (GuiItemDetails.trailerState == sf.service.VideoPlayer.STATE_PAUSED) {
 		sf.service.VideoPlayer.stop();
 	}
 	//Close the menu
@@ -215,7 +217,7 @@ GuiMainMenu.playSelectedItem = function() {
 GuiMainMenu.processReturnKey = function() {
 	if (this.pageSelected != null) {
 		//As I don't want the settings page in the URL History I need to prevent popping it here (as its not added on leaving the settings page
-		if (this.pageSelected != "GuiPage_Settings") {
+		if (this.pageSelected != "GuiSettings") {
 			Support.removeLatestURL();
 		}
 		//Cheap way to unhighlight all items!
@@ -238,7 +240,7 @@ GuiMainMenu.processReturnKey = function() {
 			}
 		}
 		//If a trailer was playing, set it going again.
-		if (GuiPage_ItemDetails.trailerState == sf.service.VideoPlayer.STATE_PAUSED) {
+		if (GuiItemDetails.trailerState == sf.service.VideoPlayer.STATE_PAUSED) {
 			setTimeout(function(){
 				sf.service.VideoPlayer.show();
 				sf.service.VideoPlayer.resume();

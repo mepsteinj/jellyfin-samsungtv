@@ -1,30 +1,26 @@
-var GuiPage_AddToPlaylist = {
-		ItemData : null,
-		ItemData2 : null,
-
-		hasItemInPlaylist : [],
-
-		selectedItem : 0,
-		topLeftItem : 0,
-
-		itemId : "",
-		playedFromPage : "",
-		mediaType : "",
-
-		MAXCOLUMNCOUNT : 1,
-		MAXROWCOUNT : 5
+var GuiAddToPlaylist = {
+	ItemData : null,
+	ItemData2 : null,
+	hasItemInPlaylist : [],
+	selectedItem : 0,
+	topLeftItem : 0,
+	itemId : "",
+	playedFromPage : "",
+	mediaType : "",
+	MAXCOLUMNCOUNT : 1,
+	MAXROWCOUNT : 5
 };
 
-GuiPage_AddToPlaylist.onFocus = function() {
+GuiAddToPlaylist.onFocus = function() {
 	GuiHelper.setControlButtons(null,null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
 };
 
-GuiPage_AddToPlaylist.getMaxDisplay = function() {
+GuiAddToPlaylist.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
 };
 
-GuiPage_AddToPlaylist.start=function(itemId, playedFromPage, mediaType) {
-	alert("Page Enter : GuiPage_AddToPlaylist");
+GuiAddToPlaylist.start=function(itemId, playedFromPage, mediaType) {
+	alert("Page Enter : GuiAddToPlaylist");
 
 	//Update page called from
 	this.playedFromPage = playedFromPage;
@@ -46,7 +42,7 @@ GuiPage_AddToPlaylist.start=function(itemId, playedFromPage, mediaType) {
 	}
 
 	//Create IME - Send it the name of the thing to focus.
-	new GuiPage_AddToPlaylist_Input("guiPlayListNew");
+	new GuiAddToPlaylist_Input("guiPlayListNew");
 
 	if (this.ItemData.Items.length == 0) {
 		document.getElementById("guiPlayListExisting").innerHTML = "<div style='padding-top:20px;padding-left:80px;'>You have no existing "+ this.mediaType.toLowerCase() +" playlists.</div>";
@@ -74,7 +70,7 @@ GuiPage_AddToPlaylist.start=function(itemId, playedFromPage, mediaType) {
 	document.getElementById("guiPlayListContainer").style.visibility = "";
 };
 
-GuiPage_AddToPlaylist.updateDisplayedItems = function() {
+GuiAddToPlaylist.updateDisplayedItems = function() {
 	var htmlToAdd = "<table style='padding-top:20px;padding-left:80px;'><th style='width:460px'>Playlist</th><th style='width:200px'>Exists in Playlist</th>";
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length);index++) {
 		var existsInPlaylist = (this.hasItemInPlaylist[index] == true) ? "Yes" : "No";
@@ -83,7 +79,7 @@ GuiPage_AddToPlaylist.updateDisplayedItems = function() {
 	document.getElementById("guiPlayListExisting").innerHTML = htmlToAdd + "</table>";
 };
 
-GuiPage_AddToPlaylist.updateSelectedItems = function() {
+GuiAddToPlaylist.updateSelectedItems = function() {
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length);index++) {
 		if (index == this.selectedItem) {
 			document.getElementById(this.ItemData.Items[index].Id).style.color = "#27a436";
@@ -93,7 +89,7 @@ GuiPage_AddToPlaylist.updateSelectedItems = function() {
 	}
 };
 
-GuiPage_AddToPlaylist.keyDown = function() {
+GuiAddToPlaylist.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
@@ -114,7 +110,7 @@ GuiPage_AddToPlaylist.keyDown = function() {
 		Main.setIsScreensaverRunning();
 
 		//End Screensaver
-		GuiImagePlayer_Screensaver.stopScreensaver();
+		GuiImagePlayerScreensaver.stopScreensaver();
 
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -146,7 +142,7 @@ GuiPage_AddToPlaylist.keyDown = function() {
 	}
 };
 
-GuiPage_AddToPlaylist.processSelectedItem = function() {
+GuiAddToPlaylist.processSelectedItem = function() {
 	if (this.hasItemInPlaylist[this.selectedItem] == false) {
 		//Send update to server
 		Server.addToPlaylist(this.ItemData.Items[this.selectedItem].Id,this.itemId);
@@ -163,11 +159,11 @@ GuiPage_AddToPlaylist.processSelectedItem = function() {
 	setTimeout(function(){
 		document.getElementById("guiPlayListContainer").style.visibility = "hidden";
 		document.getElementById("guiPlayListResult").innerHTML = "";
-		document.getElementById(GuiPage_AddToPlaylist.playedFromPage).focus();
+		document.getElementById(GuiAddToPlaylist.playedFromPage).focus();
 	}, 2000);
 };
 
-GuiPage_AddToPlaylist.processUpKey = function() {
+GuiAddToPlaylist.processUpKey = function() {
 	this.selectedItem = this.selectedItem - this.MAXCOLUMNCOUNT;
 	if (this.selectedItem < 0) {
 		this.selectedItem = 0;
@@ -184,7 +180,7 @@ GuiPage_AddToPlaylist.processUpKey = function() {
 	}
 };
 
-GuiPage_AddToPlaylist.processDownKey = function() {
+GuiAddToPlaylist.processDownKey = function() {
 	if (this.selectedItem == this.ItemData.Items.length - 1) {
 		document.getElementById(this.ItemData.Items[this.selectedItem].Id).style.color = "#f9f9f9";
 		Support.screensaverOff(); // Must turn off as not possible to catch keys!
@@ -211,7 +207,7 @@ GuiPage_AddToPlaylist.processDownKey = function() {
 //////////////////////////////////////////////////////////////////
 //  Input method for entering new playlist name.                //
 //////////////////////////////////////////////////////////////////
-var GuiPage_AddToPlaylist_Input  = function(id) {
+var GuiAddToPlaylist_Input  = function(id) {
 	var imeReady = function(imeObject) {
 		installFocusKeyCallbacks();
 		document.getElementById(id).focus();
@@ -249,7 +245,7 @@ var GuiPage_AddToPlaylist_Input  = function(id) {
 			//Check playlist name doesnt already exist!
 
 			//Sent Server Request
-			Server.createPlaylist(playlist,GuiPage_AddToPlaylist.itemId, GuiPage_AddToPlaylist.mediaType);
+			Server.createPlaylist(playlist,GuiAddToPlaylist.itemId, GuiAddToPlaylist.mediaType);
 
 			document.getElementById("guiPlayListResult").innerHTML = "<div style='padding-top:20px;padding-left:80px;'>The playlist was created.</div>";
 
@@ -257,20 +253,20 @@ var GuiPage_AddToPlaylist_Input  = function(id) {
 			setTimeout(function(){
 				document.getElementById("guiPlayListContainer").style.visibility = "hidden";
 				document.getElementById("guiPlayListResult").innerHTML = "";
-				document.getElementById(GuiPage_AddToPlaylist.playedFromPage).focus();
+				document.getElementById(GuiAddToPlaylist.playedFromPage).focus();
 			}, 2000);
 
 			//Reload page!
-			//GuiPage_AddToPlaylist.start(GuiPage_AddToPlaylist.itemId,GuiPage_AddToPlaylist.playedFromPage,GuiPage_AddToPlaylist.mediaType);
+			//GuiAddToPlaylist.start(GuiAddToPlaylist.itemId,GuiAddToPlaylist.playedFromPage,GuiAddToPlaylist.mediaType);
 
 		});
 
 		ime.setKeyFunc(tvKey.KEY_UP, function (keyCode) {
 			Support.screensaver();
 
-			if (GuiPage_AddToPlaylist.ItemData.Items.length > 0 ) {
-				GuiPage_AddToPlaylist.updateSelectedItems();
-				document.getElementById("GuiPage_AddToPlaylist").focus();
+			if (GuiAddToPlaylist.ItemData.Items.length > 0 ) {
+				GuiAddToPlaylist.updateSelectedItems();
+				document.getElementById("GuiAddToPlaylist").focus();
 			}
 		});
 
@@ -279,7 +275,7 @@ var GuiPage_AddToPlaylist_Input  = function(id) {
 			//Handle Return
 			Support.screensaver();
 			document.getElementById("guiPlayListContainer").style.visibility = "hidden";
-			document.getElementById(GuiPage_AddToPlaylist.playedFromPage).focus();
+			document.getElementById(GuiAddToPlaylist.playedFromPage).focus();
 		});
 
 		ime.setKeyFunc(tvKey.KEY_EXIT, function (keyCode) {

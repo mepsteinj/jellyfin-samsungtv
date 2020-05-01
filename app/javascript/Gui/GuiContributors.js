@@ -1,22 +1,19 @@
-var GuiPage_Contributors = {
-		MainDevs : ["ChessDragon136","cmcg"],
-		ContribDevs : ["Cragjagged","DrWatson","im85288","arcticwaters","SamES"],
-		DonateSupport : ["c0m3r","Cbers","crashkelly","DaN","FrostByte","gbone8106","ginganinja","grimfandango","fc7","shorty1483","paulsalter","fluffykiwi","oleg","MongooseMan","SilentAssassin","gogreenpower","Ultroman","Spaceboy","JeremyG","strugglez"]
+var GuiContributors = {
+	MainDevs : ["ChessDragon136","cmcg"],
+	ContribDevs : ["Cragjagged","DrWatson","im85288","arcticwaters","SamES"],
+	DonateSupport : ["c0m3r","Cbers","crashkelly","DaN","FrostByte","gbone8106","ginganinja","grimfandango","fc7","shorty1483","paulsalter","fluffykiwi","oleg","MongooseMan","SilentAssassin","gogreenpower","Ultroman","Spaceboy","JeremyG","strugglez"]
 };
 
-GuiPage_Contributors.onFocus = function() {
+GuiContributors.onFocus = function() {
 	GuiHelper.setControlButtons(null,null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
 };
 
-GuiPage_Contributors.start = function() {
-	alert("Page Enter : GuiPage_Contributors");
-
+GuiContributors.start = function() {
+	alert("Page Enter : GuiContributors");
 	document.getElementById("counter").innerHTML = Main.version;
 	document.getElementById("guiReturnButton").style.visibility = "";
 	document.getElementById("guiReturnButton").innerHTML = "Return";
-
 	document.getElementById("pageContent").innerHTML = "<div class='EpisodesSeriesInfo'>About:</div><div id=ContentAbout style='font-size:1em;' class='guiSettingsSettings'></div>";
-
 	var htmlToAdd = "Jellyfin for Samsung Smart TVs is a free, opensource community project. A broad range of Smarthub devices are supported due to the generously donated time and efforts of, among others, the following people.<br>";
 	htmlToAdd += "Feedback on this and other Jellyfin products is gratefully received at jellyfin/community.<br><br>";
 	htmlToAdd += "<span style='font-size:1.2em;'>Main Developers</span><table><tr class='guiSettingsRow'>";
@@ -55,11 +52,10 @@ GuiPage_Contributors.start = function() {
 	document.getElementById("ContentAbout").innerHTML = htmlToAdd + "</tr></table>";
 
 	//Set Focus for Key Events
-	document.getElementById("GuiPage_Contributors").focus();
+	document.getElementById("GuiContributors").focus();
 };
 
-
-GuiPage_Contributors.keyDown = function() {
+GuiContributors.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
@@ -80,7 +76,7 @@ GuiPage_Contributors.keyDown = function() {
 		Main.setIsScreensaverRunning();
 
 		//End Screensaver
-		GuiImagePlayer_Screensaver.stopScreensaver();
+		GuiImagePlayerScreensaver.stopScreensaver();
 
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -97,7 +93,7 @@ GuiPage_Contributors.keyDown = function() {
 			Support.processReturnURLHistory();
 			break;
 		case tvKey.KEY_BLUE:
-			GuiMusicPlayer.showMusicPlayer("GuiPage_Contributors");
+			GuiMusicPlayer.showMusicPlayer("GuiContributors");
 			break;
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
@@ -110,7 +106,7 @@ GuiPage_Contributors.keyDown = function() {
 	}
 };
 
-GuiPage_Contributors.openMenu = function() {
-	Support.updateURLHistory("GuiPage_Contributors",null,null,null,null,null,null,null);
-	GuiMainMenu.requested("GuiPage_Contributors",null);
+GuiContributors.openMenu = function() {
+	Support.updateURLHistory("GuiContributors",null,null,null,null,null,null,null);
+	GuiMainMenu.requested("GuiContributors",null);
 };

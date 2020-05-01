@@ -1,48 +1,40 @@
-var GuiPage_MusicArtist = {
-		ItemData : null,
-		selectedItem : 0,
-		topLeftItem : 0,
-
-		totalRecordCount : null,
-
-		ItemData2 : null,
-		selectedItem2 : -1,
-		topLeftItem2 : 0,
-
-		ItemIndexData : null,
-		indexSeekPos : -1,
-
-		timeout : null,
-
-		bannerItems : ["Recent","Frequent","Album","Album Artist","Artist"],
-
-		selectedBannerItem : 0,
-
-		MAXCOLUMNCOUNT : 7,
-		MAXROWCOUNT : 2,
-		MAXROW2COUNT : 1,
-
-		title1 : "",
-		startParams : []
+var GuiMusicArtist = {
+	ItemData : null,
+	selectedItem : 0,
+	topLeftItem : 0,
+	totalRecordCount : null,
+	ItemData2 : null,
+	selectedItem2 : -1,
+	topLeftItem2 : 0,
+	ItemIndexData : null,
+	indexSeekPos : -1,
+	timeout : null,
+	bannerItems : ["Recent","Frequent","Album","Album Artist","Artist"],
+	selectedBannerItem : 0,
+	MAXCOLUMNCOUNT : 7,
+	MAXROWCOUNT : 2,
+	MAXROW2COUNT : 1,
+	title1 : "",
+	startParams : []
 };
 
-GuiPage_MusicArtist.onFocus = function() {
+GuiMusicArtist.onFocus = function() {
 	GuiHelper.setControlButtons(null,null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
 };
 
-GuiPage_MusicArtist.getMaxDisplay = function() {
+GuiMusicArtist.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
 };
 
-GuiPage_MusicArtist.getMaxDisplay2 = function() {
+GuiMusicArtist.getMaxDisplay2 = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROW2COUNT;
 };
 
-GuiPage_MusicArtist.start = function(title1, url1, selectedItem, topLeftItem) {
-	alert("Page Enter : GuiPage_MusicArtist");
+GuiMusicArtist.start = function(title1, url1, selectedItem, topLeftItem) {
+	alert("Page Enter : GuiMusicArtist");
 
 	//Save Start Vars
-	Support.pageLoadTimes("GuiPage_MusicArtist","Start",true);
+	Support.pageLoadTimes("GuiMusicArtist","Start",true);
 	this.startParams = [title1,url1];
 
 	//Reset Vars
@@ -58,7 +50,7 @@ GuiPage_MusicArtist.start = function(title1, url1, selectedItem, topLeftItem) {
 	this.ItemData = Server.getContent(url1 + "&Limit="+File.getTVProperty("ItemPaging"));
 	if (this.ItemData == null) { Support.processReturnURLHistory(); }
 	this.totalRecordCount = this.ItemData.TotalRecordCount;
-	Support.pageLoadTimes("GuiPage_MusicArtist","RetrievedServerData",false);
+	Support.pageLoadTimes("GuiMusicArtist","RetrievedServerData",false);
 
 	//Create pageContent
 	var htmlToAdd = "<div id=bannerSelection class='bannerMenu'></div>";
@@ -103,8 +95,8 @@ GuiPage_MusicArtist.start = function(title1, url1, selectedItem, topLeftItem) {
 		this.selectedBannerItem = 0;
 
 		//Set Focus for Key Events
-		document.getElementById("GuiPage_MusicArtist").focus();
-		Support.pageLoadTimes("GuiPage_MusicArtist","UserControl",false);
+		document.getElementById("GuiMusicArtist").focus();
+		Support.pageLoadTimes("GuiMusicArtist","UserControl",false);
 	} else {
 		//Set message to user
 		document.getElementById("counter").innerHTML = "";
@@ -121,7 +113,8 @@ GuiPage_MusicArtist.start = function(title1, url1, selectedItem, topLeftItem) {
 //---------------------------------------------------------------------------------------------------
 //      TOP ITEMS HANDLERS
 //---------------------------------------------------------------------------------------------------
-GuiPage_MusicArtist.updateDisplayedItems = function() {
+
+GuiMusicArtist.updateDisplayedItems = function() {
 
 	if (this.topLeftItem + this.getMaxDisplay() > this.ItemData.Items.length) {
 		if (this.totalRecordCount > this.ItemData.Items.length) {
@@ -134,9 +127,9 @@ GuiPage_MusicArtist.updateDisplayedItems = function() {
 };
 
 //Function sets CSS Properties so show which user is selected
-GuiPage_MusicArtist.updateSelectedItems = function (bypassCounter) {
-	Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Music Selected","Music",this.divprepend1,bypassCounter,this.totalRecordCount);
+GuiMusicArtist.updateSelectedItems = function (bypassCounter) {
+	Support.updateSelectedNEW(this.ItemData.Items, this.selectedItem, this.topLeftItem,
+			Math.min(this.topLeftItem + this.getMaxDisplay(), this.ItemData.Items.length), "music selected", "music", this.divprepend1, bypassCounter, this.totalRecordCount);
     var url2 = ""; //WARN IGNORY
 	//Prevent execution when selectedItem is set to -1 to hide selected item
 	if (this.selectedItem != -1) {
@@ -165,29 +158,29 @@ GuiPage_MusicArtist.updateSelectedItems = function (bypassCounter) {
 
 		//Blocking code to skip getting data for items where the user has just gone past it
 		this.timeout = setTimeout(function(){
-			if (GuiPage_MusicArtist.selectedItem == this.selectedItem) {
-				GuiPage_MusicArtist.ItemData2 = Server.getContent(url2);
-				if (GuiPage_MusicArtist.ItemData2 == null) { return; }
+			if (GuiMusicArtist.selectedItem == this.selectedItem) {
+				GuiMusicArtist.ItemData2 = Server.getContent(url2);
+				if (GuiMusicArtist.ItemData2 == null) { return; }
 
 				//Display first XX series
-				GuiPage_MusicArtist.updateDisplayedItems2();
+				GuiMusicArtist.updateDisplayedItems2();
 
 				//Update Selected Collection CSS
-				GuiPage_MusicArtist.updateSelectedItems2(true);
+				GuiMusicArtist.updateSelectedItems2(true);
 			}
 		}, 500);
 
 		//Background Image
 		var currentSelectedItem = this.selectedItem;
 		setTimeout(function(){
-			if (GuiPage_MusicArtist.selectedItem == currentSelectedItem) {
+			if (GuiMusicArtist.selectedItem == currentSelectedItem) {
 					//A movie.
-					if (GuiPage_MusicArtist.ItemData.Items[currentSelectedItem].BackdropImageTags.length > 0) {
-						var imgsrc = Server.getBackgroundImageURL(GuiPage_MusicArtist.ItemData.Items[currentSelectedItem].Id,"Backdrop",Main.backdropWidth,Main.backdropHeight,0,false,0,GuiPage_MusicArtist.ItemData.Items[currentSelectedItem].BackdropImageTags.length);
+					if (GuiMusicArtist.ItemData.Items[currentSelectedItem].BackdropImageTags.length > 0) {
+						var imgsrc = Server.getBackgroundImageURL(GuiMusicArtist.ItemData.Items[currentSelectedItem].Id,"Backdrop",Main.backdropWidth,Main.backdropHeight,0,false,0,GuiMusicArtist.ItemData.Items[currentSelectedItem].BackdropImageTags.length);
 						Support.fadeImage(imgsrc);
 					//A music album.
-					} else if (GuiPage_MusicArtist.ItemData.Items[currentSelectedItem].ParentBackdropImageTags) {
-						var imgsrc = Server.getBackgroundImageURL(GuiPage_MusicArtist.ItemData.Items[currentSelectedItem].ParentBackdropItemId,"Backdrop",Main.backdropWidth,Main.backdropHeight,0,false,0,GuiPage_MusicArtist.ItemData.Items[currentSelectedItem].ParentBackdropImageTags.length);
+					} else if (GuiMusicArtist.ItemData.Items[currentSelectedItem].ParentBackdropImageTags) {
+						var imgsrc = Server.getBackgroundImageURL(GuiMusicArtist.ItemData.Items[currentSelectedItem].ParentBackdropItemId,"Backdrop",Main.backdropWidth,Main.backdropHeight,0,false,0,GuiMusicArtist.ItemData.Items[currentSelectedItem].ParentBackdropImageTags.length);
 						Support.fadeImage(imgsrc);
 					}
 			}
@@ -195,7 +188,7 @@ GuiPage_MusicArtist.updateSelectedItems = function (bypassCounter) {
 	}
 };
 
-GuiPage_MusicArtist.keyDown = function() {
+GuiMusicArtist.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
@@ -214,10 +207,8 @@ GuiPage_MusicArtist.keyDown = function() {
 	if (Main.getIsScreensaverRunning()) {
 		//Update Main.js isScreensaverRunning - Sets to True
 		Main.setIsScreensaverRunning();
-
 		//End Screensaver
-		GuiImagePlayer_Screensaver.stopScreensaver();
-
+		GuiImagePlayerScreensaver.stopScreensaver();
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
@@ -264,12 +255,12 @@ GuiPage_MusicArtist.keyDown = function() {
 			//Focus the music player
 			if (this.selectedItem == -1) {
 				if (this.selectedBannerItem == this.bannerItems.length-1) {
-					GuiMusicPlayer.showMusicPlayer("GuiPage_MusicArtist","bannerItem"+this.selectedBannerItem,"bannerItem highlight"+Main.highlightColour+"Text");
+					GuiMusicPlayer.showMusicPlayer("GuiMusicArtist","bannerItem"+this.selectedBannerItem,"bannerItem highlight"+Main.highlightColour+"Text");
 				} else {
-					GuiMusicPlayer.showMusicPlayer("GuiPage_MusicArtist","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
+					GuiMusicPlayer.showMusicPlayer("GuiMusicArtist","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
 				}
 			} else {
-				GuiMusicPlayer.showMusicPlayer("GuiPage_MusicArtist",this.divprepend1 + this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.divprepend1 + this.ItemData.Items[this.selectedItem].Id).className);
+				GuiMusicPlayer.showMusicPlayer("GuiMusicArtist",this.divprepend1 + this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.divprepend1 + this.ItemData.Items[this.selectedItem].Id).className);
 			}
 
 
@@ -282,7 +273,7 @@ GuiPage_MusicArtist.keyDown = function() {
 	}
 };
 
-GuiPage_MusicArtist.openMenu = function() {
+GuiMusicArtist.openMenu = function() {
 	if (this.selectedItem == -1) {
 		if (this.selectedBannerItem == -1) {
 			document.getElementById("bannerItem0").class = "bannerItem bannerItemPadding";
@@ -290,11 +281,11 @@ GuiPage_MusicArtist.openMenu = function() {
 		this.selectedItem = 0;
 		this.topLeftItem = 0;
 	}
-		Support.updateURLHistory("GuiPage_MusicArtist",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,true);
-		GuiMainMenu.requested("GuiPage_MusicArtist",this.divprepend1 + this.ItemData.Items[this.selectedItem].Id);
+		Support.updateURLHistory("GuiMusicArtist",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,true);
+		GuiMainMenu.requested("GuiMusicArtist",this.divprepend1 + this.ItemData.Items[this.selectedItem].Id);
 };
 
-GuiPage_MusicArtist.processTopMenuLeftKey = function() {
+GuiMusicArtist.processTopMenuLeftKey = function() {
 	if (this.selectedItem == -1) {
 		this.selectedBannerItem--;
 		if (this.selectedBannerItem == -1) { //Going left from the end of the top menu.
@@ -320,7 +311,7 @@ GuiPage_MusicArtist.processTopMenuLeftKey = function() {
 	}
 };
 
-GuiPage_MusicArtist.processTopMenuRightKey = function() {
+GuiMusicArtist.processTopMenuRightKey = function() {
 	if (this.selectedItem == -1) {
 		this.selectedBannerItem++;
 		if (this.selectedBannerItem >= this.bannerItems.length) {
@@ -350,14 +341,14 @@ GuiPage_MusicArtist.processTopMenuRightKey = function() {
 	}
 };
 
-GuiPage_MusicArtist.processTopMenuUpKey = function() {
+GuiMusicArtist.processTopMenuUpKey = function() {
 	this.selectedItem = this.selectedItem - this.MAXCOLUMNCOUNT;
 	if (this.selectedItem < 0) {
 		this.selectedBannerItem = 0;
 		this.selectedItem = -1;
 		//Hide red
-		Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Music Selected","Music",this.divprepend1,true);
+		Support.updateSelectedNEW(this.ItemData.Items, this.selectedItem, this.topLeftItem,
+			Math.min(this.topLeftItem + this.getMaxDisplay(), this.ItemData.Items.length), "music selected", "music", this.divprepend1, true);
 		//update selected banner item
 		this.updateSelectedBannerItems();
 	} else {
@@ -373,7 +364,7 @@ GuiPage_MusicArtist.processTopMenuUpKey = function() {
 	}
 };
 
-GuiPage_MusicArtist.processTopMenuDownKey = function() {
+GuiMusicArtist.processTopMenuDownKey = function() {
 	if (this.selectedItem == -1) {
 		this.selectedItem = 0;
 		this.selectedBannerItem = -1;
@@ -406,7 +397,7 @@ GuiPage_MusicArtist.processTopMenuDownKey = function() {
 	this.updateSelectedItems();
 };
 
-GuiPage_MusicArtist.processTopMenuEnterKey = function() {
+GuiMusicArtist.processTopMenuEnterKey = function() {
 	alert ("TopMenuEnterKey");
 	if (this.selectedItem == -1) {
 		Support.enterMusicPage(this.bannerItems[this.selectedBannerItem]);
@@ -420,7 +411,7 @@ GuiPage_MusicArtist.processTopMenuEnterKey = function() {
 			this.selectedItem = rememberSelectedItem;
 
 			//Set Focus
-			document.getElementById("GuiPage_MusicArtistBottom").focus();
+			document.getElementById("GuiMusicArtistBottom").focus();
 			//Update Selected
 			this.selectedItem2 = 0;
 			this.updateSelectedItems2(false);
@@ -431,18 +422,18 @@ GuiPage_MusicArtist.processTopMenuEnterKey = function() {
 //---------------------------------------------------------------------------------------------------
 //      BOTTOM ITEMS HANDLERS
 //---------------------------------------------------------------------------------------------------
-GuiPage_MusicArtist.updateDisplayedItems2 = function() {
+GuiMusicArtist.updateDisplayedItems2 = function() {
 	Support.updateDisplayedItems(this.ItemData2.Items,this.selectedItem2,this.topLeftItem2,
 			Math.min(this.topLeftItem2 + this.getMaxDisplay2(),this.ItemData2.Items.length),"lowerContent",this.divprepend2,this.isResume2);
 };
 
 //Function sets CSS Properties so show which user is selected
-GuiPage_MusicArtist.updateSelectedItems2 = function (bypassCounter) {
-	Support.updateSelectedNEW(this.ItemData2.Items,this.selectedItem2,this.topLeftItem2,
-			Math.min(this.topLeftItem2 + this.getMaxDisplay2(),this.ItemData2.Items.length),"Music Selected","Music",this.divprepend2,bypassCounter);
+GuiMusicArtist.updateSelectedItems2 = function (bypassCounter) {
+	Support.updateSelectedNEW(this.ItemData2.Items, this.selectedItem2, this.topLeftItem2,
+			Math.min(this.topLeftItem2 + this.getMaxDisplay2(), this.ItemData2.Items.length), "music selected", "music", this.divprepend2, bypassCounter);
 };
 
-GuiPage_MusicArtist.bottomKeyDown = function() {
+GuiMusicArtist.bottomKeyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
@@ -461,10 +452,8 @@ GuiPage_MusicArtist.bottomKeyDown = function() {
 	if (Main.getIsScreensaverRunning()) {
 		//Update Main.js isScreensaverRunning - Sets to True
 		Main.setIsScreensaverRunning();
-
 		//End Screensaver
-		GuiImagePlayer_Screensaver.stopScreensaver();
-
+		GuiImagePlayerScreensaver.stopScreensaver();
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
@@ -476,8 +465,8 @@ GuiPage_MusicArtist.bottomKeyDown = function() {
 			if (this.selectedItem2 == -1) {
 				this.selectedItem2 = 0; //Going left from bottom items row.
 				//Open the menu
-				Support.updateURLHistory("GuiPage_MusicArtist",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,false);
-				GuiMainMenu.requested("GuiPage_MusicArtistBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id);
+				Support.updateURLHistory("GuiMusicArtist",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,false);
+				GuiMainMenu.requested("GuiMusicArtistBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id);
 
 			} else {
 				if (this.selectedItem2 < this.topLeftItem2) {
@@ -510,7 +499,7 @@ GuiPage_MusicArtist.bottomKeyDown = function() {
 			this.topLeftItem2 = 0;
 
 			//Set Focus
-			document.getElementById("GuiPage_MusicArtist").focus();
+			document.getElementById("GuiMusicArtist").focus();
 			this.updateSelectedItems(false);
 			break;
 		case tvKey.KEY_ENTER:
@@ -536,8 +525,8 @@ GuiPage_MusicArtist.bottomKeyDown = function() {
 				this.selectedItem = 0;
 				this.topLeftItem = 0;
 			}
-			Support.updateURLHistory("GuiPage_MusicArtist",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,false);
-			GuiMainMenu.requested("GuiPage_MusicArtistBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id);
+			Support.updateURLHistory("GuiMusicArtist",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,false);
+			GuiMainMenu.requested("GuiMusicArtistBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id);
 			break;
 		case tvKey.KEY_RETURN:
 			//In this instance handle return to go up to the top menu
@@ -550,14 +539,14 @@ GuiPage_MusicArtist.bottomKeyDown = function() {
 			this.updateSelectedItems2(true);
 
 			//Set Focus
-			document.getElementById("GuiPage_MusicArtist").focus();
+			document.getElementById("GuiMusicArtist").focus();
 			this.updateSelectedItems(false);
 			break;
 		case tvKey.KEY_YELLOW:
 			//Favourites
 			break;
 		case tvKey.KEY_BLUE:
-			GuiMusicPlayer.showMusicPlayer("GuiPage_MusicArtistBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id,document.getElementById(this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id).className);
+			GuiMusicPlayer.showMusicPlayer("GuiMusicArtistBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id,document.getElementById(this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id).className);
 			break;
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY BOTTOM");
@@ -568,7 +557,7 @@ GuiPage_MusicArtist.bottomKeyDown = function() {
 
 //--------------------------------------------------------------------------------------------------------
 
-GuiPage_MusicArtist.updateSelectedBannerItems = function() {
+GuiMusicArtist.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.bannerItems.length; index++) {
 		if (index == this.selectedBannerItem) {
 			if (index != this.bannerItems.length-1) {
@@ -594,16 +583,16 @@ GuiPage_MusicArtist.updateSelectedBannerItems = function() {
 	}
 };
 
-GuiPage_MusicArtist.processSelectedItem = function () {
-	Support.updateURLHistory("GuiPage_MusicArtist",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,false);
+GuiMusicArtist.processSelectedItem = function () {
+	Support.updateURLHistory("GuiMusicArtist",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,false);
 	var url = Server.getChildItemsURL(this.ItemData2.Items[this.selectedItem2].Id,"&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Audio&Recursive=true&CollapseBoxSetItems=false");
-	GuiPage_Music.start(this.ItemData2.Items[this.selectedItem2].Name,url,this.ItemData2.Items[this.selectedItem2].Type);
+	GuiMusic.start(this.ItemData2.Items[this.selectedItem2].Name,url,this.ItemData2.Items[this.selectedItem2].Type);
 };
 
-GuiPage_MusicArtist.playSelectedItem = function (array,selected) {
+GuiMusicArtist.playSelectedItem = function (array,selected) {
 };
 
-GuiPage_MusicArtist.processIndexing = function() {
+GuiMusicArtist.processIndexing = function() {
 	var indexPos = this.ItemIndexData[1];
 
 	this.indexSeekPos++;
@@ -619,9 +608,9 @@ GuiPage_MusicArtist.processIndexing = function() {
 	this.updateSelectedItems();
 };
 
-GuiPage_MusicArtist.loadMoreItems = function() {
+GuiMusicArtist.loadMoreItems = function() {
 	if (this.totalRecordCount > this.ItemData.Items.length) {
-		Support.pageLoadTimes("GuiPage_MusicArtist","GetRemainingItems",false);
+		Support.pageLoadTimes("GuiMusicArtist", "GetRemainingItems", false);
 
 		//Show Loading Div
 		document.getElementById("guiPlayerLoading").style.visibility = "";
@@ -633,7 +622,7 @@ GuiPage_MusicArtist.loadMoreItems = function() {
 		var originalLength = this.ItemData.Items.length;
 		var ItemDataRemaining = Server.getContent(this.startParams[1] + "&Limit="+File.getTVProperty("ItemPaging") + "&StartIndex=" + originalLength);
 		if (ItemDataRemaining == null) { return; }
-		Support.pageLoadTimes("GuiPage_MusicArtist","GotRemainingItems",false);
+		Support.pageLoadTimes("GuiMusicArtist","GotRemainingItems",false);
 
 		for (var index = 0; index < ItemDataRemaining.Items.length; index++) {
 			this.ItemData.Items[index+originalLength] = ItemDataRemaining.Items[index];
@@ -646,13 +635,13 @@ GuiPage_MusicArtist.loadMoreItems = function() {
 		document.getElementById("guiPlayerLoading").style.visibility = "hidden";
 
 		//Pass back Control
-		document.getElementById("GuiPage_MusicArtist").focus();
+		document.getElementById("GuiMusicArtist").focus();
 
-		Support.pageLoadTimes("GuiPage_MusicArtist","AddedRemainingItems",false);
+		Support.pageLoadTimes("GuiMusicArtist", "AddedRemainingItems",false);
 	}
 };
 
-GuiPage_MusicArtist.returnFromMusicPlayer = function() {
+GuiMusicArtist.returnFromMusicPlayer = function() {
 	this.selectedItem = 0;
 	this.updateDisplayedItems();
 	this.updateSelectedItems();

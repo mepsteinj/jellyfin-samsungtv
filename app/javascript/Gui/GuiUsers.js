@@ -62,7 +62,7 @@ GuiUsers.start = function(runAutoLogin) {
 	}
 	if (autoLogin == false) {
 		//Change Display
-		//document.getElementById("pageContent").className = "";
+		document.getElementById("pageContent").className = "";
 		var div = "<div style='padding-top:100px;text-align:center'>" +
 		"<div id=guiUsersAllUsers></div>" +
 		"<div id='pwdOptions' class='loginOptions'>" +
@@ -150,7 +150,6 @@ GuiUsers.processSelectedUser = function () {
 		}
 	}
 	if (userInFile == false){
-		FileLog.write("userInFile == false");
 		if (this.UserData[this.selectedUser].HasPassword) {
 			//Has password - Load IME
 			//Hide loading
@@ -173,7 +172,6 @@ GuiUsers.processSelectedUser = function () {
 				document.getElementById("guiUsers").focus();
 				//Div to display Network Failure - No password therefore no password error
 				//This event should be impossible under normal circumstances
-				FileLog.write("guiUsersPassword2");
 				GuiNotifications.setNotification(Main.messages.LabNetworkError);
 			}
 		}
@@ -270,7 +268,6 @@ GuiUsers.keyDown = function() {
 		case tvKey.KEY_ENTER:
 		case tvKey.KEY_PANEL_ENTER:
 			alert("ENTER");
-			FileLog.write("selectedRow : " + this.selectedRow);
 			if (this.selectedRow == 0) {
 				GuiUsers.processSelectedUser();
 			} else if (this.selectedRow == 1) {
