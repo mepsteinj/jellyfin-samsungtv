@@ -8,14 +8,12 @@ FileLog.deleteFile = function() {
 
 FileLog.loadFile = function(returnContents) {
 	var fileSystemObj = new FileSystem();
-
 	var bValid = fileSystemObj.isValidCommonPath(curWidget.id);
 	if (!bValid) {
 		fileSystemObj.createCommonDir(curWidget.id);
 		var fileObj = fileSystemObj.openCommonFile(curWidget.id + '/MB3_Log.txt', 'a+');
 		fileSystemObj.closeCommonFile(fileObj);
 	}
-
 	var openRead = fileSystemObj.openCommonFile(curWidget.id + '/MB3_Log.txt', 'r');
 	if (!openRead) {
 		fileSystemObj.createCommonDir(curWidget.id);
@@ -38,7 +36,6 @@ FileLog.loadFile = function(returnContents) {
 };
 
 FileLog.write = function (toWrite,noDate) {
-
 	var writeDate = (noDate == undefined) ? true : false;
 	toWrite = (writeDate == true) ? FileLog.getTimeStamp() + " " + toWrite : toWrite;
 	alert(toWrite);
@@ -63,7 +60,6 @@ FileLog.getTimeStamp = function () {
 	var day = (date.getDate() + 1 < 10) ? "0" + (date.getDate() + 1) : date.getDate() + 1;
 	var month = (date.getMonth() + 1 < 10) ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
 	var year = date.getFullYear();
-
 	var h=date.getHours();
 	var offset = File.getTVProperty("ClockOffset");
 	h = h+offset;
@@ -72,5 +68,5 @@ FileLog.getTimeStamp = function () {
 	if (h<10) {h = "0" + h;};
 	var m=date.getMinutes();
 	if (m<10) {m = "0" + m;};
-	return day + "/" + month + "/" + year + " " + h+':'+m;
+	return day + "/" + month + "/" + year + " " + h + ':' + m;
 };

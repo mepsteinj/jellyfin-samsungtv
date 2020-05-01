@@ -65,8 +65,8 @@ GuiPage_MusicArtist.start = function(title1, url1, selectedItem, topLeftItem) {
 	htmlToAdd += "<div id=Center class='SeriesCenter'>";
 	htmlToAdd +=    "<div id=Content></div>";
 	htmlToAdd += "</div>";
-	htmlToAdd += "<div id=lowerTitle class='albumArtist-lowerTitle offWhite'></div>";
-	htmlToAdd += "<div id=lowerContent class='albumArtist-lowerContent'></div>";
+	htmlToAdd += "<div id=lowerTitle class='albumArtistLowerTitle offWhite'></div>";
+	htmlToAdd += "<div id=lowerContent class='albumArtistLowerContent'></div>";
 	document.getElementById("pageContent").innerHTML = htmlToAdd;
 
 	//Set banner Styling
@@ -107,9 +107,9 @@ GuiPage_MusicArtist.start = function(title1, url1, selectedItem, topLeftItem) {
 		Support.pageLoadTimes("GuiPage_MusicArtist","UserControl",false);
 	} else {
 		//Set message to user
-		document.getElementById("Counter").innerHTML = "";
-		document.getElementById("Content").style.fontSize="40px";
-		document.getElementById("Content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid<br>Press return to get back to the previous screen";
+		document.getElementById("counter").innerHTML = "";
+		document.getElementById("content").style.fontSize="40px";
+		document.getElementById("content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid<br>Press return to get back to the previous screen";
 
 		//Set Background
 		Support.fadeImage("images/bg1.jpg");
@@ -199,9 +199,9 @@ GuiPage_MusicArtist.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
-	if (document.getElementById("Notifications").style.visibility == "") {
-		document.getElementById("Notifications").style.visibility = "hidden";
-		document.getElementById("NotificationText").innerHTML = "";
+	if (document.getElementById("notifications").style.visibility == "") {
+		document.getElementById("notifications").style.visibility = "hidden";
+		document.getElementById("notificationText").innerHTML = "";
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -446,9 +446,9 @@ GuiPage_MusicArtist.bottomKeyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
-	if (document.getElementById("Notifications").style.visibility == "") {
-		document.getElementById("Notifications").style.visibility = "hidden";
-		document.getElementById("NotificationText").innerHTML = "";
+	if (document.getElementById("notifications").style.visibility == "") {
+		document.getElementById("notifications").style.visibility = "hidden";
+		document.getElementById("notificationText").innerHTML = "";
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -624,10 +624,10 @@ GuiPage_MusicArtist.loadMoreItems = function() {
 		Support.pageLoadTimes("GuiPage_MusicArtist","GetRemainingItems",false);
 
 		//Show Loading Div
-		document.getElementById("guiPlayer_Loading").style.visibility = "";
+		document.getElementById("guiPlayerLoading").style.visibility = "";
 
 		//Remove User Control
-		document.getElementById("NoKeyInput").focus();
+		document.getElementById("noKeyInput").focus();
 
 		//Load Data
 		var originalLength = this.ItemData.Items.length;
@@ -638,12 +638,12 @@ GuiPage_MusicArtist.loadMoreItems = function() {
 		for (var index = 0; index < ItemDataRemaining.Items.length; index++) {
 			this.ItemData.Items[index+originalLength] = ItemDataRemaining.Items[index];
 		}
-		document.getElementById("Counter").innerHTML = (this.selectedItem + 1) + "/" + this.ItemData.Items.length;
+		document.getElementById("counter").innerHTML = (this.selectedItem + 1) + "/" + this.ItemData.Items.length;
 
 		//Reprocess Indexing Algorithm
 
 		//Hide Loading Div
-		document.getElementById("guiPlayer_Loading").style.visibility = "hidden";
+		document.getElementById("guiPlayerLoading").style.visibility = "hidden";
 
 		//Pass back Control
 		document.getElementById("GuiPage_MusicArtist").focus();

@@ -89,7 +89,7 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem,items) {
 	//Update Padding on pageContent
 	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='bannerMenu'></div>" +
 			"<div id=Center class='SeriesCenter'>" +
-				"<div id=Content></div>" +
+				"<div id=content></div>" +
 			"</div>" +
 			"<div id=SeriesContent class='SeriesContent'>" +
 				"<div id='SeriesTitle' class='SeriesTitle'></div>" +
@@ -239,11 +239,11 @@ GuiDisplay_Series.start = function(title,url,selectedItem,topLeftItem,items) {
 
 	} else {
 		//Set message to user
-		document.getElementById("Counter").innerHTML = "";
-		document.getElementById("Content").style.fontSize="40px";
-		document.getElementById("Content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid<br>Press return to get back to the previous screen";
+		document.getElementById("counter").innerHTML = "";
+		document.getElementById("content").style.fontSize="40px";
+		document.getElementById("content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid<br>Press return to get back to the previous screen";
 
-		document.getElementById("NoItems").focus();
+		document.getElementById("noItems").focus();
 	}
 };
 
@@ -433,7 +433,7 @@ GuiDisplay_Series.updateSelectedBannerItems = function() {
 		}
 	}
 	if (this.selectedItem == -1) {
-		document.getElementById("Counter").innerHTML = (this.selectedBannerItem+1) + "/" + this.bannerItems.length;
+		document.getElementById("counter").innerHTML = (this.selectedBannerItem+1) + "/" + this.bannerItems.length;
 	}
 };
 
@@ -441,9 +441,9 @@ GuiDisplay_Series.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
-	if (document.getElementById("Notifications").style.visibility == "") {
-		document.getElementById("Notifications").style.visibility = "hidden";
-		document.getElementById("NotificationText").innerHTML = "";
+	if (document.getElementById("notifications").style.visibility == "") {
+		document.getElementById("notifications").style.visibility = "hidden";
+		document.getElementById("notificationText").innerHTML = "";
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -451,7 +451,7 @@ GuiDisplay_Series.keyDown = function() {
 
 	//Clear Indexing Letter Display timeout & Hide
 	//clearTimeout(this.indexTimeout);
-	document.getElementById("guiDisplay_SeriesIndexing").style.opacity = 0;
+	document.getElementById("guiDisplaySeriesIndexing").style.opacity = 0;
 
 	//Update Screensaver Timer
 	Support.screensaver();
@@ -915,12 +915,12 @@ GuiDisplay_Series.processIndexing = function() {
 			}
 		}
 
-		document.getElementById("guiDisplay_SeriesIndexing").innerHTML = indexLetter[indexSeekPos].toUpperCase();
-		document.getElementById("guiDisplay_SeriesIndexing").style.opacity = 1;
+		document.getElementById("guiDisplaySeriesIndexing").innerHTML = indexLetter[indexSeekPos].toUpperCase();
+		document.getElementById("guiDisplaySeriesIndexing").style.opacity = 1;
 
 		clearTimeout(this.indexTimeout);
 		this.indexTimeout = setTimeout(function(){
-			document.getElementById("guiDisplay_SeriesIndexing").style.opacity = 0;
+			document.getElementById("guiDisplaySeriesIndexing").style.opacity = 0;
 			GuiDisplay_Series.updateDisplayedItems();
 			GuiDisplay_Series.updateSelectedItems();
 		}, 500);
@@ -934,10 +934,10 @@ GuiDisplay_Series.loadMoreItems = function() {
 		Support.pageLoadTimes("GuiDisplay_Series","GetRemainingItems",true);
 
 		//Show Loading Div
-		document.getElementById("guiPlayer_Loading").style.visibility = "";
+		document.getElementById("guiPlayerLoading").style.visibility = "";
 
 		//Remove User Control
-		document.getElementById("NoKeyInput").focus();
+		document.getElementById("noKeyInput").focus();
 
 		//Load Data
 		var originalLength = this.ItemData.Items.length;
@@ -948,13 +948,13 @@ GuiDisplay_Series.loadMoreItems = function() {
 		for (var index = 0; index < ItemDataRemaining.Items.length; index++) {
 			this.ItemData.Items[index+originalLength] = ItemDataRemaining.Items[index];
 		}
-		document.getElementById("Counter").innerHTML = (this.selectedItem + 1) + "/" + this.ItemData.Items.length;
+		document.getElementById("counter").innerHTML = (this.selectedItem + 1) + "/" + this.ItemData.Items.length;
 
 		//Reprocess Indexing Algorithm
 		this.ItemIndexData = Support.processIndexing(this.ItemData.Items);
 
 		//Hide Loading Div
-		document.getElementById("guiPlayer_Loading").style.visibility = "hidden";
+		document.getElementById("guiPlayerLoading").style.visibility = "hidden";
 
 		//Pass back Control
 		document.getElementById("GuiDisplay_Series").focus();

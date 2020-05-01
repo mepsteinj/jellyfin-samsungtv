@@ -37,7 +37,7 @@ GuiImagePlayer_Screensaver.start = function() {
 		sf.service.VideoPlayer.hide();
 	}
 
-	Support.styleSubtitles("GuiImagePlayer_ScreensaverOverlay");
+	Support.styleSubtitles("guiImagePlayerScreenSaverOverlay");
 
 	if (this.imagesToUse == "Media") {
 		var randomImageURL = Server.getItemTypeURL("&SortBy=Random&MediaTypes=Photo&Recursive=true&CollapseBoxSetItems=false&Limit=1000");
@@ -139,7 +139,7 @@ GuiImagePlayer_Screensaver.stopScreensaver = function() {
 	this.ImageViewer.hide();
 	widgetAPI.blockNavigation(event);
 	GuiImagePlayer_Screensaver.kill();
-	document.getElementById("GuiImagePlayer_ScreensaverOverlay").innerHTML = "";
+	document.getElementById("guiImagePlayerScreenSaverOverlay").innerHTML = "";
 	//Show Page Contents
 	document.getElementById("everything").style.visibility="";
 };

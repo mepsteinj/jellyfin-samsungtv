@@ -97,9 +97,9 @@ GuiPage_AddToPlaylist.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
-	if (document.getElementById("Notifications").style.visibility == "") {
-		document.getElementById("Notifications").style.visibility = "hidden";
-		document.getElementById("NotificationText").innerHTML = "";
+	if (document.getElementById("notifications").style.visibility == "") {
+		document.getElementById("notifications").style.visibility = "hidden";
+		document.getElementById("notificationText").innerHTML = "";
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";

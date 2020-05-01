@@ -69,7 +69,7 @@ GuiMusicPlayer.showMusicPlayer = function(playedFromPage,selectedDivId,selectedD
 
 		if (playedFromPage == "GuiImagePlayer") {
 			clearTimeout(GuiImagePlayer.infoTimer);
-			document.getElementById("GuiImagePlayer_ScreensaverOverlay").style.visibility="hidden";
+			document.getElementById("guiImagePlayerScreenSaverOverlay").style.visibility="hidden";
 			document.getElementById("guiButtonShade").style.visibility = "";
 		}
 		document.getElementById("guiMusicPlayerDiv").style.bottom = "-60px";
@@ -79,7 +79,7 @@ GuiMusicPlayer.showMusicPlayer = function(playedFromPage,selectedDivId,selectedD
 		}, 300, function() {
 			//animate complete.
 		});
-		document.getElementById("Counter").style.visibility = "hidden";
+		document.getElementById("counter").style.visibility = "hidden";
 		document.getElementById("GuiMusicPlayer").focus();
 	}
 };
@@ -284,12 +284,12 @@ GuiMusicPlayer.keyDown = function() {
 			} else {
 				if (this.playedFromPage == "GuiImagePlayer") {
 					document.getElementById("guiButtonShade").style.visibility = "hidden";
-					document.getElementById("GuiImagePlayer_ScreensaverOverlay").style.visibility="";
+					document.getElementById("guiImagePlayerScreenSaverOverlay").style.visibility="";
 				}
 				//Hide the music player.
 				document.getElementById("guiMusicPlayerDiv").style.visibility = "hidden";
 				document.getElementById("guiMusicPlayerDiv").style.bottom = "0";
-				document.getElementById("Counter").style.visibility = "";
+				document.getElementById("counter").style.visibility = "";
 
 				//Hide colour buttons if a slideshow is running.
 				if (GuiImagePlayer.ImageViewer != null){

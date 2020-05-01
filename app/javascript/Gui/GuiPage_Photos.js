@@ -41,7 +41,7 @@ GuiPage_Photos.start = function(title,url,selectedItem,topLeftItem) {
 
 	//Set Page Content
 	document.getElementById("pageContent").innerHTML = "<div id='title' class='EpisodesSeriesInfo'>"+title+"</div>" +
-			"<div id=Center class='SeriesCenter'><div id=Content></div></div>";
+			"<div id=Center class='SeriesCenter'><div id=content></div></div>";
 
 	//Set Top
 	GuiPage_Photos.setPadding(title);
@@ -63,11 +63,11 @@ GuiPage_Photos.start = function(title,url,selectedItem,topLeftItem) {
 		document.getElementById("GuiPage_Photos").focus();
 	} else {
 		//Set message to user
-		document.getElementById("Counter").innerHTML = "";
-		document.getElementById("Content").style.fontSize="1.7em";
-		document.getElementById("Content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid<br>Press return to get back to the previous screen";
+		document.getElementById("counter").innerHTML = "";
+		document.getElementById("content").style.fontSize="1.7em";
+		document.getElementById("content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid<br>Press return to get back to the previous screen";
 
-		document.getElementById("NoItems").focus();
+		document.getElementById("noItems").focus();
 	}
 };
 
@@ -134,7 +134,7 @@ GuiPage_Photos.updateDisplayedItems = function() {
 		}
 	}
 	htmlToAdd += "</tr></table></div>";
-	document.getElementById("Content").innerHTML = htmlToAdd;
+	document.getElementById("content").innerHTML = htmlToAdd;
 };
 
 GuiPage_Photos.updateOneDisplayedItem = function(item,selectedItem) {
@@ -163,9 +163,9 @@ GuiPage_Photos.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
-	if (document.getElementById("Notifications").style.visibility == "") {
-		document.getElementById("Notifications").style.visibility = "hidden";
-		document.getElementById("NotificationText").innerHTML = "";
+	if (document.getElementById("notifications").style.visibility == "") {
+		document.getElementById("notifications").style.visibility = "hidden";
+		document.getElementById("notificationText").innerHTML = "";
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";

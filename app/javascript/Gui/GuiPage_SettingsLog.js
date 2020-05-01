@@ -30,9 +30,9 @@ GuiPage_SettingsLog.start = function() {
 
 	//Load Settings
 	document.getElementById("pageContent").className = "";
-	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='bannerMenu'></div><div id='guiTV_Show_Title' class='guiPage_Settings_Title'>Log</div>\ \
-		<div id='guiPage_Settings_Settings' class='guiPage_Settings_Settings'></div>";// +
-		/*"<div id='guiPage_Settings_Overview' class='guiPage_Settings_Overview'>" +
+	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='bannerMenu'></div><div id='guiTV_Show_Title' class='guiSettingsTitle'>Log</div>\ \
+		<div id='guiPage_Settings_Settings' class='guiSettingsSettings'></div>";// +
+		/*"<div id='guiPage_Settings_Overview' class='guiSettingsOverview'>" +
 			"<div id=guiPage_Settings_Overview_Title></div>" +
 			"<div id=guiPage_Settings_Overview_Content></div>" +
 		"</div>";*/
@@ -85,16 +85,16 @@ GuiPage_SettingsLog.updateSelectedBannerItems = function() {
 			}
 		}
 	}
-	document.getElementById("Counter").innerHTML = (this.selectedBannerItem + 1) + "/" + (this.bannerItems.length);
+	document.getElementById("counter").innerHTML = (this.selectedBannerItem + 1) + "/" + (this.bannerItems.length);
 };
 
 GuiPage_SettingsLog.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
-	if (document.getElementById("Notifications").style.visibility == "") {
-		document.getElementById("Notifications").style.visibility = "hidden";
-		document.getElementById("NotificationText").innerHTML = "";
+	if (document.getElementById("notifications").style.visibility == "") {
+		document.getElementById("notifications").style.visibility = "hidden";
+		document.getElementById("notificationText").innerHTML = "";
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";

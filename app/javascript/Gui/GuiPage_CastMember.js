@@ -31,12 +31,12 @@ GuiPage_CastMember.start = function(title,url,selectedItem,topLeftItem) {
 	if (this.ItemData == null) { Support.processReturnURLHistory(); }
 
 	document.getElementById("pageContent").className = "";
-	document.getElementById("pageContent").innerHTML = "<div id='GuiPage_CastMember_Name' class='GuiPage_CastMember_Name'></div> \
-		<div id='GuiPage_CastMember_Details' class='GuiPage_CastMember_Details'></div> \
-		<div id='GuiPage_CastMember_Poster' class='GuiPage_CastMember_Poster'></div> \
-		<div id='GuiPage_CastMember_Bio' class='GuiPage_CastMember_Bio'></div> \
-		<div id='GuiPage_CastMember_List' class='GuiPage_CastMember_List'></div>";
-	document.getElementById("Counter").innerHTML = "1/1";
+	document.getElementById("pageContent").innerHTML = "<div id='GuiPage_CastMember_Name' class='guiCastMemberName'></div> \
+		<div id='GuiPage_CastMember_Details' class='guiCastMemberDetails'></div> \
+		<div id='GuiPage_CastMember_Poster' class='guiCastMemberPoster'></div> \
+		<div id='GuiPage_CastMember_Bio' class='guiCastMemberBio'></div> \
+		<div id='GuiPage_CastMember_List' class='guiCastMemberList'></div>";
+	document.getElementById("counter").innerHTML = "1/1";
 
 	//Add cast member name and image.
 	document.getElementById("GuiPage_CastMember_Name").innerHTML = this.CastData.Name;
@@ -100,7 +100,7 @@ GuiPage_CastMember.updateDisplayedItems = function() {
 				imgsrc = Server.getImageURL(this.ItemData.Items[index].Id,"Primary",180,100,null,null,null,index);
 			}
 		}
-		htmlToAdd += "<div id="+this.ItemData.Items[index].Id+" class='GuiPage_CastMember_ListSingle'><div class='GuiPage_CastMember_ListSingleImage' style=background-image:url(" +imgsrc+ ")></div><div class='GuiPage_CastMember_ListSingleTitle'>"+this.ItemData.Items[index].Name+"</div></div>";
+		htmlToAdd += "<div id="+this.ItemData.Items[index].Id+" class='guiPageCastMemberListSingle'><div class='guiCastMemberListSingleImage' style=background-image:url(" +imgsrc+ ")></div><div class='guiCastMemberListSingleTitle'>"+this.ItemData.Items[index].Name+"</div></div>";
 	}
 	document.getElementById("GuiPage_CastMember_List").innerHTML = htmlToAdd;
 };
@@ -139,7 +139,7 @@ GuiPage_CastMember.updateSelectedItems = function () {
 			document.getElementById(this.ItemData.Items[index].Id).className = "GuiPage_CastMember_ListSingle";
 		}
 	}
-	document.getElementById("Counter").innerHTML = (this.selectedItem + 1) + "/" + this.ItemData.Items.length;
+	document.getElementById("counter").innerHTML = (this.selectedItem + 1) + "/" + this.ItemData.Items.length;
 };
 
 GuiPage_CastMember.keyDown = function()
@@ -147,9 +147,9 @@ GuiPage_CastMember.keyDown = function()
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
-	if (document.getElementById("Notifications").style.visibility == "") {
-		document.getElementById("Notifications").style.visibility = "hidden";
-		document.getElementById("NotificationText").innerHTML = "";
+	if (document.getElementById("notifications").style.visibility == "") {
+		document.getElementById("notifications").style.visibility = "hidden";
+		document.getElementById("notificationText").innerHTML = "";
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";

@@ -29,9 +29,9 @@ GuiPage_Search.start = function(title, url) {
 	this.startParams = [],
 
 	//Change Display
-	document.getElementById("pageContent").innerHTML = "<div id='title' class='EpisodesSeriesInfo'>Search</div><div class='SearchPageInput'> \
+	document.getElementById("pageContent").innerHTML = "<div id='title' class='EpisodesSeriesInfo'>Search</div><div class='searchPageInput'> \
 		<form><input id='searchInput' type='text' size='50' value=''/></form> \
-		</div><div id='ResultsTitle' class='SearchPageTitle'></div><div id=Results class='SearchPageResults'></div>";
+		</div><div id='ResultsTitle' class='searchPageTitle'></div><div id=Results class='searchPageResults'></div>";
 
 	//Allows time for innerhtml to execute before creating ime
 	setTimeout(function () {
@@ -95,7 +95,7 @@ GuiPage_Search.updateSelectedItems = function () {
 	}
 
 	//Set Counter to be album count or x/3 for top part
-	document.getElementById("Counter").innerHTML = (this.selectedItem + 1) + "/" + this.ItemData.SearchHints.length;
+	document.getElementById("counter").innerHTML = (this.selectedItem + 1) + "/" + this.ItemData.SearchHints.length;
 };
 
 GuiPage_Search.processSelectedItem = function() {
@@ -195,12 +195,12 @@ var installFocusKeyCallbacks = function () {
 
 	ime.setKeyFunc(tvKey.KEY_RETURN, function (keyCode) {
 		widgetAPI.blockNavigation(event);
-		document.getElementById("NoKeyInput").focus();
+		document.getElementById("noKeyInput").focus();
 		Support.processReturnURLHistory();
 	});
 
 	ime.setKeyFunc(tvKey.KEY_EXIT, function (keyCode) {
-		document.getElementById("NoKeyInput").focus();
+		document.getElementById("noKeyInput").focus();
 		widgetAPI.sendExitEvent();
 	});
 	};
@@ -211,9 +211,9 @@ GuiPage_Search.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
-	if (document.getElementById("Notifications").style.visibility == "") {
-		document.getElementById("Notifications").style.visibility = "hidden";
-		document.getElementById("NotificationText").innerHTML = "";
+	if (document.getElementById("notifications").style.visibility == "") {
+		document.getElementById("notifications").style.visibility = "hidden";
+		document.getElementById("notificationText").innerHTML = "";
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";

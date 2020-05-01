@@ -1,6 +1,6 @@
 var File = {
-		ServerEntry : null,
-		UserEntry : null
+	ServerEntry : null,
+	UserEntry : null
 };
 
 File.getServerEntry = function() {
@@ -31,21 +31,19 @@ File.deleteSettingsFile = function() {
 
 File.loadFile = function() {
 	var fileSystemObj = new FileSystem();
-
 	var bValid = fileSystemObj.isValidCommonPath(curWidget.id);
 	if (!bValid) {
 		fileSystemObj.createCommonDir(curWidget.id);
 		var fileObj = fileSystemObj.openCommonFile(curWidget.id + '/MB3_Settings.json', 'w');
-		var contentToWrite = '{"Version":"'+Main.getVersion()+'","Servers":[],"TV":{}}';
+		var contentToWrite = '{"Version":"' + Main.getVersion() + '","Servers":[],"TV":{}}';
 		fileObj.writeLine(contentToWrite);
 		fileSystemObj.closeCommonFile(fileObj);
 	}
-
 	var openRead = fileSystemObj.openCommonFile(curWidget.id + '/MB3_Settings.json', 'r');
 	if (!openRead) {
 		fileSystemObj.createCommonDir(curWidget.id);
 		var fileObj = fileSystemObj.openCommonFile(curWidget.id + '/MB3_Settings.json', 'w');
-		var contentToWrite = '{"Version":"'+Main.getVersion()+'","Servers":[],"TV":{}}';
+		var contentToWrite = '{"Version":"' + Main.getVersion() + '","Servers":[],"TV":{}}';
 		fileObj.writeLine(contentToWrite);
 		fileSystemObj.closeCommonFile(fileObj);
 		return contentToWrite;
@@ -79,10 +77,9 @@ File.saveServerToFile = function(Id,Name,ServerIP) {
 				alert ("Server already exists in file - not adding - Server Entry: " + this.ServerEntry);
 			}
 		}
-
 		if (serverExists == false) {
 			this.ServerEntry = fileJson.Servers.length;
-			fileJson.Servers[fileJson.Servers.length] = {"Id":Id,"Name":Name,"Path":ServerIP,"Default":false,"Users":[]};
+			fileJson.Servers[fileJson.Servers.length] = {"Id":Id, "Name":Name, "Path":ServerIP, "Default":false, "Users":[]};
 			var openWrite = fileSystemObj.openCommonFile(curWidget.id + '/MB3_Settings.json', 'w');
 			if (openWrite) {
 				openWrite.writeLine(JSON.stringify(fileJson));
@@ -102,7 +99,6 @@ File.setDefaultServer = function (defaultIndex) {
 			fileJson.Servers[index].Default = false;
 		}
 	}
-
 	var fileSystemObj = new FileSystem();
 	var openWrite = fileSystemObj.openCommonFile(curWidget.id + '/MB3_Settings.json', 'w');
 	if (openWrite) {
@@ -118,17 +114,14 @@ File.deleteServer = function (index) {
 	if (openRead) {
 		var fileJson = JSON.parse(openRead.readLine()); //Read line as only 1 and skips line break!
 		fileSystemObj.closeCommonFile(openRead);
-
 		fileJson.Servers.splice(index);
-
 		var openWrite = fileSystemObj.openCommonFile(curWidget.id + '/MB3_Settings.json', 'w');
 		if (openWrite) {
 			openWrite.writeLine(JSON.stringify(fileJson));
 			fileSystemObj.closeCommonFile(openWrite);
 		}
-
 		if (fileJson.Servers.length == 0) {
-			GuiPage_NewServer.start();
+			GuiNewServer.start();
 		} else {
 			GuiPage_Servers.start();
 		}
@@ -141,7 +134,6 @@ File.addUser = function (UserId, Name, Password, rememberPassword) {
 	if (openRead) {
 		var fileJson = JSON.parse(openRead.readLine()); //Read line as only 1 and skips line break!
 		fileSystemObj.closeCommonFile(openRead);
-
 		//Check if user doesn't already exist - if does, alter password and save!
 		var userFound = false;
 		for (var index = 0; index < fileJson.Servers[this.ServerEntry].Users.length; index++) {
@@ -155,12 +147,8 @@ File.addUser = function (UserId, Name, Password, rememberPassword) {
 		}
 		if (userFound == false) {
 			this.UserEntry = fileJson.Servers[this.ServerEntry].Users.length;
-			//view1 = Server.getServerAddr() + "/Shows/NextUp?format=json&UserId="+Server.getUserID()+"&IncludeItemTypes=Episode&ExcludeLocationTypes=Virtual&Limit=24&Fields=PrimaryImageAspectRatio,SeriesInfo,DateCreated,SyncInfo,SortName&ImageTypeLimit=1&EnableImageTypes=Primary,Backdrop,Banner,Thumb";
-			//view2 = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&IncludeItemTypes=Movie"+Server.getMoviesViewQueryPart()+"&IsFolder=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
-			fileJson.Servers[this.ServerEntry].Users[this.UserEntry] = {"UserId":UserId,"UserName":Name.toLowerCase(),"Password":Password,"RememberPassword":rememberPassword,"Default":false,"HighlightColour":1,"ContinueWatching":true,"View1":"TVNextUp","View1Name":"Next Up","View2":"LatestMovies","View2Name":"Latest Movies"};
-
+			fileJson.Servers[this.ServerEntry].Users[this.UserEntry] = {"UserId":UserId, "UserName":Name.toLowerCase(), "Password":Password, "RememberPassword":rememberPassword, "Default":false, "HighlightColour":1, "ContinueWatching":true, "View1":"TVNextUp", "View1Name":"Next Up", "View2":"LatestMovies", "View2Name":"Latest Movies"};
 		}
-
 		var openWrite = fileSystemObj.openCommonFile(curWidget.id + '/MB3_Settings.json', 'w');
 		if (openWrite) {
 			openWrite.writeLine(JSON.stringify(fileJson));
@@ -175,9 +163,7 @@ File.deleteUser = function (index) {
 	if (openRead) {
 		var fileJson = JSON.parse(openRead.readLine()); //Read line as only 1 and skips line break!
 		fileSystemObj.closeCommonFile(openRead);
-
 		fileJson.Servers[this.ServerEntry].Users.splice(index);
-
 		var openWrite = fileSystemObj.openCommonFile(curWidget.id + '/MB3_Settings.json', 'w');
 		if (openWrite) {
 			openWrite.writeLine(JSON.stringify(fileJson));
@@ -192,9 +178,7 @@ File.deleteAllUsers = function (index) {
 	if (openRead) {
 		var fileJson = JSON.parse(openRead.readLine()); //Read line as only 1 and skips line break!
 		fileSystemObj.closeCommonFile(openRead);
-
 		fileJson.Servers[this.ServerEntry].Users = [];
-
 		var openWrite = fileSystemObj.openCommonFile(curWidget.id + '/MB3_Settings.json', 'w');
 		if (openWrite) {
 			openWrite.writeLine(JSON.stringify(fileJson));
@@ -209,11 +193,9 @@ File.deleteUserPasswords = function () {
 	if (openRead) {
 		var fileJson = JSON.parse(openRead.readLine()); //Read line as only 1 and skips line break!
 		fileSystemObj.closeCommonFile(openRead);
-
 		for (var index = 0; index < fileJson.Servers[this.ServerEntry].Users.length; index++) {
-			fileJson.Servers[this.ServerEntry].Users[index].Password = Sha1.hash("",true); // Do this so that users with no password are unaffected!
+			fileJson.Servers[this.ServerEntry].Users[index].Password = Sha1.hash("", true); // Do this so that users with no password are unaffected!
 		}
-
 		var openWrite = fileSystemObj.openCommonFile(curWidget.id + '/MB3_Settings.json', 'w');
 		if (openWrite) {
 			openWrite.writeLine(JSON.stringify(fileJson));
@@ -228,9 +210,7 @@ File.updateUserSettings = function (altered) {
 	if (openRead) {
 		var fileJson = JSON.parse(openRead.readLine()); //Read line as only 1 and skips line break!
 		fileSystemObj.closeCommonFile(openRead);
-
 		fileJson.Servers[this.ServerEntry].Users[this.UserEntry] = altered;
-
 		var openWrite = fileSystemObj.openCommonFile(curWidget.id + '/MB3_Settings.json', 'w');
 		if (openWrite) {
 			openWrite.writeLine(JSON.stringify(fileJson));
@@ -239,16 +219,13 @@ File.updateUserSettings = function (altered) {
 	}
 };
 
-
 File.updateServerSettings = function (altered) {
 	var fileSystemObj = new FileSystem();
 	var openRead = fileSystemObj.openCommonFile(curWidget.id + '/MB3_Settings.json', 'r');
 	if (openRead) {
 		var fileJson = JSON.parse(openRead.readLine()); //Read line as only 1 and skips line break!
 		fileSystemObj.closeCommonFile(openRead);
-
 		fileJson.Servers[this.ServerEntry] = altered;
-
 		var openWrite = fileSystemObj.openCommonFile(curWidget.id + '/MB3_Settings.json', 'w');
 		if (openWrite) {
 			openWrite.writeLine(JSON.stringify(fileJson));
@@ -300,12 +277,10 @@ File.getTVProperty = function(property) {
 	if (openRead) {
 		var fileJson = JSON.parse(openRead.readLine()); //Read line as only 1 and skips line break!
 		fileSystemObj.closeCommonFile(openRead);
-
 		if (fileJson.TV === undefined) {
 			fileJson.TV = {};
 			File.writeAll (fileJson);
 		}
-
 		if (fileJson.TV[property] === undefined) {
 			//Get System Default
 			for (var index = 0; index < GuiPage_Settings.TVSettings.length; index++) {
@@ -331,11 +306,9 @@ File.setUserProperty = function(property,value) {
 	if (openRead) {
 		var fileJson = JSON.parse(openRead.readLine()); //Read line as only 1 and skips line break!
 		fileSystemObj.closeCommonFile(openRead);
-
 		if (property == "Password") {
 			value = Sha1.hash(value,true);
 		}
-
 		if (fileJson.Servers[this.ServerEntry].Users[this.UserEntry][property] !== undefined) {
 			fileJson.Servers[this.ServerEntry].Users[this.UserEntry][property] = value;
 			File.writeAll(fileJson);

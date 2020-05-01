@@ -52,7 +52,7 @@ GuiPage_Playlist.start = function(title,url,type,playlistId) { //Type is either 
 			<div id='ShuffleAll' class='guiMusic_Global'>Shuffle</div> \
 			<div id='Delete' class='guiMusic_Global'>Delete</div></div> \
 			<div id='playlistOptions' class='playlistOptions'></div></div>";
-		document.getElementById("Counter").innerHTML = "1/" + this.topMenuItems.length;
+		document.getElementById("counter").innerHTML = "1/" + this.topMenuItems.length;
 
 		//Set Page Title
 		document.getElementById("playlistTitle").innerHTML = title;
@@ -78,7 +78,7 @@ GuiPage_Playlist.start = function(title,url,type,playlistId) { //Type is either 
 			<div id='ShuffleAll' class='guiMusic_Global'>Shuffle</div> \
 			<div id='Delete' class='guiMusic_Global'>Delete</div></div> \
 			<div id='playlistOptions' class='playlistOptions'>There are no items in this playlist</div></div>";
-		document.getElementById("Counter").innerHTML = "0/0";
+		document.getElementById("counter").innerHTML = "0/0";
 
 		//Set Page Title
 		document.getElementById("playlistTitle").innerHTML = title;
@@ -168,9 +168,9 @@ GuiPage_Playlist.updateSelectedItems = function () {
 
 	//Set Counter to be album count or x/3 for top part
 	if (this.selectedItem == -1) {
-		document.getElementById("Counter").innerHTML = (this.selectedItem2 + 1) + "/" + this.topMenuItems.length;
+		document.getElementById("counter").innerHTML = (this.selectedItem2 + 1) + "/" + this.topMenuItems.length;
 	} else {
-		document.getElementById("Counter").innerHTML = (this.selectedItem + 1) + "/" + this.AlbumData.Items.length;
+		document.getElementById("counter").innerHTML = (this.selectedItem + 1) + "/" + this.AlbumData.Items.length;
 	}
 
 };
@@ -179,9 +179,9 @@ GuiPage_Playlist.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
-	if (document.getElementById("Notifications").style.visibility == "") {
-		document.getElementById("Notifications").style.visibility = "hidden";
-		document.getElementById("NotificationText").innerHTML = "";
+	if (document.getElementById("notifications").style.visibility == "") {
+		document.getElementById("notifications").style.visibility = "hidden";
+		document.getElementById("notificationText").innerHTML = "";
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";

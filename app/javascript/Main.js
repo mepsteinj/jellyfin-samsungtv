@@ -4,34 +4,31 @@ var tvKey = new Common.API.TVKeyValue();
 
 var Main =
 {
-		version : "v3.0.0",
-		requiredServerVersion : "10.5.2",
-
-		//TV Series Version
-		modelYear : null,
-		width : 1920,
-		height : 1080,
-		backdropWidth : 1920,
-		backdropHeight : 1080,
-		posterWidth : 473,
-		posterHeight : 267,
-		seriesPosterWidth : 180,
-		seriesPosterHeight : 270,
-		seriesPosterLargeWidth : 235,
-		seriesPosterLargeHeight : 350,
-
-		forceDeleteSettings : false,
-		highlightColour : 1,
-
-		enableMusic : true,
-		enableLiveTV : true,
-		enableCollections : true,
-		enableChannels : true,
-		enableImageCache : true,
-
-		enableScreensaver : true,
-		isScreensaverRunning : false,
-		langInterface : "eng",
+	version : "v3.0.0",
+	requiredServerVersion : "10.5.2",
+	//TV Series Version
+	modelYear : null,
+	width : 1920,
+	height : 1080,
+	backdropWidth : 1920,
+	backdropHeight : 1080,
+	posterWidth : 473,
+	posterHeight : 267,
+	seriesPosterWidth : 180,
+	seriesPosterHeight : 270,
+	seriesPosterLargeWidth : 235,
+	seriesPosterLargeHeight : 350,
+	forceDeleteSettings : false,
+	highlightColour : 1,
+	enableMusic : true,
+	enableLiveTV : true,
+	enableCollections : true,
+	enableChannels : true,
+	enableImageCache : true,
+	enableScreensaver : true,
+	isScreensaverRunning : false,
+	langInterface : "ru",
+	messages : null,
 };
 
 Main.getModelYear = function() {
@@ -82,35 +79,35 @@ Main.setIsScreensaverRunning = function() {
 	}
 };
 
-Main.onLoad = function()
-{
-	//Support.removeSplashScreen();
+Main.onLoad = function() {
 	//Setup Logging
 	FileLog.loadFile(false); // doesn't return contents, done to ensure file exists
 	FileLog.write("---------------------------------------------------------------------",true);
 	FileLog.write("Jellyfin Application Started");
-
 	if (Main.isImageCaching()) {
 		var fileSystemObj = new FileSystem();
 		fileSystemObj.deleteCommonFile(curWidget.id + '/cache.json');
 		Support.imageCachejson = JSON.parse('{"Images":[]}');
 	}
-
-	document.getElementById("splashscreen_version").innerHTML = Main.version;
-
+	Support.widgetPutInnerHTML("splashScreenVersion", Main.version);
 	//Turn ON screensaver
 	pluginAPI.setOnScreenSaver();
 	FileLog.write("Screensaver enabled.");
 	Support.clock();
 	widgetAPI.sendReadyEvent();
 	window.onShow = Main.initKeys();
-
+	
+	if (Main.langInterface == "en") {
+		Main.messages = messagesEN;
+	} else {
+		Main.messages = messagesRU;		
+	}
+	
 	//Set DeviceID & Device Name
 	var NNaviPlugin = document.getElementById("pluginObjectNNavi");
 	var pluginNetwork = document.getElementById("pluginObjectNetwork");
 	var pluginTV = document.getElementById("pluginObjectTV");
 	FileLog.write("Plugins initialised.");
-
 	var ProductType = pluginNetwork.GetActiveType();
 	FileLog.write("Product type is "+ProductType);
 	var phyConnection = pluginNetwork.CheckPhysicalConnection(ProductType); //returns -1
@@ -119,11 +116,9 @@ Main.onLoad = function()
 	FileLog.write("Check HTTP returned "+http);
 	var gateway = pluginNetwork.CheckGateway(ProductType); //returns -1
 	FileLog.write("Check gateway returned "+gateway);
-
 	//Get the model year - Used for transcoding
 	if (pluginTV.GetProductCode(0).substring(0,2) == "HT" || pluginTV.GetProductCode(0).substring(0,2) == "BD"){
 		this.modelYear = pluginTV.GetProductCode(0).substring(3,4);
-
 	} else if (pluginTV.GetProductCode(0).substring(4,7) == "H52") {
 		this.modelYear = "F";
 	} else if (pluginTV.GetProductCode(0).substring(4,7) == "J43") {
@@ -148,7 +143,6 @@ Main.onLoad = function()
 		this.modelYear = pluginTV.GetProductCode(0).substring(4,5);
 	}
 	FileLog.write("Model Year is " + this.modelYear);
-
 	if (phyConnection && http && gateway) {
 		var MAC = pluginNetwork.GetMAC(1);
 		if (MAC == false || MAC == null) { //Set mac to fake
@@ -157,7 +151,6 @@ Main.onLoad = function()
 		FileLog.write("MAC address is "+MAC);
 		Server.setDevice ("Samsung " + pluginTV.GetProductCode(0));
 		Server.setDeviceID(NNaviPlugin.GetDUID(MAC));
-
 		//Load Settings File - Check if file needs to be deleted due to development
 		var fileJson = JSON.parse(File.loadFile());
 		var version = File.checkVersion(fileJson);
@@ -175,7 +168,6 @@ Main.onLoad = function()
 				fileJson.Version = this.version;
 			}   File.writeAll(fileJson);
 		}
-
 		//Allow Evo Kit owners to override the model year.
 		if (fileJson.TV.ModelOverride != "None") {
 			switch(fileJson.TV.ModelOverride){
@@ -191,7 +183,6 @@ Main.onLoad = function()
 			}
 			FileLog.write("Model Year Override: " + this.modelYear);
 		}
-
 		//Check if Server exists
 		if (fileJson.Servers.length > 1) {
 			//If no default show user Servers page (Can set default on that page)
@@ -217,10 +208,10 @@ Main.onLoad = function()
 		} else {
 			//No Server Defined - Load GuiPage_IP
 			FileLog.write("No server defined. Loading the new server page.");
-			GuiPage_NewServer.start();
+			GuiNewServer.start();
 		}
 	} else {
-		document.getElementById("pageContent").innerHTML = "You have no network connectivity to the TV - Please check the settings on the TV";
+		Support.widgetPutInnerHTML("pageContent", NoNetworkConnectivityLabRu);
 	}
 };
 
@@ -230,8 +221,7 @@ Main.initKeys = function() {
 	FileLog.write("Key handlers initialised.");
 };
 
-Main.onUnload = function()
-{
+Main.onUnload = function() {
 	//Write Cache to disk
 	ImageCache.writeAll(Support.imageCachejson);
 	Support.screensaverOff();

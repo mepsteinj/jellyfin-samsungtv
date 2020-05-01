@@ -11,11 +11,11 @@ GuiPage_Contributors.onFocus = function() {
 GuiPage_Contributors.start = function() {
 	alert("Page Enter : GuiPage_Contributors");
 
-	document.getElementById("Counter").innerHTML = Main.version;
+	document.getElementById("counter").innerHTML = Main.version;
 	document.getElementById("guiReturnButton").style.visibility = "";
 	document.getElementById("guiReturnButton").innerHTML = "Return";
 
-	document.getElementById("pageContent").innerHTML = "<div class='EpisodesSeriesInfo'>About:</div><div id=ContentAbout style='font-size:1em;' class='guiPage_Settings_Settings'></div>";
+	document.getElementById("pageContent").innerHTML = "<div class='EpisodesSeriesInfo'>About:</div><div id=ContentAbout style='font-size:1em;' class='guiSettingsSettings'></div>";
 
 	var htmlToAdd = "Jellyfin for Samsung Smart TVs is a free, opensource community project. A broad range of Smarthub devices are supported due to the generously donated time and efforts of, among others, the following people.<br>";
 	htmlToAdd += "Feedback on this and other Jellyfin products is gratefully received at jellyfin/community.<br><br>";
@@ -63,9 +63,9 @@ GuiPage_Contributors.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
-	if (document.getElementById("Notifications").style.visibility == "") {
-		document.getElementById("Notifications").style.visibility = "hidden";
-		document.getElementById("NotificationText").innerHTML = "";
+	if (document.getElementById("notifications").style.visibility == "") {
+		document.getElementById("notifications").style.visibility = "hidden";
+		document.getElementById("notificationText").innerHTML = "";
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";

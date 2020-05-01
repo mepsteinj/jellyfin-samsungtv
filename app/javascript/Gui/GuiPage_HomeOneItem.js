@@ -118,10 +118,10 @@ GuiPage_HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
 
 	} else {
 		//Set message to user
-		document.getElementById("pageContent").innerHTML = "<p id='title' class=pageTitle>"+title+"</p><div id=Content></div></div>";
-		document.getElementById("Counter").innerHTML = "";
+		document.getElementById("pageContent").innerHTML = "<p id='title' class=pageTitle>"+title+"</p><div id=content></div></div>";
+		document.getElementById("counter").innerHTML = "";
 		document.getElementById("title").innerHTML = "Sorry";
-		document.getElementById("Content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid";
+		document.getElementById("content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid";
 
 		//Set Background
 		Support.fadeImage("images/bg1.jpg");
@@ -164,9 +164,9 @@ GuiPage_HomeOneItem.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
-	if (document.getElementById("Notifications").style.visibility == "") {
-		document.getElementById("Notifications").style.visibility = "hidden";
-		document.getElementById("NotificationText").innerHTML = "";
+	if (document.getElementById("notifications").style.visibility == "") {
+		document.getElementById("notifications").style.visibility = "hidden";
+		document.getElementById("notificationText").innerHTML = "";
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";

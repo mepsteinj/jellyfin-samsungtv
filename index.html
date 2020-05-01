@@ -6,7 +6,7 @@
 		<title>Jellyfin</title>
 
 		<!-- Style sheets -->
-		<link rel="stylesheet" href="app/stylesheets/Main.css" type="text/css">
+		<link rel="stylesheet" href="Main.css" type="text/css">
 
 		<!-- Common API -->
 		<script src="$MANAGER_WIDGET/Common/jquery.js"></script>
@@ -32,10 +32,12 @@
 		<script src="app/javascript/Support/PolyFill.js"></script>
 		<script src="app/javascript/Support/ServerVersion.js"></script>
 		<script src="app/javascript/Support/SrtParser.js"></script>
-		<script src="app/javascript/Gui/GuiPage_NewServer.js"></script>
-		<script src="app/javascript/Gui/GuiPage_Servers.js"></script>
+		<script src="app/javascript/Strings/en.js"></script>
+		<script src="app/javascript/Strings/ru.js"></script>
+		<script src="app/javascript/Gui/GuiNewServer.js"></script>
+		<script src="app/javascript/Gui/GuiServers.js"></script>
 		<script src="app/javascript/Gui/GuiUsers.js"></script>
-		<script src="app/javascript/Gui/GuiUsers_Manual.js"></script>
+		<script src="app/javascript/Gui/GuiUsersManual.js"></script>
 		<script src="app/javascript/Gui/GuiMainMenu.js"></script>
 		<script src="app/javascript/Gui/GuiTV_Show.js"></script>
 		<script src="app/javascript/Gui/GuiTV_Upcoming.js"></script>
@@ -79,17 +81,17 @@
 	<body onload="Main.onLoad();" onunload="Main.onUnload();">
 
 		<!-- Anchor as focus for key events -->
-		<div id="NoKeyInput"></div>
+		<div id="noKeyInput"></div>
 
 		<!-- Register page events -->
-		<a href="javascript:void(0);" id="NoItems" onkeydown="Support.noitemskeyDown();"></a>
-		<a href="javascript:void(0);" id="ServerVersion" onkeydown="ServerVersion.keyDown();"></a>
-		<a href="javascript:void(0);" id="GuiPage_Servers" onkeydown="GuiPage_Servers.keyDown();"></a>
-		<a href="javascript:void(0);" id="GuiUsers" onkeydown="GuiUsers.keyDown();"></a>
-		<a href="javascript:void(0);" id="GuiUsers_Pwd" onkeydown="GuiUsers.keyDownPassword();"></a>
-		<a href="javascript:void(0);" id="GuiUsers_Manual" onkeydown="GuiUsers_Manual.keyDown();"></a>
-		<a href="javascript:void(0);" id="GuiUsers_Manual_Pwd" onkeydown="GuiUsers_Manual.keyDownPassword();"></a>
-		<a href="javascript:void(0);" id="GuiHelper" onkeydown="GuiHelper.keyDown();"></a>
+		<a href="javascript:void(0);" id="noItems" onkeydown="Support.noItemsKeyDown();"></a>
+		<a href="javascript:void(0);" id="serverVersion" onkeydown="ServerVersion.keyDown();"></a>
+		<a href="javascript:void(0);" id="guiServers" onkeydown="GuiServers.keyDown();"></a>
+		<a href="javascript:void(0);" id="guiUsers" onkeydown="GuiUsers.keyDown();"></a>
+		<a href="javascript:void(0);" id="guiUsersPwd1205" onkeydown="GuiUsers.keyDownPassword();"></a>
+		<a href="javascript:void(0);" id="guiUsersManual" onkeydown="GuiUsersManual.keyDown();"></a>
+		<a href="javascript:void(0);" id="guiUsersManualPwd" onkeydown="GuiUsersManual.keyDownPassword();"></a>
+		<a href="javascript:void(0);" id="guiHelper" onkeydown="GuiHelper.keyDown();"></a>
 		<a href="javascript:void(0);" id="GuiMainMenu" onkeydown="GuiMainMenu.keyDown();"></a>
 		<a href="javascript:void(0);" id="GuiMainMenuSubMenu" onkeydown="GuiMainMenu.keyDownSubMenu();"></a>
 		<a href="javascript:void(0);" id="GuiTV_Show" onkeydown="GuiTV_Show.keyDown();" onfocus="GuiTV_Show.onFocus();"></a>
@@ -129,18 +131,17 @@
 		<script src="$MANAGER_WIDGET/Common/IME/ime2.js"></script>
 
 		<!-- Shaded container for slideshow image info -->
-		<div id="GuiImagePlayer_ScreensaverOverlay" class="screensaveroverlay"></div>
+		<div id="guiImagePlayerScreenSaverOverlay" class="screenSaverOverlay" style="visibility:hidden"></div>
 
 		<!-- Main DIV -->
 		<div id="everything" class="everything">
 
 			<!-- Image Viewer -->
 			<div id="imageView" class="imageView" style="visibility:hidden"></div>
-			<!-- <div id="imageView_Info" class="videoInfo" style="visibility:hidden"></div> -->
 
 			<!-- Splash Screen -->
-			<div id="splashscreen" class="splash">
-			<div id="splashscreen_version" class="splash_version"></div>
+			<div id="splashScreen" class="splash">
+				<div id="splashScreenVersion" class="splashVersion"></div>
 			</div>
 
 			<!-- Background image -->
@@ -151,13 +152,14 @@
 
 			<!-- Main page content -->
 			<div id="page" class="page">
-				<div id="pageContent" class="guiDisplay_Series-pageContent"></div>
 
-				<div id="Counter" class="counter"></div>
-				<div id="Clock" class="time"></div>
-				<div id="Help" class="help" style="visibility:hidden">
-					<div id="HelpTitle" style="font-size:1.2em"></div>
-					<div id="HelpContent"></div>
+				<div id="pageContent" class="guiDisplaySeriesPageContent"></div>
+
+				<div id="counter" class="counter"></div>
+				<div id="clock" class="time"></div>
+				<div id="help" class="help" style="visibility:hidden">
+					<div id="helpTitle" style="font-size:1.2em"></div>
+					<div id="helpContent"></div>
 				</div>
 
 				<div id="guiPlayListContainer" style="visibility:hidden">
@@ -168,7 +170,7 @@
 				 <div id="guiPlayListResult"></div>
 				</div>
 
-				<div id="guiDisplay_SeriesIndexing" class="guiDisplay_SeriesIndexing" style="opacity:0"></div>
+				<div id="guiDisplaySeriesIndexing" class="guiDisplaySeriesIndexing" style="opacity:0"></div>
 
 				<!--  Music Player -->
 				<div id="guiMusicPlayerDiv" class="guiMusicPlayerDiv" style="visibility:hidden">
@@ -184,12 +186,12 @@
 				</div>
 
 				<!--  Coloured remote buttons -->
-				<div id="guiButtonShade" class="ButtonShade" style="visibility:hidden"></div>
-				<div id="guiRedButton" class="RedButton" style="visibility:hidden"></div>
-				<div id="guiGreenButton" class="GreenButton" style="visibility:hidden"></div>
-				<div id="guiYellowButton" class="YellowButton" style="visibility:hidden"></div>
-				<div id="guiBlueButton" class="BlueButton" style="visibility:hidden"></div>
-				<div id="guiReturnButton" class="ReturnButton" style="visibility:hidden"></div>
+				<div id="guiButtonShade" class="buttonShade" style="visibility:hidden"></div>
+				<div id="guiRedButton" class="redButton" style="visibility:hidden"></div>
+				<div id="guiGreenButton" class="greenButton" style="visibility:hidden"></div>
+				<div id="guiYellowButton" class="yellowButton" style="visibility:hidden"></div>
+				<div id="guiBlueButton" class="blueButton" style="visibility:hidden"></div>
+				<div id="guiReturnButton" class="returnButton" style="visibility:hidden"></div>
 
 				<div id="exitConfirm" class="exitConfirm">Are you sure you want exit Jellyfin?
 					<div id="exitConfirmYes" class="exitConfirmYes">Yes</div>
@@ -200,52 +202,52 @@
 
 			</div>
 			<!-- MUST KEEP OUTSIDE OF page div else its hidden during video playback -->
-			<div id="Notifications" style="visibility:hidden">
-				<div id="NotificationText" class="notificationText"></div>
+			<div id="notifications" style="visibility:hidden">
+				<div id="notificationText" class="notificationText"></div>
 			</div>
-			<div id="guiPlayer_Versions_Playables" class="videoVersions" style="visibility:hidden"></div>
-			<div id="guiPlayer_Loading" class="videoLoading" style="visibility:hidden">Loading</div>
+			<div id="guiPlayerVersionsPlayables" class="videoVersions" style="visibility:hidden"></div>
+			<div id="guiPlayerLoading" class="videoLoading" style="visibility:hidden">Loading</div>
 			<div id="loading" class="loading" style="visibility:hidden"></div>
 
-			<div id="guiPlayer_Osd" style="opacity:0">
-				<div id="guiPlayer_Info" class="videoInfo">
-					<div id="guiPlayer_Info_Time"  class="videoInfo_Time"></div>
-					<div id="guiPlayer_Info_ProgressBar"  class="videoInfo_ProgressBar"><div id="guiPlayer_Info_ProgressBar_Current"></div></div>
-					<div id="guiPlayer_Info_Details"  class="videoInfo_Details"></div>
+			<div id="guiPlayerOsd" style="opacity:0">
+				<div id="guiPlayerInfo" class="videoInfo">
+					<div id="guiPlayerInfoTime" class="videoInfoTime"></div>
+					<div id="guiPlayerInfoProgressBar" class="videoInfoProgressBar"><div id="guiPlayerInfoProgressBarCurrent"></div></div>
+					<div id="guiPlayerInfoDetails" class="videoInfoDetails"></div>
 				</div>
-				<div id="guiPlayer_ItemDetails" class="videoItemDetails"  style="visibility:hidden">
-					<div id="guiPlayer_ItemDetails_Title" class="videoItemDetailsTitle"></div>
-					<div id="guiPlayer_ItemDetails_SubData" class="videoItemDetailsSubData"></div>
-					<div id="guiPlayer_ItemDetails_Overview" class="videoItemDetailsSubData"></div>
-					<div id="guiPlayer_clock" class="time"></div>
+				<div id="guiPlayerItemDetails" class="videoItemDetails"  style="visibility:hidden">
+					<div id="guiPlayerItemDetailsTitle" class="videoItemDetailsTitle"></div>
+					<div id="guiPlayerItemDetailsSubData" class="videoItemDetailsSubData"></div>
+					<div id="guiPlayerItemDetailsOverview" class="videoItemDetailsSubData"></div>
+					<div id="guiPlayerClock" class="time"></div>
 				</div>
-				<div id="guiPlayer_ItemDetails2" class="videoItemDetails">
-					<div id="guiPlayer_ItemDetails_Title2" class="videoItemDetailsTitle"></div>
-					<div id="guiPlayer_ItemDetails_SubData2" class="videoItemDetailsSubData"></div>
-					<div id="guiPlayer_clock2" class="time"></div>
+				<div id="guiPlayerItemDetails2" class="videoItemDetails">
+					<div id="guiPlayerItemDetailsTitle2" class="videoItemDetailsTitle"></div>
+					<div id="guiPlayerItemDetailsSubData2" class="videoItemDetailsSubData"></div>
+					<div id="guiPlayerClock2" class="time"></div>
 				</div>
-				<div id="guiPlayer_DvdArt" class="videoItemDvdArt"></div>
-				<div id="guiPlayer_Ratings" class="videoItemRatings"></div>
+				<div id="guiPlayerDvdArt" class="videoItemDvdArt"></div>
+				<div id="guiPlayerRatings" class="videoItemRatings"></div>
 			</div>
 
-			<div id="guiPlayer_Tools" class="videoTools" style="opacity:0"></div>
-			<div id="guiPlayer_Tools_SubOptions" class="videoToolsOptions" style="visibility:hidden"></div>
-			<div id="guiPlayer_Tools_Slider" class="videoToolsSlider" style="visibility:hidden">
-				<div id="guiPlayer_Tools_SliderBarCurrentTime" class="videoTools_SliderBarCurrentTime"></div>
-				<div id="guiPlayer_Tools_SliderBar"  class="videoTools_SliderBar"></div>
-				<div id="guiPlayer_Tools_SliderBarCurrent" class="videoTools_SliderBarCurrent"></div>
+			<div id="guiPlayerTools" class="videoTools" style="opacity:0"></div>
+			<div id="guiPlayerToolsSubOptions" class="videoToolsOptions" style="visibility:hidden"></div>
+			<div id="guiPlayerToolsSlider" class="videoToolsSlider" style="visibility:hidden">
+				<div id="guiPlayerToolsSliderBarCurrentTime" class="videoToolsSliderBarCurrentTime"></div>
+				<div id="guiPlayerToolsSliderBar" class="videoToolsSliderBar"></div>
+				<div id="guiPlayerToolsSliderBarCurrent" class="videoToolsSliderBarCurrent"></div>
 			</div>
 
-			<div id="guiPlayer_Subtitles" class="videoSubtitles" style="visibility:hidden"></div>
+			<div id="guiPlayerSubtitles" class="videoSubtitles" style="visibility:hidden"></div>
 
 			<!--  Menu -->
 			<div id="menu" class="menu" style="visibility:hidden">
-				<div id="menuUserImageContainer" class="menu-UserImageContainer">
-					<div id="menuUserImage" class="menu-userImage"></div>
+				<div id="menuUserImageContainer" class="menuUserImageContainer">
+					<div id="menuUserImage" class="menuUserImage"></div>
 				</div>
-				<div id="menuUserName" class="menu-userName"></div>
+				<div id="menuUserName" class="menuUserName"></div>
 				<div id="menuItems"></div>
-				<div id="menuVersion" class="menu-version"></div>
+				<div id="menuVersion" class="menuVersion"></div>
 			</div>
 		</div> <!-- Everything Div -->
 	</body>

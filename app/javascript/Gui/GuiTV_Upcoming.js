@@ -115,11 +115,11 @@ GuiTV_Upcoming.start = function() {
 		document.getElementById("GuiTV_Upcoming").focus();
 	} else  {
 		//Set message to user
-		document.getElementById("Counter").innerHTML = "";
-		document.getElementById("Content").style.fontSize="1.3em";
-		document.getElementById("Content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid<br>Press return to get back to the previous screen";
+		document.getElementById("counter").innerHTML = "";
+		document.getElementById("content").style.fontSize="1.3em";
+		document.getElementById("content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid<br>Press return to get back to the previous screen";
 
-		document.getElementById("NoItems").focus();
+		document.getElementById("noItems").focus();
 	}
 };
 
@@ -133,11 +133,11 @@ GuiTV_Upcoming.updateTitles = function() {
 
 GuiTV_Upcoming.updateCounter = function(isBottom) {
 	if (this.selectedItem == -2) {
-		document.getElementById("Counter").innerHTML = (this.selectedBannerItem+1) + "/" + this.bannerItems.length;
+		document.getElementById("counter").innerHTML = (this.selectedBannerItem+1) + "/" + this.bannerItems.length;
 	} else if (isBottom){
-		document.getElementById("Counter").innerHTML = (this.selectedDayItem+1) + "/" + this.upcomingData.length + " - " + (this.selectedItem2+1) + "/" + this.upcomingData[this.selectedDayItem].length;
+		document.getElementById("counter").innerHTML = (this.selectedDayItem+1) + "/" + this.upcomingData.length + " - " + (this.selectedItem2+1) + "/" + this.upcomingData[this.selectedDayItem].length;
 	} else {
-		document.getElementById("Counter").innerHTML = (this.selectedDayItem+1) + "/" + this.upcomingData.length + " - " + (this.selectedItem+1) + "/" + this.upcomingData[this.selectedDayItem].length;
+		document.getElementById("counter").innerHTML = (this.selectedDayItem+1) + "/" + this.upcomingData.length + " - " + (this.selectedItem+1) + "/" + this.upcomingData[this.selectedDayItem].length;
 	}
 };
 
@@ -186,9 +186,9 @@ GuiTV_Upcoming.keyDown = function()
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
-	if (document.getElementById("Notifications").style.visibility == "") {
-		document.getElementById("Notifications").style.visibility = "hidden";
-		document.getElementById("NotificationText").innerHTML = "";
+	if (document.getElementById("notifications").style.visibility == "") {
+		document.getElementById("notifications").style.visibility = "hidden";
+		document.getElementById("notificationText").innerHTML = "";
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -400,9 +400,9 @@ GuiTV_Upcoming.bottomKeyDown = function()
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
-	if (document.getElementById("Notifications").style.visibility == "") {
-		document.getElementById("Notifications").style.visibility = "hidden";
-		document.getElementById("NotificationText").innerHTML = "";
+	if (document.getElementById("notifications").style.visibility == "") {
+		document.getElementById("notifications").style.visibility = "hidden";
+		document.getElementById("notificationText").innerHTML = "";
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";

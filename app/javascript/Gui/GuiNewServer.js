@@ -1,110 +1,98 @@
-var GuiPage_NewServer = {
+var GuiNewServer = {
 	elementIds : [ "1","2","3","4","port","host"],
 	inputs : [ null,null,null,null,null],
 	ready : [ false,false,false,false,false],
-
 };
 
-GuiPage_NewServer.start = function() {
-	alert("Page Enter : GuiPage_NewServer");
-	GuiHelper.setControlButtons(null,null,null,null,"Return");
-
+GuiNewServer.start = function() {
+	alert("Page Enter : GuiNewServer");
+	GuiHelper.setControlButtons(null, null, null, null, Main.messages.LabButtonReturn);
 	//Insert html into page
-	document.getElementById("pageContent").innerHTML = "<div class='GuiPage_NewServer12key'> \
-		<p style='padding-bottom:5px;'>Enter the IP address & port number of your Jellyfin server. <br>(You can leave the port blank for 8096)</p> \
+	var div = "<div class='guiNewServer12key'> \
+		<p style='padding-bottom:5px;'>" +  Main.messages.LabEnterIP + "</p> \
 		<form><input id='1' type='text' size='5'  maxlength='3' value=''/>. \
 		<input id='2' type='text' size='5'  maxlength='3' value=''/>. \
 		<input id='3' type='text' size='5'  maxlength='3' value=''/>. \
 		<input id='4' type='text' size='5'  maxlength='3' value=''/>: \
 		<input id='port' type='text' size='8'  maxlength='5'/></form> \ \
-		<p style='padding-top:10px;padding-bottom:5px'>OR</p> \
-		<p style='padding-bottom:5px'>Enter your server hostname here without http:// and <br>including : and port number.</p> \
+		<p style='padding-top:10px;padding-bottom:5px'>" + Main.messages.LabOr + "</p> \
+		<p style='padding-bottom:5px'>" + Main.messages.LabEnterHost + "</p> \
 		<form><input id='host' style='z-index:10;' type='text' size='45' value=''/></form> \
 		</div>";
-
+	Support.widgetPutInnerHTML("pageContent", div);
 	//Set Backdrop
 	Support.fadeImage("images/bg1.jpg");
 	Support.removeSplashScreen();
-
 	//Prepare all input elements for IME
-	GuiPage_NewServer.createInputObjects();
+	GuiNewServer.createInputObjects();
 	pluginAPI.registIMEKey();
 };
 
 //Prepare all input elements for IME on Load!
-GuiPage_NewServer.createInputObjects = function() {
+GuiNewServer.createInputObjects = function() {
 	var previousIndex = 0;
 	var nextIndex = 0;
 	for (var index in this.elementIds) {
 		previousIndex = index - 1;
 		if (previousIndex < 0) {
-			previousIndex = GuiPage_NewServer.inputs.length - 1;
+			previousIndex = GuiNewServer.inputs.length - 1;
 		}
-
-		nextIndex = (previousIndex + 2) % GuiPage_NewServer.inputs.length;
-		GuiPage_NewServer.inputs[index] = new GuiPage_NewServer_Input(this.elementIds[index],this.elementIds[previousIndex], this.elementIds[nextIndex]);
+		nextIndex = (previousIndex + 2) % GuiNewServer.inputs.length;
+		GuiNewServer.inputs[index] = new GuiNewServerInput(this.elementIds[index],this.elementIds[previousIndex], this.elementIds[nextIndex]);
 	}
 };
 
 //Function to check if IME is ready, and when so sets focus on first element in array
-GuiPage_NewServer.ready = function(id) {
+GuiNewServer.ready = function(id) {
 	var ready = true;
-
-	for (var i in GuiPage_NewServer.elementIds) {
-		if (GuiPage_NewServer.elementIds[i] == id) {
-			GuiPage_NewServer.ready[i] = true;
+	for (var i in GuiNewServer.elementIds) {
+		if (GuiNewServer.elementIds[i] == id) {
+			GuiNewServer.ready[i] = true;
 		}
-
-		if (GuiPage_NewServer.ready[i] == false) {
+		if (GuiNewServer.ready[i] == false) {
 			ready = false;
 		}
 	}
-
 	if (ready) {
-		document.getElementById(GuiPage_NewServer.elementIds[0]).focus();
+		document.getElementById(GuiNewServer.elementIds[0]).focus();
 	}
 };
 
 //Function to delete all the contents of the boxes
-GuiPage_NewServer.deleteAllBoxes = function(currentId) {
-	for (var index = 0;index < GuiPage_NewServer.elementIds.length;index++) {
-		document.getElementById(GuiPage_NewServer.elementIds[index]).value="";
+GuiNewServer.deleteAllBoxes = function(currentId) {
+	for (var index = 0;index < GuiNewServer.elementIds.length;index++) {
+		document.getElementById(GuiNewServer.elementIds[index]).value="";
 	}
 };
 
 //IME Key Handler
-var GuiPage_NewServer_Input  = function(id,previousId, nextId) {
+var GuiNewServerInput  = function(id, previousId, nextId) {
 	var imeReady = function(imeObject) {
 		installFocusKeyCallbacks();
-		GuiPage_NewServer.ready(id);
+		GuiNewServer.ready(id);
 	};
-
-	var ime = new IMEShell(id, imeReady,'en');
-	ime.setKeypadPos(1300,90);
+	
+	var ime = new IMEShell(id, imeReady, 'en');
+	ime.setKeypadPos(1300,200);
 	ime.setMode('_num');
-
 	var previousElement = document.getElementById(previousId);
 	var nextElement = document.getElementById(nextId);
-
+	
 	var installFocusKeyCallbacks = function () {
 		ime.setKeyFunc(tvKey.KEY_ENTER, function (keyCode) {
 			alert("Enter key pressed");
-
-			GuiNotifications.setNotification("Please Wait","Checking Details",true);
-
+			GuiNotifications.setNotification(Main.messages.LabPleaseWait, Main.messages.LabCheckDetails, true);
 			//Get content from 4 boxes
 			var IP1 = document.getElementById('1').value;
 			var IP2 = document.getElementById('2').value;
 			var IP3 = document.getElementById('3').value;
 			var IP4 = document.getElementById('4').value;
-
 			var host = document.getElementById('host').value;
-
 			if (IP1 == "" || IP2 == "" || IP3 == "" || IP4 == "" ) {
 				//Check if host is empty
 				if (host == "") {
 					//not valid
-					GuiNotifications.setNotification("Please re-enter your server details.","Incorrect Details",true);
+					GuiNotifications.setNotification(Main.messages.LabPleaseReenter, Main.messages.LabIncorDetails, true);
 				} else {
 					document.getElementById("pageContent").focus();
 					//Timeout required to allow notification command above to be displayed
@@ -115,12 +103,10 @@ var GuiPage_NewServer_Input  = function(id,previousId, nextId) {
 				if (Port == "") {
 					Port = "8096";
 				}
-
 				var ip = IP1 + '.' +  IP2 + '.' +  IP3 + '.' +  IP4 + ':' + Port;
 				document.getElementById("pageContent").focus();
 				//Timeout required to allow notification command above to be displayed
 				setTimeout(function(){Server.testConnectionSettings(ip,false);}, 1000);
-
 			}
 		});
 		ime.setKeyFunc(tvKey.KEY_LEFT, function (keyCode) {
@@ -141,7 +127,7 @@ var GuiPage_NewServer_Input  = function(id,previousId, nextId) {
 		});
 		ime.setKeyFunc(tvKey.KEY_BLUE, function (keyCode) {
 			ime.setString(""); //Clears the currently focused Input - REQUIRED
-			GuiPage_NewServer.deleteAllBoxes();
+			GuiNewServer.deleteAllBoxes();
 			return false;
 		});
 		ime.setKeyFunc(tvKey.KEY_RETURN, function (keyCode) {
@@ -149,7 +135,7 @@ var GuiPage_NewServer_Input  = function(id,previousId, nextId) {
 			var fileJson = JSON.parse(File.loadFile());
 			if (fileJson.Servers.length > 0) {
 				document.getElementById("pageContent").focus();
-				GuiPage_Servers.start();
+				GuiServers.start();
 			} else {
 				widgetAPI.sendReturnEvent();
 			}

@@ -28,14 +28,14 @@ GuiImagePlayer.start = function(ItemData,selectedItem,isPhotoCollection) {
 	alert("Page Enter : GuiImagePlayer");
 
 	//Show colour buttons on screen for a few seconds when a slideshow starts.
-	document.getElementById("GuiImagePlayer_ScreensaverOverlay").style.visibility="hidden";
+	document.getElementById("guiImagePlayerScreenSaverOverlay").style.visibility="hidden";
 	document.getElementById("guiButtonShade").style.visibility = "";
 	GuiHelper.setControlButtons("Favourite","Date/Time","Help",GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
 	this.infoTimer = setTimeout(function(){
 		GuiHelper.setControlButtons(null,null,null,null,null);
-		document.getElementById("Clock").style.visibility = "hidden";
+		document.getElementById("clock").style.visibility = "hidden";
 		document.getElementById("guiButtonShade").style.visibility = "hidden";
-		document.getElementById("GuiImagePlayer_ScreensaverOverlay").style.visibility="";
+		document.getElementById("guiImagePlayerScreenSaverOverlay").style.visibility="";
 	}, 6000);
 
 	//Turn off screensaver
@@ -52,7 +52,7 @@ GuiImagePlayer.start = function(ItemData,selectedItem,isPhotoCollection) {
 	if (result == null) { return; }
 	this.newItemData = result; //Misleading I know!
 
-	Support.styleSubtitles("GuiImagePlayer_ScreensaverOverlay");
+	Support.styleSubtitles("guiImagePlayerScreenSaverOverlay");
 
 	//Create ARRAY of all URL's!
 	//Order from starting selectedItem!
@@ -169,9 +169,9 @@ GuiImagePlayer.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
-	if (document.getElementById("Notifications").style.visibility == "") {
-		document.getElementById("Notifications").style.visibility = "hidden";
-		document.getElementById("NotificationText").innerHTML = "";
+	if (document.getElementById("notifications").style.visibility == "") {
+		document.getElementById("notifications").style.visibility = "hidden";
+		document.getElementById("notificationText").innerHTML = "";
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -186,9 +186,9 @@ GuiImagePlayer.keyDown = function() {
 			this.Timeout = null;
 			this.images = [];
 			this.overlay = [];
-			document.getElementById("GuiImagePlayer_ScreensaverOverlay").innerHTML = "";
+			document.getElementById("guiImagePlayerScreenSaverOverlay").innerHTML = "";
 			document.getElementById("guiButtonShade").style.visibility = "hidden";
-			document.getElementById("Clock").style.visibility = "";
+			document.getElementById("clock").style.visibility = "";
 			this.ImageViewer.endSlideshow();
 			this.ImageViewer.hide();
 			widgetAPI.blockNavigation(event);

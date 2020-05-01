@@ -40,17 +40,17 @@ GuiPage_Music.start = function(title,url,type) { //Type is either MusicAlbum or 
 	if (this.AlbumData == null) { return; }
 
 	//Set PageContent
-	document.getElementById("pageContent").innerHTML = "<div><div id='guiMusic_Title' class='guiMusic_Title'></div> \
-		   <div id='guiMusic_Subtitle' class='guiMusic_Subtitle'></div></div> \
-		   <div id='guiMusic_Details' class='guiMusic_Details'> \
-		   <div id='GuiPage_Music_Globals' class='guiMusic_Globals'> \
-		   <div id='PlayAll' class='guiMusic_Global'>Play All</div> \
-		   <div id='QueueAll' class='guiMusic_Global'>Queue All</div> \
-		   <div id='ShuffleAll' class='guiMusic_Global'>Shuffle</div> \
-		   <div id='InstantMix' class='guiMusic_Global'>Instant Mix</div></div> \
-		<div id='GuiPage_Music_Options' class='guiMusic_Options'></div></div> \
-		<div id='guiMusic_Poster' class='guiMusic_Poster'></div>";
-	document.getElementById("Counter").innerHTML = "1/" + this.topMenuItems.length;
+	document.getElementById("pageContent").innerHTML = "<div><div id='guiMusic_Title' class='guiMusicTitle'></div> \
+		   <div id='guiMusic_Subtitle' class='guiMusicSubtitle'></div></div> \
+		   <div id='guiMusic_Details' class='guiMusicDetails'> \
+		   <div id='GuiPage_Music_Globals' class='guiMusicGlobals'> \
+		   <div id='PlayAll' class='guiMusicGlobal'>Play All</div> \
+		   <div id='QueueAll' class='guiMusicGlobal'>Queue All</div> \
+		   <div id='ShuffleAll' class='guiMusicGlobal'>Shuffle</div> \
+		   <div id='InstantMix' class='guiMusicGlobal'>Instant Mix</div></div> \
+		<div id='GuiPage_Music_Options' class='guiMusicOptions'></div></div> \
+		<div id='guiMusic_Poster' class='guiMusicPoster'></div>";
+	document.getElementById("counter").innerHTML = "1/" + this.topMenuItems.length;
 
 	//Get Episode Poster
 	if (this.AlbumData.Items[0].AlbumPrimaryImageTag) {
@@ -146,9 +146,9 @@ GuiPage_Music.updateSelectedItems = function () {
 
 	//Set Counter to be album count or x/3 for top part
 	if (this.selectedItem == -1) {
-		document.getElementById("Counter").innerHTML = (this.selectedItem2 + 1) + "/" + this.topMenuItems.length;
+		document.getElementById("counter").innerHTML = (this.selectedItem2 + 1) + "/" + this.topMenuItems.length;
 	} else {
-		document.getElementById("Counter").innerHTML = (this.selectedItem + 1) + "/" + this.AlbumData.Items.length;
+		document.getElementById("counter").innerHTML = (this.selectedItem + 1) + "/" + this.AlbumData.Items.length;
 	}
 
 };

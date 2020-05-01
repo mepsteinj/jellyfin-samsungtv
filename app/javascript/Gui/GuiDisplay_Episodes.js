@@ -51,7 +51,7 @@ GuiDisplay_Episodes.start = function(title,url,selectedItem,topLeftItem) {
 
 		document.getElementById("pageContent").innerHTML = "<div id=allOptions class='EpisodesAllOptions'>" +
 		"<span id='bannerItem0'>Play All</span>" +
-		"<span id='bannerItem1'>Shuffle All</span></div><div id=Content class='EpisodesList'></div>" +
+		"<span id='bannerItem1'>Shuffle All</span></div><div id=content class='EpisodesList'></div>" +
 		"<div id='EpisodesSeriesInfo' class='EpisodesSeriesInfo'></div>" +
 		"<div id='EpisodesImage' class='EpisodesImage'></div>" +
 		"<div id='EpisodesInfo' class='EpisodesInfo'>" +
@@ -95,10 +95,10 @@ GuiDisplay_Episodes.start = function(title,url,selectedItem,topLeftItem) {
 	} else {
 		//Set message to user
 		document.getElementById("pageContent").innerHTML = "<div id='itemContainer' class='Columns"+this.MAXCOLUMNCOUNT+" padding10'><p id='title' class=pageTitle>"+title+"</p><div id=Content></div></div>";
-		document.getElementById("Counter").innerHTML = "";
+		document.getElementById("counter").innerHTML = "";
 		document.getElementById("title").innerHTML = "Sorry";
-		document.getElementById("Content").className = "padding60";
-		document.getElementById("Content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid";
+		document.getElementById("content").className = "padding60";
+		document.getElementById("content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid";
 
 		//As no content focus on menu bar and null null means user can't return off the menu bar
 		GuiMainMenu.requested(null,null);
@@ -146,7 +146,7 @@ GuiDisplay_Episodes.updateDisplayedItems = function() {
 		htmlToAdd += "</div>";
 
 	}
-	document.getElementById("Content").innerHTML = htmlToAdd;
+	document.getElementById("content").innerHTML = htmlToAdd;
 
 	//Loop again to fix heights - has to be done after html is set!
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length); index++) {
@@ -274,9 +274,9 @@ GuiDisplay_Episodes.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
-	if (document.getElementById("Notifications").style.visibility == "") {
-		document.getElementById("Notifications").style.visibility = "hidden";
-		document.getElementById("NotificationText").innerHTML = "";
+	if (document.getElementById("notifications").style.visibility == "") {
+		document.getElementById("notifications").style.visibility = "hidden";
+		document.getElementById("notificationText").innerHTML = "";
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";

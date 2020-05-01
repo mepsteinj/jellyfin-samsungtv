@@ -42,7 +42,7 @@ GuiPage_TvGuide.start = function(title,url,selectedRow,selectedColumn,topChannel
 	this.selectedBannerItem = 0;
 	this.topChannel = topChannel;
 	this.guideStartTime = startTime;
-	document.getElementById("Counter").innerHTML = "";
+	document.getElementById("counter").innerHTML = "";
 
 	//Create the banner menu and program details.
 	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='bannerMenu'></div>" +
@@ -357,9 +357,9 @@ GuiPage_TvGuide.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
-	if (document.getElementById("Notifications").style.visibility == "") {
-		document.getElementById("Notifications").style.visibility = "hidden";
-		document.getElementById("NotificationText").innerHTML = "";
+	if (document.getElementById("notifications").style.visibility == "") {
+		document.getElementById("notifications").style.visibility = "hidden";
+		document.getElementById("notificationText").innerHTML = "";
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -626,7 +626,7 @@ GuiPage_TvGuide.createLiveTvTimer = function (item) {
 
 	Server.POST(url, item);
 	Support.loading(1250);
-	document.getElementById("NoItems").focus();
+	document.getElementById("noItems").focus();
 	setTimeout(function(){
 		GuiPage_TvGuide.start("Guide",GuiPage_TvGuide.startParams[1],GuiPage_TvGuide.selectedRow,GuiPage_TvGuide.selectedColumn,GuiPage_TvGuide.topChannel,GuiPage_TvGuide.guideStartTime);
 	}, 1250);
@@ -642,7 +642,7 @@ GuiPage_TvGuide.createLiveTvSeriesTimer = function (item) {
 
 	Server.POST(url, item);
 	Support.loading(1250);
-	document.getElementById("NoItems").focus();
+	document.getElementById("noItems").focus();
 	setTimeout(function(){
 		GuiPage_TvGuide.start("Guide",GuiPage_TvGuide.startParams[1],GuiPage_TvGuide.selectedRow,GuiPage_TvGuide.selectedColumn,GuiPage_TvGuide.topChannel,GuiPage_TvGuide.guideStartTime);
 	}, 1250);
@@ -658,7 +658,7 @@ GuiPage_TvGuide.cancelLiveTvSeriesTimer = function (id) {
 
 	Server.DELETE(url);
 	Support.loading(1250);
-	document.getElementById("NoItems").focus();
+	document.getElementById("noItems").focus();
 	setTimeout(function(){
 		GuiPage_TvGuide.start("Guide",GuiPage_TvGuide.startParams[1],GuiPage_TvGuide.selectedRow,GuiPage_TvGuide.selectedColumn,GuiPage_TvGuide.topChannel,GuiPage_TvGuide.guideStartTime);
 	}, 1250);
@@ -674,7 +674,7 @@ GuiPage_TvGuide.cancelLiveTvTimer = function (id) {
 
 	Server.DELETE(url);
 	Support.loading(1250);
-	document.getElementById("NoItems").focus();
+	document.getElementById("noItems").focus();
 	setTimeout(function(){
 		GuiPage_TvGuide.start("Guide",GuiPage_TvGuide.startParams[1],GuiPage_TvGuide.selectedRow,GuiPage_TvGuide.selectedColumn,GuiPage_TvGuide.topChannel,GuiPage_TvGuide.guideStartTime);
 	}, 1250);

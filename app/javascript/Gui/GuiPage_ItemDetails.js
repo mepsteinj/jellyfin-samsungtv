@@ -56,19 +56,19 @@ GuiPage_ItemDetails.start = function(title,url,selectedItem) {
 	//Set PageContent
 	document.getElementById("pageContent").className = "";
 	document.getElementById("pageContent").innerHTML = "<div id='Title'></div> \
-			<div id='guiTV_Episode_Options' class='guiTV_Episode_Options'></div> \
-			<div id='guiTV_Episode_EpisodeImage' class='guiTV_Episode_EpisodeImage'></div> \
-			<div id='guiTV_Episode_SubOptions' class='guiTV_Episode_SubOptions'></div> \
-			<div id='guiTV_Episode_SubOptionImages' class='guiTV_Episode_SubOptionImages'></div> \
-			<div id='guiTV_Show_MediaAlternative' class='guiTV_Show_MediaAlternative'></div> \
+			<div id='guiTV_Episode_Options' class='guiTVEpisodeOptions'></div> \
+			<div id='guiTV_Episode_EpisodeImage' class='guiTVEpisodeEpisodeImage'></div> \
+			<div id='guiTV_Episode_SubOptions' class='guiTVEpisodeSubOptions'></div> \
+			<div id='guiTV_Episode_SubOptionImages' class='guiTVEpisodeSubOptionImages'></div> \
+			<div id='guiTV_Show_MediaAlternative' class='guiTVShowMediaAlternative'></div> \
 			<div id='InfoContainer' class='infoContainer'> \
 					<div id='guiTV_Show_Title' style='font-size:1.7em;'></div> \
 					<div id='guiTV_Show_Metadata' style='margin-left:-5px;'class='MetaDataSeasonTable'></div> \
-					<div id='guiTV_Show_Overview' class='guiFilm_Overview'></div> \
+					<div id='guiTV_Show_Overview' class='guiFilmOverview'></div> \
 			</div> \
 			<div id='trailerContainer' class='videoTrailerContainer'></div> \
 			<div id='imageDisk' class='imageDisk'></div> \
-			<div id='guiTV_Show_Poster' class='guiFilm_Poster'></div>";
+			<div id='guiTV_Show_Poster' class='guiFilmPoster'></div>";
 
 	//Get Page Items
 	if (this.ItemData.UserData.PlaybackPositionTicks > 0) {
@@ -349,7 +349,7 @@ GuiPage_ItemDetails.updateSelectedItems = function () {
 		}
 	}
 
-	document.getElementById("Counter").innerHTML = (this.selectedItem + 1) + "/" + this.menuItems.length;
+	document.getElementById("counter").innerHTML = (this.selectedItem + 1) + "/" + this.menuItems.length;
 	document.getElementById("guiTV_Episode_SubOptions").style.display="none";
 	document.getElementById("guiTV_Episode_SubOptionImages").style.display="none";
 
@@ -418,9 +418,9 @@ GuiPage_ItemDetails.keyDown = function()
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
-	if (document.getElementById("Notifications").style.visibility == "") {
-		document.getElementById("Notifications").style.visibility = "hidden";
-		document.getElementById("NotificationText").innerHTML = "";
+	if (document.getElementById("notifications").style.visibility == "") {
+		document.getElementById("notifications").style.visibility = "hidden";
+		document.getElementById("notificationText").innerHTML = "";
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -710,7 +710,7 @@ GuiPage_ItemDetails.updateDisplayedItems2 = function() {
 			htmlToAdd += "<div id="+index+" class='FilmListSubSingle'><div style='width:340px;'>"+ title;
 			var progress = Math.round((340 / 100) * Math.round(this.subMenuItems[index].UserData.PlayedPercentage));
 			if (progress > 1){
-				htmlToAdd += "<div class=menuProgressBar></div><div class=menuProgressBar_Current style='width:"+progress+"px;'></div>";
+				htmlToAdd += "<div class=menuProgressBar></div><div class=menuProgressBarCurrent style='width:"+progress+"px;'></div>";
 			}
 			htmlToAdd +=  "</div></div>";
 			if (this.subMenuItems[index].ImageTags.Primary) {
@@ -769,16 +769,16 @@ GuiPage_ItemDetails.updateSelectedItems2 = function() {
 			}
 		}
 	}
-	document.getElementById("Counter").innerHTML = (this.selectedItem2 + 1) + "/" + this.subMenuItems.length;
+	document.getElementById("counter").innerHTML = (this.selectedItem2 + 1) + "/" + this.subMenuItems.length;
 };
 
 GuiPage_ItemDetails.subKeyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
-	if (document.getElementById("Notifications").style.visibility == "") {
-		document.getElementById("Notifications").style.visibility = "hidden";
-		document.getElementById("NotificationText").innerHTML = "";
+	if (document.getElementById("notifications").style.visibility == "") {
+		document.getElementById("notifications").style.visibility = "hidden";
+		document.getElementById("notificationText").innerHTML = "";
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -842,7 +842,7 @@ GuiPage_ItemDetails.subKeyDown = function() {
 		case tvKey.KEY_LEFT:
 			alert("RETURN Sub");
 			widgetAPI.blockNavigation(event);
-			document.getElementById("Counter").innerHTML = (this.selectedItem + 1) + "/" + this.menuItems.length;
+			document.getElementById("counter").innerHTML = (this.selectedItem + 1) + "/" + this.menuItems.length;
 			if (this.menuItems[this.selectedItem] == "guiTV_Episode_Play") {
 				document.getElementById(this.menuItems[this.selectedItem]).className = "FilmListSingle highlight"+Main.highlightColour+"Background";
 				document.getElementById(this.selectedItem2).className = "FilmListSingle";

@@ -58,7 +58,7 @@ GuiTV_Show.start = function(title,url,selectedItem,topLeftItem) {
 		if (this.ItemData.Items.length > 0) {
 			document.getElementById("pageContent").innerHTML = "<div id=allOptions>" +
 			"<span id='bannerItem0'>Play All</span>" +
-			"<span id='bannerItem1'>Shuffle All</span></div><div id=Content></div>" +
+			"<span id='bannerItem1'>Shuffle All</span></div><div id=content></div>" +
 			"<div id='ShowSeriesInfo'></div>" +
 			"<div id='ShowImage'></div>" +
 			"<div id='InfoContainer' class='showItemContainer'>" +
@@ -75,14 +75,14 @@ GuiTV_Show.start = function(title,url,selectedItem,topLeftItem) {
 
 			if (this.ItemData.Items.length < 4) {
 				document.getElementById("allOptions").className = 'ShowAllOptionsShort';
-				document.getElementById("Content").className = 'ShowListShort';
+				document.getElementById("content").className = 'ShowListShort';
 				document.getElementById("InfoContainer").className = 'showItemContainerShort';
 				document.getElementById("ShowImage").className = 'ShowImageShort';
 
 				this.MAXROWCOUNT = 3;
 			} else {
 				document.getElementById("allOptions").className = 'ShowAllOptions';
-				document.getElementById("Content").className = 'ShowList';
+				document.getElementById("content").className = 'ShowList';
 				document.getElementById("InfoContainer").className = 'showItemContainer';
 				document.getElementById("ShowImage").className = 'ShowImage';
 				this.MAXROWCOUNT = 7;
@@ -120,11 +120,11 @@ GuiTV_Show.start = function(title,url,selectedItem,topLeftItem) {
 			document.getElementById("GuiTV_Show").focus();
 		} else {
 			//Set message to user
-			document.getElementById("pageContent").innerHTML = "<div id='itemContainer' class='Columns"+this.MAXCOLUMNCOUNT+" padding10'><p id='title' class=pageTitle>"+title+"</p><div id=Content></div></div>";
-			document.getElementById("Counter").innerHTML = "";
+			document.getElementById("pageContent").innerHTML = "<div id='itemContainer' class='Columns"+this.MAXCOLUMNCOUNT+" padding10'><p id='title' class=pageTitle>"+title+"</p><div id=content></div></div>";
+			document.getElementById("counter").innerHTML = "";
 			document.getElementById("title").innerHTML = "Sorry";
-			document.getElementById("Content").className = "padding60";
-			document.getElementById("Content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid";
+			document.getElementById("content").className = "padding60";
+			document.getElementById("content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid";
 
 			//As no content focus on menu bar and null null means user can't return off the menu bar
 			GuiMainMenu.requested(null,null);
@@ -155,7 +155,7 @@ GuiTV_Show.updateDisplayedItems = function() {
 		}
 		htmlToAdd += "</div>";
 	}
-	document.getElementById("Content").innerHTML = htmlToAdd;
+	document.getElementById("content").innerHTML = htmlToAdd;
 
 	//document.getElementById("ShowTitle").innerHTML = "";
 	var htmlforTitle = "";
@@ -243,9 +243,9 @@ GuiTV_Show.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
-	if (document.getElementById("Notifications").style.visibility == "") {
-		document.getElementById("Notifications").style.visibility = "hidden";
-		document.getElementById("NotificationText").innerHTML = "";
+	if (document.getElementById("notifications").style.visibility == "") {
+		document.getElementById("notifications").style.visibility = "hidden";
+		document.getElementById("notificationText").innerHTML = "";
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";

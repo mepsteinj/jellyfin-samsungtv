@@ -130,9 +130,9 @@ GuiPage_Settings.start = function(viewToDisplay) {
 
 	document.getElementById("pageContent").className = "";
 	document.getElementById("pageContent").style.color = "white";
-	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='bannerMenu'></div><div id='guiTV_Show_Title' class='guiPage_Settings_Title'></div>" +
-		"<div id='guiPage_Settings_Settings' class='guiPage_Settings_Settings'></div>" +
-		"<div id='guiPage_Settings_Overview' class='guiPage_Settings_Overview'>" +
+	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='bannerMenu'></div><div id='guiTV_Show_Title' class='guiSettingsTitle'></div>" +
+		"<div id='guiPage_Settings_Settings' class='guiSettingsSettings'></div>" +
+		"<div id='guiPage_Settings_Overview' class='guiSettingsOverview'>" +
 			"<div id=guiPage_Settings_Overview_Title></div>" +
 			"<div id=guiPage_Settings_Overview_Content></div>" +
 		"</div>";
@@ -440,9 +440,9 @@ GuiPage_Settings.updateSelectedItems = function() {
 	}
 
 	if (this.selectedItem == -1) {
-		document.getElementById("Counter").innerHTML = (this.selectedBannerItem + 1) + "/" + (this.bannerItems.length);
+		document.getElementById("counter").innerHTML = (this.selectedBannerItem + 1) + "/" + (this.bannerItems.length);
 	} else {
-		document.getElementById("Counter").innerHTML = (this.selectedItem + 1) + "/" + (this.currentViewSettingsName.length);
+		document.getElementById("counter").innerHTML = (this.selectedItem + 1) + "/" + (this.currentViewSettingsName.length);
 		this.setOverview();
 	}
 };
@@ -473,9 +473,9 @@ GuiPage_Settings.updateSelectedBannerItems = function() {
 	}
 	//Update the counter in the bottom left.
 	if (this.selectedItem == -1) {
-		document.getElementById("Counter").innerHTML = (this.selectedBannerItem + 1) + "/" + (this.bannerItems.length);
+		document.getElementById("counter").innerHTML = (this.selectedBannerItem + 1) + "/" + (this.bannerItems.length);
 	} else {
-		document.getElementById("Counter").innerHTML = (this.selectedItem + 1) + "/" + (this.currentViewSettingsName.length);
+		document.getElementById("counter").innerHTML = (this.selectedItem + 1) + "/" + (this.currentViewSettingsName.length);
 		this.setOverview();
 	}
 };
@@ -524,7 +524,7 @@ GuiPage_Settings.processSelectedItem = function() {
 		this.updateSelectedItems();
 		this.updateSelectedBannerItems();
 	} else {
-		document.getElementById(this.selectedItem).className = "guiSettingsTD GuiPage_Setting_SubSelected";
+		document.getElementById(this.selectedItem).className = "guiSettingsTD guiSettingSubSelected";
 		document.getElementById("Value"+this.selectedItem).className = "guiSettingsTD highlight"+Main.highlightColour+"Background arrowUpDown";
 
 		switch (this.currentViewSettings[this.selectedItem]) {
@@ -617,9 +617,9 @@ GuiPage_Settings.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
-	if (document.getElementById("Notifications").style.visibility == "") {
-		document.getElementById("Notifications").style.visibility = "hidden";
-		document.getElementById("NotificationText").innerHTML = "";
+	if (document.getElementById("notifications").style.visibility == "") {
+		document.getElementById("notifications").style.visibility = "hidden";
+		document.getElementById("notificationText").innerHTML = "";
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -702,7 +702,7 @@ GuiPage_Settings.openMenu = function() {
 		}
 		GuiMainMenu.requested("GuiPage_Settings","bannerItem0","bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
 	} else {
-		document.getElementById(this.selectedItem).className = "guiSettingsTD GuiPage_Setting_UnSelected";
+		document.getElementById(this.selectedItem).className = "guiSettingsTD guiSettingUnSelected";
 		GuiMainMenu.requested("GuiPage_Settings",this.selectedItem,"guiSettingsTD highlight"+Main.highlightColour+"Background");
 	}
 };
@@ -945,7 +945,7 @@ GuiPage_Settings.processSelectedSubItem = function() {
 	}
 
 	document.getElementById("Value"+this.selectedItem).innerHTML = this.CurrentSettingValue;
-	document.getElementById("Value"+this.selectedItem).className = "guiSettingsTD GuiPage_Setting_UnSelected";
+	document.getElementById("Value"+this.selectedItem).className = "guiSettingsTD guiSettingUnSelected";
 	document.getElementById(this.selectedItem).className = "guiSettingsTD highlight"+Main.highlightColour+"Background";
 	document.getElementById("GuiPage_Settings").focus();
 };
@@ -955,9 +955,9 @@ GuiPage_Settings.bottomKeyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
-	if (document.getElementById("Notifications").style.visibility == "") {
-		document.getElementById("Notifications").style.visibility = "hidden";
-		document.getElementById("NotificationText").innerHTML = "";
+	if (document.getElementById("notifications").style.visibility == "") {
+		document.getElementById("notifications").style.visibility = "hidden";
+		document.getElementById("notificationText").innerHTML = "";
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -1000,7 +1000,7 @@ GuiPage_Settings.bottomKeyDown = function() {
 			alert("RETURN");
 			widgetAPI.blockNavigation(event);
 			document.getElementById("Value"+this.selectedItem).innerHTML = this.CurrentSettingValue;
-			document.getElementById("Value"+this.selectedItem).className = "guiSettingsTD GuiPage_Setting_UnSelected";
+			document.getElementById("Value"+this.selectedItem).className = "guiSettingsTD guiSettingUnSelected";
 			document.getElementById(this.selectedItem).className = "guiSettingsTD highlight"+Main.highlightColour+"Background";
 
 			document.getElementById("GuiPage_Settings").focus();
@@ -1015,8 +1015,8 @@ GuiPage_Settings.bottomKeyDown = function() {
 			break;
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
-			document.getElementById("Value"+this.selectedItem).className = "guiSettingsTD GuiPage_Setting_UnSelected";
-			document.getElementById(this.selectedItem).className = "guiSettingsTD GuiPage_Setting_UnSelected";
+			document.getElementById("Value"+this.selectedItem).className = "guiSettingsTD guiSettingUnSelected";
+			document.getElementById(this.selectedItem).className = "guiSettingsTD guiSettingUnSelected";
 			document.getElementById("GuiPage_Settings").focus();
 			GuiMainMenu.requested("GuiPage_Settings",this.selectedItem,"guiSettingsTD highlight"+Main.highlightColour+"Background");
 			break;

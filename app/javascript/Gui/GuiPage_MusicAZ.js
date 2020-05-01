@@ -50,7 +50,7 @@ GuiPage_MusicAZ.start = function(entryView,selectedItem) {
 
 	//Proceed as Normal
 	//Update Padding on pageContent
-	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='bannerMenu'></div><div id=Center class='SeriesCenter'><div id=Content style='padding-top:40px;'></div></div>";
+	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='bannerMenu'></div><div id=Center class='SeriesCenter'><div id=content style='padding-top:40px;'></div></div>";
 
 	//Set banner Styling
 	document.getElementById("bannerSelection").style.paddingTop="25px";
@@ -88,7 +88,7 @@ GuiPage_MusicAZ.updateDisplayedItems = function() {
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.Letters.length); index++) {
 		htmlToAdd += "<div id="+this.Letters[index] + "><div style='text-align:center;font-size:2.5em;padding-top:30px;'>"+this.Letters[index] + "</div></div>";
 	}
-	document.getElementById("Content").innerHTML = htmlToAdd;
+	document.getElementById("content").innerHTML = htmlToAdd;
 };
 
 //Function sets CSS Properties so show which user is selected
@@ -105,9 +105,9 @@ GuiPage_MusicAZ.updateSelectedItems = function (bypassCounter) {
 
 	//Update Counter DIV
 	if (this.Letters.length == 0) {
-		document.getElementById("Counter").innerHTML = "";
+		document.getElementById("counter").innerHTML = "";
 	} else {
-		document.getElementById("Counter").innerHTML = (this.selectedItem + 1) + "/" + this.Letters.length;
+		document.getElementById("counter").innerHTML = (this.selectedItem + 1) + "/" + this.Letters.length;
 	}
 };
 
@@ -136,7 +136,7 @@ GuiPage_MusicAZ.updateSelectedBannerItems = function() {
 		}
 	}
 	if (this.selectedItem == -1) {
-		document.getElementById("Counter").innerHTML = (this.selectedBannerItem+1) + "/" + this.bannerItems.length;
+		document.getElementById("counter").innerHTML = (this.selectedBannerItem+1) + "/" + this.bannerItems.length;
 	}
 };
 
@@ -144,9 +144,9 @@ GuiPage_MusicAZ.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
-	if (document.getElementById("Notifications").style.visibility == "") {
-		document.getElementById("Notifications").style.visibility = "hidden";
-		document.getElementById("NotificationText").innerHTML = "";
+	if (document.getElementById("notifications").style.visibility == "") {
+		document.getElementById("notifications").style.visibility = "hidden";
+		document.getElementById("notificationText").innerHTML = "";
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";

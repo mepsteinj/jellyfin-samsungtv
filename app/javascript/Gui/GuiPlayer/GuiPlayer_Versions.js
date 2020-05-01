@@ -65,13 +65,13 @@ GuiPlayer_Versions.start = function(playerData,resumeTicks,playedFromPage) {
 	}
 
 	//Setup Gui
-	this.previousCounter = document.getElementById("Counter").innerHTML;
+	this.previousCounter = document.getElementById("counter").innerHTML;
 
 	//MediaSource,Url,hasVideo,hasAudio,hasSubtitle,videoIndex,audioIndex,subtitleIndex
 	if (this.MediaPlayback.length <= 0) {
 		FileLog.write("Video : No Playback Options");
 		//Error - No media playback options!
-		document.getElementById("guiPlayer_Loading").style.visibility = "hidden";
+		document.getElementById("guiPlayerLoading").style.visibility = "hidden";
 		GuiNotifications.setNotification("None of the MediaSources are playable","Unable To Play");
 		//Removes URL to fix Navigation
 		Support.removeLatestURL();
@@ -129,11 +129,11 @@ GuiPlayer_Versions.start = function(playerData,resumeTicks,playedFromPage) {
 };
 
 GuiPlayer_Versions.updateDisplayedItems = function() {
-	document.getElementById("guiPlayer_Versions_Playables").style.visibility = "";
-	document.getElementById("guiPlayer_Versions_Playables").innerHTML = "";
+	document.getElementById("guiPlayerVersionsPlayables").style.visibility = "";
+	document.getElementById("guiPlayerVersionsPlayables").innerHTML = "";
 
 	for (var index = this.topLeftItem; index < Math.min(this.MediaSelections.length,this.topLeftItem + this.maxDisplay);index++) {
-		document.getElementById("guiPlayer_Versions_Playables").innerHTML += "<div id="+this.MediaSelections[index][0].Id+" class=videoVersionOption>"+this.MediaSelections[index][0].Name
+		document.getElementById("guiPlayerVersionsPlayables").innerHTML += "<div id="+this.MediaSelections[index][0].Id+" class=videoVersionOption>"+this.MediaSelections[index][0].Name
 		+ "<div class=videoVersionType>D</div></div>";
 	}
 };
@@ -146,7 +146,7 @@ GuiPlayer_Versions.updateSelectedItems = function() {
 			document.getElementById(this.MediaSelections[index][0].Id).style.color = "white";
 		}
 	}
-	document.getElementById("Counter").innerHTML = (this.selectedItem + 1) + "/" + this.MediaSelections.length;
+	document.getElementById("counter").innerHTML = (this.selectedItem + 1) + "/" + this.MediaSelections.length;
 };
 
 
@@ -302,9 +302,9 @@ GuiPlayer_Versions.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
-	if (document.getElementById("Notifications").style.visibility == "") {
-		document.getElementById("Notifications").style.visibility = "hidden";
-		document.getElementById("NotificationText").innerHTML = "";
+	if (document.getElementById("notifications").style.visibility == "") {
+		document.getElementById("notifications").style.visibility = "hidden";
+		document.getElementById("notificationText").innerHTML = "";
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -338,15 +338,15 @@ GuiPlayer_Versions.keyDown = function() {
 			alert("RETURN");
 			widgetAPI.blockNavigation(event);
 			//Hide Menu
-			document.getElementById("guiPlayer_Loading").style.visibility = "hidden";
-			document.getElementById("guiPlayer_Versions_Playables").style.visibility = "hidden";
-			document.getElementById("guiPlayer_Versions_Playables").innerHTML = "";
+			document.getElementById("guiPlayerLoading").style.visibility = "hidden";
+			document.getElementById("guiPlayerVersionsPlayables").style.visibility = "hidden";
+			document.getElementById("guiPlayerVersionsPlayables").innerHTML = "";
 
 			//Remove Last URL History - as we didn't navigate away from the page!
 			Support.removeLatestURL();
 
 			//Reset counter to existing value
-			document.getElementById("Counter").innerHTML = this.previousCounter;
+			document.getElementById("counter").innerHTML = this.previousCounter;
 
 			//Set focus back to existing page
 			document.getElementById(this.playedFromPage).focus();
@@ -354,21 +354,21 @@ GuiPlayer_Versions.keyDown = function() {
 		case tvKey.KEY_ENTER:
 		case tvKey.KEY_PANEL_ENTER:
 			alert("ENTER");
-			document.getElementById("guiPlayer_Versions_Playables").style.visibility = "hidden";
-			document.getElementById("guiPlayer_Versions_Playables").innerHTML = "";
-			document.getElementById("Counter").innerHTML = this.previousCounter;
+			document.getElementById("guiPlayerVersionsPlayables").style.visibility = "hidden";
+			document.getElementById("guiPlayerVersionsPlayables").innerHTML = "";
+			document.getElementById("counter").innerHTML = this.previousCounter;
 			document.getElementById(this.playedFromPage).focus();
 			GuiPlayer.startPlayback(this.MediaSelections[this.selectedItem],this.resumeTicks);
 			break;
 		case tvKey.KEY_BLUE:
 			alert("BLUE");
-			document.getElementById("guiPlayer_Loading").style.visibility = "hidden";
+			document.getElementById("guiPlayerLoading").style.visibility = "hidden";
 			File.deleteFile();
 			widgetAPI.sendExitEvent();
 			break;
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY");
-			document.getElementById("guiPlayer_Loading").style.visibility = "hidden";
+			document.getElementById("guiPlayerLoading").style.visibility = "hidden";
 			widgetAPI.sendExitEvent();
 			break;
 		default:
