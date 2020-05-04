@@ -39,12 +39,20 @@ var messagesEN = {
 	LabAddNewServer : "Add a New Server",
 	LabYes : "yes",
 	LabNo : "no",
+  LabNetworkStatus : "Network Status",
 	LabNetworkError : "Network Error",
+  LabServerError : "Server Error",
 	LabBadPassword : "Bad password or network error.",
 	LabLogonError : "Logon Error",
 	LabDeletion : "Deletion",
 	LabDelAllPass : "All Passwords Deleted",
 	LabDelAllUser : "All Users Deleted",
-	
-	
+	LabBadRequest : "Bad xmlHTTP Request<br>Token : ",
+  LabHTTPStatus : "The HTTP status code returned by the server was : ",
+	LabJellefinCon : "Jellyfin server connection error.<br>Status : ",
+  LabJellefinRes : "Your Jellyfin server is not responding.<br>Status : ",
+  LabServerChangeTxt : " is now your default Server and will be logged in autiomatically from now on.", 
+  LabServerChange : "Default Server Changed",
+  LabServerVersion : "The Samsung app requires a later version of the Server - Please update it and restart the app",
+  LabBadPass : "Wrong username, bad password or network error.",
 };

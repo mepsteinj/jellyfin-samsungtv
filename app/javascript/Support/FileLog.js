@@ -35,7 +35,7 @@ FileLog.loadFile = function(returnContents) {
 	}
 };
 
-FileLog.write = function (toWrite,noDate) {
+FileLog.write = function (toWrite, noDate) {
 	var writeDate = (noDate == undefined) ? true : false;
 	toWrite = (writeDate == true) ? FileLog.getTimeStamp() + " " + toWrite : toWrite;
 	alert(toWrite);

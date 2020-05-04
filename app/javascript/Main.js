@@ -2,11 +2,9 @@ var widgetAPI = new Common.API.Widget();
 var pluginAPI = new Common.API.Plugin();
 var tvKey = new Common.API.TVKeyValue();
 
-var Main =
-{
+var Main = {
 	version : "v3.0.0",
 	requiredServerVersion : "10.5.2",
-	//TV Series Version
 	modelYear : null,
 	width : 1920,
 	height : 1080,
@@ -27,8 +25,8 @@ var Main =
 	enableImageCache : true,
 	enableScreensaver : true,
 	isScreensaverRunning : false,
-	langInterface : "ru",
-	messages : null,
+	langInterface : "en",
+	messages : null
 };
 
 Main.getModelYear = function() {
@@ -79,15 +77,30 @@ Main.setIsScreensaverRunning = function() {
 	}
 };
 
+Main.getLangInterface = function() {
+  return this.langInterface;
+};
+
+Main.setLangInterface = function(lang) {
+	this.langInterface = lang;
+	this.messages = null;
+	if (lang == "ru") {
+		this.messages = messagesRU;		
+	}
+	if (lang == "en") {
+		this.messages = messagesEN;
+	}
+};
+
 Main.onLoad = function() {
 	//Setup Logging
 	FileLog.loadFile(false); // doesn't return contents, done to ensure file exists
 	FileLog.write("---------------------------------------------------------------------",true);
 	FileLog.write("Jellyfin Application Started");
-	if (Main.isImageCaching()) {
+	if (this.isImageCaching()) {
 		var fileSystemObj = new FileSystem();
 		fileSystemObj.deleteCommonFile(curWidget.id + '/cache.json');
-		Support.imageCachejson = JSON.parse('{"Images":[]}');
+		Support.imageCacheJson = JSON.parse('{"Images":[]}');
 	}
 	Support.widgetPutInnerHTML("splashScreenVersion", Main.version);
 	//Turn ON screensaver
@@ -96,26 +109,20 @@ Main.onLoad = function() {
 	Support.clock();
 	widgetAPI.sendReadyEvent();
 	window.onShow = Main.initKeys();
-	
-	if (Main.langInterface == "en") {
-		Main.messages = messagesEN;
-	} else {
-		Main.messages = messagesRU;		
-	}
-	
+    Main.setLangInterface("ru");//!!! 
 	//Set DeviceID & Device Name
 	var NNaviPlugin = document.getElementById("pluginObjectNNavi");
 	var pluginNetwork = document.getElementById("pluginObjectNetwork");
 	var pluginTV = document.getElementById("pluginObjectTV");
 	FileLog.write("Plugins initialised.");
 	var ProductType = pluginNetwork.GetActiveType();
-	FileLog.write("Product type is "+ProductType);
+	FileLog.write("Product type is " + ProductType);
 	var phyConnection = pluginNetwork.CheckPhysicalConnection(ProductType); //returns -1
-	FileLog.write("Check physical connection returned "+phyConnection);
+	FileLog.write("Check physical connection returned " + phyConnection);
 	var http = pluginNetwork.CheckHTTP(ProductType); //returns -1
-	FileLog.write("Check HTTP returned "+http);
+	FileLog.write("Check HTTP returned " + http);
 	var gateway = pluginNetwork.CheckGateway(ProductType); //returns -1
-	FileLog.write("Check gateway returned "+gateway);
+	FileLog.write("Check gateway returned " + gateway);
 	//Get the model year - Used for transcoding
 	if (pluginTV.GetProductCode(0).substring(0,2) == "HT" || pluginTV.GetProductCode(0).substring(0,2) == "BD"){
 		this.modelYear = pluginTV.GetProductCode(0).substring(3,4);
@@ -148,7 +155,7 @@ Main.onLoad = function() {
 		if (MAC == false || MAC == null) { //Set mac to fake
 			MAC = "0123456789ab" ;
 		}
-		FileLog.write("MAC address is "+MAC);
+		FileLog.write("MAC address is " + MAC);
 		Server.setDevice ("Samsung " + pluginTV.GetProductCode(0));
 		Server.setDeviceID(NNaviPlugin.GetDUID(MAC));
 		//Load Settings File - Check if file needs to be deleted due to development
@@ -192,13 +199,13 @@ Main.onLoad = function() {
 					foundDefault = true;
 					FileLog.write("Default server found.");
 					File.setServerEntry(index);
-					Server.testConnectionSettings(fileJson.Servers[index].Path,true);
+					Server.testConnectionSettings(fileJson.Servers[index].Path, true);
 					break;
 				}
 			}
 			if (foundDefault == false) {
 				FileLog.write("Multiple servers defined. Loading the select server page.");
-				GuiPage_Servers.start();
+				GuiServers.start();
 			}
 		} else if (fileJson.Servers.length == 1) {
 			//If 1 server auto login with that
@@ -208,10 +215,11 @@ Main.onLoad = function() {
 		} else {
 			//No Server Defined - Load GuiPage_IP
 			FileLog.write("No server defined. Loading the new server page.");
-			GuiNewServer.start();
+			NewServer.start();
 		}
 	} else {
-		Support.widgetPutInnerHTML("pageContent", NoNetworkConnectivityLabRu);
+		Support.widgetPutInnerHTML("pageContent", 
+		this.messages.LabNoNetworkConnectivity);
 	}
 };
 
@@ -223,7 +231,7 @@ Main.initKeys = function() {
 
 Main.onUnload = function() {
 	//Write Cache to disk
-	ImageCache.writeAll(Support.imageCachejson);
+	ImageCache.writeAll(Support.imageCacheJson);
 	Support.screensaverOff();
 	GuiImagePlayer.kill();
 	GuiMusicPlayer.stopOnAppExit();

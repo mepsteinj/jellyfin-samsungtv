@@ -412,7 +412,7 @@ input[type="password"] {
     z-index: 5;
 }
 
-.guiNewServer12key {
+.newServer12key {
     position: absolute;
     padding: 30px;
     top: 350px;
@@ -425,16 +425,7 @@ input[type="password"] {
     z-index: 5;
 }
 
-.guiNewServerQwerty {
-    position: absolute;
-    top: 50px;
-    left: 5px;
-    width: 350px;
-    text-align: center;
-    z-index: 5;
-}
-
-.guiServersAddNew {
+.serversAddNew {
     position: relative;
     top: 0px;
     left: 780px;

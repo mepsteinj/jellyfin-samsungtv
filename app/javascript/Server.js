@@ -1,10 +1,11 @@
 var Server = {
 	serverAddr : "",
-	UserID : "",
-	UserName : "",
-	Device : "Samsung Smart TV",
-	DeviceID : "00000000000000000000000000000000",
-	AuthenticationToken : null,
+	userID : "",
+	userName : "",
+	device : "Samsung Smart TV",
+	deviceID : "00000000000000000000000000000000",
+	authenticationToken : null,
+	xmlHttp : null,
 };
 
 //------------------------------------------------------------
@@ -12,7 +13,11 @@ var Server = {
 //------------------------------------------------------------
 
 Server.getAuthToken = function() {
-	return this.AuthenticationToken;
+	return this.authenticationToken;
+};
+
+Server.setAuthToken = function(authToken) {
+	this.authenticationToken = authToken;
 };
 
 Server.getServerAddr = function() {
@@ -24,45 +29,58 @@ Server.setServerAddr = function(serverAddr) {
 };
 
 Server.getUserID = function() {
-	return this.UserID;
+	return this.userID;
 };
 
-Server.setUserID = function(UserID) {
-	this.UserID = UserID;
+Server.setUserID = function(userID) {
+	this.userID = userID;
 };
 
 Server.getUserName = function() {
-	return this.UserName;
+	return this.userName;
 };
 
-Server.setUserName = function(UserName) {
-	this.UserName = UserName;
+Server.setUserName = function(userName) {
+	this.userName = userName;
 };
 
-Server.setUserFavourites = function(UserFavourites) {
-	this.UserFavourites = UserFavourites;
-};
-
-Server.getUserFavourites = function(UserFavourites) {
-	return this.UserFavourites;
-};
-
-Server.setDevice = function(Device) {
-	this.Device = Device;
+Server.setDevice = function(device) {
+	this.device = device;
 };
 
 //Used in Settings
 Server.getDevice = function() {
-	return this.Device;
+	return this.device;
 };
 
-Server.setDeviceID = function(DeviceID) {
-	this.DeviceID = DeviceID;
+Server.setDeviceID = function(deviceID) {
+	this.deviceID = deviceID;
 };
 
 //Required in Transcoding functions + guiPlayer
 Server.getDeviceID = function() {
-	return this.DeviceID;
+	return this.deviceID;
+};
+
+Server.initHttpRequest = function() {
+	if (this.xmlHttp != null) {
+		this.xmlHttp.destroy();
+	}
+	this.xmlHttp = new XMLHttpRequest();
+};
+
+Server.getHttpData = function(method, url, async, params) {
+	this.initHttpRequest();
+	if (this.xmlHttp) {
+		alert(url);
+		this.xmlHttp.open(method, url, async); //must be true!
+		this.setRequestHeaders();
+		if (params != null) {
+			this.xmlHttp.send(params);
+		} else {
+			this.xmlHttp.send(null);
+		}
+	}
 };
 
 //------------------------------------------------------------
@@ -70,7 +88,7 @@ Server.getDeviceID = function() {
 //------------------------------------------------------------
 
 Server.getCustomURL = function(sortParams) {
-	if (sortParams != null){
+	if (sortParams != null) {
 		return	Server.getServerAddr() + sortParams;
 	} else {
 		return	Server.getServerAddr();
@@ -78,7 +96,7 @@ Server.getCustomURL = function(sortParams) {
 };
 
 Server.getItemTypeURL = function(sortParams) {
-	if (sortParams != null){
+	if (sortParams != null) {
 		return	Server.getServerAddr() + "/Users/" + Server.getUserID() + "/Items?format=json" + sortParams;
 	} else {
 		return	Server.getServerAddr() + "/Users/" + Server.getUserID() + "/Items?format=json";
@@ -90,7 +108,7 @@ Server.getThemeMedia = function(itemID) {
 };
 
 Server.getChildItemsURL = function(parentID, sortParams) {
-	if (sortParams != null){
+	if (sortParams != null) {
 		return	Server.getServerAddr() + "/Users/" + Server.getUserID() + "/Items?ParentId=" + parentID + "&format=json" + sortParams;
 	} else {
 		return	Server.getServerAddr() + "/Users/" + Server.getUserID() + "/Items?ParentId=" + parentID + "&format=json";
@@ -98,7 +116,7 @@ Server.getChildItemsURL = function(parentID, sortParams) {
 };
 
 Server.getItemInfoURL = function(parentID, sortParams) {
-	if (sortParams != null){
+	if (sortParams != null) {
 		return	Server.getServerAddr() + "/Users/" + Server.getUserID() + "/Items/" + parentID + "?format=json" + sortParams;
 	} else {
 		return	Server.getServerAddr() + "/Users/" + Server.getUserID() + "/Items/" + parentID + "?format=json";
@@ -156,29 +174,29 @@ Server.getImageURL = function(itemId, imageType, maxWidth, maxHeight, unplayedCo
 	}
 	if (Main.isImageCaching()) {
 		var found = false;
-		for (var i = 0; i <Support.imageCachejson.Images.length; i++) {
+		for (var i = 0; i <Support.imageCacheJson.Images.length; i++) {
 			//Is image in cache - If so use it
-			if (Support.imageCachejson.Images[i].URL == query) {
+			if (Support.imageCacheJson.Images[i].URL == query) {
 				found = true;
 				break;
 			}
 		}
 		if (found == true) {
 			//Use data URI from file
-			return Support.imageCachejson.Images[i].DataURI;
+			return Support.imageCacheJson.Images[i].DataURI;
 		} else {
 			//Use URL & Add to Cache
 			var full = Server.getServerAddr() +	 query;
-			var xhr = new XMLHttpRequest();
-			xhr.open('GET', full, true);
-			xhr.responseType = 'blob';
-			xhr.onload = function(e) {
+			this.initHttpRequest();
+			this.xmlHttp.open('GET', full, true);
+			this.xmlHttp.responseType = 'blob';
+			this.xmlHttp.onload = function(e) {
 				if (this.status == 200) {
 					var blob = this.response;
-					Support.imageCachejson.Images[Support.imageCachejson.Images.length] = {"URL":query, "DataURI":window.URL.createObjectURL(blob)};
+					Support.imageCacheJson.Images[Support.imageCacheJson.Images.length] = {"URL":query, "DataURI":window.URL.createObjectURL(blob)};
 				}
 			};
-			xhr.send();
+			this.xmlHttp.send();
 			return full;
 		}
 	} else {
@@ -212,22 +230,21 @@ Server.getBackgroundImageURL = function(itemId, imagetype, maxWidth, maxHeight, 
 };
 
 Server.getStreamUrl = function(itemId, mediaSourceId){
-	var streamParams = '/Stream.ts?VideoCodec=h264&Profile=high&Level=41&MaxVideoBitDepth=8&MaxWidth=1920&VideoBitrate=10000000&AudioCodec=aac&audioBitrate=360000&MaxAudioChannels=6&MediaSourceId='+mediaSourceId + '&api_key=' + Server.getAuthToken();
-	var streamUrl = Server.getServerAddr() + '/Videos/' + itemId + streamParams + '&DeviceId=' + Server.getDeviceID();
+	var streamParams = '/Stream.ts?VideoCodec=h264&Profile=high&Level=41&MaxVideoBitDepth=8&MaxWidth=1920&VideoBitrate=10000000&AudioCodec=aac&audioBitrate=360000&MaxAudioChannels=6&MediaSourceId=' + mediaSourceId + '&api_key=' + this.getAuthToken();
+	var streamUrl = this.getServerAddr() + '/Videos/' + itemId + streamParams + '&DeviceId=' + this.getDeviceID();
 	return streamUrl;
 };
 
-Server.setRequestHeaders = function (xmlHttp, UserId) {
-	if (this.UserID == null) {
-		xmlHttp.setRequestHeader("Authorization", "MediaBrowser Client=\"Samsung TV\", Device=\"" + this.Device + "\", DeviceId=\"" + this.DeviceID + "\", Version=\"" + Main.getVersion() + "\", UserId=\"" + UserId+"\"");
+Server.setRequestHeaders = function (userId) {
+	if (this.getUserID() == null) {
+		this.xmlHttp.setRequestHeader("Authorization", "MediaBrowser Client=\"Samsung TV\", Device=\"" + this.getDevice() + "\", DeviceId=\"" + this.getDeviceID() + "\", Version=\"" + Main.getVersion() + "\", UserId=\"" + userId + "\"");
 	} else {
-		xmlHttp.setRequestHeader("Authorization", "MediaBrowser Client=\"Samsung TV\", Device=\"" + this.Device + "\", DeviceId=\"" + this.DeviceID + "\", Version=\"" + Main.getVersion() + "\", UserId=\"" + this.UserID+"\"");
-		if (this.AuthenticationToken != null) {
-			xmlHttp.setRequestHeader("X-MediaBrowser-Token", this.AuthenticationToken);
+		this.xmlHttp.setRequestHeader("Authorization", "MediaBrowser Client=\"Samsung TV\", Device=\"" + this.getDevice() + "\", DeviceId=\"" + this.getDeviceID() + "\", Version=\"" + Main.getVersion() + "\", UserId=\"" + this.getUserID() +"\"");
+		if (this.getAuthToken() != null) {
+			this.xmlHttp.setRequestHeader("X-MediaBrowser-Token", this.getAuthToken());
 		}
 	}
-	xmlHttp.setRequestHeader("Content-Type", 'application/json; charset=UTF-8');
-	return xmlHttp;
+	this.xmlHttp.setRequestHeader("Content-Type", 'application/json; charset=UTF-8');
 };
 
 Server.getMoviesViewQueryPart = function() {
@@ -239,8 +256,8 @@ Server.getMoviesViewQueryPart = function() {
 	}
 };
 
-Server.getTvViewQueryPart = function() {
-	var parentId = Server.getUserViewId("tvshows", "UserView");
+Server.getTVViewQueryPart = function() {
+	var parentId = this.getUserViewId("tvshows", "UserView");
 	if (parentId == null) {
 		return "";
 	} else {
@@ -250,7 +267,7 @@ Server.getTvViewQueryPart = function() {
 
 Server.getUserViewId = function (collectionType, type) {
 	var folderId = null;
-	var userViews = Server.getUserViews();
+	var userViews = this.getUserViews();
 	for (var i = 0; i < userViews.Items.length; i++){
 		if ((type === undefined || userViews.Items[i].Type == type) && userViews.Items[i].CollectionType == collectionType){
 			folderId = userViews.Items[i].Id;
@@ -260,8 +277,8 @@ Server.getUserViewId = function (collectionType, type) {
 };
 
 Server.getUserViews = function () {
-	var url = this.serverAddr + "/Users/" + Server.getUserID() + "/Views?format=json&SortBy=SortName&SortOrder=Ascending";
-	var userViews = Server.getContent(url);
+	var url = this.getServerAddr() + "/Users/" + this.getUserID() + "/Views?format=json&SortBy=SortName&SortOrder=Ascending";
+	var userViews = this.getContent(url);
 	return userViews;
 };
 
@@ -270,13 +287,8 @@ Server.getUserViews = function () {
 //------------------------------------------------------------
 
 Server.updateUserConfiguration = function(contentToPost) {
-	var url = this.serverAddr + "/Users/" + Server.getUserID() + "/Configuration";
-	xmlHttp = new XMLHttpRequest();
-	if (xmlHttp) {
-		xmlHttp.open("POST", url , true); //must be true!
-		xmlHttp = this.setRequestHeaders(xmlHttp);
-		xmlHttp.send(contentToPost);
-	}
+	var url = this.getServerAddr() + "/Users/" + this.getUserID() + "/Configuration";
+	this.getHttpData("POST", url, true, contentToPost);
 };
 
 //------------------------------------------------------------
@@ -284,79 +296,54 @@ Server.updateUserConfiguration = function(contentToPost) {
 //------------------------------------------------------------
 
 Server.getSubtitles = function(url) {
-	xmlHttp = new XMLHttpRequest();
-	if (xmlHttp) {
-		xmlHttp.open("GET", url , false); //must be false
-		xmlHttp = this.setRequestHeaders(xmlHttp);
-		xmlHttp.send(null);
+	this.initHttpRequest();
+	if (this.xmlHttp) {
+		this.xmlHttp.open("GET", url , false); //must be false
+		this.setRequestHeaders();
+		this.xmlHttp.send(null);
 
-		if (xmlHttp.status != 200) {
-			alert (xmlHttp.status);
+		if (this.xmlHttp.status != 200) {
+			alert (this.xmlHttp.status);
 			return null;
 		} else {
-			return xmlHttp.responseText;
+			return this.xmlHttp.responseText;
 		}
 	} else {
 		alert ("Bad xmlHTTP Request");
-		Server.Logout();
-		GuiNotifications.setNotification("Bad xmlHTTP Request<br>Token: " + Server.getAuthToken(),"Server Error",false);
-		GuiUsers.start(true);
+		this.Logout();
+		Notifications.setNotification(Main.messages.LabBadRequest + this.getAuthToken(), Main.messages.LabServerError, false);
+		Users.start(true);
 		return null;
 	}
 };
 
 Server.videoStarted = function(showId, mediaSourceID, playMethod) {
-	var url = this.serverAddr + "/Sessions/Playing";
-	xmlHttp = new XMLHttpRequest();
-	if (xmlHttp) {
-		var contentToPost = '{"QueueableMediaTypes":["Video"],"CanSeek":false,"ItemId":' + showId + ',"MediaSourceId":' + mediaSourceID + ',"IsPaused":false,"IsMuted":false,"PositionTicks":0,"PlayMethod":' + playMethod + '}';
-		xmlHttp.open("POST", url , true); //must be true!
-		xmlHttp = this.setRequestHeaders(xmlHttp);
-		xmlHttp.send(contentToPost);
-	}
+	var url = this.getServerAddr() + "/Sessions/Playing";
+	var contentToPost = '{"QueueableMediaTypes":["Video"],"CanSeek":false,"ItemId":' + showId + ',"MediaSourceId":' + mediaSourceID + ',"IsPaused":false,"IsMuted":false,"PositionTicks":0,"PlayMethod":' + playMethod + '}';
+	this.getHttpData("POST", url, true, contentToPost);
 };
 
 Server.videoStopped = function(showId, mediaSourceID, ticks, playMethod) {
-	var url = this.serverAddr + "/Sessions/Playing/Stopped";
-	xmlHttp = new XMLHttpRequest();
-	if (xmlHttp) {
-		var contentToPost = '{"QueueableMediaTypes":["Video"],"CanSeek":false,"ItemId":' + showId + ',"MediaSourceId":' + mediaSourceID + ',"IsPaused":false,"IsMuted":false,"PositionTicks":' + (ticks*10000) + ',"PlayMethod":' + playMethod + '}';
-		xmlHttp.open("POST", url , true); //must be true!
-		xmlHttp = this.setRequestHeaders(xmlHttp);
-		xmlHttp.send(contentToPost);
-	}
+	var url = this.getServerAddr() + "/Sessions/Playing/Stopped";
+	var contentToPost = '{"QueueableMediaTypes":["Video"],"CanSeek":false,"ItemId":' + showId + ',"MediaSourceId":' + mediaSourceID + ',"IsPaused":false,"IsMuted":false,"PositionTicks":' + (ticks * 10000) + ',"PlayMethod":' + playMethod + '}';
+	this.getHttpData("POST", url, true, contentToPost);
 };
 
 Server.videoPaused = function(showId, mediaSourceID, ticks, playMethod) {
-	var url = this.serverAddr + "/Sessions/Playing/Progress";
-	xmlHttp = new XMLHttpRequest();
-	if (xmlHttp) {
-		var contentToPost = '{"QueueableMediaTypes":["Video"],"CanSeek":false,"ItemId":' + showId + ',"MediaSourceId":' + mediaSourceID + ',"IsPaused":true,"IsMuted":false,"PositionTicks":'+(ticks*10000)+',"PlayMethod":' + PlayMethod + '}';
-		xmlHttp.open("POST", url , true); //must be true!
-		xmlHttp = this.setRequestHeaders(xmlHttp);
-		xmlHttp.send(contentToPost);
-	}
+	var url = this.getServerAddr() + "/Sessions/Playing/Progress";
+	var contentToPost = '{"QueueableMediaTypes":["Video"],"CanSeek":false,"ItemId":' + showId + ',"MediaSourceId":' + mediaSourceID + ',"IsPaused":true,"IsMuted":false,"PositionTicks":'+(ticks * 10000)+',"PlayMethod":' + PlayMethod + '}';
+	this.getHttpData("POST", url, true, contentToPost);
 };
 
 Server.videoTime = function(showId, mediaSourceID, ticks, playMethod) {
-	var url = this.serverAddr + "/Sessions/Playing/Progress";
-	xmlHttp = new XMLHttpRequest();
-	if (xmlHttp) {
-		var contentToPost = '{"QueueableMediaTypes":["Video"],"CanSeek":false,"ItemId":' + showId + ',"MediaSourceId":' + mediaSourceID + ',"IsPaused":false,"IsMuted":false,"PositionTicks":' + (ticks*10000) + ',"PlayMethod":' + playMethod + '}';
-		xmlHttp.open("POST", url , true); //must be true!
-		xmlHttp = this.setRequestHeaders(xmlHttp);
-		xmlHttp.send(contentToPost);
-	}
+	var url = this.getServerAddr() + "/Sessions/Playing/Progress";
+	var contentToPost = '{"QueueableMediaTypes":["Video"],"CanSeek":false,"ItemId":' + showId + ',"MediaSourceId":' + mediaSourceID + ',"IsPaused":false,"IsMuted":false,"PositionTicks":' + (ticks * 10000) + ',"PlayMethod":' + playMethod + '}';
+	this.getHttpData("POST", url, true, contentToPost);
 };
 
 Server.stopHLSTranscode = function() {
-	var url = this.serverAddr + "/Videos/ActiveEncodings?DeviceId=" + this.DeviceID;
-	xmlHttp = new XMLHttpRequest();
-	if (xmlHttp) {
-		xmlHttp.open("POST", url , true); //must be true!
-		xmlHttp = this.setRequestHeaders(xmlHttp);
-		xmlHttp.send(null);
-	}
+	var url = this.getServerAddr() + "/Videos/ActiveEncodings?DeviceId=" + this.getDeviceID();
+	this.getHttpData("POST", url, true, null);
 };
 
 //------------------------------------------------------------
@@ -364,23 +351,13 @@ Server.stopHLSTranscode = function() {
 //------------------------------------------------------------
 
 Server.setWatchedStatus = function(id) {
-	var url = this.serverAddr + "/Users/" + this.UserID + "/PlayedItems/" + id;
-	xmlHttp = new XMLHttpRequest();
-	if (xmlHttp) {
-		xmlHttp.open("POST", url , true); //must be true!
-		xmlHttp = this.setRequestHeaders(xmlHttp);
-		xmlHttp.send(null);
-	}
+	var url = this.getServerAddr() + "/Users/" + this.getUserID() + "/PlayedItems/" + id;
+	this.getHttpData("POST", url, true, null);
 };
 
 Server.deleteWatchedStatus = function(id) {
-	var url = this.serverAddr + "/Users/" + this.UserID + "/PlayedItems/" + id;
-	xmlHttp = new XMLHttpRequest();
-	if (xmlHttp) {
-		xmlHttp.open("DELETE", url , true); //must be true!
-		xmlHttp = this.setRequestHeaders(xmlHttp);
-		xmlHttp.send(null);
-	}
+	var url = this.getServerAddr() + "/Users/" + this.getUserID() + "/PlayedItems/" + id;
+	this.getHttpData("DELETE", url, true, null);
 };
 
 //------------------------------------------------------------
@@ -388,23 +365,13 @@ Server.deleteWatchedStatus = function(id) {
 //------------------------------------------------------------
 
 Server.setFavourite = function(id) {
-	var url = this.serverAddr + "/Users/" + this.UserID + "/FavoriteItems/" + id;
-	xmlHttp = new XMLHttpRequest();
-	if (xmlHttp) {
-		xmlHttp.open("POST", url , true); //must be true!
-		xmlHttp = this.setRequestHeaders(xmlHttp);
-		xmlHttp.send(null);
-	}
+	var url = this.getServerAddr() + "/Users/" + this.getUserID() + "/FavoriteItems/" + id;
+	this.getHttpData("POST", url, true, null);
 };
 
 Server.deleteFavourite = function(id) {
-	var url = this.serverAddr + "/Users/" + this.UserID + "/FavoriteItems/" + id;
-	xmlHttp = new XMLHttpRequest();
-	if (xmlHttp) {
-		xmlHttp.open("DELETE", url , true); //must be true!
-		xmlHttp = this.setRequestHeaders(xmlHttp);
-		xmlHttp.send(null);
-	}
+	var url = this.getServerAddr() + "/Users/" + this.getUserID() + "/FavoriteItems/" + id;
+	this.getHttpData("DELETE", url, true, null);
 };
 
 //------------------------------------------------------------
@@ -412,69 +379,38 @@ Server.deleteFavourite = function(id) {
 //------------------------------------------------------------
 
 Server.createPlaylist = function(name, ids, mediaType) {
-	var url = this.serverAddr + "/Playlists?Name=" + name + "&Ids=" + ids + "&userId="+Server.getUserID() + "&MediaType=" + mediaType;
-	xmlHttp = new XMLHttpRequest();
-	if (xmlHttp) {
-		xmlHttp.open("POST", url , true); //must be true!
-		xmlHttp = this.setRequestHeaders(xmlHttp);
-		xmlHttp.send(null);
-	}
+	var url = this.getServerAddr() + "/Playlists?Name=" + name + "&Ids=" + ids + "&userId=" + this.getUserID() + "&MediaType=" + mediaType;
+	this.getHttpData("POST", url, true, null);
 };
 
 Server.deletePlaylist = function(playlistId) {
-	var url = this.serverAddr + "/Items/" + playlistId;
-	xmlHttp = new XMLHttpRequest();
-	if (xmlHttp) {
-		xmlHttp.open("DELETE", url , true); //must be true!
-		xmlHttp = this.setRequestHeaders(xmlHttp);
-		xmlHttp.send(null);
-	}
+	var url = this.getServerAddr() + "/Items/" + playlistId;
+	this.getHttpData("DELETE", url, true, null);
 };
 
 Server.addToPlaylist = function(playlistId, ids) {
-	var url = this.serverAddr + "/Playlists/"+ playlistId + "/Items?Ids=" + ids + "&userId=" + Server.getUserID();
-	xmlHttp = new XMLHttpRequest();
-	if (xmlHttp) {
-		xmlHttp.open("POST", url , true); //must be true!
-		xmlHttp = this.setRequestHeaders(xmlHttp);
-		xmlHttp.send(null);
-	}
+	var url = this.getServerAddr() + "/Playlists/"+ playlistId + "/Items?Ids=" + ids + "&userId=" + this.getUserID();
+	this.getHttpData("POST", url, true, null);
 };
 
 Server.removeFromPlaylist = function(playlistId, ids) {
-	var url = this.serverAddr + "/Playlists/"+ playlistId + "/Items?EntryIds=" + ids + "&userId=" + Server.getUserID();
-	alert(url);
-	xmlHttp = new XMLHttpRequest();
-	if (xmlHttp) {
-		xmlHttp.open("DELETE", url , true); //must be true!
-		xmlHttp = this.setRequestHeaders(xmlHttp);
-		xmlHttp.send(null);
-	}
+	var url = this.getServerAddr() + "/Playlists/"+ playlistId + "/Items?EntryIds=" + ids + "&userId=" + this.getUserID();
+	this.getHttpData("DELETE", url, true, null);
 };
 
 Server.POST = function(url, item) {
-	xmlHttp = new XMLHttpRequest();
-	if (xmlHttp) {
-		xmlHttp.open("POST", url , true); //must be true!
-		xmlHttp = this.setRequestHeaders(xmlHttp);
-		if (item){
-			xmlHttp.send(JSON.stringify(item));
-		} else {
-			xmlHttp.send(null);
-		}
+	if (item){
+		this.getHttpData("POST", url, true, JSON.stringify(item));
+	} else {
+		this.getHttpData("POST", url, true, null);
 	}
 };
 
 Server.DELETE = function(url, item) {
-	xmlHttp = new XMLHttpRequest();
-	if (xmlHttp) {
-		xmlHttp.open("DELETE", url , true); //must be true!
-		xmlHttp = this.setRequestHeaders(xmlHttp);
-		if (item){
-			xmlHttp.send(JSON.stringify(item));
-		} else {
-			xmlHttp.send(null);
-		}
+	if (item){
+		this.getHttpData("DELETE", url, true, JSON.stringify(item));
+	} else {
+		this.getHttpData("DELETE", url, true, null);
 	}
 };
 
@@ -483,77 +419,74 @@ Server.DELETE = function(url, item) {
 //------------------------------------------------------------
 
 Server.testConnectionSettings = function (server, fromFile) {
-	xmlHttp = new XMLHttpRequest();
-	if (xmlHttp) {
-		xmlHttp.open("GET", "http://" + server + "/jellyfin/System/Info/Public?format=json",false);
-		xmlHttp.setRequestHeader("Content-Type", 'application/json');
-		xmlHttp.onreadystatechange = function () {
-			GuiNotifications.setNotification("hello","Network Status",true);
-			if (xmlHttp.readyState == 4) {
-				if(xmlHttp.status === 200) {
+	this.initHttpRequest();
+	if (this.xmlHttp) {
+		this.xmlHttp.open("GET", "http://" + server + "/jellyfin/System/Info/Public?format=json",false);
+		this.xmlHttp.setRequestHeader("Content-Type", 'application/json');
+		this.xmlHttp.onreadystatechange = function() {
+			Notifications.setNotification("Hello", Main.messages.LabNetworkStatus, true);
+			if (Server.xmlHttp.readyState == 4) {
+				if(Server.xmlHttp.status === 200) {
 					if (fromFile == false) {
-						var json = JSON.parse(xmlHttp.responseText);
-						File.saveServerToFile(json.Id,json.ServerName,server);
+						var json = JSON.parse(Server.xmlHttp.responseText);
+						File.saveServerToFile(json.Id, json.ServerName, server);
 					}
 					//Set Server.serverAddr!
 					Server.setServerAddr("http://" + server + "/jellyfin");
 					//Check Server Version
 					if (ServerVersion.checkServerVersion()) {
-						GuiUsers.start(true);
+						Users.start(true);
 					} else {
 						ServerVersion.start();
 					}
-				} else if (xmlHttp.status === 0) {
-					GuiNotifications.setNotification("Your Jellyfin server is not responding.","Network Error "+xmlHttp.status,true);
+				} else if (Server.xmlHttp.status === 0) {
+					Notifications.setNotification(Main.messages.LabJellefinRes + Server.xmlHttp.status + ".", Main.messages.LabNetworkError, true);
 					Support.removeSplashScreen();
 					if (fromFile == true) {
 						setTimeout(function(){
-							GuiPage_Servers.start();
+							GuiServers.start();
 						}, 3000);
 
 					} else {
 						setTimeout(function(){
-							GuiNewServer.start();
+							NewServer.start();
 						}, 3000);
 					}
 				} else {
-					GuiNotifications.setNotification("Jellyfin server connection error.","Network Error "+xmlHttp.status,true);
+					Notifications.setNotification(Main.messages.LabJellefinCon + Server.xmlHttp.status + ".", Main.messages.LabNetworkError, true);
 					Support.removeSplashScreen();
 					if (fromFile == true) {
 						setTimeout(function(){
-							GuiPage_Servers.start();
+							GuiServers.start();
 						}, 3000);
 
 					} else {
 						setTimeout(function(){
-							GuiNewServer.start();
+							NewServer.start();
 						}, 3000);
 					}
 				}
 			}
 		};
-		xmlHttp.send(null);
+		this.xmlHttp.send(null);
 	} else {
 		alert("Failed to create XHR");
 	}
 };
 
 //------------------------------------------------------------
-//		GuiUsers Functions
+//	Users Functions
 //------------------------------------------------------------
 
 Server.Authenticate = function(userId, userName, password) {
 	var url = Server.getServerAddr() + "/Users/AuthenticateByName?format=json";
 	var params =  JSON.stringify({"Username":userName,"Pw":password});
-	var xmlHttp = new XMLHttpRequest();
-	xmlHttp.open( "POST", url , false ); //Authenticate must be false - need response before continuing!
-	xmlHttp = this.setRequestHeaders(xmlHttp);
-	xmlHttp.send(params);
-	if (xmlHttp.status != 200) {
+	this.getHttpData("POST", url, false, params);
+	if (this.xmlHttp.status != 200) {
 		return false;
 	} else {
-		var session = JSON.parse(xmlHttp.responseText);
-		this.AuthenticationToken = session.AccessToken;
+		var session = JSON.parse(this.xmlHttp.responseText);
+		this.setAuthToken(session.AccessToken);
 		this.setUserID(session.User.Id);
 		this.setUserName(userName);
 		FileLog.write("User " + userName + " authenticated. ");
@@ -562,13 +495,8 @@ Server.Authenticate = function(userId, userName, password) {
 };
 
 Server.Logout = function() {
-	var url = this.serverAddr + "/Sessions/Logout";
-	xmlHttp = new XMLHttpRequest();
-	if (xmlHttp) {
-		xmlHttp.open("POST", url , true); //must be true!
-		xmlHttp = this.setRequestHeaders(xmlHttp);
-		xmlHttp.send(null);
-	}
+	var url = this.getServerAddr() + "/Sessions/Logout";
+	this.getHttpData("POST", url, true, null);
 	//Close down any running items
 	GuiImagePlayerScreensaver.kill();
 	GuiImagePlayer.kill();
@@ -582,25 +510,25 @@ Server.Logout = function() {
 //------------------------------------------------------------
 
 Server.getContent = function(url) {
-	var xmlHttp = new XMLHttpRequest();
-	if (xmlHttp) {
-		xmlHttp.open("GET", url , false); //must be false
-		xmlHttp = this.setRequestHeaders(xmlHttp);
-		xmlHttp.send(null);
-		if (xmlHttp.status != 200) {
-			FileLog.write("Server Error: The HTTP status returned by the server was " + xmlHttp.status);
+	this.initHttpRequest();
+	if (this.xmlHttp) {
+		this.xmlHttp.open("GET", url, false); //must be false
+		this.setRequestHeaders();
+		this.xmlHttp.send(null);
+		if (this.xmlHttp.status != 200) {
+			FileLog.write("Server Error: The HTTP status returned by the server was " + this.xmlHttp.status);
 			FileLog.write(url);
-			GuiNotifications.setNotification("The HTTP status code returned by the server was " + xmlHttp.status + ".", "Server Error:");
+			Notifications.setNotification(Main.messages.LabHTTPStatus + this.xmlHttp.status + ".", Main.messages.LabServerError);
 			return null;
 		} else {
 			//alert(xmlHttp.responseText);
-			return JSON.parse(xmlHttp.responseText);
+			return JSON.parse(this.xmlHttp.responseText);
 		}
 	} else {
 		alert ("Bad xmlHTTP Request");
-		Server.Logout();
-		GuiNotifications.setNotification("Bad xmlHTTP Request<br>Token: " + Server.getAuthToken(),"Server Error",false);
-		GuiUsers.start(true);
+		this.Logout();
+		Notifications.setNotification(Main.messages.LabBadRequest + this.getAuthToken(), Main.messages.LabServerError, false);
+		Users.start(true);
 		return null;
 	}
 };

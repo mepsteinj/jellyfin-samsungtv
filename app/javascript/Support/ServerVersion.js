@@ -1,19 +1,27 @@
 var ServerVersion = {
-	ServerInfo : null
+	serverInfo : null
+};
+
+ServerVersion.getServerInfo = function() {
+  return this.serverInfo;
+};
+
+ServerVersion.setServerInfo = function(serverInfo) {
+  this.serverInfo = serverInfo;
 };
 
 ServerVersion.start = function() {
 	Support.widgetPutInnerHTML("pageContent", "<div class='padding60' style='text-align:center'> \
-			<p style='padding-bottom:5px;'>The Samsung app requires a later version of the Server - Please update it and restart the app</p>");
-	document.getElementById("serverVersion").focus();
+			<p style='padding-bottom:5px;'>" + Main.messages. LabServerVersion + "</p>");
+	document.getElementById("envServerVersion").focus();
 };
 
 ServerVersion.checkServerVersion = function() {
 	var url = Server.getCustomURL("/System/Info/Public?format=json");
-	this.ServerInfo = Server.getContent(url);
-	if (this.ServerInfo == null) { return; }
+	this.setServerInfo(Server.getContent(url));
+	if (this.getServerInfo() == null) { return; }
 	var requiredServerVersion = Main.getRequiredServerVersion();
-	var currentServerVersion = this.ServerInfo.Version;
+	var currentServerVersion = this.getServerInfo().Version;
 	if (currentServerVersion >= requiredServerVersion) {
 		return true;
 	} else {
@@ -25,8 +33,7 @@ ServerVersion.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 	if (document.getElementById("notifications").style.visibility == "") {
-		document.getElementById("notifications").style.visibility = "hidden";
-		Support.widgetPutInnerHTML("notificationText", "");
+		Notifications.delNotification();
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";

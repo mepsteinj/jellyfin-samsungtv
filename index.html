@@ -27,47 +27,47 @@
 		<script src="app/javascript/Support/File.js"></script>
 		<script src="app/javascript/Support/FileLog.js"></script>
 		<script src="app/javascript/Support/Sha1.js"></script>
-		<script src="app/javascript/Support/GuiHelper.js"></script>
-		<script src="app/javascript/Support/GuiNotifications.js"></script>
+		<script src="app/javascript/Support/Helper.js"></script>
+		<script src="app/javascript/Support/Notifications.js"></script>
 		<script src="app/javascript/Support/PolyFill.js"></script>
 		<script src="app/javascript/Support/ServerVersion.js"></script>
 		<script src="app/javascript/Support/SrtParser.js"></script>
 		<script src="app/javascript/Strings/en.js"></script>
 		<script src="app/javascript/Strings/ru.js"></script>
-		<script src="app/javascript/Gui/GuiNewServer.js"></script>
-		<script src="app/javascript/Gui/GuiServers.js"></script>
-		<script src="app/javascript/Gui/GuiUsers.js"></script>
-		<script src="app/javascript/Gui/GuiUsersManual.js"></script>
-		<script src="app/javascript/Gui/GuiMainMenu.js"></script>
-		<script src="app/javascript/Gui/GuiTVShow.js"></script>
-		<script src="app/javascript/Gui/GuiTVUpcoming.js"></script>
-		<script src="app/javascript/Gui/GuiPlayer/GuiPlayer.js"></script>
-		<script src="app/javascript/Gui/GuiPlayer/GuiPlayerDisplay.js"></script>
-		<script src="app/javascript/Gui/GuiPlayer/Lang.js"></script>
-		<script src="app/javascript/Gui/GuiPlayer/GuiPlayerVersions.js"></script>
-		<script src="app/javascript/Gui/GuiPlayer/GuiPlayerTranscoding.js"></script>
-		<script src="app/javascript/Gui/GuiPlayer/GuiPlayerTranscodeParams.js"></script>
-		<script src="app/javascript/Gui/GuiMusicPlayer/GuiMusicPlayer.js"></script>
-		<script src="app/javascript/Gui/GuiItemDetails.js"></script>
-		<script src="app/javascript/Gui/GuiDisplaySeries.js"></script>
-		<script src="app/javascript/Gui/GuiDisplayEpisodes.js"></script>
-		<script src="app/javascript/Gui/GuiDisplayOneItem.js"></script>
-		<script src="app/javascript/Gui/GuiContributors.js"></script>
-		<script src="app/javascript/Gui/GuiHomeOneItem.js"></script>
-		<script src="app/javascript/Gui/GuiHomeTwoItems.js"></script>
-		<script src="app/javascript/Gui/GuiMusic.js"></script>
-		<script src="app/javascript/Gui/GuiMusicAZ.js"></script>
-		<script src="app/javascript/Gui/GuiMusicArtist.js"></script>
-		<script src="app/javascript/Gui/GuiCastMember.js"></script>
-		<script src="app/javascript/Gui/GuiSettings.js"></script>
-		<script src="app/javascript/Gui/GuiSettingsLog.js"></script>
-		<script src="app/javascript/Gui/GuiTVGuide.js"></script>
-		<script src="app/javascript/Gui/GuiPhotos.js"></script>
-		<script src="app/javascript/Gui/GuiImagePlayer/GuiImagePlayer.js"></script>
-		<script src="app/javascript/Gui/GuiImagePlayer/GuiImagePlayerScreensaver.js"></script>
-		<script src="app/javascript/Gui/GuiPlaylist.js"></script>
-		<script src="app/javascript/Gui/GuiAddToPlaylist.js"></script>
-		<script src="app/javascript/Gui/GuiSearch.js"></script>
+		<script src="app/javascript/Gui/NewServer.js"></script>
+		<script src="app/javascript/Gui/Servers.js"></script>
+		<script src="app/javascript/Gui/Users.js"></script>
+		<script src="app/javascript/Gui/UsersManual.js"></script>
+		<script src="app/javascript/Gui/MainMenu.js"></script>
+		<script src="app/javascript/Gui/TVShow.js"></script>
+		<script src="app/javascript/Gui/TVUpcoming.js"></script>
+		<script src="app/javascript/Gui/Player/Player.js"></script>
+		<script src="app/javascript/Gui/Player/PlayerDisplay.js"></script>
+		<script src="app/javascript/Gui/Player/Lang.js"></script>
+		<script src="app/javascript/Gui/Player/PlayerVersions.js"></script>
+		<script src="app/javascript/Gui/Player/PlayerTranscoding.js"></script>
+		<script src="app/javascript/Gui/Player/PlayerTranscodeParams.js"></script>
+		<script src="app/javascript/Gui/MusicPlayer/GuiMusicPlayer.js"></script>
+		<script src="app/javascript/Gui/ItemDetails.js"></script>
+		<script src="app/javascript/Gui/DisplaySeries.js"></script>
+		<script src="app/javascript/Gui/DisplayEpisodes.js"></script>
+		<script src="app/javascript/Gui/DisplayOneItem.js"></script>
+		<script src="app/javascript/Gui/Contributors.js"></script>
+		<script src="app/javascript/Gui/HomeOneItem.js"></script>
+		<script src="app/javascript/Gui/HomeTwoItems.js"></script>
+		<script src="app/javascript/Gui/Music.js"></script>
+		<script src="app/javascript/Gui/MusicAZ.js"></script>
+		<script src="app/javascript/Gui/MusicArtist.js"></script>
+		<script src="app/javascript/Gui/CastMember.js"></script>
+		<script src="app/javascript/Gui/Settings.js"></script>
+		<script src="app/javascript/Gui/SettingsLog.js"></script>
+		<script src="app/javascript/Gui/TVGuide.js"></script>
+		<script src="app/javascript/Gui/Photos.js"></script>
+		<script src="app/javascript/Gui/ImagePlayer/ImagePlayer.js"></script>
+		<script src="app/javascript/Gui/ImagePlayer/ImagePlayerScreensaver.js"></script>
+		<script src="app/javascript/Gui/Playlist.js"></script>
+		<script src="app/javascript/Gui/AddToPlaylist.js"></script>
+		<script src="app/javascript/Gui/Search.js"></script>
 
 		<object id="pluginPlayer" border=0 classid="clsid:SAMSUNG-INFOLINK-PLAYER"></object>
 		<object id="pluginObjectAudio" border=0 classid="clsid:SAMSUNG-INFOLINK-AUDIO"></object>
@@ -85,13 +85,13 @@
 
 		<!-- Register page events -->
 		<a href="javascript:void(0);" id="noItems" onkeydown="Support.noItemsKeyDown();"></a>
-		<a href="javascript:void(0);" id="serverVersion" onkeydown="ServerVersion.keyDown();"></a>
-		<a href="javascript:void(0);" id="guiServers" onkeydown="GuiServers.keyDown();"></a>
-		<a href="javascript:void(0);" id="guiUsers" onkeydown="GuiUsers.keyDown();"></a>
-		<a href="javascript:void(0);" id="guiUsersPwd1205" onkeydown="GuiUsers.keyDownPassword();"></a>
+		<a href="javascript:void(0);" id="envServerVersion" onkeydown="ServerVersion.keyDown();"></a>
+		<a href="javascript:void(0);" id="envServers" onkeydown="GuiServers.keyDown();"></a>
+		<a href="javascript:void(0);" id="envUsers" onkeydown="Users.keyDown();"></a>
+		<a href="javascript:void(0);" id="envUsersPwd" onkeydown="Users.keyDownPassword();"></a>
 		<a href="javascript:void(0);" id="guiUsersManual" onkeydown="GuiUsersManual.keyDown();"></a>
 		<a href="javascript:void(0);" id="guiUsersManualPwd" onkeydown="GuiUsersManual.keyDownPassword();"></a>
-		<a href="javascript:void(0);" id="guiHelper" onkeydown="GuiHelper.keyDown();"></a>
+		<a href="javascript:void(0);" id="envHelper" onkeydown="Helper.keyDown();"></a>
 		<a href="javascript:void(0);" id="guiMainMenu" onkeydown="GuiMainMenu.keyDown();"></a>
 		<a href="javascript:void(0);" id="guiMainMenuSubMenu" onkeydown="GuiMainMenu.keyDownSubMenu();"></a>
 		<a href="javascript:void(0);" id="guiTVShow" onkeydown="GuiTVShow.keyDown();" onfocus="GuiTV_Show.onFocus();"></a>
@@ -110,7 +110,7 @@
 		<a href="javascript:void(0);" id="guiDisplayEpisodes" onkeydown="GuiDisplayEpisodes.keyDown();" onfocus="GuiDisplayEpisodes.onFocus();"></a>
 		<a href="javascript:void(0);" id="guiDisplayOneItem" onkeydown="GuiDisplayOneItem.keyDown();" onfocus="GuiDisplayOneItem.onFocus();"></a>
 		<a href="javascript:void(0);" id="guiContributors" onkeydown="GuiContributors.keyDown();" onfocus="GuiContributors.onFocus();"></a>
-		<a href="javascript:void(0);" id="guiHomeOneItem" onkeydown="GuiHomeOneItem.keyDown();" onfocus="GuiHomeOneItem.onFocus();"></a>
+		<a href="javascript:void(0);" id="envHomeOneItem" onkeydown="GuiHomeOneItem.keyDown();" onfocus="GuiHomeOneItem.onFocus();"></a>
 		<a href="javascript:void(0);" id="guiHomeTwoItems" onkeydown="GuiHomeTwoItems.keyDown();" onfocus="GuiHomeTwoItems.onFocus();"></a>
 		<a href="javascript:void(0);" id="guiHomeTwoItemsBottom" onkeydown="GuiHomeTwoItems.bottomKeyDown();"></a>
 		<a href="javascript:void(0);" id="guiMusicArtist" onkeydown="GuiMusicArtist.keyDown();" onfocus="GuiMusicArtist.onFocus();"></a>
