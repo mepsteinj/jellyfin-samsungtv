@@ -10,7 +10,7 @@ var GuiSearch = {
 };
 
 GuiSearch.onFocus = function() {
-	Helper.setControlButtons(null,null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
+	Helper.setControlButtons(null, null, null, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
 };
 
 GuiSearch.getMaxDisplay = function() {
@@ -269,7 +269,7 @@ GuiSearch.keyDown = function() {
 			//Favourites - May not be needed on this page
 			break;
 		case tvKey.KEY_BLUE:
-			GuiMusicPlayer.showMusicPlayer("GuiSearch",this.playItems[this.selectedItem2]+this.ItemData.SearchHints[this.selectedItem].ItemId,"guiMusic_TableTd highlight"+Main.highlightColour+"Background");
+			MusicPlayer.showMusicPlayer("Search", this.playItems[this.selectedItem2]+this.ItemData.SearchHints[this.selectedItem].ItemId, "guiMusic_TableTd highlight"+Main.highlightColour+"Background");
 			break;
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY");
@@ -286,10 +286,10 @@ GuiSearch.openMenu = function(hasData) {
 			document.getElementById(this.playItems[index]+this.ItemData.SearchHints[this.selectedItem].ItemId).className = "guiMusic_TableTd";
 		}
 		this.selectedItem2 = 0;
-		GuiMainMenu.requested("GuiSearch",this.playItems[this.selectedItem2]+this.ItemData.SearchHints[this.selectedItem].ItemId,"guiMusic_TableTd highlight"+Main.highlightColour+"Background");
+		MainMenu.requested("Search",this.playItems[this.selectedItem2]+this.ItemData.SearchHints[this.selectedItem].ItemId,"guiMusic_TableTd highlight"+Main.highlightColour+"Background");
 	} else {
 		Support.updateURLHistory("GuiSearch",null,null,null,null,null,null,null);
-		GuiMainMenu.requested("GuiSearch","searchInput");
+		MainMenu.requested("Search","searchInput");
 	}
 };
 

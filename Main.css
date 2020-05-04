@@ -366,7 +366,7 @@ input[type="password"] {
     color: white;
     z-index: 9999;
     background-color: #303030;
-    border-radius: 5px;
+    border-radius: 10px;
 }
 
 .notificationText {
@@ -415,25 +415,56 @@ input[type="password"] {
 .newServer12key {
     position: absolute;
     padding: 30px;
-    top: 350px;
-    left: 400px;
+    top: 380px;
+    left: 450px;
     width: 740px;
     height: 310px;
     text-align: center;
     background-color: #303030;
-    border-radius: 5px;
+    border-radius: 10px;
     z-index: 5;
 }
 
 .serversAddNew {
     position: relative;
     top: 0px;
-    left: 780px;
-    width: 360px;
+    left: 760px;
+    width: 400px;
     height: 60px;
     margin-top: 40px;
     border: 2px solid black;
     background-color: #303030;
+    border-radius: 10px;
+    line-height: 60px;
+    text-align: center;
+    z-index: 5;
+}
+
+.usersManual {
+    position: relative;
+    top: 0px;
+    left: 760px;
+    width: 400px;
+    height: 60px;
+    margin-top: 5px;
+    border: 2px solid black;
+    background-color: #303030;
+    border-radius: 10px;
+    line-height: 60px;
+    text-align: center;
+    z-index: 5;
+}
+
+.serversChange {
+    position: relative;
+    top: 0px;
+    left: 760px;
+    width: 400px;
+    height: 60px;
+    margin-top: 5px;
+    border: 2px solid black;
+    background-color: #303030;
+    border-radius: 10px;
     line-height: 60px;
     text-align: center;
     z-index: 5;

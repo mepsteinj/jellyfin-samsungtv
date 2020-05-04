@@ -35,7 +35,7 @@ var GuiPlayer = {
 
 
 GuiPlayer.init = function() {
-	GuiMusicPlayer.stopOnAppExit();
+	MusicPlayer.stopOnAppExit();
 	this.plugin = document.getElementById("pluginPlayer");
 	this.pluginAudio = document.getElementById("pluginObjectAudio");
 	this.pluginScreen = document.getElementById("pluginScreen");
@@ -55,8 +55,8 @@ GuiPlayer.init = function() {
 };
 
 GuiPlayer.start = function(title, url, startingPlaybackTick, playedFromPage, isCinemaMode, featureUrl) {
-	if (GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED") {
-		GuiMusicPlayer.stopPlayback();
+	if (MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED") {
+		MusicPlayer.stopPlayback();
 	}
 	//Run only once in loading initial request - subsequent vids should go thru the startPlayback
 	this.startParams = [title,url,startingPlaybackTick,playedFromPage,isCinemaMode,featureUrl];
@@ -403,7 +403,7 @@ GuiPlayer.setCurrentTime = function(time) {
 };
 
 GuiPlayer.onBufferingStart = function() {
-	if (GuiMusicPlayer.Status == "PLAYING"){
+	if (MusicPlayer.Status == "PLAYING"){
 		return;
 	}
 	this.Status = "PLAYING";
@@ -425,7 +425,7 @@ GuiPlayer.onBufferingProgress = function(percent) {
 };
 
 GuiPlayer.onBufferingComplete = function() {
-	if (GuiMusicPlayer.Status == "PLAYING"){
+	if (MusicPlayer.Status == "PLAYING"){
 		return;
 	}
 	FileLog.write("Playback : Buffering Complete");

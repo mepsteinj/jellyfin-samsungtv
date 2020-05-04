@@ -1,4 +1,4 @@
-var GuiHomeTwoItems = {
+var HomeTwoItems = {
 	selectedBannerItem : -1,
 	ItemData : null,
 	selectedItem : 0,
@@ -17,20 +17,20 @@ var GuiHomeTwoItems = {
 	backdropTimeout : null
 };
 
-GuiHomeTwoItems.onFocus = function() {
-	Helper.setControlButtons("Favourite","Watched","Help",GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Exit  ");
+HomeTwoItems.onFocus = function() {
+	Helper.setControlButtons("Favourite", "Watched", "Help", MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Exit  ");
 };
 
-GuiHomeTwoItems.getMaxDisplay = function() {
+HomeTwoItems.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
 };
 
-GuiHomeTwoItems.getMaxDisplayBottom = function() {
+HomeTwoItems.getMaxDisplayBottom = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
 };
 
-GuiHomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,topLeftItem,isTop) {
-	alert("Page Enter : GuiHomeTwoItems");
+HomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,topLeftItem,isTop) {
+	alert("Page Enter : HomeTwoItems");
 
 	//Save Start Params
 	this.startParams = [title1, url1, title2, url2];
@@ -81,7 +81,7 @@ GuiHomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,topLeft
 			this.topLeftItem = topLeftItem;
 			this.topLeftItem2 = 0;
 			//Set Focus for Key Events
-			document.getElementById("GuiHomeTwoItems").focus();
+			document.getElementById("envHomeTwoItems").focus();
 		}
 
 		//Set PageContent
@@ -100,7 +100,7 @@ GuiHomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,topLeft
 		document.getElementById("Center").style.width = "1620px";
 
 		//Generate Banner Items
-		this.menuItems = GuiMainMenu.menuItemsHomePages;
+		this.menuItems = MainMenu.menuItemsHomePages;
 
 		//Generate Banner display
 		for (var index = 0; index < this.menuItems.length; index++) {
@@ -145,13 +145,13 @@ GuiHomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,topLeft
 		}, 500);
 
 	} else if (this.ItemData.Items.length > 0 && this.ItemData2.Items.length == 0) {
-		GuiHomeOneItem.start(title1, url1, 0, 0);
+		HomeOneItem.start(title1, url1, 0, 0);
 	} else if (this.ItemData.Items.length == 0 && this.ItemData2.Items.length > 0) {
-		GuiHomeOneItem.start(title2,url2, 0, 0);
+		HomeOneItem.start(title2,url2, 0, 0);
 	} else if (this.ItemData.Items.length == 0 && this.ItemData2.Items.length == 0) {
 		//No data to Show at all!!
 		//Generate Media Collections title & URL!
-		GuiHomeOneItem.start(title1, url1, 0, 0);
+		HomeOneItem.start(title1, url1, 0, 0);
 	}
 };
 
@@ -159,18 +159,18 @@ GuiHomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,topLeft
 //      TOP ITEMS HANDLERS
 //---------------------------------------------------------------------------------------------------
 
-GuiHomeTwoItems.updateDisplayedItems = function() {
+HomeTwoItems.updateDisplayedItems = function() {
 		Support.updateDisplayedItems(this.ItemData.Items,this.selectedItem,this.topLeftItem,
 				Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Content",this.divprepend1,this.isResume,null,true);
 };
 
 //Function sets CSS Properties so show which user is selected
-GuiHomeTwoItems.updateSelectedItems = function (bypassCounter) {
+HomeTwoItems.updateSelectedItems = function (bypassCounter) {
 	Support.updateSelectedNEW(this.ItemData.Items, this.selectedItem, this.topLeftItem,
 			Math.min(this.topLeftItem + this.getMaxDisplay(), this.ItemData.Items.length), "homePagePoster collection selected highlight" + Main.highlightColour + "Boarder", "homePagePoster collection", this.divprepend1, bypassCounter);
 };
 
-GuiHomeTwoItems.updateSelectedBannerItems = function() {
+HomeTwoItems.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.menuItems.length; index++) {
 		if (index == this.selectedBannerItem && this.selectedItem == -2) {
 			if (index != this.menuItems.length-1) {
@@ -188,7 +188,7 @@ GuiHomeTwoItems.updateSelectedBannerItems = function() {
 	}
 };
 
-GuiHomeTwoItems.keyDown = function()
+HomeTwoItems.keyDown = function()
 {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
@@ -295,7 +295,7 @@ GuiHomeTwoItems.keyDown = function()
 			break;
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
-			GuiHomeTwoItems.openMenu();
+			HomeTwoItems.openMenu();
 			break;
 		case tvKey.KEY_RETURN:
 			alert("RETURN");
@@ -303,7 +303,7 @@ GuiHomeTwoItems.keyDown = function()
 			Support.processReturnURLHistory();
 			break;
 		case tvKey.KEY_YELLOW:
-			Helper.toggleHelp("GuiHomeTwoItems");
+			Helper.toggleHelp("HomeTwoItems");
 			break;
 		case tvKey.KEY_GREEN:
 			if (this.ItemData.Items[this.selectedItem].MediaType == "Video") {
@@ -315,8 +315,8 @@ GuiHomeTwoItems.keyDown = function()
 					this.ItemData.Items[this.selectedItem].UserData.Played = true;
 				}
 				setTimeout(function(){
-					GuiHomeTwoItems.updateDisplayedItems();
-					GuiHomeTwoItems.updateSelectedItems();
+					HomeTwoItems.updateDisplayedItems();
+					HomeTwoItems.updateSelectedItems();
 				}, 250);
 			}
 			break;
@@ -330,20 +330,20 @@ GuiHomeTwoItems.keyDown = function()
 					this.ItemData.Items[this.selectedItem].UserData.IsFavorite = true;
 				}
 				setTimeout(function(){
-					GuiHomeTwoItems.updateDisplayedItems();
-					GuiHomeTwoItems.updateSelectedItems();
+					HomeTwoItems.updateDisplayedItems();
+					HomeTwoItems.updateSelectedItems();
 				}, 250);
 			}
 			break;
 		case tvKey.KEY_BLUE:
 			if (this.selectedItem == -2) {
 				if (this.selectedBannerItem == this.menuItems.length-1) {
-					GuiMusicPlayer.showMusicPlayer("GuiHomeTwoItems","bannerItem"+this.selectedBannerItem,"bannerItemHome highlight"+Main.highlightColour+"Text");
+					MusicPlayer.showMusicPlayer("HomeTwoItems","bannerItem"+this.selectedBannerItem,"bannerItemHome highlight"+Main.highlightColour+"Text");
 				} else {
-					GuiMusicPlayer.showMusicPlayer("GuiHomeTwoItems","bannerItem"+this.selectedBannerItem,"bannerItemHome bannerItemPadding highlight"+Main.highlightColour+"Text");
+					MusicPlayer.showMusicPlayer("HomeTwoItems","bannerItem"+this.selectedBannerItem,"bannerItemHome bannerItemPadding highlight"+Main.highlightColour+"Text");
 				}
 			} else {
-				GuiMusicPlayer.showMusicPlayer("GuiHomeTwoItems",this.divprepend1 + this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.divprepend1 + this.ItemData.Items[this.selectedItem].Id).className);
+				MusicPlayer.showMusicPlayer("HomeTwoItems",this.divprepend1 + this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.divprepend1 + this.ItemData.Items[this.selectedItem].Id).className);
 			}
 			break;
 		case tvKey.KEY_EXIT:
@@ -353,21 +353,21 @@ GuiHomeTwoItems.keyDown = function()
 	}
 };
 
-GuiHomeTwoItems.openMenu = function() {
+HomeTwoItems.openMenu = function() {
 	if (this.selectedItem == -2) {
-		Support.updateURLHistory("GuiHomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem,this.topLeftItem,true);
+		Support.updateURLHistory("HomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem,this.topLeftItem,true);
 		if (this.selectedBannerItem == this.menuItems.length-1) {
-			GuiMainMenu.requested("GuiHomeTwoItems","bannerItem"+this.selectedBannerItem,"bannerItemHome highlight"+Main.highlightColour+"Text");
+			MainMenu.requested("HomeTwoItems","bannerItem"+this.selectedBannerItem,"bannerItemHome highlight"+Main.highlightColour+"Text");
 		} else {
-			GuiMainMenu.requested("GuiHomeTwoItems","bannerItem"+this.selectedBannerItem,"bannerItemHome bannerItemPadding highlight"+Main.highlightColour+"Text");
+			MainMenu.requested("HomeTwoItems","bannerItem"+this.selectedBannerItem,"bannerItemHome bannerItemPadding highlight"+Main.highlightColour+"Text");
 		}
 	} else {
-		Support.updateURLHistory("GuiHomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem,this.topLeftItem,true);
-		GuiMainMenu.requested("GuiHomeTwoItems",this.divprepend1 + this.ItemData.Items[this.selectedItem].Id);
+		Support.updateURLHistory("HomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem,this.topLeftItem,true);
+		MainMenu.requested("HomeTwoItems",this.divprepend1 + this.ItemData.Items[this.selectedItem].Id);
 	}
 };
 
-GuiHomeTwoItems.processLeftKey = function() {
+HomeTwoItems.processLeftKey = function() {
 	if (this.selectedItem == -2) {
 		this.selectedBannerItem--;
 		if (this.selectedBannerItem == -1) {
@@ -398,18 +398,18 @@ GuiHomeTwoItems.processLeftKey = function() {
 //      BOTTOM ITEMS HANDLERS
 //---------------------------------------------------------------------------------------------------
 
-GuiHomeTwoItems.updateDisplayedItems2 = function() {
+HomeTwoItems.updateDisplayedItems2 = function() {
 	Support.updateDisplayedItems(this.ItemData2.Items,this.selectedItem2,this.topLeftItem2,
 			Math.min(this.topLeftItem2 + this.getMaxDisplayBottom(),this.ItemData2.Items.length),"Content2",this.divprepend2,this.isResume2,null,true);
 };
 
 //Function sets CSS Properties so show which user is selected
-GuiHomeTwoItems.updateSelectedItems2 = function (bypassCounter) {
+HomeTwoItems.updateSelectedItems2 = function (bypassCounter) {
 	Support.updateSelectedNEW(this.ItemData2.Items, this.selectedItem2, this.topLeftItem2,
 			Math.min(this.topLeftItem2 + this.getMaxDisplayBottom(), this.ItemData2.Items.length), "homePagePoster collection selected highlight" + Main.highlightColour + "Boarder", "homePagePoster collection", this.divprepend2, bypassCounter);
 };
 
-GuiHomeTwoItems.bottomKeyDown = function()
+HomeTwoItems.bottomKeyDown = function()
 {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
@@ -443,8 +443,8 @@ GuiHomeTwoItems.bottomKeyDown = function()
 			if (this.selectedItem2 == -1) {
 				this.selectedItem2 = 0; //Going left from bottom items row.
 				//Open the menu
-				Support.updateURLHistory("GuiHomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem2,this.topLeftItem2,false);
-				GuiMainMenu.requested("GuiHomeTwoItemsBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id);
+				Support.updateURLHistory("HomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem2,this.topLeftItem2,false);
+				MainMenu.requested("HomeTwoItemsBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id);
 			} else {
 				if (this.selectedItem2 < this.topLeftItem2) {
 					this.topLeftItem2--;
@@ -484,7 +484,7 @@ GuiHomeTwoItems.bottomKeyDown = function()
 				this.selectedItem2 = 0;
 
 				//Set Focus
-				document.getElementById("GuiHomeTwoItems").focus();
+				document.getElementById("envHomeTwoItems").focus();
 				//Update Selected
 				this.selectedItem = 0;
 				this.updateSelectedItems(false);
@@ -500,8 +500,8 @@ GuiHomeTwoItems.bottomKeyDown = function()
 			break;
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
-			Support.updateURLHistory("GuiHomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem2,this.topLeftItem2,false);
-			GuiMainMenu.requested("GuiHomeTwoItemsBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id);
+			Support.updateURLHistory("HomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem2,this.topLeftItem2,false);
+			MainMenu.requested("HomeTwoItemsBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id);
 			break;
 		case tvKey.KEY_RETURN:
 			alert("RETURN BOTTOM");
@@ -509,7 +509,7 @@ GuiHomeTwoItems.bottomKeyDown = function()
 			Support.processReturnURLHistory();
 			break;
 		case tvKey.KEY_YELLOW:
-			Helper.toggleHelp("GuiHomeTwoItems");
+			Helper.toggleHelp("HomeTwoItems");
 			break;
 		case tvKey.KEY_GREEN:
 			if (this.ItemData2.Items[this.selectedItem2].MediaType == "Video") {
@@ -521,8 +521,8 @@ GuiHomeTwoItems.bottomKeyDown = function()
 					this.ItemData2.Items[this.selectedItem2].UserData.Played = true;
 				}
 				setTimeout(function(){
-					GuiHomeTwoItems.updateDisplayedItems2();
-					GuiHomeTwoItems.updateSelectedItems2();
+					HomeTwoItems.updateDisplayedItems2();
+					HomeTwoItems.updateSelectedItems2();
 				}, 250);
 			}
 			break;
@@ -536,13 +536,13 @@ GuiHomeTwoItems.bottomKeyDown = function()
 					this.ItemData2.Items[this.selectedItem2].UserData.IsFavorite = true;
 				}
 				setTimeout(function(){
-					GuiHomeTwoItems.updateDisplayedItems2();
-					GuiHomeTwoItems.updateSelectedItems2();
+					HomeTwoItems.updateDisplayedItems2();
+					HomeTwoItems.updateSelectedItems2();
 				}, 250);
 			}
 			break;
 		case tvKey.KEY_BLUE:
-			GuiMusicPlayer.showMusicPlayer("GuiHomeTwoItemsBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id,document.getElementById(this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id).className);
+			MusicPlayer.showMusicPlayer("HomeTwoItemsBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id,document.getElementById(this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id).className);
 			break;
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY BOTTOM");
@@ -553,10 +553,10 @@ GuiHomeTwoItems.bottomKeyDown = function()
 
 //--------------------------------------------------------------------------------------------------------
 
-GuiHomeTwoItems.processSelectedItem = function (array,isTop) {
+HomeTwoItems.processSelectedItem = function (array,isTop) {
 	clearTimeout(this.backdropTimeout);
 	if (this.selectedItem == -2) {
-		Support.updateURLHistory("GuiHomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],0,0,true);
+		Support.updateURLHistory("HomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],0,0,true);
 		Support.processHomePageMenu(this.menuItems[this.selectedBannerItem]);
 	} else {
 		var selectedItem = 0;
@@ -576,14 +576,14 @@ GuiHomeTwoItems.processSelectedItem = function (array,isTop) {
 				isLatest = true;
 			}
 		}
-		Support.processSelectedItem("GuiHomeTwoItems",array,this.startParams,selectedItem,topLeftItem,isTop,null,isLatest);
+		Support.processSelectedItem("HomeTwoItems",array,this.startParams,selectedItem,topLeftItem,isTop,null,isLatest);
 	}
 };
 
-GuiHomeTwoItems.playSelectedItem = function(array, isTop) {
+HomeTwoItems.playSelectedItem = function(array, isTop) {
 	if (isTop == true) {
-		Support.playSelectedItem("GuiHomeTwoItems",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,isTop);
+		Support.playSelectedItem("HomeTwoItems",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,isTop);
 	} else {
-		Support.playSelectedItem("GuiHomeTwoItems",this.ItemData2,this.startParams,this.selectedItem2,this.topLeftItem2,isTop);
+		Support.playSelectedItem("HomeTwoItems",this.ItemData2,this.startParams,this.selectedItem2,this.topLeftItem2,isTop);
 	}
 };

@@ -24,7 +24,7 @@ var GuiTVGuide = {
 };
 
 GuiTVGuide.onFocus = function() {
-	Helper.setControlButtons("Record  ",null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
+	Helper.setControlButtons("Record  ",null, null, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
 };
 
 GuiTVGuide.start = function(title,url,selectedRow,selectedColumn,topChannel,startTime) {
@@ -421,20 +421,20 @@ GuiTVGuide.keyDown = function() {
 			//Focus the music player
 			if (this.selectedRow == -1) {
 				if (this.selectedBannerItem == this.bannerItems.length-1) {
-					GuiMusicPlayer.showMusicPlayer("GuiTVGuide","bannerItem"+this.selectedBannerItem,"bannerItem highlight"+Main.highlightColour+"Text");
+					MusicPlayer.showMusicPlayer("TVGuide", "bannerItem"+this.selectedBannerItem, "bannerItem highlight" + Main.highlightColour + "Text");
 				} else {
-					GuiMusicPlayer.showMusicPlayer("GuiTVGuide","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
+					MusicPlayer.showMusicPlayer("TVGuide", "bannerItem"+this.selectedBannerItem, "bannerItem bannerItemPadding highlight" + Main.highlightColour + "Text");
 				}
 			} else if (this.selectedColumn == -1) {
-				GuiMusicPlayer.showMusicPlayer("GuiTVGuide",this.Channels.Items[this.selectedRow + this.topChannel].Id,"tvGuideChannelName highlight"+Main.highlightColour+"Background");
+				MusicPlayer.showMusicPlayer("TVGuide",this.Channels.Items[this.selectedRow + this.topChannel].Id, "tvGuideChannelName highlight" + Main.highlightColour + "Background");
 			} else {
-				GuiMusicPlayer.showMusicPlayer("GuiTVGuide",this.programGrid[this.selectedRow][this.selectedColumn][1],"tvGuideProgram highlight"+Main.highlightColour+"Background");
+				MusicPlayer.showMusicPlayer("TVGuide", this.programGrid[this.selectedRow][this.selectedColumn][1], "tvGuideProgram highlight" + Main.highlightColour + "Background");
 			}
 			break;
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
 			Support.updateURLHistory("GuiTVGuide",this.startParams[0],this.startParams[1],null,null,this.selectedRow,this.topChannel,null);
-			GuiMainMenu.requested("GuiTVGuide",this.ItemData.Items[this.selectedRow].Id);
+			MainMenu.requested("TVGuide", this.ItemData.Items[this.selectedRow].Id);
 			break;
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY");
@@ -446,10 +446,10 @@ GuiTVGuide.keyDown = function() {
 GuiTVGuide.openMenu = function() {
 	if (this.selectedRow == -1) { //Banner menu
 		document.getElementById("bannerItem0").className = "bannerItem bannerItemPadding offWhite";
-		GuiMainMenu.requested("GuiTVGuide","bannerItem0","bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
+		MainMenu.requested("TVGuide","bannerItem0","bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
 	} else { //Channel column
 		document.getElementById(this.Channels.Items[this.selectedRow + this.topChannel].Id).className = "tvGuideChannelName tvGuideChannelNameBg";
-		GuiMainMenu.requested("GuiTVGuide",this.Channels.Items[this.selectedRow + this.topChannel].Id,"tvGuideChannelName highlight"+Main.highlightColour+"Background");
+		MainMenu.requested("TVGuide",this.Channels.Items[this.selectedRow + this.topChannel].Id,"tvGuideChannelName highlight"+Main.highlightColour+"Background");
 	}
 };
 

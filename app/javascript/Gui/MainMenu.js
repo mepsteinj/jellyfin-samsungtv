@@ -1,4 +1,4 @@
-var GuiMainMenu = {
+var MainMenu = {
 	menuItems : [],
 	menuItemsHomePages : [],
 	pageSelected : "",
@@ -10,12 +10,12 @@ var GuiMainMenu = {
 	clockVar : null
 };
 
-GuiMainMenu.getSelectedMainMenuItem = function() {
+MainMenu.getSelectedMainMenuItem = function() {
 	return this.selectedMainMenuItem;
 };
 
 //Entry Point from User Menu - ONLY RUN ONCE PER USER LOGIN
-GuiMainMenu.start = function() {
+MainMenu.start = function() {
 	//Generate Menu based on whether there is any of (Folders, TV, Movies, .....)
 	this.menuItems.length = 0;
 	this.menuItemsHomePages.length = 0;
@@ -78,7 +78,7 @@ GuiMainMenu.start = function() {
 };
 
 //Entry Point when called from any page displaying the menu
-GuiMainMenu.requested = function(pageSelected, selectedDivId, selectedDivClass) {
+MainMenu.requested = function(pageSelected, selectedDivId, selectedDivClass) {
 	//Reset Menus
 	this.selectedMainMenuItem = 0;
 	this.selectedSubMenuItem = 0;
@@ -105,10 +105,10 @@ GuiMainMenu.requested = function(pageSelected, selectedDivId, selectedDivClass) 
 	//Show submenu dependant on selectedMainMenuItem
 	this.updateSelectedItems();
 	//Set Focus
-	document.getElementById("guiMainMenu").focus();
+	document.getElementById("envMainMenu").focus();
 };
 
-GuiMainMenu.updateSelectedItems = function () {
+MainMenu.updateSelectedItems = function () {
 	for (var index = 0; index < this.menuItems.length; index++){
 		if (index == this.selectedMainMenuItem) {
 			document.getElementById(this.menuItems[index]).className = "menuItem highlight"+Main.highlightColour+"Background";
@@ -122,7 +122,7 @@ GuiMainMenu.updateSelectedItems = function () {
 //      Main Menu Key Handling
 //-------------------------------------------------------------
 
-GuiMainMenu.keyDown = function() {
+MainMenu.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 	if (document.getElementById("notifications").style.visibility == "") {
@@ -177,10 +177,10 @@ GuiMainMenu.keyDown = function() {
 	}
 };
 
-GuiMainMenu.processSelectedItems = function() {
+MainMenu.processSelectedItems = function() {
 	//Selecting home when you came from home just closes the menu.
 	if  (this.menuItems[this.selectedMainMenuItem] == "Home" &&
-		(this.pageSelected == "GuiHomeOneItem" || this.pageSelected == "GuiHomeTwoItems")) {
+		(this.pageSelected == "HomeOneItem" || this.pageSelected == "HomeTwoItems")) {
 			this.processReturnKey();
 			return;
 	}
@@ -193,11 +193,11 @@ GuiMainMenu.processSelectedItems = function() {
 	document.getElementById("menu").style.left = "-350px";
 	document.getElementById("page").style.left = "0px";
 	setTimeout(function(){
-		Support.processHomePageMenu(GuiMainMenu.menuItems[GuiMainMenu.selectedMainMenuItem]);
+		Support.processHomePageMenu(MainMenu.menuItems[MainMenu.selectedMainMenuItem]);
 	}, 200);
 };
 
-GuiMainMenu.playSelectedItem = function() {
+MainMenu.playSelectedItem = function() {
 	//Pressing play on Photos in the main menu plays a random slideshow.
 	if (this.menuItems[this.selectedMainMenuItem] == "Photos") {
 		//Close the menu
@@ -213,7 +213,7 @@ GuiMainMenu.playSelectedItem = function() {
 	}
 };
 
-GuiMainMenu.processReturnKey = function() {
+MainMenu.processReturnKey = function() {
 	if (this.pageSelected != null) {
 		//As I don't want the settings page in the URL History I need to prevent popping it here (as its not added on leaving the settings page
 		if (this.pageSelected != "GuiSettings") {
@@ -227,8 +227,8 @@ GuiMainMenu.processReturnKey = function() {
 		document.getElementById("menu").style.visibility = "none";
 		document.getElementById("menu").style.left = "-350px";
 		document.getElementById("page").style.left = "0px";
-		if (this.pageSelected == "GuiMusicPlayer") {
-			GuiMusicPlayer.showMusicPlayer(this.selectedDivId);
+		if (this.pageSelected == "MusicPlayer") {
+			MusicPlayer.showMusicPlayer(this.selectedDivId);
 		}
 		//Set Page GUI elements Correct & Set Focus
 		if (this.selectedDivId != null) {
@@ -249,7 +249,7 @@ GuiMainMenu.processReturnKey = function() {
 	}
 };
 
-GuiMainMenu.processUpKey = function() {
+MainMenu.processUpKey = function() {
 	this.selectedMainMenuItem--;
 	if (this.selectedMainMenuItem < 0) {
 		this.selectedMainMenuItem = this.menuItems.length-1;
@@ -257,7 +257,7 @@ GuiMainMenu.processUpKey = function() {
 	this.updateSelectedItems();
 };
 
-GuiMainMenu.processDownKey = function() {
+MainMenu.processDownKey = function() {
 	this.selectedMainMenuItem++;
 	if (this.selectedMainMenuItem >= this.menuItems.length) {
 		this.selectedMainMenuItem = 0;
@@ -265,12 +265,12 @@ GuiMainMenu.processDownKey = function() {
 	this.updateSelectedItems();
 };
 
-GuiMainMenu.toggleTestMode = function() {
+MainMenu.toggleTestMode = function() {
 	if (this.testModeCount < 2) {
 		this.testModeCount++;
 		clearTimeout (this.testModeTimeout);
 		this.testModeTimeout = setTimeout(function() {
-			GuiMainMenu.testModeCount = 0;
+			MainMenu.testModeCount = 0;
 		}, 3000);
 	} else {
 		clearTimeout (this.testModeTimeout);

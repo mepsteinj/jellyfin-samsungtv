@@ -13,7 +13,7 @@ GuiCastMember.getMaxDisplay = function() {
 
 GuiCastMember.start = function(title,url,selectedItem,topLeftItem) {
 	alert("Page Enter : GuiCastMember");
-	Helper.setControlButtons(null,null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
+	Helper.setControlButtons(null, null, null, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
 
 	//Save Start Params
 	this.startParams = [title,url];
@@ -197,13 +197,13 @@ GuiCastMember.keyDown = function() {
 			//Favourites
 			break;
 		case tvKey.KEY_BLUE:
-			GuiMusicPlayer.showMusicPlayer("GuiCastMember", this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
+			MusicPlayer.showMusicPlayer("CastMember", this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
 			break;
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
 			Support.updateURLHistory("GuiCastMember", this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
 			document.getElementById(this.ItemData.Items[this.selectedItem].Id).className = "SeasonTitle";
-			GuiMainMenu.requested("GuiCastMember", this.ItemData.Items[this.selectedItem].Id,"EpisodeListSingle highlight"+Main.highlightColour+"Background");
+			MainMenu.requested("CastMember", this.ItemData.Items[this.selectedItem].Id,"EpisodeListSingle highlight"+Main.highlightColour+"Background");
 			break;
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY");
@@ -213,8 +213,8 @@ GuiCastMember.keyDown = function() {
 };
 
 GuiCastMember.openMenu = function() {
-	Support.updateURLHistory("GuiCastMember",null,null,null,null,null,null,null);
-	GuiMainMenu.requested("GuiCastMember",null);
+	Support.updateURLHistory("CastMember",null,null,null,null,null,null,null);
+	MainMenu.requested("CastMember",null);
 };
 
 GuiCastMember.processSelectedItem = function() {

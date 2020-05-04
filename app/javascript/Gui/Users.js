@@ -20,7 +20,7 @@ Users.getMaxDisplay = function() {
 
 Users.start = function(runAutoLogin) {
 	alert("Page Enter : Users");
-	Helper.setControlButtons(null, "Del users  ", "Del pass  ", null, Main.messages.LabButtonExit);
+	Helper.setControlButtons(null, Main.messages.LabButtonDelUsers, Main.messages.LabButtonDelPass, null, Main.messages.LabButtonExit);
 	Support.removeSplashScreen();
 	//Reset Properties
 	File.setUserEntry(null);
@@ -56,7 +56,7 @@ Users.start = function(runAutoLogin) {
 					//Set File User Entry
 					File.setUserEntry(index);
 					//Change Focus and call function in GuiMain to initiate the page!
-					GuiMainMenu.start();
+					MainMenu.start();
 				} else {
 					//Delete user from DB here - makes life much simpler to delete and read on success!!!
 					File.deleteUser(index);
@@ -73,11 +73,11 @@ Users.start = function(runAutoLogin) {
 		"<div id='pwdOptions' class='loginOptions'>" +
 		"<div id='usersPwd' style='visibility:hidden'>" +
 		"<br>" + Main.messages.LabPassword + " <input id='usersPassword' type='password' size='20'/>" +
-		"<br><span id='usersRemPwd'>" + Main.messages.LabRememberPassword + "</span> : <span id='usersRemPwdValue'>" + this.rememberPassword + "</span>" +
+		"<br><span id='usersRemPwd'>" + Main.messages.LabRememberPassword + "</span> : <span id='usersRemPwdValue'>" + this.getRememberPasswordWord() + "</span>" +
 		"<br></div>" +
 		"<div id='loginOptions' class='loginOptions'>" +
-		"<div id='manualLogin'>" + Main.messages.LabManualLogin + "</div>" +
-		"<div id='changeServer'>" + Main.messages.LabChangeServer + "</div> " +
+		"<div id='manualLogin' class='usersManual'>" + Main.messages.LabManualLogin + "</div>" +
+		"<div id='changeServer' class='serversChange'>" + Main.messages.LabChangeServer + "</div> " +
 		"<div><br>" + Main.messages.LabUsersDescription + "</div>" +
 		"</div></div>";
 		Support.widgetPutInnerHTML("pageContent", div);
@@ -107,14 +107,15 @@ Users.updateDisplayedUsers = function() {
 };
 
 //Function sets CSS Properties so show which user is selected
-Users.updateSelectedUser = function () {
+Users.updateSelectedUser = function() {
 	Support.updateSelectedNEW(this.userData, this.selectedUser, this.topLeftItem,
 			Math.min(this.topLeftItem + this.getMaxDisplay(), this.userData.length), "user selected highlight1Boarder", "user", "");
 };
 
 //Function executes on the selection of a user - should log user in or generate error message on screen
-Users.processSelectedUser = function () {
+Users.processSelectedUser = function() {
 	var selectedUserId = this.userData[this.selectedUser].Id;
+	var authenticateSuccess = false;
 	//Remove Focus & Display Loading
 	document.getElementById("noItems").focus();
 	document.getElementById("guiLoading").style.visibility = "";
@@ -133,7 +134,7 @@ Users.processSelectedUser = function () {
 					Support.widgetPutInnerHTML("usersRemPwdValue", this.getRememberPasswordWord());
 				}
 				//Authenticate with MB3 - if fail somehow bail?
-				var authenticateSuccess = Server.Authenticate(userId, user, password);
+				authenticateSuccess = Server.Authenticate(userId, user, password);
 				if (authenticateSuccess) {
 					//Hide loading
 					document.getElementById("guiLoading").style.visibility = "hidden";
@@ -141,7 +142,7 @@ Users.processSelectedUser = function () {
 					//Set File User Entry
 					File.setUserEntry(index);
 					//Change Focus and call function in GuiMain to initiate the page!
-					GuiMainMenu.start();
+					MainMenu.start();
 				} else {
 					//Doesn't delete, allows user to correct password for the user.
 					//Hide loading
@@ -162,7 +163,7 @@ Users.processSelectedUser = function () {
 			document.getElementById("envUsers").focus();
 			new UsersInput("usersPassword");
 		} else {
-			var authenticateSuccess = Server.Authenticate(this.userData[this.selectedUser].Id, this.userData[this.selectedUser].Name, "");
+			authenticateSuccess = Server.Authenticate(this.userData[this.selectedUser].Id, this.userData[this.selectedUser].Name, "");
 			if (authenticateSuccess) {
 				//Reset GUI to as new - Not Required as it already is!!
 				//Hide loading
@@ -170,7 +171,7 @@ Users.processSelectedUser = function () {
 				//Add Username & Password to DB
 				File.addUser(this.userData[this.selectedUser].Id, this.userData[this.selectedUser].Name, "", this.rememberPassword);
 				//Change Focus and call function in GuiMain to initiate the page!
-				GuiMainMenu.start();
+				MainMenu.start();
 			} else {
 				//Hide loading
 				document.getElementById("guiLoading").style.visibility = "hidden";
@@ -202,36 +203,36 @@ Users.keyDown = function() {
 			this.selectedRow--;
 			if (this.selectedRow < 1) {
 				this.selectedRow = 0;
-				document.getElementById("manualLogin").className = "offWhite";
+				document.getElementById("manualLogin").style.border = "2px solid black";
 				this.updateSelectedUser();
 			} else if (this.selectedRow == 1) {
 				this.isManualEntry = true;
-				document.getElementById("manualLogin").className = "highlight1Text";
-				document.getElementById("changeServer").className = "offWhite";
+				document.getElementById("manualLogin").style.border = "2px solid rgba(39,164,54,1)";
+				document.getElementById("changeServer").style.border = "2px solid black";
 				document.getElementById(this.userData[this.selectedUser].Id).className = "user";
 			} else if (this.selectedRow == 2) {
-				document.getElementById("manualLogin").className = "offWhite";
-				document.getElementById("changeServer").className = "highlight1Text";
+				document.getElementById("manualLogin").style.border = "2px solid black";
+				document.getElementById("changeServer").style.border = "2px solid rgba(39,164,54,1)";
 			}
 			break;
 		case tvKey.KEY_DOWN:
 			this.selectedRow++;
 			if (this.selectedRow == 1) {
 				this.isManualEntry = true;
-				document.getElementById("manualLogin").className = "highlight1Text";
-				document.getElementById("changeServer").className = "offWhite";
+				document.getElementById("manualLogin").style.border = "2px solid rgba(39,164,54,1)";
+				document.getElementById("changeServer").style.border = "2px solid black";
 				document.getElementById(this.userData[this.selectedUser].Id).className = "user";
 			} else if (this.selectedRow > 1) {
 				this.selectedRow = 2;
-				document.getElementById("manualLogin").className = "offWhite";
-				document.getElementById("changeServer").className = "highlight1Text";
+				document.getElementById("manualLogin").style.border = "2px solid black";
+				document.getElementById("changeServer").style.border = "2px solid rgba(39,164,54,1)";
 			}
 			break;
 		case tvKey.KEY_LEFT:
 			alert("LEFT");
 			if (this.selectedRow == 0) {
 				this.selectedUser--;
-				if (this.getSelectedUser() < 0) {
+				if (this.selectedUser < 0) {
 					this.selectedUser = this.userData.length - 1;
 					if(this.userData.length > this.MAXCOLUMNCOUNT) {
 						this.topLeftItem = (this.selectedUser - 2);
@@ -274,15 +275,15 @@ Users.keyDown = function() {
 			if (this.selectedRow == 0) {
 				this.processSelectedUser();
 			} else if (this.selectedRow == 1) {
-				GuiUsersManual.start();
+				UsersManual.start();
 			} else if (this.selectedRow == 2) {
-				GuiServers.start();
+				Servers.start();
 			}
 			break;
 		case tvKey.KEY_BLUE:
 			Server.setServerAddr("");
 			File.setServerEntry(null);
-			GuiServers.start();
+			Servers.start();
 			break;
 		case tvKey.KEY_YELLOW:
 			Notifications.setNotification(Main.messages.LabDelAllPass, Main.messages.LabDeletion);
@@ -315,12 +316,12 @@ var UsersInput = function(id) {
 	var imeReady = function(imeObject) {
 		installFocusKeyCallbacks();
 		document.getElementById("usersPwd").style.visibility="";
-		document.getElementById("envUsersPassword").focus();
+		document.getElementById("usersPassword").focus();
 	};
-		
+
 	var ime = new IMEShell(id, imeReady, 'en');
-	ime.setKeypadPos(1300,90);
-	
+	ime.setKeypadPos(1280,150);
+
 	var installFocusKeyCallbacks = function() {
 		ime.setKeyFunc(tvKey.KEY_ENTER, function(keyCode) {
 			alert("Enter key pressed");
@@ -363,10 +364,10 @@ Users.IMEAuthenticate = function(password) {
 			File.addUser(this.userData[this.selectedUser].Id, this.userData[this.selectedUser].Name, "", this.rememberPassword);
 		}
 		//Change Focus and call function in GuiMain to initiate the page!
-		GuiMainMenu.start();
+		MainMenu.start();
 	} else {
 		//Wrong password - Reset IME focus and notifty user
-		document.getElementById("envUsersPassword").focus();
+		document.getElementById("usersPassword").focus();
 		Notifications.setNotification(Main.messages.LabBadPassword, Main.messages.LabLogonError);
 	}
 };
@@ -381,8 +382,7 @@ Users.keyDownPassword = function() {
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
-	switch(keyCode)
-	{
+	switch(keyCode) {
 		case tvKey.KEY_RETURN:
 		case tvKey.KEY_PANEL_RETURN:
 			alert("RETURN");

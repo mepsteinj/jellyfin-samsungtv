@@ -24,7 +24,7 @@ GuiTVUpcoming.getMaxDisplayBottom = function() {
 
 GuiTVUpcoming.start = function() {
 	alert("Page Enter : GuiTVUpcoming");
-	Helper.setControlButtons(null,null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
+	Helper.setControlButtons(null, null, null, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
 
 	//Load Data
 	var url = Server.getCustomURL("/Shows/Upcoming?format=json&Limit=40&Fields=AirTime,UserData,SeriesStudio,SyncInfo&UserId=" + Server.getUserID());
@@ -339,12 +339,12 @@ GuiTVUpcoming.keyDown = function()
 		case tvKey.KEY_BLUE:
 			if (this.selectedItem == -2) {
 				if (this.selectedBannerItem == this.bannerItems.length-1) {
-					GuiMusicPlayer.showMusicPlayer("GuiTVUpcoming", "bannerItem"+this.selectedBannerItem,"bannerItem highlight"+Main.highlightColour+"Text");
+					MusicPlayer.showMusicPlayer("TVUpcoming", "bannerItem" + this.selectedBannerItem, "bannerItem highlight" + Main.highlightColour + "Text");
 				} else {
-					GuiMusicPlayer.showMusicPlayer("GuiTVUpcoming", "bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
+					MusicPlayer.showMusicPlayer("TVUpcoming", "bannerItem" + this.selectedBannerItem, "bannerItem bannerItemPadding highlight" + Main.highlightColour + "Text");
 				}
 			} else {
-				GuiMusicPlayer.showMusicPlayer("GuiTVUpcoming", this.divprepend1 + this.upcomingData[this.selectedDayItem][this.selectedItem].Id,document.getElementById(this.divprepend1 + this.upcomingData[this.selectedDayItem][this.selectedItem].Id).className);
+				MusicPlayer.showMusicPlayer("TVUpcoming", this.divprepend1 + this.upcomingData[this.selectedDayItem][this.selectedItem].Id,document.getElementById(this.divprepend1 + this.upcomingData[this.selectedDayItem][this.selectedItem].Id).className);
 			}
 			break;
 		case tvKey.KEY_EXIT:
@@ -363,10 +363,10 @@ GuiTVUpcoming.openMenu = function() {
 		} else {
 			document.getElementById("bannerItem"+this.selectedBannerItem).className = "bannerItem bannerItemPadding";
 		}
-		GuiMainMenu.requested("GuiTVUpcoming", "bannerItem" + this.selectedBannerItem, "bannerItem bannerItemPadding highlight" + Main.highlightColour + "Text");
+		MainMenu.requested("TVUpcoming", "bannerItem" + this.selectedBannerItem, "bannerItem bannerItemPadding highlight" + Main.highlightColour + "Text");
 	} else {
-		Support.updateURLHistory("GuiTVUpcoming", null,null,null,null,this.selectedItem,this.topLeftItem,true);
-		GuiMainMenu.requested("GuiTVUpcoming", this.divprepend1 + this.upcomingData[this.selectedDayItem][this.selectedItem].Id);
+		Support.updateURLHistory("TVUpcoming", null,null,null,null,this.selectedItem,this.topLeftItem,true);
+		MainMenu.requested("TVUpcoming", this.divprepend1 + this.upcomingData[this.selectedDayItem][this.selectedItem].Id);
 	}
 };
 
@@ -503,7 +503,7 @@ GuiTVUpcoming.bottomKeyDown = function()
 			Support.processReturnURLHistory();
 			break;
 		case tvKey.KEY_BLUE:
-			GuiMusicPlayer.showMusicPlayer("GuiTVUpcomingBottom", this.divprepend2 + this.upcomingData[this.selectedDayItem][this.selectedItem2].Id,document.getElementById(this.divprepend2 + this.upcomingData[this.selectedDayItem][this.selectedItem2].Id).className);
+			MusicPlayer.showMusicPlayer("TVUpcomingBottom", this.divprepend2 + this.upcomingData[this.selectedDayItem][this.selectedItem2].Id,document.getElementById(this.divprepend2 + this.upcomingData[this.selectedDayItem][this.selectedItem2].Id).className);
 			break;
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY BOTTOM");
@@ -513,8 +513,8 @@ GuiTVUpcoming.bottomKeyDown = function()
 };
 
 GuiTVUpcoming.openMenu2 = function() {
-	Support.updateURLHistory("GuiTVUpcoming", null,null,null,null,this.selectedItem2,this.topLeftItem2,false);
-	GuiMainMenu.requested("GuiTVUpcomingBottom", this.divprepend2 + this.upcomingData[this.selectedDayItem][this.selectedItem2].Id);
+	Support.updateURLHistory("TVUpcoming", null,null,null,null,this.selectedItem2,this.topLeftItem2,false);
+	MainMenu.requested("TVUpcomingBottom", this.divprepend2 + this.upcomingData[this.selectedDayItem][this.selectedItem2].Id);
 };
 
 //--------------------------------------------------------------------------------------------------------

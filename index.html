@@ -47,7 +47,7 @@
 		<script src="app/javascript/Gui/Player/PlayerVersions.js"></script>
 		<script src="app/javascript/Gui/Player/PlayerTranscoding.js"></script>
 		<script src="app/javascript/Gui/Player/PlayerTranscodeParams.js"></script>
-		<script src="app/javascript/Gui/MusicPlayer/GuiMusicPlayer.js"></script>
+		<script src="app/javascript/Gui/MusicPlayer/MusicPlayer.js"></script>
 		<script src="app/javascript/Gui/ItemDetails.js"></script>
 		<script src="app/javascript/Gui/DisplaySeries.js"></script>
 		<script src="app/javascript/Gui/DisplayEpisodes.js"></script>
@@ -86,14 +86,14 @@
 		<!-- Register page events -->
 		<a href="javascript:void(0);" id="noItems" onkeydown="Support.noItemsKeyDown();"></a>
 		<a href="javascript:void(0);" id="envServerVersion" onkeydown="ServerVersion.keyDown();"></a>
-		<a href="javascript:void(0);" id="envServers" onkeydown="GuiServers.keyDown();"></a>
+		<a href="javascript:void(0);" id="envServers" onkeydown="Servers.keyDown();"></a>
 		<a href="javascript:void(0);" id="envUsers" onkeydown="Users.keyDown();"></a>
 		<a href="javascript:void(0);" id="envUsersPwd" onkeydown="Users.keyDownPassword();"></a>
-		<a href="javascript:void(0);" id="guiUsersManual" onkeydown="GuiUsersManual.keyDown();"></a>
-		<a href="javascript:void(0);" id="guiUsersManualPwd" onkeydown="GuiUsersManual.keyDownPassword();"></a>
+		<a href="javascript:void(0);" id="envUsersManual" onkeydown="UsersManual.keyDown();"></a>
+		<a href="javascript:void(0);" id="envUsersManualPwd" onkeydown="UsersManual.keyDownPassword();"></a>
 		<a href="javascript:void(0);" id="envHelper" onkeydown="Helper.keyDown();"></a>
-		<a href="javascript:void(0);" id="guiMainMenu" onkeydown="GuiMainMenu.keyDown();"></a>
-		<a href="javascript:void(0);" id="guiMainMenuSubMenu" onkeydown="GuiMainMenu.keyDownSubMenu();"></a>
+		<a href="javascript:void(0);" id="envMainMenu" onkeydown="MainMenu.keyDown();"></a>
+		<a href="javascript:void(0);" id="envMainMenuSubMenu" onkeydown="MainMenu.keyDownSubMenu();"></a>
 		<a href="javascript:void(0);" id="guiTVShow" onkeydown="GuiTVShow.keyDown();" onfocus="GuiTV_Show.onFocus();"></a>
 		<a href="javascript:void(0);" id="guiTVUpcoming" onkeydown="GuiTVUpcoming.keyDown();"></a>
 		<a href="javascript:void(0);" id="guiTVUpcomingBottom" onkeydown="GuiTVUpcoming.bottomKeyDown();"></a>
@@ -104,15 +104,15 @@
 		<a href="javascript:void(0);" id="guiPlayerTools" onkeydown="GuiPlayerDisplay.keyDownTools();"></a>
 		<a href="javascript:void(0);" id="guiPlayerToolsSlider" onkeydown="GuiPlayerDisplay.keyDownToolsSlider();"></a>
 		<a href="javascript:void(0);" id="guiPlayerToolsSub" onkeydown="GuiPlayerDisplay.keyDownToolsSub();"></a>
-		<a href="javascript:void(0);" id="guiMusicPlayer" onkeydown="GuiMusicPlayer.keyDown();" onfocus="GuiMusicPlayer.onFocus();"></a>
+		<a href="javascript:void(0);" id="envMusicPlayer" onkeydown="MusicPlayer.keyDown();" onfocus="MusicPlayer.onFocus();"></a>
 		<a href="javascript:void(0);" id="guiImagePlayer" onkeydown="GuiImagePlayer.keyDown();"></a>
 		<a href="javascript:void(0);" id="guiDisplaySeries" onkeydown="GuiDisplaySeries.keyDown();" onfocus="GuiDisplaySeries.onFocus();"></a>
 		<a href="javascript:void(0);" id="guiDisplayEpisodes" onkeydown="GuiDisplayEpisodes.keyDown();" onfocus="GuiDisplayEpisodes.onFocus();"></a>
 		<a href="javascript:void(0);" id="guiDisplayOneItem" onkeydown="GuiDisplayOneItem.keyDown();" onfocus="GuiDisplayOneItem.onFocus();"></a>
 		<a href="javascript:void(0);" id="guiContributors" onkeydown="GuiContributors.keyDown();" onfocus="GuiContributors.onFocus();"></a>
-		<a href="javascript:void(0);" id="envHomeOneItem" onkeydown="GuiHomeOneItem.keyDown();" onfocus="GuiHomeOneItem.onFocus();"></a>
-		<a href="javascript:void(0);" id="guiHomeTwoItems" onkeydown="GuiHomeTwoItems.keyDown();" onfocus="GuiHomeTwoItems.onFocus();"></a>
-		<a href="javascript:void(0);" id="guiHomeTwoItemsBottom" onkeydown="GuiHomeTwoItems.bottomKeyDown();"></a>
+		<a href="javascript:void(0);" id="envHomeOneItem" onkeydown="HomeOneItem.keyDown();" onfocus="HomeOneItem.onFocus();"></a>
+		<a href="javascript:void(0);" id="envHomeTwoItems" onkeydown="HomeTwoItems.keyDown();" onfocus="HomeTwoItems.onFocus();"></a>
+		<a href="javascript:void(0);" id="guiHomeTwoItemsBottom" onkeydown="HomeTwoItems.bottomKeyDown();"></a>
 		<a href="javascript:void(0);" id="guiMusicArtist" onkeydown="GuiMusicArtist.keyDown();" onfocus="GuiMusicArtist.onFocus();"></a>
 		<a href="javascript:void(0);" id="guiMusicArtistBottom" onkeydown="GuiMusicArtist.bottomKeyDown();" onfocus="GuiMusicArtist.onFocus();"></a>
 		<a href="javascript:void(0);" id="guiMusic" onkeydown="GuiMusic.keyDown();" onfocus="GuiMusic.onFocus();"></a>

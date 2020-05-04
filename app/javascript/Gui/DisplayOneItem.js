@@ -17,7 +17,7 @@ var GuiDisplayOneItem = {
 };
 
 GuiDisplayOneItem.onFocus = function() {
-	Helper.setControlButtons(null,null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
+	Helper.setControlButtons(null, null, null, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
 };
 
 GuiDisplayOneItem.getMaxDisplay = function() {
@@ -190,7 +190,7 @@ GuiDisplayOneItem.keyDown = function() {
 			//Favourites - May not be needed on this page
 			break;
 		case tvKey.KEY_BLUE:
-			GuiMusicPlayer.showMusicPlayer("GuiDisplayOneItem",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
+			MusicPlayer.showMusicPlayer("DisplayOneItem", this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
 			break;
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
@@ -215,7 +215,7 @@ GuiDisplayOneItem.playSelectedItem = function () {
 
 GuiDisplayOneItem.openMenu = function() {
 	Support.updateURLHistory("GuiDisplayOneItem",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
-	GuiMainMenu.requested("GuiDisplayOneItem",this.ItemData.Items[this.selectedItem].Id);
+	MainMenu.requested("DisplayOneItem",this.ItemData.Items[this.selectedItem].Id);
 };
 
 GuiDisplayOneItem.processLeftKey = function() {

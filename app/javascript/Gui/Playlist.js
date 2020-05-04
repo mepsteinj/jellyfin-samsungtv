@@ -20,7 +20,7 @@ GuiPlaylist.getMaxDisplay = function() {
 
 GuiPlaylist.start = function(title,url,type,playlistId) { //Type is either Audio or Video
 	alert("Page Enter : GuiPlaylist");
-	Helper.setControlButtons(null,null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
+	Helper.setControlButtons(null, null, null, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
 
 	//Save Start Params
 	this.startParams = [title,url,type,playlistId];
@@ -230,9 +230,9 @@ GuiPlaylist.keyDown = function() {
 			break;
 		case tvKey.KEY_BLUE:
 			if (this.selectedItem == -1) {
-				GuiMusicPlayer.showMusicPlayer("GuiPlaylist",this.topMenuItems[this.selectedItem2],"guiMusic_Global highlight"+Main.highlightColour+"Background");
+				MusicPlayer.showMusicPlayer("Playlist", this.topMenuItems[this.selectedItem2],"guiMusic_Global highlight"+Main.highlightColour+"Background");
 			} else {
-				GuiMusicPlayer.showMusicPlayer("GuiPlaylist",this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id,"guiMusic_TableTd highlight"+Main.highlightColour+"Background");
+				MusicPlayer.showMusicPlayer("Playlist", this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id,"guiMusic_TableTd highlight"+Main.highlightColour+"Background");
 			}
 			break;
 		case tvKey.KEY_EXIT:
@@ -245,9 +245,9 @@ GuiPlaylist.keyDown = function() {
 GuiPlaylist.openMenu = function() {
 	Support.updateURLHistory("GuiPlaylist", this.startParams[0], this.startParams[1], null, null, this.selectedItem, this.topLeftItem, true);
 	if (this.selectedItem == -1) {
-		GuiMainMenu.requested("GuiPlaylist", this.topMenuItems[this.selectedItem], "guiMusicGlobal green");
+		MainMenu.requested("Playlist", this.topMenuItems[this.selectedItem], "guiMusicGlobal green");
 	} else {
-		GuiMainMenu.requested("GuiPlaylist", this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id, "guiMusicTableTd highlight" + Main.highlightColour + "Background");
+		MainMenu.requested("Playlist", this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id, "guiMusicTableTd highlight" + Main.highlightColour + "Background");
 	}
 };
 
@@ -334,7 +334,7 @@ GuiPlaylist.processSelectedItem = function() {
 					Support.updateURLHistory("GuiPlaylist",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],0,0,null);
 					GuiPlayer.start("PlayAll",url,0,"GuiPlaylist");
 				} else if (this.startParams[2] == "Audio") {
-					GuiMusicPlayer.start("Album",url,"GuiPlaylist",false);
+					MusicPlayer.start("Album", url, "Playlist", false);
 				}
 			}
 			break;
@@ -345,7 +345,7 @@ GuiPlaylist.processSelectedItem = function() {
 					Support.updateURLHistory("GuiPlaylist",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],0,0,null);
 					GuiPlayer.start("PlayAll",url,0,"GuiPlaylist");
 				} else if (this.startParams[2] == "Audio") {
-					GuiMusicPlayer.start("Album",url,"GuiPlaylist",false);
+					MusicPlayer.start("Album", url, "Playlist", false);
 				}
 			}
 			break;
@@ -361,7 +361,7 @@ GuiPlaylist.processSelectedItem = function() {
 				Support.updateURLHistory("GuiPlaylist",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],0,0,null);
 				GuiPlayer.start("PlayAll",url,0,"GuiPlaylist");
 			} else if (this.startParams[2] == "Audio") {
-				GuiMusicPlayer.start("Album",url,"GuiPlaylist",false);
+				MusicPlayer.start("Album", url, "Playlist", false);
 			}
 			break;
 		case 1:
@@ -370,7 +370,7 @@ GuiPlaylist.processSelectedItem = function() {
 				Support.updateURLHistory("GuiPlaylist",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem,this.topLeftItem,null);
 				GuiPlayer.start("PLAY",url,0,"GuiPlaylist");
 			} else if (this.startParams[2] == "Audio"){
-				GuiMusicPlayer.start("Song",url,"GuiPlaylist",false);
+				MusicPlayer.start("Song", url, "Playlist", false);
 			}
 
 			break;

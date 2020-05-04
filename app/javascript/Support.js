@@ -55,8 +55,8 @@ Support.loading = function(mSecs) {
 Support.logout = function() {
 	//Turn off screensaver
 	Support.screensaverOff();
-	if (GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED"){
-		GuiMusicPlayer.handleStopKey();
+	if (MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED"){
+		MusicPlayer.handleStopKey();
 	}
 	FileLog.write("User "+ Server.getUserName() + " logged out.");
 	document.getElementById("menuUserImage").style.backgroundImage = "";
@@ -68,7 +68,7 @@ Support.logout = function() {
 };
 
 Support.updateHomePageURLs = function (title, url, title2Name, isURL1) {
-	this.previousPageDetails[0][0] = "GuiHomeTwoItems";
+	this.previousPageDetails[0][0] = "HomeTwoItems";
 	if (isURL1 == true) {
 		this.previousPageDetails[0][1] = title;
 		this.previousPageDetails[0][2] = url;
@@ -77,7 +77,7 @@ Support.updateHomePageURLs = function (title, url, title2Name, isURL1) {
 		this.previousPageDetails[0][4] = url;
 	}
 	if (title2Name == "None") {
-		this.previousPageDetails[0][0] = "GuiHomeOneItem";
+		this.previousPageDetails[0][0] = "HomeOneItem";
 	}
 };
 
@@ -129,58 +129,58 @@ Support.processReturnURLHistory = function() {
 		var isTop = array[7];
 		//Handle Navigation?
 		switch (page) {
-			case "GuiHomeOneItem":
-				GuiHomeOneItem.start(title, url, selectedItem, topLeftItem);
+			case "HomeOneItem":
+				HomeOneItem.start(title, url, selectedItem, topLeftItem);
 				break;
-			case "GuiHomeTwoItems":
-				GuiHomeTwoItems.start(title, url, title2, url2, selectedItem, topLeftItem, isTop);
+			case "HomeTwoItems":
+				HomeTwoItems.start(title, url, title2, url2, selectedItem, topLeftItem, isTop);
 				break;
-			case "GuiDisplaySeries":
+			case "DisplaySeries":
 				GuiDisplaySeries.start(title,url,selectedItem,topLeftItem);
 				break;
-			case "GuiDisplayEpisodes":
+			case "DisplayEpisodes":
 				GuiDisplayEpisodes.start(title,url,selectedItem,topLeftItem);
 				break;
-			case "GuiDisplayOneItem":
+			case "DisplayOneItem":
 				GuiDisplayOneItem.start(title,url,selectedItem,topLeftItem);
 				break;
-			case "GuiTVShow":
+			case "TVShow":
 				GuiTVShow.start(title,url,selectedItem,topLeftItem);
 				break;
-			case "GuiTVUpcoming":
+			case "TVUpcoming":
 				GuiTVUpcoming.start();
 				break;
-			case "GuiItemDetails":
+			case "ItemDetails":
 				GuiItemDetails.start(title,url,selectedItem);
 				break;
-			case "GuiDisplayTwoItems":
+			case "DisplayTwoItems":
 				GuiDisplayTwoItems.start(title,url,title2,url2,selectedItem,topLeftItem,isTop);
 				break;
-			case "GuiMusicArtist":
+			case "MusicArtist":
 				GuiMusicArtist.start(title,url,selectedItem, topLeftItem);
 				break;
-			case "GuiMusicAZ":
+			case "MusicAZ":
 				GuiMusicAZ.start(title,selectedItem);//Not actually Title - Holds page!
 				break;
-			case "GuiMusic":
+			case "Music":
 				GuiMusic.start(title,url);
 				break;
-			case "GuiCastMember":
+			case "CastMember":
 				GuiCastMember.start(title,url,selectedItem,topLeftItem);
 				break;
-			case "GuiPhotos":
+			case "Photos":
 				GuiPhotos.start(title,url,selectedItem,topLeftItem);
 				break;
-			case "GuiPlaylist": //Params 3 = type, saved in url2, Param 4 = playlistid, saved as title2
+			case "Playlist": //Params 3 = type, saved in url2, Param 4 = playlistid, saved as title2
 				GuiPlaylist.start(title,url,title2,url2);
 				break;
-			case "GuiSearch":
+			case "Search":
 				GuiSearch.start(title,url);
 				break;
-			case "GuiSettings":
+			case "Settings":
 				GuiSettings.start();
 				break;
-			case "GuiTVGuide":
+			case "TVGuide":
 				var url = Server.getCustomURL("/LiveTV/Channels?StartIndex=0&Limit=100&EnableFavoriteSorting=true&UserId=" + Server.getUserID());
 				var guideTime = new Date();
 				var timeMsec = guideTime.getTime();
@@ -691,7 +691,7 @@ Support.updateSelectedNEW = function(array, selectedItemID, startPos, endPos, st
 //-----------------------------------------------------------------------------------------------------------------------------------------
 
 Support.processSelectedItem = function(page, itemData, startParams, selectedItem, topLeftItem, isTop, genreType, isLatest) {
-	if (page == "GuiHomeTwoItems") {
+	if (page == "HomeTwoItems") {
 		this.updateURLHistory(page, startParams[0], startParams[1], startParams[2], startParams[3], selectedItem, topLeftItem, isTop);
 	} else {
 		if (startParams == null) {
@@ -826,7 +826,7 @@ Support.processSelectedItem = function(page, itemData, startParams, selectedItem
 			case "Audio":
 				this.removeLatestURL(); //Music player loads within the previous page - thus remove!
 				var url = Server.getItemInfoURL(itemData.Items[selectedItem].Id, null);
-				GuiMusicPlayer.start("Song", url, page, false, false, itemData.Items[selectedItem].Id);
+				MusicPlayer.start("Song", url, page, false, false, itemData.Items[selectedItem].Id);
 				break;
 			default:
 				this.removeLatestURL();
@@ -863,7 +863,7 @@ Support.playSelectedItem = function(page, itemData, startParams, selectedItem, t
 			this.updateURLHistory(page, startParams[0], startParams[1], startParams[2], startParams[3], selectedItem, topLeftItem, isTop);
 			GuiPlayer.start("PlayAll", url, 0, page);
 		} else if (itemData.Items[selectedItem].MediaType == "Audio"){
-			GuiMusicPlayer.start("Album", url, page, false);
+			MusicPlayer.start("Album", url, page, false);
 		} else {
 			return;
 		}
@@ -896,11 +896,11 @@ Support.playSelectedItem = function(page, itemData, startParams, selectedItem, t
 	} else if (itemData.Items[selectedItem].Type == "MusicAlbum") {
 		this.updateURLHistory(page, startParams[0], startParams[1], null, null, selectedItem, topLeftItem, null);
 		var url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Audio&Recursive=true&CollapseBoxSetItems=false&Fields=MediaSources");
-		GuiMusicPlayer.start("Album", url, "GuiDisplaySeries", false);
+		MusicPlayer.start("Album", url, "DisplaySeries", false);
 	} else if (itemData.Items[selectedItem].Type == "Audio") {
 		this.updateURLHistory(page, startParams[0], startParams[1], null, null, selectedItem, topLeftItem, null);
 		var url = Server.getItemInfoURL(itemData.Items[selectedItem].Id);
-		GuiMusicPlayer.start("Song", url, "GuiDisplaySeries", false);
+		MusicPlayer.start("Song", url, "DisplaySeries", false);
 	}
 };
 
@@ -1119,9 +1119,9 @@ Support.processHomePageMenu = function(menuItem) {
 			}
 		}
 		if (url2 != null) {
-			GuiHomeTwoItems.start(title1, url1, title2, url2, 0, 0, true);
+			HomeTwoItems.start(title1, url1, title2, url2, 0, 0, true);
 		} else {
-			GuiHomeOneItem.start(title1, url1, 0, 0);
+			HomeOneItem.start(title1, url1, 0, 0);
 		}
 		break;
 	case "Favourites":

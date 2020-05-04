@@ -205,7 +205,7 @@ Main.onLoad = function() {
 			}
 			if (foundDefault == false) {
 				FileLog.write("Multiple servers defined. Loading the select server page.");
-				GuiServers.start();
+				Servers.start();
 			}
 		} else if (fileJson.Servers.length == 1) {
 			//If 1 server auto login with that
@@ -234,7 +234,7 @@ Main.onUnload = function() {
 	ImageCache.writeAll(Support.imageCacheJson);
 	Support.screensaverOff();
 	GuiImagePlayer.kill();
-	GuiMusicPlayer.stopOnAppExit();
+	MusicPlayer.stopOnAppExit();
 	GuiPlayer.stopOnAppExit();
 	pluginAPI.unregistKey(tvKey.KEY_TOOLS);
 	pluginAPI.unregistKey(tvKey.KEY_3D);

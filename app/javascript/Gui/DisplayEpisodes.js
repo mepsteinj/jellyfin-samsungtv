@@ -14,7 +14,7 @@ var GuiDisplayEpisodes = {
 };
 
 GuiDisplayEpisodes.onFocus = function() {
-	Helper.setControlButtons("Favourite","Watched",null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
+	Helper.setControlButtons("Favourite", "Watched", null, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
 };
 
 GuiDisplayEpisodes.getMaxDisplay = function() {
@@ -88,7 +88,7 @@ GuiDisplayEpisodes.start = function(title,url,selectedItem,topLeftItem) {
 		document.getElementById("guiDisplayEpisodes").focus();
 
 		//Load theme music if any
-		GuiMusicPlayer.start("Theme", null, "guiDisplayEpisodes",null,this.ItemData.Items[0].SeriesId,this.ItemData.Items[0].SeasonId);
+		MusicPlayer.start("Theme", null, "DisplayEpisodes",null,this.ItemData.Items[0].SeriesId,this.ItemData.Items[0].SeasonId);
 	} else {
 		//Set message to user
 		document.getElementById("pageContent").innerHTML = "<div id='itemContainer' class='Columns"+this.MAXCOLUMNCOUNT+" padding10'><p id='title' class=pageTitle>"+title+"</p><div id=Content></div></div>";
@@ -98,7 +98,7 @@ GuiDisplayEpisodes.start = function(title,url,selectedItem,topLeftItem) {
 		document.getElementById("content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid";
 
 		//As no content focus on menu bar and null null means user can't return off the menu bar
-		GuiMainMenu.requested(null,null);
+		MainMenu.requested(null,null);
 	}
 };
 
@@ -360,9 +360,9 @@ GuiDisplayEpisodes.keyDown = function() {
 			break;
 		case tvKey.KEY_BLUE:
 			if (this.selectedItem == -1) {
-				GuiMusicPlayer.showMusicPlayer("GuiDisplayEpisodes","bannerItem"+this.selectedBannerItem,"button highlight"+Main.highlightColour+"Background");
+				MusicPlayer.showMusicPlayer("DisplayEpisodes", "bannerItem"+this.selectedBannerItem,"button highlight"+Main.highlightColour+"Background");
 			} else {
-				GuiMusicPlayer.showMusicPlayer("GuiDisplayEpisodes",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
+				MusicPlayer.showMusicPlayer("DisplayEpisodes", this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
 			}
 			break;
 		case tvKey.KEY_TOOLS:
@@ -474,9 +474,9 @@ GuiDisplayEpisodes.openMenu = function() {
 			this.selectedBannerItem = 0;
 			document.getElementById("bannerItem"+this.selectedBannerItem).className = "button";
 		}
-		GuiMainMenu.requested("GuiDisplayEpisodes", "bannerItem"+this.selectedBannerItem, "button highlight" + Main.highlightColour + "Background");
+		MainMenu.requested("DisplayEpisodes", "bannerItem"+this.selectedBannerItem, "button highlight" + Main.highlightColour + "Background");
 	} else {
-		GuiMainMenu.requested("GuiDisplayEpisodes", this.ItemData.Items[this.selectedItem].Id, "episodeListSingle highlight" + Main.highlightColour + "Background");
+		MainMenu.requested("DisplayEpisodes", this.ItemData.Items[this.selectedItem].Id, "episodeListSingle highlight" + Main.highlightColour + "Background");
 	}
 };
 

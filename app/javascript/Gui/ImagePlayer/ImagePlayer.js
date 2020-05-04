@@ -25,7 +25,7 @@ GuiImagePlayer.start = function(ItemData,selectedItem,isPhotoCollection) {
 	//Show colour buttons on screen for a few seconds when a slideshow starts.
 	document.getElementById("guiImagePlayerScreenSaverOverlay").style.visibility="hidden";
 	document.getElementById("guiButtonShade").style.visibility = "";
-	Helper.setControlButtons("Favourite", "Date/Time","Help", GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
+	Helper.setControlButtons("Favourite", "Date/Time", "Help", MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
 	this.infoTimer = setTimeout(function(){
 		Helper.setControlButtons(null,null,null,null,null);
 		document.getElementById("clock").style.visibility = "hidden";
@@ -229,7 +229,7 @@ GuiImagePlayer.keyDown = function() {
 			Helper.toggleHelp("GuiImagePlayer");
 			break;
 		case tvKey.KEY_BLUE:
-			GuiMusicPlayer.showMusicPlayer("GuiImagePlayer");
+			MusicPlayer.showMusicPlayer("ImagePlayer");
 			break;
 	}
 };

@@ -1,4 +1,4 @@
-var GuiMusicPlayer = {
+var MusicPlayer = {
 	pluginMusic : null,
 	pluginAudioMusic : null,
 	currentPlayingItem : 0,
@@ -16,28 +16,28 @@ var GuiMusicPlayer = {
 	showThemeId : null,
 };
 
-GuiMusicPlayer.onFocus = function() {
+MusicPlayer.onFocus = function() {
 	Helper.setControlButtons(null,null,null,null,"Return");
 };
 
-GuiMusicPlayer.init = function() {
+MusicPlayer.init = function() {
 	GuiPlayer.stopOnAppExit();
 	this.pluginMusic = document.getElementById("pluginPlayer");
 	this.pluginAudioMusic = document.getElementById("pluginObjectAudio");
 	//Set up Player
-	this.pluginMusic.OnConnectionFailed = 'GuiMusicPlayer.handleConnectionFailed';
-	this.pluginMusic.OnAuthenticationFailed = 'GuiMusicPlayer.handleAuthenticationFailed';
-	this.pluginMusic.OnNetworkDisconnected = 'GuiMusicPlayer.handleOnNetworkDisconnected';
-	this.pluginMusic.OnRenderError = 'GuiMusicPlayer.handleRenderError';
-	this.pluginMusic.OnStreamNotFound = 'GuiMusicPlayer.handleStreamNotFound';
-	this.pluginMusic.OnRenderingComplete = 'GuiMusicPlayer.handleOnRenderingComplete';
-	this.pluginMusic.OnCurrentPlayTime = 'GuiMusicPlayer.setCurrentTime';
-	this.pluginMusic.OnStreamInfoReady = 'GuiMusicPlayer.OnStreamInfoReady';
+	this.pluginMusic.OnConnectionFailed = 'MusicPlayer.handleConnectionFailed';
+	this.pluginMusic.OnAuthenticationFailed = 'MusicPlayer.handleAuthenticationFailed';
+	this.pluginMusic.OnNetworkDisconnected = 'MusicPlayer.handleOnNetworkDisconnected';
+	this.pluginMusic.OnRenderError = 'MusicPlayer.handleRenderError';
+	this.pluginMusic.OnStreamNotFound = 'MusicPlayer.handleStreamNotFound';
+	this.pluginMusic.OnRenderingComplete = 'MusicPlayer.handleOnRenderingComplete';
+	this.pluginMusic.OnCurrentPlayTime = 'MusicPlayer.setCurrentTime';
+	this.pluginMusic.OnStreamInfoReady = 'MusicPlayer.OnStreamInfoReady';
 	//Set Display Size to 0
 	this.pluginMusic.SetDisplayArea(0, 0, 0, 0);
 };
 
-GuiMusicPlayer.showMusicPlayer = function(playedFromPage,selectedDivId,selectedDivClass) {
+MusicPlayer.showMusicPlayer = function(playedFromPage,selectedDivId,selectedDivClass) {
 	if (this.Status != "STOPPED") {
 		this.playedFromPage = playedFromPage;
 		this.selectedDivId = selectedDivId;
@@ -68,11 +68,11 @@ GuiMusicPlayer.showMusicPlayer = function(playedFromPage,selectedDivId,selectedD
 			//animate complete.
 		});
 		document.getElementById("counter").style.visibility = "hidden";
-		document.getElementById("guiMusicPlayer").focus();
+		document.getElementById("envMusicPlayer").focus();
 	}
 };
 
-GuiMusicPlayer.start = function(title,url,playedFromPage,isQueue,showThemeId,itemId) {
+MusicPlayer.start = function(title,url,playedFromPage,isQueue,showThemeId,itemId) {
 	this.selectedItem = 0;
 	//Initiate Player for Music if required.
 	//Set to null on end of playlist or stop.
@@ -146,7 +146,7 @@ GuiMusicPlayer.start = function(title,url,playedFromPage,isQueue,showThemeId,ite
 	}
 };
 
-GuiMusicPlayer.updateSelectedItem = function() {
+MusicPlayer.updateSelectedItem = function() {
 	/*document.getElementById("guiMusicPlayerNowPlaying").style.color = "white";*/
 	document.getElementById("guiMusicPlayerScreenOff").style.color = "white";
 	switch (this.selectedItem ) {
@@ -164,7 +164,7 @@ GuiMusicPlayer.updateSelectedItem = function() {
 
 //--------------------------------------------------------------------------------------------------
 
-GuiMusicPlayer.keyDown = function() {
+MusicPlayer.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 	//Returning from blank screen
@@ -283,7 +283,7 @@ GuiMusicPlayer.keyDown = function() {
 	}
 };
 
-GuiMusicPlayer.handlePlayKey = function() {
+MusicPlayer.handlePlayKey = function() {
 	if (this.Status != "PLAYING") {
 		this.pluginAudioMusic.SetUserMute(0);
 		if (this.Status == "PAUSED") {
@@ -302,7 +302,7 @@ GuiMusicPlayer.handlePlayKey = function() {
 	}
 };
 
-GuiMusicPlayer.handlePauseKey = function() {
+MusicPlayer.handlePauseKey = function() {
 	this.pluginMusic.Pause();
 	Server.videoPaused(this.queuedItems[this.currentPlayingItem].Id, this.queuedItems[this.currentPlayingItem].MediaSources[0].Id, this.currentTime, "DirectStream");
 	document.getElementById("guiMusicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-29x37.png')";
@@ -310,7 +310,7 @@ GuiMusicPlayer.handlePauseKey = function() {
 	this.Status = "PAUSED";
 };
 
-GuiMusicPlayer.stopPlayback = function() {
+MusicPlayer.stopPlayback = function() {
 	//Reset everything
 	this.Status = "STOPPED";
 	alert (this.currentPlayingItem);
@@ -328,14 +328,14 @@ GuiMusicPlayer.stopPlayback = function() {
 	}, 400);
 };
 
-GuiMusicPlayer.handleStopKey = function() {
+MusicPlayer.handleStopKey = function() {
 	alert ("STOPPING PLAYBACK");
 	this.stopPlayback();
 	Helper.setControlButtons(0,0,0,null,0);
 	this.returnToPage();
 };
 
-GuiMusicPlayer.returnToPage = function() {
+MusicPlayer.returnToPage = function() {
 	//Reset NAVI - Works
 	NNaviPlugin = document.getElementById("pluginObjectNNavi");
 	NNaviPlugin.SetBannerState(PL_NNAVI_STATE_BANNER_NONE);
@@ -360,7 +360,7 @@ GuiMusicPlayer.returnToPage = function() {
 	document.getElementById(this.playedFromPage).focus();
 };
 
-GuiMusicPlayer.handleNextKey = function() {
+MusicPlayer.handleNextKey = function() {
 	//Stop Any Playback
 	Server.videoStopped(this.queuedItems[this.currentPlayingItem].Id,this.queuedItems[this.currentPlayingItem].MediaSources[0].Id,this.currentTime,"DirectStream");
 	this.pluginMusic.Stop();
@@ -384,7 +384,7 @@ GuiMusicPlayer.handleNextKey = function() {
 	}, 300);
 };
 
-GuiMusicPlayer.handlePreviousKey = function() {
+MusicPlayer.handlePreviousKey = function() {
 	//Stop Any Playback
 	var timeOfStoppedSong = Math.floor((this.currentTime % 60000) / 1000);
 	Server.videoStopped(this.queuedItems[this.currentPlayingItem].Id,this.queuedItems[this.currentPlayingItem].MediaSources[0].Id,this.currentTime,"DirectStream");
@@ -411,13 +411,13 @@ GuiMusicPlayer.handlePreviousKey = function() {
 		document.getElementById("guiMusicPlayerPrevious").style.backgroundImage="url('images/musicplayer/skip-previous-36x37.png')";
 	}, 300);
 };
-GuiMusicPlayer.handleScreenKey = function() {
+MusicPlayer.handleScreenKey = function() {
 	 //Turn off screensaver
 	Support.screensaverOff();
 	document.getElementById("everything").style.visibility="hidden";
 };
 
-GuiMusicPlayer.handlePlaylistKey = function() {
+MusicPlayer.handlePlaylistKey = function() {
 	//Redo another day
 	/*
 	if (document.getElementById("guiMusicPlayerShowPlaylist").style.visibility == "hidden") {
@@ -435,32 +435,32 @@ GuiMusicPlayer.handlePlaylistKey = function() {
 
 //--------------------------------------------------------------------------------------------------
 
-GuiMusicPlayer.handleOnRenderingComplete = function() {
+MusicPlayer.handleOnRenderingComplete = function() {
 	alert ("File complete");
 	this.handleNextKey();
 };
 
-GuiMusicPlayer.handleOnNetworkDisconnected = function() {
+MusicPlayer.handleOnNetworkDisconnected = function() {
 	alert ("Network Disconnect");
 };
 
-GuiMusicPlayer.handleConnectionFailed = function() {
+MusicPlayer.handleConnectionFailed = function() {
 	alert ("Connection Failed");
 };
 
-GuiMusicPlayer.handleAuthenticationFailed = function() {
+MusicPlayer.handleAuthenticationFailed = function() {
 	alert ("Authentication Failed");
 };
 
-GuiMusicPlayer.handleRenderError = function(RenderErrorType) {
+MusicPlayer.handleRenderError = function(RenderErrorType) {
 	alert ("Render Error");
 };
 
-GuiMusicPlayer.handleStreamNotFound = function() {
+MusicPlayer.handleStreamNotFound = function() {
 	alert ("Stream not found");
 };
 
-GuiMusicPlayer.setCurrentTime = function(time){
+MusicPlayer.setCurrentTime = function(time){
 	if (this.Status == "PLAYING") {
 		this.currentTime = time;
 		this.updateTimeCount++;
@@ -478,7 +478,7 @@ GuiMusicPlayer.setCurrentTime = function(time){
 	}
 };
 
-GuiMusicPlayer.OnStreamInfoReady = function() {
+MusicPlayer.OnStreamInfoReady = function() {
 	var playingTitle = "";
 	if (this.isThemeMusicPlaying == false) {
 		if (this.queuedItems[this.currentPlayingItem].IndexNumber){
@@ -517,7 +517,7 @@ GuiMusicPlayer.OnStreamInfoReady = function() {
 	pluginAPI.unregistKey(tvKey.KEY_MUTE);
 };
 
-GuiMusicPlayer.stopOnAppExit = function() {
+MusicPlayer.stopOnAppExit = function() {
 	if (this.pluginMusic != null) {
 		this.pluginMusic.Stop();
 		this.pluginMusic = null;

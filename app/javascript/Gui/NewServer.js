@@ -8,17 +8,21 @@ NewServer.start = function() {
 	alert("Page Enter : NewServer");
 	Helper.setControlButtons(null, null, null, null, Main.messages.LabButtonReturn);
 	//Insert html into page
-	var div = "<div class='newServer12key'> \
-		<p style='padding-bottom:5px;'>" +  Main.messages.LabEnterIP + "</p> \
-		<form><input id='1' type='text' size='5'  maxlength='3' value=''/>. \
-		<input id='2' type='text' size='5'  maxlength='3' value=''/>. \
-		<input id='3' type='text' size='5'  maxlength='3' value=''/>. \
-		<input id='4' type='text' size='5'  maxlength='3' value=''/>: \
-		<input id='port' type='text' size='8'  maxlength='5'/></form> \ \
-		<p style='padding-top:10px;padding-bottom:5px'>" + Main.messages.LabOr + "</p> \
-		<p style='padding-bottom:5px'>" + Main.messages.LabEnterHost + "</p> \
-		<form><input id='host' style='z-index:10;' type='text' size='45' value=''/></form> \
-		</div>";
+	var div = "<div class='newServer12key'>" +
+		"<p style='padding-bottom:5px;'>" + Main.messages.LabEnterIP + "</p>" +
+		"<form>" +
+		"<input id='1' type='text' size='5' maxlength='3' value=''/> " +
+		"<input id='2' type='text' size='5' maxlength='3' value=''/> " +
+		"<input id='3' type='text' size='5' maxlength='3' value=''/> " +
+		"<input id='4' type='text' size='5' maxlength='3' value=''/>:" +
+		"<input id='port' type='text' size='8' maxlength='5' value=''/>" +
+		"</form>" +
+		"<p style='padding-top:10px;padding-bottom:5px'>" + Main.messages.LabOr + "</p>" +
+		"<p style='padding-bottom:5px'>" + Main.messages.LabEnterHost + "</p>" +
+		"<form>" +
+		"<input id='host' style='z-index:10;' type='text' size='45' value=''/>" +
+		"</form>" +
+		"</div>";
 	Support.widgetPutInnerHTML("pageContent", div);
 	//Set Backdrop
 	Support.fadeImage("images/bg1.jpg");
@@ -73,8 +77,9 @@ var NewServerInput  = function(id, previousId, nextId) {
 	};
 	
 	var ime = new IMEShell(id, imeReady, 'en');
-	ime.setKeypadPos(1300,200);
+	ime.setKeypadPos(1310,250);
 	ime.setMode('_num');
+	
 	var previousElement = document.getElementById(previousId);
 	var nextElement = document.getElementById(nextId);
 	
@@ -135,7 +140,7 @@ var NewServerInput  = function(id, previousId, nextId) {
 			var fileJson = JSON.parse(File.loadFile());
 			if (fileJson.Servers.length > 0) {
 				document.getElementById("pageContent").focus();
-				GuiServers.start();
+				Servers.start();
 			} else {
 				widgetAPI.sendReturnEvent();
 			}

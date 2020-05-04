@@ -12,7 +12,7 @@ var GuiMusic = {
 
 GuiMusic.onFocus = function() {
 	this.updateSelectedItems();
-	Helper.setControlButtons(null,null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
+	Helper.setControlButtons(null, null, null, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
 };
 
 GuiMusic.getMaxDisplay = function() {
@@ -197,9 +197,9 @@ GuiMusic.keyDown = function() {
 			break;
 		case tvKey.KEY_BLUE:
 			if (this.selectedItem == -1) {
-				GuiMusicPlayer.showMusicPlayer("GuiMusic",this.topMenuItems[this.selectedItem2],"guiMusicGlobal highlight"+Main.highlightColour+"Background");
+				MusicPlayer.showMusicPlayer("Music", this.topMenuItems[this.selectedItem2],"guiMusicGlobal highlight"+Main.highlightColour+"Background");
 			} else {
-				GuiMusicPlayer.showMusicPlayer("GuiMusic",this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id,"guiMusic_TableTd highlight"+Main.highlightColour+"Background");
+				MusicPlayer.showMusicPlayer("Music", this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id,"guiMusic_TableTd highlight"+Main.highlightColour+"Background");
 			}
 			break;
 		case tvKey.KEY_EXIT:
@@ -211,11 +211,10 @@ GuiMusic.keyDown = function() {
 
 GuiMusic.openMenu = function() {
 	Support.updateURLHistory("GuiMusic",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,true);
-
 	if (this.selectedItem == -1) {
-		GuiMainMenu.requested("Guiusic", this.topMenuItems[this.selectedItem2],"guiMusicGlobal highlight"+Main.highlightColour+"Background");
+		MainMenu.requested("Guiusic", this.topMenuItems[this.selectedItem2],"guiMusicGlobal highlight"+Main.highlightColour+"Background");
 	} else {
-		GuiMainMenu.requested("GuiMusic", this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id,"guiMusicTableTd highlight"+Main.highlightColour+"Background");
+		MainMenu.requested("Music", this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id,"guiMusicTableTd highlight"+Main.highlightColour+"Background");
 	}
 };
 
@@ -299,23 +298,23 @@ GuiMusic.processSelectedItem = function() {
 		case 0:
 			//Play All
 			document.getElementById(this.topMenuItems[this.selectedItem2]).className = document.getElementById(this.topMenuItems[this.selectedItem2]).className.replace("highlight"+Main.highlightColour+"Background","");
-			GuiMusicPlayer.start("Album",this.startParams[1] + "&Fields=MediaSources","GuiMusic",false);
+			MusicPlayer.start("Album", this.startParams[1] + "&Fields=MediaSources","GuiMusic", false);
 			break;
 		case 1:
 			//Queue All
-			GuiMusicPlayer.start("Album",this.startParams[1] + "&Fields=MediaSources","GuiMusic",true);
+			MusicPlayer.start("Album", this.startParams[1] + "&Fields=MediaSources","GuiMusic", true);
 			break;
 		case 2:
 			//Shuffle
 			document.getElementById(this.topMenuItems[this.selectedItem2]).className = document.getElementById(this.topMenuItems[this.selectedItem2]).className.replace("highlight"+Main.highlightColour+"Background","");
 			var url = this.startParams[1].replace("SortBy=SortName","SortBy=Random");
-			GuiMusicPlayer.start("Album",url + "&Fields=MediaSources","GuiMusic",false);
+			MusicPlayer.start("Album", url + "&Fields=MediaSources","GuiMusic", false);
 			break;
 		case 3:
 			//Instant Mix
 			document.getElementById(this.topMenuItems[this.selectedItem2]).className = document.getElementById(this.topMenuItems[this.selectedItem2]).className.replace("highlight"+Main.highlightColour+"Background","");
 			var url = Server.getCustomURL("/Albums/"+this.AlbumData.Items[0].AlbumId + "/InstantMix?format=json&Limit=50&UserId="+Server.getUserID());
-			GuiMusicPlayer.start("Album",url + "&Fields=MediaSources","GuiMusic",false);
+			MusicPlayer.start("Album", url + "&Fields=MediaSources","GuiMusic", false);
 			break;
 		}
 	} else {
@@ -324,18 +323,18 @@ GuiMusic.processSelectedItem = function() {
 			//Play
 			document.getElementById(this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id).className = document.getElementById(this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id).className.replace("highlight"+Main.highlightColour+"Background","");
 			var url = Server.getItemInfoURL(this.AlbumData.Items[this.selectedItem].Id);
-			GuiMusicPlayer.start("Song",url,"GuiMusic",false);
+			MusicPlayer.start("Song", url, "Music", false);
 			break;
 		case 1:
 			//Queue
 			var url = Server.getItemInfoURL(this.AlbumData.Items[this.selectedItem].Id);
-			GuiMusicPlayer.start("Song",url,"Guiusic",true);
+			MusicPlayer.start("Song", url, "Music", true);
 			break;
 		case 2:
 			//Mix
 			document.getElementById(this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id).className = document.getElementById(this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id).className.replace("highlight"+Main.highlightColour+"Background","");
 			var url = Server.getCustomURL("/Songs/"+this.AlbumData.Items[this.selectedItem].Id + "/InstantMix?format=json&Limit=50&UserId="+Server.getUserID());
-			GuiMusicPlayer.start("Album",url + "&Fields=MediaSources","GuiMusic",false);
+			MusicPlayer.start("Album", url + "&Fields=MediaSources", "Music", false);
 			break;
 		}
 	}

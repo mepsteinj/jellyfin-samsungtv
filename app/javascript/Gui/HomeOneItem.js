@@ -1,4 +1,4 @@
-var GuiHomeOneItem = {
+var HomeOneItem = {
 	selectedBannerItem : -1,
 	ItemData : null,
 	ItemIndexData : null,
@@ -14,16 +14,16 @@ var GuiHomeOneItem = {
 	backdropTimeout : null
 };
 
-GuiHomeOneItem.getMaxDisplay = function() {
+HomeOneItem.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
 };
 
-GuiHomeOneItem.onFocus = function() {
-	Helper.setControlButtons("Favourite","Watched","Help",GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Exit  ");
+HomeOneItem.onFocus = function() {
+	Helper.setControlButtons("Favourite", "Watched", "Help", MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Exit  ");
 };
 
-GuiHomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
-	alert("Page Enter : GuiHomeOneItem");
+HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
+	alert("Page Enter : HomeOneItem");
 
 	//Save Start Params
 	this.startParams = [title,url];
@@ -74,7 +74,7 @@ GuiHomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
 		document.getElementById("Center").style.width = "1620px";
 
 		//Generate Banner Items - Mreove Home Page
-		this.menuItems = GuiMainMenu.menuItemsHomePages;
+		this.menuItems = MainMenu.menuItemsHomePages;
 		
 		//Generate Banner display
 		for (var index = 0; index < this.menuItems.length; index++) {
@@ -121,22 +121,22 @@ GuiHomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
 		Support.fadeImage("images/bg1.jpg");
 
 		//As no content focus on menu bar and null null means user can't return off the menu bar
-		GuiMainMenu.requested(null, null);
+		MainMenu.requested(null, null);
 	}
 };
 
-GuiHomeOneItem.updateDisplayedItems = function() {
+HomeOneItem.updateDisplayedItems = function() {
 	Support.updateDisplayedItems(this.ItemData.Items,this.selectedItem,this.topLeftItem,
 			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Content","",this.isResume,null,true);
 };
 
 //Function sets CSS Properties so show which user is selected
-GuiHomeOneItem.updateSelectedItems = function (bypassCounter) {
+HomeOneItem.updateSelectedItems = function (bypassCounter) {
 	Support.updateSelectedNEW(this.ItemData.Items, this.selectedItem, this.topLeftItem,
 			Math.min(this.topLeftItem + this.getMaxDisplay(), this.ItemData.Items.length), "homePagePoster collection selected highlight" + Main.highlightColour + "Boarder", "homePagePoster collection", "", bypassCounter);
 };
 
-GuiHomeOneItem.updateSelectedBannerItems = function() {
+HomeOneItem.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.menuItems.length; index++) {
 		if (index == this.selectedBannerItem && this.selectedItem == -1) {
 			if (index != this.menuItems.length-1) {
@@ -154,7 +154,7 @@ GuiHomeOneItem.updateSelectedBannerItems = function() {
 	}
 };
 
-GuiHomeOneItem.keyDown = function() {
+HomeOneItem.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
@@ -221,7 +221,7 @@ GuiHomeOneItem.keyDown = function() {
 			this.playSelectedItem();
 			break;
 		case tvKey.KEY_YELLOW:
-			Helper.toggleHelp("GuiHomeOneItem");
+			Helper.toggleHelp("HomeOneItem");
 			break;
 		case tvKey.KEY_GREEN:
 			if (this.ItemData.Items[this.selectedItem].MediaType == "Video") {
@@ -233,8 +233,8 @@ GuiHomeOneItem.keyDown = function() {
 					this.ItemData.Items[this.selectedItem].UserData.Played = true;
 				}
 				setTimeout(function(){
-					GuiHomeOneItem.updateDisplayedItems();
-					GuiHomeOneItem.updateSelectedItems();
+					HomeOneItem.updateDisplayedItems();
+					HomeOneItem.updateSelectedItems();
 				}, 200);
 			}
 			break;
@@ -248,20 +248,20 @@ GuiHomeOneItem.keyDown = function() {
 					this.ItemData.Items[this.selectedItem].UserData.IsFavorite = true;
 				}
 				setTimeout(function(){
-					GuiHomeOneItem.updateDisplayedItems();
-					GuiHomeOneItem.updateSelectedItems();
+					HomeOneItem.updateDisplayedItems();
+					HomeOneItem.updateSelectedItems();
 				}, 200);
 			}
 			break;
 		case tvKey.KEY_BLUE:
 			if (this.selectedItem == -1) {
 				if (this.selectedBannerItem == this.menuItems.length-1) {
-					GuiMusicPlayer.showMusicPlayer("GuiHomeOneItem","bannerItem"+this.selectedBannerItem,"bannerItemHome highlight"+Main.highlightColour+"Text");
+					MusicPlayer.showMusicPlayer("HomeOneItem","bannerItem"+this.selectedBannerItem,"bannerItemHome highlight"+Main.highlightColour+"Text");
 				} else {
-					GuiMusicPlayer.showMusicPlayer("GuiHomeOneItem","bannerItem"+this.selectedBannerItem,"bannerItemHome bannerItemPadding highlight"+Main.highlightColour+"Text");
+					MusicPlayer.showMusicPlayer("HomeOneItem","bannerItem"+this.selectedBannerItem,"bannerItemHome bannerItemPadding highlight"+Main.highlightColour+"Text");
 				}
 			} else {
-				GuiMusicPlayer.showMusicPlayer("GuiHomeOneItem",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
+				MusicPlayer.showMusicPlayer("HomeOneItem",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
 			}
 			break;
 		case tvKey.KEY_TOOLS:
@@ -275,35 +275,35 @@ GuiHomeOneItem.keyDown = function() {
 	}
 };
 
-GuiHomeOneItem.processSelectedItem = function() {
+HomeOneItem.processSelectedItem = function() {
 	clearTimeout(this.backdropTimeout);
 	if (this.selectedItem == -1) {
-		Support.updateURLHistory("GuiHomeOneItem", this.startParams[0], this.startParams[1], this.startParams[2], this.startParams[3], 0, 0, true);
+		Support.updateURLHistory("HomeOneItem", this.startParams[0], this.startParams[1], this.startParams[2], this.startParams[3], 0, 0, true);
 		Support.processHomePageMenu(this.menuItems[this.selectedBannerItem]);
 	} else {
-		Support.processSelectedItem("GuiHomeOneItem", this.ItemData, this.startParams, this.selectedItem, this.topLeftItem, null, null, this.isLatest);
+		Support.processSelectedItem("HomeOneItem", this.ItemData, this.startParams, this.selectedItem, this.topLeftItem, null, null, this.isLatest);
 	}
 };
 
-GuiHomeOneItem.playSelectedItem = function () {
-	Support.playSelectedItem("GuiHomeOneItem",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null);
+HomeOneItem.playSelectedItem = function () {
+	Support.playSelectedItem("HomeOneItem",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null);
 };
 
-GuiHomeOneItem.openMenu = function() {
+HomeOneItem.openMenu = function() {
 	if (this.selectedItem == -1) {
-		Support.updateURLHistory("GuiHomeOneItem",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
+		Support.updateURLHistory("HomeOneItem",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
 		if (this.selectedBannerItem == this.menuItems.length-1) {
-			GuiMainMenu.requested("GuiHomeOneItem","bannerItem"+this.selectedBannerItem,"bannerItemHome highlight"+Main.highlightColour+"Text");
+			MainMenu.requested("HomeOneItem","bannerItem"+this.selectedBannerItem,"bannerItemHome highlight"+Main.highlightColour+"Text");
 		} else {
-			GuiMainMenu.requested("GuiHomeOneItem","bannerItem"+this.selectedBannerItem,"bannerItemHome bannerItemPadding highlight"+Main.highlightColour+"Text");
+			MainMenu.requested("HomeOneItem","bannerItem"+this.selectedBannerItem,"bannerItemHome bannerItemPadding highlight"+Main.highlightColour+"Text");
 		}
 	} else {
-		Support.updateURLHistory("GuiHomeOneItem",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
-		GuiMainMenu.requested("GuiHomeOneItem",this.ItemData.Items[this.selectedItem].Id);
+		Support.updateURLHistory("HomeOneItem",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
+		MainMenu.requested("HomeOneItem",this.ItemData.Items[this.selectedItem].Id);
 	}
 };
 
-GuiHomeOneItem.processLeftKey = function() {
+HomeOneItem.processLeftKey = function() {
 	if (this.selectedItem == -1) {
 		this.selectedBannerItem--;
 		if (this.selectedBannerItem == -1) {
@@ -331,7 +331,7 @@ GuiHomeOneItem.processLeftKey = function() {
 	}
 };
 
-GuiHomeOneItem.processRightKey = function() {
+HomeOneItem.processRightKey = function() {
 	if (this.selectedItem == -1) {
 		this.selectedBannerItem++;
 		if (this.selectedBannerItem >= this.menuItems.length) {
@@ -352,7 +352,7 @@ GuiHomeOneItem.processRightKey = function() {
 	}
 };
 
-GuiHomeOneItem.processUpKey = function() {
+HomeOneItem.processUpKey = function() {
 	this.selectedItem = this.selectedItem - this.MAXCOLUMNCOUNT;
 	if (this.selectedItem < 0) {
 		this.selectedBannerItem = 0;
@@ -374,7 +374,7 @@ GuiHomeOneItem.processUpKey = function() {
 	}
 };
 
-GuiHomeOneItem.processDownKey = function() {
+HomeOneItem.processDownKey = function() {
 	if (this.selectedItem == -1) {
 		this.selectedItem = 0;
 		this.selectedBannerItem = -1;
@@ -397,7 +397,7 @@ GuiHomeOneItem.processDownKey = function() {
 	this.updateSelectedItems();
 };
 
-GuiHomeOneItem.processChannelUpKey = function() {
+HomeOneItem.processChannelUpKey = function() {
 	this.selectedItem = this.selectedItem - this.getMaxDisplay();
 	if (this.selectedItem < 0) {
 		this.selectedItem = 0;
@@ -414,7 +414,7 @@ GuiHomeOneItem.processChannelUpKey = function() {
 	this.updateSelectedItems();
 };
 
-GuiHomeOneItem.processChannelDownKey = function() {
+HomeOneItem.processChannelDownKey = function() {
 	this.selectedItem = this.selectedItem + this.getMaxDisplay();
 	if (this.selectedItem >= this.ItemData.Items.length) {
 		this.selectedItem = (this.ItemData.Items.length-1);
@@ -429,7 +429,7 @@ GuiHomeOneItem.processChannelDownKey = function() {
 	this.updateSelectedItems();
 };
 
-GuiHomeOneItem.returnFromMusicPlayer = function() {
+HomeOneItem.returnFromMusicPlayer = function() {
 	this.selectedItem = 0;
 	this.updateDisplayedItems();
 	this.updateSelectedItems();

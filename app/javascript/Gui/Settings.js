@@ -63,7 +63,7 @@ var GuiSettings = {
 };
 
 GuiSettings.onFocus = function() {
-	Helper.setControlButtons(null,null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
+	Helper.setControlButtons(null, null, null, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
 };
 
 GuiSettings.getMaxDisplay = function() {
@@ -650,12 +650,12 @@ GuiSettings.keyDown = function() {
 		case tvKey.KEY_BLUE:
 			if (this.selectedItem == -1) {
 				if (this.selectedBannerItem == this.bannerItems.length-1) {
-					GuiMusicPlayer.showMusicPlayer("GuiSettings","bannerItem"+this.selectedBannerItem,"bannerItem highlight"+Main.highlightColour+"Text");
+					MusicPlayer.showMusicPlayer("Settings", "bannerItem"+this.selectedBannerItem, "bannerItem highlight"+Main.highlightColour+"Text");
 				} else {
-					GuiMusicPlayer.showMusicPlayer("GuiSettings","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
+					MusicPlayer.showMusicPlayer("Settings", "bannerItem"+this.selectedBannerItem, "bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
 				}
 			} else {
-				GuiMusicPlayer.showMusicPlayer("GuiSettings",this.selectedItem,document.getElementById(this.selectedItem).className);
+				MusicPlayer.showMusicPlayer("Settings", this.selectedItem,document.getElementById(this.selectedItem).className);
 			}
 			break;
 		case tvKey.KEY_TOOLS:
@@ -676,10 +676,10 @@ GuiSettings.openMenu = function() {
 		} else {
 			document.getElementById("bannerItem0").className = "bannerItem bannerItemPadding";
 		}
-		GuiMainMenu.requested("GuiSettings","bannerItem0","bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
+		MainMenu.requested("Settings","bannerItem0","bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
 	} else {
 		document.getElementById(this.selectedItem).className = "guiSettingsTD guiSettingUnSelected";
-		GuiMainMenu.requested("GuiSettings",this.selectedItem,"guiSettingsTD highlight"+Main.highlightColour+"Background");
+		MainMenu.requested("Settings",this.selectedItem,"guiSettingsTD highlight"+Main.highlightColour+"Background");
 	}
 };
 
@@ -985,18 +985,18 @@ GuiSettings.bottomKeyDown = function() {
 			this.processSelectedSubItem();
 			break;
 		case tvKey.KEY_BLUE:
-			GuiMusicPlayer.showMusicPlayer("GuiSettingsBottom","Value"+this.selectedItem,document.getElementById("Value"+this.selectedItem).className);
+			MusicPlayer.showMusicPlayer("SettingsBottom", "Value" + this.selectedItem, document.getElementById("Value"+this.selectedItem).className);
 			break;
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
 			document.getElementById("Value"+this.selectedItem).className = "guiSettingsTD guiSettingUnSelected";
 			document.getElementById(this.selectedItem).className = "guiSettingsTD guiSettingUnSelected";
 			document.getElementById("guiSettings").focus();
-			GuiMainMenu.requested("GuiSettings",this.selectedItem,"guiSettingsTD highlight"+Main.highlightColour+"Background");
+			MainMenu.requested("Settings", this.selectedItem,"guiSettingsTD highlight" + Main.highlightColour + "Background");
 			break;
 		case tvKey.KEY_INFO:
 			alert ("INFO KEY");
-			Helper.toggleHelp("GuiSettings");
+			Helper.toggleHelp("Settings");
 			break;
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY");

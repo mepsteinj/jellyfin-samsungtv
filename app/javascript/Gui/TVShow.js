@@ -15,7 +15,7 @@ var GuiTVShow = {
 };
 
 GuiTVShow.onFocus = function() {
-	Helper.setControlButtons("Favourite","Watched",null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
+	Helper.setControlButtons("Favourite", "Watched", null, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
 };
 
 GuiTVShow.getMaxDisplay = function() {
@@ -111,7 +111,7 @@ GuiTVShow.start = function(title,url,selectedItem,topLeftItem) {
 			this.updateSelectedItems();
 
 			//Load theme music if any
-			GuiMusicPlayer.start("Theme", null, "GuiTVShow",null,this.ShowData.Id,this.ShowData.Id);
+			MusicPlayer.start("Theme", null, "TVShow", null, this.ShowData.Id, this.ShowData.Id);
 
 			//Set Focus for Key Events
 			document.getElementById("GuiTVShow").focus();
@@ -124,7 +124,7 @@ GuiTVShow.start = function(title,url,selectedItem,topLeftItem) {
 			document.getElementById("content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid";
 
 			//As no content focus on menu bar and null null means user can't return off the menu bar
-			GuiMainMenu.requested(null,null);
+			MainMenu.requested(null,null);
 		}
 	}
 };
@@ -336,9 +336,9 @@ GuiTVShow.keyDown = function() {
 			}
 		case tvKey.KEY_BLUE:
 			if (this.selectedItem == -1) {
-				GuiMusicPlayer.showMusicPlayer("GuiTVShow","bannerItem"+this.selectedBannerItem,"button highlight"+Main.highlightColour+"Background");
+				MusicPlayer.showMusicPlayer("TVShow", "bannerItem" + this.selectedBannerItem, "button highlight" + Main.highlightColour + "Background");
 			} else {
-				GuiMusicPlayer.showMusicPlayer("GuiTVShow",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
+				MusicPlayer.showMusicPlayer("TVShow", this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
 			}
 			break;
 		case tvKey.KEY_TOOLS:
@@ -450,9 +450,9 @@ GuiTVShow.openMenu = function() {
 			this.selectedBannerItem = 0;
 			document.getElementById("bannerItem" + this.selectedBannerItem).className = "button";
 		}
-		GuiMainMenu.requested("GuiTVShow", "bannerItem"+this.selectedBannerItem, "button highlight" + Main.highlightColour + "Background");
+		MainMenu.requested("TVShow", "bannerItem"+this.selectedBannerItem, "button highlight" + Main.highlightColour + "Background");
 	} else {
-		GuiMainMenu.requested("GuiTVShow", this.ItemData.Items[this.selectedItem].Id, "ShowListSingle highlight" + Main.highlightColour + "Background");
+		MainMenu.requested("TVShow", this.ItemData.Items[this.selectedItem].Id, "ShowListSingle highlight" + Main.highlightColour + "Background");
 	}
 };
 

@@ -123,7 +123,7 @@ File.deleteServer = function (index) {
 		if (fileJson.Servers.length == 0) {
 			NewServer.start();
 		} else {
-			GuiServers.start();
+			Servers.start();
 		}
 	}
 };

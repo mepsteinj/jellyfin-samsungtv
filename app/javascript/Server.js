@@ -444,7 +444,7 @@ Server.testConnectionSettings = function (server, fromFile) {
 					Support.removeSplashScreen();
 					if (fromFile == true) {
 						setTimeout(function(){
-							GuiServers.start();
+							Servers.start();
 						}, 3000);
 
 					} else {
@@ -457,7 +457,7 @@ Server.testConnectionSettings = function (server, fromFile) {
 					Support.removeSplashScreen();
 					if (fromFile == true) {
 						setTimeout(function(){
-							GuiServers.start();
+							Servers.start();
 						}, 3000);
 
 					} else {
@@ -500,7 +500,7 @@ Server.Logout = function() {
 	//Close down any running items
 	GuiImagePlayerScreensaver.kill();
 	GuiImagePlayer.kill();
-	GuiMusicPlayer.stopOnAppExit();
+	MusicPlayer.stopOnAppExit();
 	GuiPlayer.stopOnAppExit();
 	FileLog.write("---------------------------------------------------------------------");
 };

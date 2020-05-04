@@ -5,7 +5,7 @@ var GuiContributors = {
 };
 
 GuiContributors.onFocus = function() {
-	Helper.setControlButtons(null,null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
+	Helper.setControlButtons(null, null, null, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
 };
 
 GuiContributors.start = function() {
@@ -93,7 +93,7 @@ GuiContributors.keyDown = function() {
 			Support.processReturnURLHistory();
 			break;
 		case tvKey.KEY_BLUE:
-			GuiMusicPlayer.showMusicPlayer("GuiContributors");
+			MusicPlayer.showMusicPlayer("Contributors");
 			break;
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
@@ -108,5 +108,5 @@ GuiContributors.keyDown = function() {
 
 GuiContributors.openMenu = function() {
 	Support.updateURLHistory("GuiContributors",null,null,null,null,null,null,null);
-	GuiMainMenu.requested("GuiContributors",null);
+	MainMenu.requested("Contributors",null);
 };

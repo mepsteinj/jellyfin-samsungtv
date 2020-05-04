@@ -12,7 +12,7 @@ var GuiPhotos = {
 };
 
 GuiPhotos.onFocus = function() {
-	Helper.setControlButtons("Favourite",null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
+	Helper.setControlButtons("Favourite", null, null, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
 };
 
 GuiPhotos.getMaxDisplay = function() {
@@ -237,7 +237,7 @@ GuiPhotos.keyDown = function() {
 			this.updateOneDisplayedItem(this.ItemData.Items[this.selectedItem],this.selectedItem);
 			break;
 		case tvKey.KEY_BLUE:
-			GuiMusicPlayer.showMusicPlayer("GuiPhotos", this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
+			MusicPlayer.showMusicPlayer("Photos", this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
 			break;
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
@@ -261,9 +261,9 @@ GuiPhotos.playSelectedItem = function () {
 };
 
 GuiPhotos.openMenu = function() {
-	Support.updateURLHistory("GuiPhotos",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
+	Support.updateURLHistory("Photos",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
 	alert(this.selectedItem);
-	GuiMainMenu.requested("GuiPhotos",this.ItemData.Items[this.selectedItem].Id);
+	MainMenu.requested("Photos",this.ItemData.Items[this.selectedItem].Id);
 };
 
 GuiPhotos.processLeftKey = function() {

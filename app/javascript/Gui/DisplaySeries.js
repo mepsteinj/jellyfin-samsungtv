@@ -29,13 +29,13 @@ GuiDisplaySeries.onFocus = function() {
 	case "Movies":
 	case "TV":
 	case "Trailer":
-		Helper.setControlButtons("Favourite","Watched","Next Index",GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
+		Helper.setControlButtons("Favourite", "Watched", "Next Index", MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
 	break;
 	case "LiveTV":
-		Helper.setControlButtons("Favourite",null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
+		Helper.setControlButtons("Favourite", null, null, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
 	break;
 	default:
-		Helper.setControlButtons("Favourite",null,"Next Index",GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
+		Helper.setControlButtons("Favourite", null, "Next Index", MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
 	}
 };
 
@@ -517,19 +517,19 @@ GuiDisplaySeries.keyDown = function() {
 			break;
 		case tvKey.KEY_YELLOW:
 			if (!this.isLatest){
-				GuiDisplaySeries.processIndexing();
+				DisplaySeries.processIndexing();
 			}
 			break;
 		case tvKey.KEY_BLUE:
 			//Focus the music player
 			if (this.selectedItem == -1) {
 				if (this.selectedBannerItem == this.bannerItems.length-1) {
-					GuiMusicPlayer.showMusicPlayer("GuiDisplaySeries","bannerItem"+this.selectedBannerItem,"bannerItem highlight"+Main.highlightColour+"Text");
+					MusicPlayer.showMusicPlayer("DisplaySeries","bannerItem"+this.selectedBannerItem,"bannerItem highlight"+Main.highlightColour+"Text");
 				} else {
-					GuiMusicPlayer.showMusicPlayer("GuiDisplaySeries","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
+					MusicPlayer.showMusicPlayer("DisplaySeries","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
 				}
 			} else {
-				GuiMusicPlayer.showMusicPlayer("GuiDisplaySeries",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
+				MusicPlayer.showMusicPlayer("DisplaySeries",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
 			}
 			break;
 		case tvKey.KEY_TOOLS:
@@ -672,17 +672,17 @@ GuiDisplaySeries.openMenu = function() {
 	if (this.selectedItem == -1) { //Banner menu
 		if (this.currentView == "All" || this.currentView == "Series") {
 			document.getElementById("bannerItem0").class = "bannerItem bannerItemPadding offWhite";
-			GuiMainMenu.requested("GuiDisplaySeries","bannerItem0","bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
+			MainMenu.requested("DisplaySeries","bannerItem0","bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
 		} else {
 			document.getElementById("bannerItem0").class = "bannerItem bannerItemPadding";
-			GuiMainMenu.requested("GuiDisplaySeries","bannerItem0","bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
+			MainMenu.requested("DisplaySeries","bannerItem0","bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
 		}
 	} else if (this.isTvOrMovies == 2) { //Music
 		Support.updateURLHistory("GuiDisplaySeries",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
-		GuiMainMenu.requested("GuiDisplaySeries",this.ItemData.Items[this.selectedItem].Id,"Music Selected");
+		MainMenu.requested("DisplaySeries",this.ItemData.Items[this.selectedItem].Id,"Music Selected");
 	} else { //TV or Movies
-		Support.updateURLHistory("GuiDisplaySeries",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
-		GuiMainMenu.requested("GuiDisplaySeries",this.ItemData.Items[this.selectedItem].Id,(File.getUserProperty("LargerView") == true) ? "SeriesPortraitLarge Selected" : "SeriesPortrait Selected");
+		Support.updateURLHistory("DisplaySeries",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
+		MainMenu.requested("DisplaySeries",this.ItemData.Items[this.selectedItem].Id,(File.getUserProperty("LargerView") == true) ? "SeriesPortraitLarge Selected" : "SeriesPortrait Selected");
 	}
 };
 

@@ -8,7 +8,7 @@ var GuiSettingsLog = {
 };
 
 GuiSettingsLog.onFocus = function() {
-	Helper.setControlButtons("Clear Log",null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
+	Helper.setControlButtons("Clear Log", null, null, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
 };
 
 GuiSettingsLog.getMaxDisplay = function() {
@@ -140,11 +140,11 @@ GuiSettingsLog.keyDown = function() {
 			GuiSettingsLog.start(); //relead
 			break;
 		case tvKey.KEY_BLUE:
-			GuiMusicPlayer.showMusicPlayer("GuiSettingsLog","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
+			MusicPlayer.showMusicPlayer("SettingsLog", "bannerItem" + this.selectedBannerItem, "bannerItem bannerItemPadding highlight" + Main.highlightColour + "Text");
 			break;
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
-			GuiMainMenu.requested("GuiSettingsLog",null);
+			MainMenu.requested("SettingsLog", null);
 			break;
 		case tvKey.KEY_EXIT:
 			widgetAPI.sendExitEvent();
@@ -182,7 +182,7 @@ GuiSettingsLog.processLeftKey = function() {
 
 GuiSettingsLog.openMenu = function() {
 	document.getElementById("bannerItem0").className = "bannerItem bannerItemPadding";
-	GuiMainMenu.requested("GuiSettingsLog","bannerItem0","bannerItem bannerItemPadding green");
+	MainMenu.requested("SettingsLog","bannerItem0","bannerItem bannerItemPadding green");
 };
 
 GuiSettingsLog.processRightKey = function() {

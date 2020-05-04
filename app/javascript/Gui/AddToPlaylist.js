@@ -12,7 +12,7 @@ var GuiAddToPlaylist = {
 };
 
 GuiAddToPlaylist.onFocus = function() {
-	Helper.setControlButtons(null,null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
+	Helper.setControlButtons(null, null, null,MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
 };
 
 GuiAddToPlaylist.getMaxDisplay = function() {

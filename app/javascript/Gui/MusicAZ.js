@@ -17,7 +17,7 @@ var GuiMusicAZ = {
 };
 
 GuiMusicAZ.onFocus = function() {
-	Helper.setControlButtons(null,null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
+	Helper.setControlButtons(null, null, null, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
 };
 
 GuiMusicAZ.getMaxDisplay = function() {
@@ -203,12 +203,12 @@ GuiMusicAZ.keyDown = function() {
 			//Focus the music player
 			if (this.selectedItem == -1) {
 				if (this.selectedBannerItem == this.bannerItems.length-1) {
-					GuiMusicPlayer.showMusicPlayer("GuiMusicAZ","bannerItem"+this.selectedBannerItem,"bannerItem highlight"+Main.highlightColour+"Text");
+					MusicPlayer.showMusicPlayer("MusicAZ","bannerItem"+this.selectedBannerItem,"bannerItem highlight"+Main.highlightColour+"Text");
 				} else {
-					GuiMusicPlayer.showMusicPlayer("GuiMusicAZ","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
+					GuiMusicPlayer.showMusicPlayer("MusicAZ","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
 				}
 			} else {
-				GuiMusicPlayer.showMusicPlayer("GuiMusicAZ",this.Letters[this.selectedItem],document.getElementById(this.Letters[this.selectedItem]).className);
+				MusicPlayer.showMusicPlayer("MusicAZ",this.Letters[this.selectedItem],document.getElementById(this.Letters[this.selectedItem]).className);
 			}
 			break;
 		case tvKey.KEY_EXIT:
@@ -222,13 +222,13 @@ GuiMusicAZ.openMenu = function() {
 	if (this.selectedItem == -1) {
 		Support.updateURLHistory("GuiMusicAZ",this.startParams[0],null,null,null,this.selectedItem,this.topLeftItem,true);
 		if (this.selectedBannerItem == this.bannerItems.length-1) {
-			GuiMainMenu.requested("GuiMusicAZ","bannerItem"+this.selectedBannerItem,"bannerItem highlight"+Main.highlightColour+"Text");
+			MainMenu.requested("MusicAZ","bannerItem"+this.selectedBannerItem,"bannerItem highlight"+Main.highlightColour+"Text");
 		} else {
-			GuiMainMenu.requested("GuiMusicAZ","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
+			MainMenu.requested("MusicAZ","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
 		}
 	} else {
-		Support.updateURLHistory("GuiMusicAZ",this.startParams[0],null,null,null,this.selectedItem,this.topLeftItem,true);
-		GuiMainMenu.requested("GuiMusicAZ",this.Letters[this.selectedItem],document.getElementById(this.Letters[this.selectedItem]).className);
+		Support.updateURLHistory("MusicAZ",this.startParams[0],null,null,null,this.selectedItem,this.topLeftItem,true);
+		MainMenu.requested("MusicAZ",this.Letters[this.selectedItem],document.getElementById(this.Letters[this.selectedItem]).className);
 	}
 };
 

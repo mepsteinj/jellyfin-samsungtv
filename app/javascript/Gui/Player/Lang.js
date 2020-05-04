@@ -65,7 +65,7 @@
 			"name":"Bambara",
 			"nativeName":"bamanankan"
 		},
-		"bak":{
+		"bas":{
 			"name":"Bashkir",
 			"nativeName":"башҡорт теле"
 		},

@@ -19,7 +19,7 @@ var GuiMusicArtist = {
 };
 
 GuiMusicArtist.onFocus = function() {
-	Helper.setControlButtons(null,null,null,GuiMusicPlayer.Status == "PLAYING" || GuiMusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
+	Helper.setControlButtons(null, null, null, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
 };
 
 GuiMusicArtist.getMaxDisplay = function() {
@@ -255,12 +255,12 @@ GuiMusicArtist.keyDown = function() {
 			//Focus the music player
 			if (this.selectedItem == -1) {
 				if (this.selectedBannerItem == this.bannerItems.length-1) {
-					GuiMusicPlayer.showMusicPlayer("GuiMusicArtist","bannerItem"+this.selectedBannerItem,"bannerItem highlight"+Main.highlightColour+"Text");
+					MusicPlayer.showMusicPlayer("MusicArtist", "bannerItem"+this.selectedBannerItem,"bannerItem highlight"+Main.highlightColour+"Text");
 				} else {
-					GuiMusicPlayer.showMusicPlayer("GuiMusicArtist","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
+					MusicPlayer.showMusicPlayer("MusicArtist", "bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
 				}
 			} else {
-				GuiMusicPlayer.showMusicPlayer("GuiMusicArtist",this.divprepend1 + this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.divprepend1 + this.ItemData.Items[this.selectedItem].Id).className);
+				MusicPlayer.showMusicPlayer("MusicArtist", this.divprepend1 + this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.divprepend1 + this.ItemData.Items[this.selectedItem].Id).className);
 			}
 
 
@@ -282,7 +282,7 @@ GuiMusicArtist.openMenu = function() {
 		this.topLeftItem = 0;
 	}
 		Support.updateURLHistory("GuiMusicArtist",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,true);
-		GuiMainMenu.requested("GuiMusicArtist",this.divprepend1 + this.ItemData.Items[this.selectedItem].Id);
+		MainMenu.requested("MusicArtist",this.divprepend1 + this.ItemData.Items[this.selectedItem].Id);
 };
 
 GuiMusicArtist.processTopMenuLeftKey = function() {
@@ -466,7 +466,7 @@ GuiMusicArtist.bottomKeyDown = function() {
 				this.selectedItem2 = 0; //Going left from bottom items row.
 				//Open the menu
 				Support.updateURLHistory("GuiMusicArtist",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,false);
-				GuiMainMenu.requested("GuiMusicArtistBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id);
+				MainMenu.requested("MusicArtistBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id);
 
 			} else {
 				if (this.selectedItem2 < this.topLeftItem2) {
@@ -511,7 +511,7 @@ GuiMusicArtist.bottomKeyDown = function() {
 			this.playSelectedItem(this.ItemData2.Items,this.selectedItem2);
 			break;
 		case tvKey.KEY_YELLOW:
-			GuiMusicPlayer.showPlayer();
+			MusicPlayer.showPlayer();
 			break;
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
@@ -525,8 +525,8 @@ GuiMusicArtist.bottomKeyDown = function() {
 				this.selectedItem = 0;
 				this.topLeftItem = 0;
 			}
-			Support.updateURLHistory("GuiMusicArtist",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,false);
-			GuiMainMenu.requested("GuiMusicArtistBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id);
+			Support.updateURLHistory("MusicArtist",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,false);
+			MainMenu.requested("MusicArtistBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id);
 			break;
 		case tvKey.KEY_RETURN:
 			//In this instance handle return to go up to the top menu
@@ -546,7 +546,7 @@ GuiMusicArtist.bottomKeyDown = function() {
 			//Favourites
 			break;
 		case tvKey.KEY_BLUE:
-			GuiMusicPlayer.showMusicPlayer("GuiMusicArtistBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id,document.getElementById(this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id).className);
+			MusicPlayer.showMusicPlayer("MusicArtistBottom", this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id,document.getElementById(this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id).className);
 			break;
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY BOTTOM");
