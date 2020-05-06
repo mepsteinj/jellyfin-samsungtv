@@ -1,4 +1,4 @@
-var GuiPlayerTranscodeParams = {
+var PlayerTranscodeParams = {
 	codec : null,
 	container : null,
 	resolution : null,
@@ -14,7 +14,7 @@ var GuiPlayerTranscodeParams = {
 // Special Thanks to gbone8106 for providing the H series Transcode Settings!
 
 
-GuiPlayerTranscodeParams.getParameters = function(codec,videoWidth) {
+PlayerTranscodeParams.getParameters = function(codec,videoWidth) {
 	switch (Main.getModelYear()) {
 		case "HU":
 			switch (codec) {
@@ -438,7 +438,7 @@ GuiPlayerTranscodeParams.getParameters = function(codec,videoWidth) {
 };
 
 
-GuiPlayerTranscodeParams.getAudioParameters = function(audiocodec) {
+PlayerTranscodeParams.getAudioParameters = function(audiocodec) {
 	switch (Main.getModelYear()) {
 	case "H":
 	case "HU":

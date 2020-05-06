@@ -213,7 +213,7 @@ Main.onLoad = function() {
 			File.setServerEntry(0);
 			Server.testConnectionSettings(fileJson.Servers[0].Path,true);
 		} else {
-			//No Server Defined - Load GuiPage_IP
+			//No Server Defined - Load NewServer
 			FileLog.write("No server defined. Loading the new server page.");
 			NewServer.start();
 		}
@@ -233,9 +233,9 @@ Main.onUnload = function() {
 	//Write Cache to disk
 	ImageCache.writeAll(Support.imageCacheJson);
 	Support.screensaverOff();
-	GuiImagePlayer.kill();
+	ImagePlayer.kill();
 	MusicPlayer.stopOnAppExit();
-	GuiPlayer.stopOnAppExit();
+	Player.stopOnAppExit();
 	pluginAPI.unregistKey(tvKey.KEY_TOOLS);
 	pluginAPI.unregistKey(tvKey.KEY_3D);
 };

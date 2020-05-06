@@ -38,7 +38,7 @@ Servers.start = function(runAutoLogin) {
 		//Set Backdrop
 		Support.fadeImage("images/bg1.jpg");
 		//Set focus to element in Index that defines keydown method! This enables keys to work :D
-		document.getElementById("envServers").focus();
+		document.getElementById("evnServers").focus();
 	}
 };
 

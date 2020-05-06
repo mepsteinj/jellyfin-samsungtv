@@ -4,7 +4,7 @@
 //Samsung Current time works in seconds * 1000
 //Jellyfin works in seconds * 10000000
 
-var GuiPlayer = {
+var Player = {
 	plugin : null,
 	pluginAudio : null,
 	pluginScreen : null,
@@ -34,34 +34,34 @@ var GuiPlayer = {
 };
 
 
-GuiPlayer.init = function() {
+Player.init = function() {
 	MusicPlayer.stopOnAppExit();
 	this.plugin = document.getElementById("pluginPlayer");
 	this.pluginAudio = document.getElementById("pluginObjectAudio");
 	this.pluginScreen = document.getElementById("pluginScreen");
 	//Set up Player
-	this.plugin.OnConnectionFailed = 'GuiPlayer.handleConnectionFailed';
-	this.plugin.OnAuthenticationFailed = 'GuiPlayer.handleAuthenticationFailed';
-	this.plugin.OnNetworkDisconnected = 'GuiPlayer.handleOnNetworkDisconnected';
-	this.plugin.OnRenderError = 'GuiPlayer.handleRenderError';
-	this.plugin.OnStreamNotFound = 'GuiPlayer.handleStreamNotFound';
-	this.plugin.OnRenderingComplete = 'GuiPlayer.handleOnRenderingComplete';
-	this.plugin.OnCurrentPlayTime = 'GuiPlayer.setCurrentTime';
-	this.plugin.OnBufferingStart = 'GuiPlayer.onBufferingStart';
-	this.plugin.OnBufferingProgress = 'GuiPlayer.onBufferingProgress';
-	this.plugin.OnBufferingComplete = 'GuiPlayer.onBufferingComplete';
-	this.plugin.OnStreamInfoReady = 'GuiPlayer.OnStreamInfoReady';
+	this.plugin.OnConnectionFailed = 'Player.handleConnectionFailed';
+	this.plugin.OnAuthenticationFailed = 'Player.handleAuthenticationFailed';
+	this.plugin.OnNetworkDisconnected = 'Player.handleOnNetworkDisconnected';
+	this.plugin.OnRenderError = 'Player.handleRenderError';
+	this.plugin.OnStreamNotFound = 'Player.handleStreamNotFound';
+	this.plugin.OnRenderingComplete = 'Player.handleOnRenderingComplete';
+	this.plugin.OnCurrentPlayTime = 'Player.setCurrentTime';
+	this.plugin.OnBufferingStart = 'Player.onBufferingStart';
+	this.plugin.OnBufferingProgress = 'Player.onBufferingProgress';
+	this.plugin.OnBufferingComplete = 'Player.onBufferingComplete';
+	this.plugin.OnStreamInfoReady = 'Player.OnStreamInfoReady';
 	this.plugin.SetTotalBufferSize(40*1024*1024);
 };
 
-GuiPlayer.start = function(title, url, startingPlaybackTick, playedFromPage, isCinemaMode, featureUrl) {
+Player.start = function(title, url, startingPlaybackTick, playedFromPage, isCinemaMode, featureUrl) {
 	if (MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED") {
 		MusicPlayer.stopPlayback();
 	}
 	//Run only once in loading initial request - subsequent vids should go thru the startPlayback
 	this.startParams = [title,url,startingPlaybackTick,playedFromPage,isCinemaMode,featureUrl];
 	//Display Loading
-	document.getElementById("guiPlayerLoading").style.visibility = "";
+	document.getElementById("playerLoading").style.visibility = "";
 	//Get Item Data (Media Streams)
 	this.VideoData = Server.getContent(url);
 	if (this.VideoData == null) { return; }
@@ -86,7 +86,7 @@ GuiPlayer.start = function(title, url, startingPlaybackTick, playedFromPage, isC
 		if (File.getUserProperty("EnableCinemaMode") && intros.TotalRecordCount > 0 && startingPlaybackTick == 0) {
 			FileLog.write("Playback: Switching to Cinema Mode.");
 			//Start again in Cinema Mode.
-			GuiPlayer.start("PlayAll",introsUrl,0,"GuiItemDetails",true,this.startParams[1]);
+			Player.start("PlayAll",introsUrl,0,"GuiItemDetails",true,this.startParams[1]);
 			return;
 		} else {
 			this.PlayerData = this.VideoData;
@@ -95,10 +95,10 @@ GuiPlayer.start = function(title, url, startingPlaybackTick, playedFromPage, isC
 	//Take focus to no input
 	document.getElementById("noKeyInput").focus();
 	//Load Versions
-	GuiPlayerVersions.start(this.PlayerData, startingPlaybackTick, playedFromPage);
+	PlayerVersions.start(this.PlayerData, startingPlaybackTick, playedFromPage);
 };
 
-GuiPlayer.startPlayback = function(TranscodeAlg, resumeTicksSamsung) {
+Player.startPlayback = function(TranscodeAlg, resumeTicksSamsung) {
 	//Initiate Player for Video
 	this.init();
 	FileLog.write("Playback : Player Initialised");
@@ -135,8 +135,8 @@ GuiPlayer.startPlayback = function(TranscodeAlg, resumeTicksSamsung) {
 	} else {
 		this.offsetSeconds = 0;
 	}
-	//Set up GuiPlayerDisplay
-	GuiPlayerDisplay.setDisplay(this.PlayerData, this.playingMediaSource, this.playingTranscodeStatus, this.offsetSeconds, this.playingVideoIndex, this.playingAudioIndex, this.playingSubtitleIndex, this.playingMediaSourceIndex);
+	//Set up PlayerDisplay
+	PlayerDisplay.setDisplay(this.PlayerData, this.playingMediaSource, this.playingTranscodeStatus, this.offsetSeconds, this.playingVideoIndex, this.playingAudioIndex, this.playingSubtitleIndex, this.playingMediaSourceIndex);
 	//Set Resolution Display
 	this.setDisplaySize();
 	//Subtitles - If resuming find the correct index to start from!
@@ -145,7 +145,7 @@ GuiPlayer.startPlayback = function(TranscodeAlg, resumeTicksSamsung) {
 	this.updateSubtitleTime(resumeTicksSamsung,"NewSubs");
 	FileLog.write("Playback : End Subtitle Processing");
 	//Create Tools Menu
-	GuiPlayerDisplay.createToolsMenu();
+	PlayerDisplay.createToolsMenu();
 	//Update Server content is playing * update time
 	Server.videoStarted(this.PlayerData.Id,this.playingMediaSource.Id,this.PlayMethod);
 	//Update URL with resumeticks
@@ -158,7 +158,7 @@ GuiPlayer.startPlayback = function(TranscodeAlg, resumeTicksSamsung) {
 	this.plugin.ResumePlay(url,position);
 };
 
-GuiPlayer.stopPlayback = function() {
+Player.stopPlayback = function() {
 	FileLog.write("Playback : Stopping");
 	this.clearGuiItems();
 	this.plugin.Stop();
@@ -170,7 +170,7 @@ GuiPlayer.stopPlayback = function() {
 	}
 };
 
-GuiPlayer.setDisplaySize = function() {
+Player.setDisplaySize = function() {
 	var aspectRatio = (this.playingMediaSource.MediaStreams[this.playingVideoIndex] === undefined) ? "16:9" : this.playingMediaSource.MediaStreams[this.playingVideoIndex].AspectRatio;
 	if (aspectRatio == "16:9") {
 		this.plugin.SetDisplayArea(0, 0, 960, 540);
@@ -197,12 +197,12 @@ GuiPlayer.setDisplaySize = function() {
 	}
 };
 
-GuiPlayer.setSubtitles = function(selectedSubtitleIndex) {
+Player.setSubtitles = function(selectedSubtitleIndex) {
 	if (selectedSubtitleIndex > -1) {
 		var Stream = this.playingMediaSource.MediaStreams[selectedSubtitleIndex];
 		if (Stream.IsTextSubtitleStream) {
 			//Set Colour & Size from User Settings
-			Support.styleSubtitles("guiPlayerSubtitles");
+			Support.styleSubtitles("playerSubtitles");
 			var url = Server.getCustomURL("/Videos/"+ this.PlayerData.Id+"/"+this.playingMediaSource.Id+"/Subtitles/"+selectedSubtitleIndex+"/Stream.srt?api_key=" + Server.getAuthToken());
 			this.PlayerDataSubtitle = Server.getSubtitles(url);
 			FileLog.write("Subtitles : loaded "+url);
@@ -225,12 +225,12 @@ GuiPlayer.setSubtitles = function(selectedSubtitleIndex) {
 	}
 };
 
-GuiPlayer.updateSubtitleTime = function(newTime,direction) {
+Player.updateSubtitleTime = function(newTime,direction) {
 	if (this.playingSubtitleIndex != -1) {
 		//Clear Down Subtitles
 		this.subtitleSeeking = true;
-		Support.widgetPutInnerHTML("guiPlayerSubtitles", "");
-		document.getElementById("guiPlayerSubtitles").style.visibility = "hidden";
+		Support.widgetPutInnerHTML("playerSubtitles", "");
+		document.getElementById("playerSubtitles").style.visibility = "hidden";
 		if (direction == "FF") {
 			if (newTime > this.PlayerDataSubtitle[this.PlayerDataSubtitle.length -1].startTime) {
 				this.subtitleShowingIndex = this.PlayerDataSubtitle.length -1;
@@ -270,8 +270,8 @@ GuiPlayer.updateSubtitleTime = function(newTime,direction) {
 
 //--------------------------------------------------------------------------------------------------
 
-GuiPlayer.handleOnRenderingComplete = function() {
-	GuiPlayer.stopPlayback();
+Player.handleOnRenderingComplete = function() {
+	Player.stopPlayback();
 	FileLog.write("Playback : Rendering Complete");
 	if (this.startParams[0] == "PlayAll") {
 	////Call Resume Option - Check playlist first, then AutoPlay property, then return
@@ -281,10 +281,10 @@ GuiPlayer.handleOnRenderingComplete = function() {
 			document.getElementById("noKeyInput").focus();
 
 			this.PlayerData = this.VideoData.Items[this.PlayerIndex];
-			GuiPlayerVersions.start(this.PlayerData,0,this.startParams[3]);
+			PlayerVersions.start(this.PlayerData,0,this.startParams[3]);
 		} else {
 			this.PlayerIndex = 0;
-			GuiPlayerDisplay.restorePreviousMenu();
+			PlayerDisplay.restorePreviousMenu();
 		}
 	} else if (File.getUserProperty("AutoPlay")){
 		if (this.PlayerData.Type == "Episode") {
@@ -297,62 +297,62 @@ GuiPlayer.handleOnRenderingComplete = function() {
 				document.getElementById("noKeyInput").focus();
 				this.PlayerData = Server.getContent(url);
 				if (this.PlayerData == null) { return; }
-				GuiPlayerVersions.start(this.PlayerData,0,this.startParams[3]);
+				PlayerVersions.start(this.PlayerData,0,this.startParams[3]);
 			} else if (this.AdjacentData.Items.length > 2) {
 				//Take focus to no input
 				document.getElementById("noKeyInput").focus();
 				var url = Server.getItemInfoURL(this.AdjacentData.Items[2].Id);
 				this.PlayerData = Server.getContent(url);
 				if (this.PlayerData == null) { return; }
-				GuiPlayerVersions.start(this.PlayerData,0,this.startParams[3]);
+				PlayerVersions.start(this.PlayerData,0,this.startParams[3]);
 			} else {
-				GuiPlayerDisplay.restorePreviousMenu();
+				PlayerDisplay.restorePreviousMenu();
 			}
 		} else {
-			GuiPlayerDisplay.restorePreviousMenu();
+			PlayerDisplay.restorePreviousMenu();
 		}
 	} else {
-		GuiPlayerDisplay.restorePreviousMenu();
+		PlayerDisplay.restorePreviousMenu();
 	}
 };
 
-GuiPlayer.handleOnNetworkDisconnected = function() {
+Player.handleOnNetworkDisconnected = function() {
 	//Transcoded files throw this error at end of playback?
 	FileLog.write("Playback : Network Disconnected");
 	Notifications.setNotification(this.playingURL,"NETWORK DISCONNECTED");
-	GuiPlayer.stopPlayback();
-	GuiPlayerDisplay.restorePreviousMenu();
+	Player.stopPlayback();
+	PlayerDisplay.restorePreviousMenu();
 };
 
-GuiPlayer.handleConnectionFailed = function() {
+Player.handleConnectionFailed = function() {
 	FileLog.write("Playback : Network Disconnected");
 	Notifications.setNotification(this.playingURL,"CONNECTION ERROR");
-	GuiPlayer.stopPlayback();
-	GuiPlayerDisplay.restorePreviousMenu();
+	Player.stopPlayback();
+	PlayerDisplay.restorePreviousMenu();
 };
 
-GuiPlayer.handleAuthenticationFailed = function() {
+Player.handleAuthenticationFailed = function() {
 	FileLog.write("Playback : Authentication Error");
 	Notifications.setNotification("AUTHENTICATION ERROR");
-	GuiPlayer.stopPlayback();
-	GuiPlayerDisplay.restorePreviousMenu();
+	Player.stopPlayback();
+	PlayerDisplay.restorePreviousMenu();
 };
 
-GuiPlayer.handleRenderError = function(RenderErrorType) {
+Player.handleRenderError = function(RenderErrorType) {
 	FileLog.write("Playback : Render Error " + RenderErrorType);
 	Notifications.setNotification("Rendor Error Type : " + RenderErrorType);
-	GuiPlayer.stopPlayback();
-	GuiPlayerDisplay.restorePreviousMenu();
+	Player.stopPlayback();
+	PlayerDisplay.restorePreviousMenu();
 };
 
-GuiPlayer.handleStreamNotFound = function() {
+Player.handleStreamNotFound = function() {
 	FileLog.write("Playback : Stream Not Found");
 	Notifications.setNotification("STREAM NOT FOUND");
-	GuiPlayer.stopPlayback();
-	GuiPlayerDisplay.restorePreviousMenu();
+	Player.stopPlayback();
+	PlayerDisplay.restorePreviousMenu();
 };
 
-GuiPlayer.setCurrentTime = function(time) {
+Player.setCurrentTime = function(time) {
 	if (this.Status == "PLAYING") {
 		if (this.PlayMethod == "Transcode") {
 			this.currentTime = parseInt(time) + this.offsetSeconds;
@@ -362,26 +362,26 @@ GuiPlayer.setCurrentTime = function(time) {
 		//Subtitle Update
 		if (this.playingSubtitleIndex != null && this.PlayerDataSubtitle != null && this.subtitleSeeking == false) {
 			if (this.currentTime >= this.PlayerDataSubtitle[this.subtitleShowingIndex].endTime) {
-				Support.widgetPutInnerHTML("guiPlayerSubtitles", "");
-				document.getElementById("guiPlayerSubtitles").style.visibility = "hidden";
+				Support.widgetPutInnerHTML("playerSubtitles", "");
+				document.getElementById("playerSubtitles").style.visibility = "hidden";
 				if (this.PlayerDataSubtitle.length -1 > this.subtitleShowingIndex){
 					this.subtitleShowingIndex++;
 				}
 			}
-			if (this.currentTime >= this.PlayerDataSubtitle[this.subtitleShowingIndex].startTime && this.currentTime < this.PlayerDataSubtitle[this.subtitleShowingIndex].endTime && document.getElementById("guiPlayerSubtitles").innerHTML != this.PlayerDataSubtitle.text) {
+			if (this.currentTime >= this.PlayerDataSubtitle[this.subtitleShowingIndex].startTime && this.currentTime < this.PlayerDataSubtitle[this.subtitleShowingIndex].endTime && document.getElementById("playerSubtitles").innerHTML != this.PlayerDataSubtitle.text) {
 				var subtitleText = this.PlayerDataSubtitle[this.subtitleShowingIndex].text;
 				subtitleText = subtitleText.replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1<br />$2'); //support two-line subtitles
 				// remove redundant breaks
 				subtitleText = subtitleText.replace(/^<br \/>/, '');
 				subtitleText = subtitleText.replace(/<br \/>$/, '');
-				Support.widgetPutInnerHTML("guiPlayerSubtitles", subtitleText);
-				document.getElementById("guiPlayerSubtitles").style.visibility = "";
+				Support.widgetPutInnerHTML("playerSubtitles", subtitleText);
+				document.getElementById("playerSubtitles").style.visibility = "";
 			}
 		}
 		//Update GUIs
 		if (this.PlayerData.Type == "ChannelVideoItem") {
-			document.getElementById("guiPlayerInfoProgressBarCurrent").style.width = "0%";
-			Support.widgetPutInnerHTML("guiPlayerInfoTime", Support.convertTicksToTimeSingle(this.currentTime));
+			document.getElementById("playerInfoProgressBarCurrent").style.width = "0%";
+			Support.widgetPutInnerHTML("playerInfoTime", Support.convertTicksToTimeSingle(this.currentTime));
 		} else {
 			if (time > 0 && this.setThreeD == false) {
 				//Check 3D & Audio
@@ -391,8 +391,8 @@ GuiPlayer.setCurrentTime = function(time) {
 				this.setThreeD = true;
 			}
 			percentage = (100 * this.currentTime / (this.PlayerData.RunTimeTicks / 10000));
-			document.getElementById("guiPlayerInfoProgressBarCurrent").style.width = percentage + "%";
-			Support.widgetPutInnerHTML("guiPlayerInfoTime", Support.convertTicksToTime(this.currentTime, (this.PlayerData.RunTimeTicks / 10000)));
+			document.getElementById("playerInfoProgressBarCurrent").style.width = percentage + "%";
+			Support.widgetPutInnerHTML("playerInfoTime", Support.convertTicksToTime(this.currentTime, (this.PlayerData.RunTimeTicks / 10000)));
 			this.updateTimeCount++;
 			if (this.updateTimeCount == 8) {
 				this.updateTimeCount = 0;
@@ -402,14 +402,14 @@ GuiPlayer.setCurrentTime = function(time) {
 	}
 };
 
-GuiPlayer.onBufferingStart = function() {
+Player.onBufferingStart = function() {
 	if (MusicPlayer.Status == "PLAYING"){
 		return;
 	}
 	this.Status = "PLAYING";
 	FileLog.write("Playback : Buffering...");
 	//Show Loading Screen
-	document.getElementById("guiPlayerLoading").style.visibility = "";
+	document.getElementById("playerLoading").style.visibility = "";
 
 	//Stop Subtitle Display - Mainly for Transcode pauses
 	if (this.playingSubtitleIndex != null) {
@@ -417,14 +417,14 @@ GuiPlayer.onBufferingStart = function() {
 	}
 };
 
-GuiPlayer.onBufferingProgress = function(percent) {
-	if (document.getElementById("guiPlayerLoading").style.visibility == "" && percent > 5){
-		Support.widgetPutInnerHTML("guiPlayerLoading", "Buffering " + percent + "%");
+Player.onBufferingProgress = function(percent) {
+	if (document.getElementById("playerLoading").style.visibility == "" && percent > 5){
+		Support.widgetPutInnerHTML("playerLoading", "Buffering " + percent + "%");
 	}
 	FileLog.write("Playback : Buffering " + percent + "%");
 };
 
-GuiPlayer.onBufferingComplete = function() {
+Player.onBufferingComplete = function() {
 	if (MusicPlayer.Status == "PLAYING"){
 		return;
 	}
@@ -434,8 +434,8 @@ GuiPlayer.onBufferingComplete = function() {
 		this.subtitleSeeking = false;
 	}
 	//Hide Loading Screen
-	Support.widgetPutInnerHTML("guiPlayerLoading", "Loading");
-	document.getElementById("guiPlayerLoading").style.visibility = "hidden";
+	Support.widgetPutInnerHTML("playerLoading", "Loading");
+	document.getElementById("playerLoading").style.visibility = "hidden";
 	//Setup Volume & Mute Keys
 	//Volume & Mute Control - Works!
 	NNaviPlugin = document.getElementById("pluginObjectNNavi");
@@ -444,36 +444,36 @@ GuiPlayer.onBufferingComplete = function() {
 	pluginAPI.unregistKey(tvKey.KEY_VOL_DOWN);
 	pluginAPI.unregistKey(tvKey.KEY_MUTE);
 	//Set Focus for Key Events - Must be done on successful load of video
-	document.getElementById("guiPlayer").focus();
+	document.getElementById("evnPlayer").focus();
 };
 
-GuiPlayer.OnStreamInfoReady = function() {
+Player.OnStreamInfoReady = function() {
 	FileLog.write("Playback : Stream Info Ready");
-	Support.widgetPutInnerHTML("guiPlayerInfoTime", Support.convertTicksToTime(this.currentTime, (this.PlayerData.RunTimeTicks / 10000)));
+	Support.widgetPutInnerHTML("playerInfoTime", Support.convertTicksToTime(this.currentTime, (this.PlayerData.RunTimeTicks / 10000)));
 };
 
-GuiPlayer.clearGuiItems = function() {
+Player.clearGuiItems = function() {
 	if (this.infoTimer != null){
 		clearTimeout(this.infoTimer);
 	}
-	document.getElementById("guiPlayerOsd").style.opacity = 0;
-	document.getElementById("guiPlayerTools").style.opacity = 0;
-	Support.widgetPutInnerHTML("guiPlayerSubtitles", "");
-	document.getElementById("guiPlayerSubtitles").style.visibility = "hidden";
+	document.getElementById("playerOsd").style.opacity = 0;
+	document.getElementById("playerTools").style.opacity = 0;
+	Support.widgetPutInnerHTML("playerSubtitles", "");
+	document.getElementById("playerSubtitles").style.visibility = "hidden";
 };
 
 //-----------------------------------------------------------------------------------------------------------------------------------------
 //       GUIPLAYER PLAYBACK KEY HANDLERS
 //-----------------------------------------------------------------------------------------------------------------------------------------
 
-GuiPlayer.keyDown = function() {
+Player.keyDown = function() {
 	var keyCode = event.keyCode;
 	switch(keyCode) {
 		case tvKey.KEY_RETURN:
 			FileLog.write("Playback : Return By User");
 			widgetAPI.blockNavigation(event);
 			this.stopPlayback();
-			GuiPlayerDisplay.restorePreviousMenu();
+			PlayerDisplay.restorePreviousMenu();
 			break;
 		case tvKey.KEY_RIGHT:
 			this.handleRightKey();
@@ -498,10 +498,10 @@ GuiPlayer.keyDown = function() {
 			this.handleRWKey();
 			break;
 		case tvKey.KEY_INFO:
-			GuiPlayer.handleInfoKey();
+			Player.handleInfoKey();
 			break;
 		case tvKey.KEY_3D:
-			GuiPlayer.setupThreeDConfiguration();
+			Player.setupThreeDConfiguration();
 			break;
 		case tvKey.KEY_TOOLS:
 		case tvKey.KEY_DOWN:
@@ -509,119 +509,119 @@ GuiPlayer.keyDown = function() {
 			if (this.infoTimer != null){
 				clearTimeout(this.infoTimer);
 			}
-			if (document.getElementById("guiPlayerOsd").style.opacity != 0) {
-				$('#guiPlayerOsd').css('opacity',1).animate({opacity:0}, 500);
+			if (document.getElementById("playerOsd").style.opacity != 0) {
+				$('#playerOsd').css('opacity',1).animate({opacity:0}, 500);
 			}
-			document.getElementById("guiPlayerSubtitles").style.top="auto";
-			document.getElementById("guiPlayerSubtitles").style.bottom="100px";
-			GuiPlayerDisplay.updateSelectedItems();
-			if (document.getElementById("guiPlayerTools").style.opacity != 1) {
-				$('#guiPlayerTools').css('opacity',0).animate({opacity:1}, 500);
+			document.getElementById("playerSubtitles").style.top="auto";
+			document.getElementById("playerSubtitles").style.bottom="100px";
+			PlayerDisplay.updateSelectedItems();
+			if (document.getElementById("playerTools").style.opacity != 1) {
+				$('#playerTools').css('opacity',0).animate({opacity:1}, 500);
 			}
-			document.getElementById("guiPlayerTools").focus();
+			document.getElementById("playerTools").focus();
 			break;
 		case tvKey.KEY_EXIT:
 			FileLog.write("EXIT KEY");
 			widgetAPI.blockNavigation(event);
 			this.stopPlayback();
-			GuiPlayerDisplay.restorePreviousMenu();
+			PlayerDisplay.restorePreviousMenu();
 			break;
 	}
 };
 
-GuiPlayer.handleRightKey = function() {
+Player.handleRightKey = function() {
 	if (this.startParams[0] == "PlayAll") {
 		this.PlayerIndex++;
 		if (this.VideoData.Items.length > this.PlayerIndex) {
 			this.stopPlayback();
 			this.PlayerData = this.VideoData.Items[this.PlayerIndex];
-			GuiPlayerVersions.start(this.PlayerData,0,this.startParams[3]);
+			PlayerVersions.start(this.PlayerData,0,this.startParams[3]);
 		} else {
 			//Reset PlayerData to correct index!!
 			this.PlayerIndex--;
 			this.PlayerData = this.VideoData.Items[this.PlayerIndex];
 		}
 	} else {
-		GuiPlayer.handleFFKey();
+		Player.handleFFKey();
 	}
 };
 
-GuiPlayer.handleLeftKey = function() {
+Player.handleLeftKey = function() {
 	if (this.startParams[0] == "PlayAll") {
 		this.PlayerIndex--;
 		if (this.PlayerIndex >= 0) {
 			this.stopPlayback();
 			this.PlayerData = this.VideoData.Items[this.PlayerIndex];
-			GuiPlayerVersions.start(this.PlayerData,0,this.startParams[3]);
+			PlayerVersions.start(this.PlayerData,0,this.startParams[3]);
 		} else {
 			//Reset PlayerData to correct index!!
 			this.PlayerIndex++;
 			this.PlayerData = this.VideoData.Items[this.PlayerIndex];
 		}
 	} else {
-		GuiPlayer.handleRWKey();
+		Player.handleRWKey();
 	}
 };
 
-GuiPlayer.handlePlayKey = function() {
+Player.handlePlayKey = function() {
 	if (this.Status == "PAUSED") {
 		FileLog.write("Playback : Play by User");
 		this.Status = "PLAYING";
 		this.plugin.Resume();
-		document.getElementById("guiPlayerSubtitles").style.bottom="100px";
-		if (document.getElementById("guiPlayerOsd").style.opacity == 0) {
-			$('#guiPlayerOsd').css('opacity',0).animate({opacity:1}, 500);
+		document.getElementById("playerSubtitles").style.bottom="100px";
+		if (document.getElementById("playerOsd").style.opacity == 0) {
+			$('#playerOsd').css('opacity',0).animate({opacity:1}, 500);
 		}
 		Support.clock();
 		if (this.infoTimer != null){
-			document.getElementById("guiPlayerItemDetails").style.visibility="hidden";
-			document.getElementById("guiPlayerItemDetails2").style.visibility="";
+			document.getElementById("playerItemDetails").style.visibility="hidden";
+			document.getElementById("playerItemDetails2").style.visibility="";
 			clearTimeout(this.infoTimer);
 		}
 		this.infoTimer = setTimeout(function(){
-			$('#guiPlayerOsd').css('opacity',1).animate({opacity:0}, 500);
+			$('#playerOsd').css('opacity',1).animate({opacity:0}, 500);
 			setTimeout(function(){
-				document.getElementById("guiPlayerSubtitles").style.top="auto";
-				document.getElementById("guiPlayerSubtitles").style.bottom="60px";
+				document.getElementById("playerSubtitles").style.top="auto";
+				document.getElementById("playerSubtitles").style.bottom="60px";
 			}, 500);
 		}, 3000);
 	}
 	else
 	{
-		document.getElementById("guiPlayerSubtitles").style.bottom="100px";
-		if (document.getElementById("guiPlayerOsd").style.opacity == 0) {
-			$('#guiPlayerOsd').css('opacity',0).animate({opacity:1}, 500);
+		document.getElementById("playerSubtitles").style.bottom="100px";
+		if (document.getElementById("playerOsd").style.opacity == 0) {
+			$('#playerOsd').css('opacity',0).animate({opacity:1}, 500);
 		}
 		if (this.infoTimer != null){
-			document.getElementById("guiPlayerItemDetails").style.visibility="hidden";
-			document.getElementById("guiPlayerItemDetails2").style.visibility="";
+			document.getElementById("playerItemDetails").style.visibility="hidden";
+			document.getElementById("playerItemDetails2").style.visibility="";
 			clearTimeout(this.infoTimer);
 		}
 		this.infoTimer = setTimeout(function(){
-			$('#guiPlayerOsd').css('opacity',1).animate({opacity:0}, 500);
+			$('#playerOsd').css('opacity',1).animate({opacity:0}, 500);
 			setTimeout(function(){
-				document.getElementById("guiPlayerSubtitles").style.top="auto";
-				document.getElementById("guiPlayerSubtitles").style.bottom="60px";
+				document.getElementById("playerSubtitles").style.top="auto";
+				document.getElementById("playerSubtitles").style.bottom="60px";
 			}, 500);
 		}, 3000);
 	}
 };
 
-GuiPlayer.handleStopKey = function() {
+Player.handleStopKey = function() {
 	FileLog.write("Playback : Stopped by User");
 	this.stopPlayback();
 	setTimeout(function(){
-		document.getElementById("guiPlayerItemDetails").style.visibility="hidden";
-		document.getElementById("guiPlayerItemDetails2").style.visibility="";
-		GuiPlayerDisplay.restorePreviousMenu();
+		document.getElementById("playerItemDetails").style.visibility="hidden";
+		document.getElementById("playerItemDetails2").style.visibility="";
+		PlayerDisplay.restorePreviousMenu();
 	}, 250);
 };
 
-GuiPlayer.handlePauseKey = function() {
+Player.handlePauseKey = function() {
 	if(this.Status == "PLAYING") {
-		document.getElementById("guiPlayerSubtitles").style.bottom="100px";
-		if (document.getElementById("guiPlayerOsd").style.opacity == 0) {
-			$('#guiPlayerOsd').css('opacity',0).animate({opacity:1}, 500);
+		document.getElementById("playerSubtitles").style.bottom="100px";
+		if (document.getElementById("playerOsd").style.opacity == 0) {
+			$('#playerOsd').css('opacity',0).animate({opacity:1}, 500);
 		}
 		FileLog.write("Playback : Paused by User");
 		this.plugin.Pause();
@@ -632,121 +632,121 @@ GuiPlayer.handlePauseKey = function() {
 		}
 		this.infoTimer = setTimeout(function(){
 			setTimeout(function(){
-				document.getElementById("guiPlayerItemDetails").style.visibility="hidden";
-				document.getElementById("guiPlayerItemDetails2").style.visibility="";
+				document.getElementById("playerItemDetails").style.visibility="hidden";
+				document.getElementById("playerItemDetails2").style.visibility="";
 			}, 500);
-			$('#guiPlayerOsd').css('opacity',1).animate({opacity:0}, 500);
+			$('#playerOsd').css('opacity',1).animate({opacity:0}, 500);
 			setTimeout(function(){
-				document.getElementById("guiPlayerSubtitles").style.top="auto";
-				document.getElementById("guiPlayerSubtitles").style.bottom="60px";
+				document.getElementById("playerSubtitles").style.top="auto";
+				document.getElementById("playerSubtitles").style.bottom="60px";
 			}, 500);
 		}, 10000);
 	}
 };
 
-GuiPlayer.handleFFKey = function() {
+Player.handleFFKey = function() {
 	FileLog.write("Playback : Fast Forward");
 	if(this.Status == "PLAYING") {
 		if (this.PlayMethod == "DirectPlay") {
 			FileLog.write("Playback : Fast Forward : Direct Play");
-			GuiPlayer.updateSubtitleTime(this.currentTime + 29000,"FF");
+			Player.updateSubtitleTime(this.currentTime + 29000,"FF");
 			this.plugin.JumpForward(30);
 		} else {
 			FileLog.write("Playback : Fast Forward : Transcoding");
 			this.newPlaybackPosition((this.currentTime + 30000) * 10000);
 		}
-		document.getElementById("guiPlayerSubtitles").style.bottom="100px";
-		if (document.getElementById("guiPlayerOsd").style.opacity == 0) {
-			$('#guiPlayerOsd').css('opacity',0).animate({opacity:1}, 500);
+		document.getElementById("playerSubtitles").style.bottom="100px";
+		if (document.getElementById("playerOsd").style.opacity == 0) {
+			$('#playerOsd').css('opacity',0).animate({opacity:1}, 500);
 		}
 		if (this.infoTimer != null){
 			clearTimeout(this.infoTimer);
 		}
 		this.infoTimer = setTimeout(function(){
 			setTimeout(function(){
-				document.getElementById("guiPlayerItemDetails").style.visibility="hidden";
-				document.getElementById("guiPlayerItemDetails2").style.visibility="";
-				document.getElementById("guiPlayerSubtitles").style.top="auto";
-				document.getElementById("guiPlayerSubtitles").style.bottom="60px";
+				document.getElementById("playerItemDetails").style.visibility="hidden";
+				document.getElementById("playerItemDetails2").style.visibility="";
+				document.getElementById("playerSubtitles").style.top="auto";
+				document.getElementById("playerSubtitles").style.bottom="60px";
 			}, 500);
-			$('#guiPlayerOsd').css('opacity',1).animate({opacity:0}, 500);
+			$('#playerOsd').css('opacity',1).animate({opacity:0}, 500);
 		}, 3000);
 	}
 };
 
-GuiPlayer.handleRWKey = function() {
+Player.handleRWKey = function() {
 	FileLog.write("Playback : Rewind");
 	if(this.Status == "PLAYING") {
 		if (this.PlayMethod == "DirectPlay") {
 			FileLog.write("Playback : Rewind : Direct Play");
-			GuiPlayer.updateSubtitleTime(this.currentTime - 13000,"RW");
+			Player.updateSubtitleTime(this.currentTime - 13000,"RW");
 			this.plugin.JumpBackward(10);
 		} else {
 			FileLog.write("Playback : Rewind : Transcoding");
 			this.newPlaybackPosition((this.currentTime - 10000) * 10000);
 		}
-		document.getElementById("guiPlayerSubtitles").style.bottom="100px";
-		if (document.getElementById("guiPlayerOsd").style.opacity == 0) {
-			$('#guiPlayerOsd').css('opacity',0).animate({opacity:1}, 500);
+		document.getElementById("playerSubtitles").style.bottom="100px";
+		if (document.getElementById("playerOsd").style.opacity == 0) {
+			$('#playerOsd').css('opacity',0).animate({opacity:1}, 500);
 		}
 		if (this.infoTimer != null){
 			clearTimeout(this.infoTimer);
 		}
 		this.infoTimer = setTimeout(function(){
 			setTimeout(function(){
-				document.getElementById("guiPlayerItemDetails").style.visibility="hidden";
-				document.getElementById("guiPlayerItemDetails2").style.visibility="";
-				document.getElementById("guiPlayerSubtitles").style.top="auto";
-				document.getElementById("guiPlayerSubtitles").style.bottom="60px";
+				document.getElementById("playerItemDetails").style.visibility="hidden";
+				document.getElementById("playerItemDetails2").style.visibility="";
+				document.getElementById("playerSubtitles").style.top="auto";
+				document.getElementById("playerSubtitles").style.bottom="60px";
 			}, 500);
-			$('#guiPlayerOsd').css('opacity',1).animate({opacity:0}, 500);
+			$('#playerOsd').css('opacity',1).animate({opacity:0}, 500);
 		}, 3000);
 	}
 };
 
-GuiPlayer.handleInfoKey = function () {
+Player.handleInfoKey = function () {
 	if (this.infoTimer != null){
 		clearTimeout(this.infoTimer);
 	}
-	if (document.getElementById("guiPlayerOsd").style.opacity == 0 ||
-			document.getElementById("guiPlayerItemDetails").style.visibility == "hidden"){ //Full info called
-		document.getElementById("guiPlayerItemDetails").style.visibility="";
-		document.getElementById("guiPlayerItemDetails2").style.visibility="hidden";
-		document.getElementById("guiPlayerSubtitles").style.top="170px";
-		if (document.getElementById("guiPlayerOsd").style.opacity == 0) {
-			$('#guiPlayerOsd').css('opacity',0).animate({opacity:1}, 500);
+	if (document.getElementById("playerOsd").style.opacity == 0 ||
+			document.getElementById("playerItemDetails").style.visibility == "hidden"){ //Full info called
+		document.getElementById("pPlayerItemDetails").style.visibility="";
+		document.getElementById("playerItemDetails2").style.visibility="hidden";
+		document.getElementById("playerSubtitles").style.top="170px";
+		if (document.getElementById("playerOsd").style.opacity == 0) {
+			$('#playerOsd').css('opacity',0).animate({opacity:1}, 500);
 		}
 		this.infoTimer = setTimeout(function(){
 			setTimeout(function(){
-				document.getElementById("guiPlayerItemDetails").style.visibility="hidden";
-				document.getElementById("guiPlayerItemDetails2").style.visibility="";
-				document.getElementById("guiPlayerSubtitles").style.top="auto";
-				document.getElementById("guiPlayerSubtitles").style.bottom="60px";
+				document.getElementById("playerItemDetails").style.visibility="hidden";
+				document.getElementById("playerItemDetails2").style.visibility="";
+				document.getElementById("playerSubtitles").style.top="auto";
+				document.getElementById("playerSubtitles").style.bottom="60px";
 			}, 500);
-			$('#guiPlayerOsd').css('opacity',1).animate({opacity:0}, 500);
+			$('#playerOsd').css('opacity',1).animate({opacity:0}, 500);
 		}, 10000);
 	} else { //Full info cancelled while on screen.
-		$('#guiPlayerOsd').css('opacity',1).animate({opacity:0}, 500);
+		$('#playerOsd').css('opacity',1).animate({opacity:0}, 500);
 		this.infoTimer = setTimeout(function(){
-			document.getElementById("guiPlayerItemDetails").style.visibility="hidden";
-			document.getElementById("guiPlayerItemDetails2").style.visibility="";
-			document.getElementById("guiPlayerSubtitles").style.top="auto";
-			document.getElementById("guiPlayerSubtitles").style.bottom="60px";
+			document.getElementById("playerItemDetails").style.visibility="hidden";
+			document.getElementById("playerItemDetails2").style.visibility="";
+			document.getElementById("playerSubtitles").style.top="auto";
+			document.getElementById("playerSubtitles").style.bottom="60px";
 		}, 500);
 	}
 };
 
 //-----------------------------------------------------------------------------------------------------------------------------------------
-//       GUIPLAYER 3D & AUDIO OUTPUT SETTERS
+//       PLAYER 3D & AUDIO OUTPUT SETTERS
 //-----------------------------------------------------------------------------------------------------------------------------------------
 
-GuiPlayer.setupThreeDConfiguration = function() {
+Player.setupThreeDConfiguration = function() {
 	if (this.playingMediaSource.Video3DFormat !== undefined) {
 		if (this.pluginScreen.Flag3DEffectSupport()) {
 			switch (this.playingMediaSource.Video3DFormat) {
 			case "FullSideBySide":
 			case "HalfSideBySide":
-				result = GuiPlayer.pluginScreen.Set3DEffectMode(2);
+				result = Player.pluginScreen.Set3DEffectMode(2);
 			break;
 			default:
 				this.pluginScreen.Set3DEffectMode(0);
@@ -760,7 +760,7 @@ GuiPlayer.setupThreeDConfiguration = function() {
 	}
 };
 
-GuiPlayer.setupAudioConfiguration = function() {
+Player.setupAudioConfiguration = function() {
 	var audioInfoStream = this.playingMediaSource.MediaStreams[this.playingAudioIndex];
 	var codec = audioInfoStream.Codec.toLowerCase();
 	//If audio has been transcoded need to manually set codec as codec in stream info will be wrong
@@ -799,7 +799,7 @@ GuiPlayer.setupAudioConfiguration = function() {
 	}
 };
 
-GuiPlayer.getTranscodeProgress = function() {
+Player.getTranscodeProgress = function() {
 	//Get Session Data (Media Streams)
 	var SessionData = Server.getContent(Server.getCustomURL("/Sessions?format=json"));
 	if (SessionData == null) { return; }
@@ -811,7 +811,7 @@ GuiPlayer.getTranscodeProgress = function() {
 	return null;
 };
 
-GuiPlayer.checkTranscodeCanSkip = function(newtime) {
+Player.checkTranscodeCanSkip = function(newtime) {
 	var transcodePosition = (transcodeProgress / 100) * ((this.PlayerData.RunTimeTicks / 10000) - this.offsetSeconds);
 	if ((newtime > this.offsetSeconds) && newtime < transcodePosition) {
 		return true;
@@ -820,7 +820,7 @@ GuiPlayer.checkTranscodeCanSkip = function(newtime) {
 	}
 };
 
-GuiPlayer.newPlaybackPosition = function(startPositionTicks) {
+Player.newPlaybackPosition = function(startPositionTicks) {
 	document.getElementById("noKeyInput").focus();
 	this.stopPlayback();
 	//Update URL with resumeticks
@@ -836,23 +836,23 @@ GuiPlayer.newPlaybackPosition = function(startPositionTicks) {
 	this.updateSubtitleTime(startPositionTicks / 10000,"NewSubs");
 };
 
-GuiPlayer.newSubtitleIndex = function (newSubtitleIndex) {
+Player.newSubtitleIndex = function (newSubtitleIndex) {
 	if (newSubtitleIndex == -1 && this.playingSubtitleIndex != null) {
 		//Turn Off Subtitles
 		this.PlayerDataSubtitle = null;
 		this.playingSubtitleIndex = -1;
 		this.subtitleShowingIndex = 0;
 		this.subtitleSeeking = false;
-		Support.widgetPutInnerHTML("guiPlayerSubtitles", "");
-		document.getElementById("guiPlayerSubtitles").style.visibility = "hidden";
-		document.getElementById("GuiPlayer").focus();
+		Support.widgetPutInnerHTML("playerSubtitles", "");
+		document.getElementById("playerSubtitles").style.visibility = "hidden";
+		document.getElementById("Player").focus();
 	} else {
 		//Check its not already selected
 		if (newSubtitleIndex != this.playingSubtitleIndex) {
 			//Prevent displaying Subs while loading
 			this.subtitleSeeking = true;
-			Support.widgetPutInnerHTML("guiPlayerSubtitles", "");
-			document.getElementById("guiPlayerSubtitles").style.visibility = "hidden";
+			Support.widgetPutInnerHTML("playerSubtitles", "");
+			document.getElementById("playerSubtitles").style.visibility = "hidden";
 
 			//Update SubtitleIndex and reset index
 			this.playingSubtitleIndex = newSubtitleIndex;
@@ -864,21 +864,21 @@ GuiPlayer.newSubtitleIndex = function (newSubtitleIndex) {
 			this.updateSubtitleTime(this.currentTime,"NewSubs");
 
 			//Load Back to main page GUI
-			document.getElementById("GuiPlayer").focus();
+			document.getElementById("evnPlayer").focus();
 		} else {
 			//Do Nothing!
-			document.getElementById("GuiPlayer").focus();
+			document.getElementById("evnPlayer").focus();
 		}
 	}
 	//Keep the Subtitles menu up to date with the currently playing subs.
-	GuiPlayerDisplay.playingSubtitleIndex = this.playingSubtitleIndex;
+	PlayerDisplay.playingSubtitleIndex = this.playingSubtitleIndex;
 };
 
 //-----------------------------------------------------------------------------------------------------------------------------------------
-//       GUIPLAYER STOP HANDLER ON APP EXIT
+//       PLAYER STOP HANDLER ON APP EXIT
 //-----------------------------------------------------------------------------------------------------------------------------------------
 
-GuiPlayer.stopOnAppExit = function() {
+Player.stopOnAppExit = function() {
 	if (this.plugin != null) {
 		this.plugin.Stop();
 		this.plugin = null;

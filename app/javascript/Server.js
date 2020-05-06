@@ -57,7 +57,7 @@ Server.setDeviceID = function(deviceID) {
 	this.deviceID = deviceID;
 };
 
-//Required in Transcoding functions + guiPlayer
+//Required in Transcoding functions + Player
 Server.getDeviceID = function() {
 	return this.deviceID;
 };
@@ -375,7 +375,7 @@ Server.deleteFavourite = function(id) {
 };
 
 //------------------------------------------------------------
-//		 GuiIP Functions
+//		 IP Functions
 //------------------------------------------------------------
 
 Server.createPlaylist = function(name, ids, mediaType) {
@@ -415,7 +415,7 @@ Server.DELETE = function(url, item) {
 };
 
 //------------------------------------------------------------
-//		GuiIP Functions
+//		IP Functions
 //------------------------------------------------------------
 
 Server.testConnectionSettings = function (server, fromFile) {
@@ -498,10 +498,10 @@ Server.Logout = function() {
 	var url = this.getServerAddr() + "/Sessions/Logout";
 	this.getHttpData("POST", url, true, null);
 	//Close down any running items
-	GuiImagePlayerScreensaver.kill();
-	GuiImagePlayer.kill();
+	ImagePlayerScreensaver.kill();
+	ImagePlayer.kill();
 	MusicPlayer.stopOnAppExit();
-	GuiPlayer.stopOnAppExit();
+	Player.stopOnAppExit();
 	FileLog.write("---------------------------------------------------------------------");
 };
 

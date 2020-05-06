@@ -6,7 +6,7 @@ Render Error 4 :  Unsupported video resolution
 Render Error 6 :  Corrupt Stream
 */
 
-var GuiPlayerTranscoding = {
+var PlayerTranscoding = {
 	//File Information
 	MediaSource : null,
 	videoIndex : 0,
@@ -31,7 +31,7 @@ var GuiPlayerTranscoding = {
 };
 
 //--------------------------------------------------------------------------------------
-GuiPlayerTranscoding.start = function(showId, MediaSource,MediaSourceIndex, videoIndex, audioIndex, isFirstAudioIndex, subtitleIndex) {
+PlayerTranscoding.start = function(showId, MediaSource,MediaSourceIndex, videoIndex, audioIndex, isFirstAudioIndex, subtitleIndex) {
 	//Set Class Vars
 	this.MediaSource = MediaSource;
 	this.videoIndex = videoIndex;
@@ -77,9 +77,9 @@ GuiPlayerTranscoding.start = function(showId, MediaSource,MediaSourceIndex, vide
 	return [MediaSourceIndex,url,transcodeStatus,videoIndex,audioIndex,subtitleIndex];
 };
 
-GuiPlayerTranscoding.checkCodec = function() {
+PlayerTranscoding.checkCodec = function() {
 	var codec = this.MediaSource.MediaStreams[this.videoIndex].Codec.toLowerCase();
-	var codecParams = GuiPlayerTranscodeParams.getParameters(codec,this.MediaSource.MediaStreams[this.videoIndex].Width);
+	var codecParams = PlayerTranscodeParams.getParameters(codec,this.MediaSource.MediaStreams[this.videoIndex].Width);
 	this.isCodec = codecParams[0];
 	this.isContainer = this.checkContainer(codecParams[1]);
 	this.isResolution = this.checkResolution(codecParams[2]);
@@ -104,9 +104,9 @@ GuiPlayerTranscoding.checkCodec = function() {
 	}
 };
 
-GuiPlayerTranscoding.checkAudioCodec = function() {
+PlayerTranscoding.checkAudioCodec = function() {
 	var audiocodec = this.MediaSource.MediaStreams[this.audioIndex].Codec.toLowerCase();
-	var audiocodecParams = GuiPlayerTranscodeParams.getAudioParameters(audiocodec);
+	var audiocodecParams = PlayerTranscodeParams.getAudioParameters(audiocodec);
 	this.isAudioCodec = audiocodecParams[0];
 	this.isAudioContainer = this.checkContainer(audiocodecParams[1]);
 	this.isAudioChannel = this.checkAudioChannels(audiocodecParams[2]);
@@ -123,7 +123,7 @@ GuiPlayerTranscoding.checkAudioCodec = function() {
 	}
 };
 
-GuiPlayerTranscoding.checkAudioChannels = function(maxChannels) {
+PlayerTranscoding.checkAudioChannels = function(maxChannels) {
 	if (maxChannels == null) {
 		return false;
 	} else {
@@ -135,7 +135,7 @@ GuiPlayerTranscoding.checkAudioChannels = function(maxChannels) {
 	}
 };
 
-GuiPlayerTranscoding.checkResolution = function(maxResolution) {
+PlayerTranscoding.checkResolution = function(maxResolution) {
 	if (maxResolution == null) {
 		return false;
 	} else if (this.MediaSource.MediaStreams[this.videoIndex].Width <= maxResolution[0] && this.MediaSource.MediaStreams[this.videoIndex].Height <= maxResolution[1]) {
@@ -145,7 +145,7 @@ GuiPlayerTranscoding.checkResolution = function(maxResolution) {
 	}
 };
 
-GuiPlayerTranscoding.checkContainer = function(supportedContainers) {
+PlayerTranscoding.checkContainer = function(supportedContainers) {
 	if (supportedContainers == null) {
 		return false;
 	} else {
@@ -160,7 +160,7 @@ GuiPlayerTranscoding.checkContainer = function(supportedContainers) {
 	}
 };
 
-GuiPlayerTranscoding.checkBitRate = function(maxBitRate) {
+PlayerTranscoding.checkBitRate = function(maxBitRate) {
 	//Get Bitrate from Settings File
 	var maxBitRateSetting = File.getTVProperty("Bitrate")*1024*1024;
 	// MCB - Ignore bitrate in file
@@ -172,7 +172,7 @@ GuiPlayerTranscoding.checkBitRate = function(maxBitRate) {
 	}
 };
 
-GuiPlayerTranscoding.checkFrameRate = function(maxFrameRate) {
+PlayerTranscoding.checkFrameRate = function(maxFrameRate) {
 	if (maxFrameRate == null) {
 		return false;
 	} else if (this.MediaSource.MediaStreams[this.videoIndex].AverageFrameRate <= maxFrameRate) {
@@ -182,7 +182,7 @@ GuiPlayerTranscoding.checkFrameRate = function(maxFrameRate) {
 	}
 };
 
-GuiPlayerTranscoding.checkLevel = function(maxLevel) {
+PlayerTranscoding.checkLevel = function(maxLevel) {
 	if (maxLevel == null) {
 		return false;
 	} if (maxLevel == true) {
@@ -198,7 +198,7 @@ GuiPlayerTranscoding.checkLevel = function(maxLevel) {
 	}
 };
 
-GuiPlayerTranscoding.checkProfile = function(supportedProfiles) {
+PlayerTranscoding.checkProfile = function(supportedProfiles) {
 	if (supportedProfiles == null) {
 		return false;
 	} if (supportedProfiles == true) {

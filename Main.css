@@ -212,7 +212,7 @@ input[type="password"] {
 
 /*----------------------------------------------------------------------------------------------*/
 
-.guiImagePlayerImage {
+.imagePlayerImage {
     display: block;
     margin-left: auto;
     margin-right: auto
@@ -220,7 +220,7 @@ input[type="password"] {
 
 /*----------------------------------------------------------------------------------------------*/
 
-.guiDisplaySeriesIndexing {
+.displaySeriesIndexing {
     position: absolute;
     bottom: 440px;
     left: 850px;
@@ -745,7 +745,7 @@ input[type="password"] {
 
 /*----------------------------------------------------------------------------------------------*/
 
-.guiSettingsTitle {
+.settingsTitle {
     position:absolute;
     font-size:1.2em;
     top:110px;
@@ -753,7 +753,7 @@ input[type="password"] {
     z-index:5;
 }
 
-.guiSettingsSettings {
+.settingsSettings {
     position:absolute;
     top:180px;
     left: 100px;
@@ -762,31 +762,31 @@ input[type="password"] {
     z-index:5;
 }
 
-.guiSettingsRow {
+.settingsRow {
     width:200px;
 }
 
-.guiSettingsTD {
+.settingsTD {
     padding:20px 0px 20px 20px;
     width:400px;
     border-radius:10px;
 }
 
-.guiSettingSubSelected {
+.settingSubSelected {
     background-color:rgba(0,0,0,0);
 }
 
-.guiSettingUnSelected {
+.settingUnSelected {
     background-color:rgba(0,0,0,0);
 }
 
-.guiSettingsTVSettings {
+.settingsTVSettings {
     padding-top:50px;
     padding-bottom:30px;
     font-size:1.2em;
 }
 
-.guiSettingsOverview {
+.settingsOverview {
     position:absolute;
     top:130px;
     left:1200px;
@@ -799,13 +799,13 @@ input[type="password"] {
     z-index:5;
 }
 
-#guiSettingsOverviewTitle {
+#settingsOverviewTitle {
     font-size:1.2em;
     padding-bottom:20px;
     width:520px;
 }
 
-#guiSettingsOverviewContent {
+#settingsOverviewContent {
     padding-left:10px;
     padding-right:10px;
     width:500px;
@@ -1129,7 +1129,7 @@ input[type="password"] {
 
 /*----------------------------------------------------------------------------------------------*/
 
-.guiDisplaySeriesPageContent {
+.displaySeriesPageContent {
     position: absolute;
     left: 0px; top: 0px;
     width: 1920px; height: 1080px;
@@ -1211,7 +1211,7 @@ input[type="password"] {
     z-index:5
 }
 
-.guiTVShowMediaAlternative{
+.TVShowMediaAlternative{
     position:absolute;
     bottom:50px;
     left:40px;
@@ -1231,7 +1231,7 @@ input[type="password"] {
     z-index:5
 }
 
-.guiFilmOverview {
+.filmOverview {
     position:relative;
     font-size:1.1em;
     min-height:200px;
@@ -1410,7 +1410,7 @@ input[type="password"] {
     background-position:center;
 }
 
-.guiTVEpisodeEpisodeImage {
+.TVEpisodeEpisodeImage {
     position:absolute;
     top:40px;
     right:40px;
@@ -1422,14 +1422,14 @@ input[type="password"] {
     z-index:5;
 }
 
-.guiTVEpisodeOptions {
+.TVEpisodeOptions {
     position:absolute;
     top:250px;
     left:40px;
     z-index:5;
 }
 
-.guiTVEpisodeSubOptions {
+.TVEpisodeSubOptions {
     position:absolute;
     top:248px;
     left:470px;
@@ -1439,7 +1439,7 @@ input[type="password"] {
     z-index:5;
 }
 
-.guiTVEpisodeSubOptionImages {
+.TVEpisodeSubOptionImages {
     position:relative;
     top:248px;
     left:850px;
@@ -1450,9 +1450,9 @@ input[type="password"] {
 }
 
 /*-----------------------------------------------------------------*/
-/* GuiPage_CastMember */
+/* CastMember */
 
-.guiCastMemberName {
+.castMemberName {
     position:absolute;
     font-size:1.8em;
     top:40px;
@@ -1460,7 +1460,7 @@ input[type="password"] {
     z-index:5;
 }
 
-.guiCastMemberDetails {
+.castMemberDetails {
     position:absolute;
     top:140px;
     left:420px;
@@ -1469,7 +1469,7 @@ input[type="password"] {
     z-index:5;
 }
 
-.guiCastMemberPoster {
+.castMemberPoster {
     position:absolute;
     top:40px;
     left:40px;
@@ -1481,7 +1481,7 @@ input[type="password"] {
     z-index:5;
 }
 
-.guiCastMemberBio {
+.castMemberBio {
     position:absolute;
     top:540px;
     left:40px;
@@ -1492,14 +1492,14 @@ input[type="password"] {
     z-index:5;
 }
 
-.guiCastMemberList {
+.castMemberList {
     position:absolute;
     top:40px;
     left:880px;
     z-index:5;
 }
 
-.guiCastMemberListSingle {
+.castMemberListSingle {
     position:relative;
     height:100px;
     width:1000px;
@@ -1507,7 +1507,7 @@ input[type="password"] {
     z-index:5;
 }
 
-.guiCastMemberListSingleImage {
+.castMemberListSingleImage {
     position:relative;
     display:inline-block;
     height:100px;
@@ -1517,7 +1517,7 @@ input[type="password"] {
     z-index:5;
 }
 
-.guiCastMemberListSingleTitle {
+.castMemberListSingleTitle {
     position:absolute;
     display:inline-block;
     width:800px;
@@ -1530,7 +1530,7 @@ input[type="password"] {
 
 /*-----------------------------------------------------------------*/
 
-.guiFilmPoster {
+.filmPoster {
     position:absolute;
     bottom:60px;
     right:40px;
@@ -1563,7 +1563,7 @@ input[type="password"] {
     transform: rotate(0deg);
 }
 
-.guiTVEpisodePoster {
+.TVEpisodePoster {
     position:absolute;
     bottom:40px;
     left:20px;
@@ -1587,7 +1587,7 @@ input[type="password"] {
     z-index:1;
 }
 
-.guiFilmTitle {
+.filmTitle {
     position:absolute;
     top:110px;
     left:250px;
@@ -1597,7 +1597,7 @@ input[type="password"] {
     z-index:5;
 }
 
-.guiTVEpisodeOverview {
+.TVEpisodeOverview {
     font-size:1.1em;
     width:680px;
     min-height:100px;
@@ -2105,7 +2105,7 @@ input[type="password"] {
 
 /* --------------------------------------------------------------------------- */
 
-.guiMusicTitle {
+.musicTitle {
     position:relative;
     display:inline-block;
     font-size:1.7em;
@@ -2114,7 +2114,7 @@ input[type="password"] {
     z-index:5;
 }
 
-.guiMusicSubtitle {
+.musicSubtitle {
     position:relative;
     display:inline-block;
     font-size:1.2em;
@@ -2123,7 +2123,7 @@ input[type="password"] {
     z-index:5;
 }
 
-.guiMusicDetails {
+.musicDetails {
     position:relative;
     position:absolute;
     top:240px;
@@ -2133,7 +2133,7 @@ input[type="password"] {
     z-index:5;
 }
 
-.guiMusicPoster {
+.musicPoster {
     position:relative;
     position:absolute;
     bottom:260px;
@@ -2145,7 +2145,7 @@ input[type="password"] {
     z-index:5;
 }
 
-.guiMusicTableTd {
+.musicTableTd {
     position:relative;
     white-space:nowrap;
     text-overflow:ellipsis;
@@ -2158,7 +2158,7 @@ input[type="password"] {
     z-index:5;
 }
 
-.guiMusicGlobals {
+.musicGlobals {
     position:relative;
     display:block;
     height:56px;
@@ -2167,7 +2167,7 @@ input[type="password"] {
     z-index:5;
 }
 
-.guiMusicGlobal {
+.musicGlobal {
     position:relative;
     display:inline-block;
     padding-right:20px;
@@ -2178,7 +2178,7 @@ input[type="password"] {
     z-index:5;
 }
 
-.guiMusicOptions {
+.musicOptions {
     position:relative;
     padding-left:40px;
     padding-top:20px;
@@ -2187,7 +2187,7 @@ input[type="password"] {
 
 /* ---------------------------------------------------------------------------   */
 
-.guiMusicPlayerDiv {
+.musicPlayerDiv {
     position:absolute;
     height:60px;
     bottom:0px;
@@ -2199,14 +2199,14 @@ input[type="password"] {
     z-index:20;
 }
 
-.guiMusicPlayerTitle {
+.musicPlayerTitle {
     position:absolute;
     bottom:10px;
     left:20px;
     width:900px;
 }
 
-.guiMusicPlayerNowPlaying {
+.musicPlayerNowPlaying {
     position:absolute;
     bottom:10px;
     left:820px;
@@ -2214,7 +2214,7 @@ input[type="password"] {
     visibility:hidden;
 }
 
-.guiMusicPlayerScreenOff {
+.musicPlayerScreenOff {
     position:absolute;
     bottom:10px;
     left:940px;
@@ -2224,14 +2224,14 @@ input[type="password"] {
     padding:5px;
 }
 
-.guiMusicPlayerTime {
+.musicPlayerTime {
     position:absolute;
     bottom:10px;
     left:1120px;
     width:200px;
 }
 
-.guiMusicPlayerPlay {
+.musicPlayerPlay {
     position:absolute;
     bottom:10px;
     left:1340px;;
@@ -2242,7 +2242,7 @@ input[type="password"] {
     background-position:center;
 }
 
-.guiMusicPlayerStop {
+.musicPlayerStop {
     position:absolute;
     bottom:10px;
     left:1390px;
@@ -2253,7 +2253,7 @@ input[type="password"] {
     background-position:center;
 }
 
-.guiMusicPlayerPrevious {
+.musicPlayerPrevious {
     position:absolute;
     bottom:10px;
     left:1450px;
@@ -2264,7 +2264,7 @@ input[type="password"] {
     background-position:center;
 }
 
-.guiMusicPlayerPause {
+.musicPlayerPause {
     position:absolute;
     bottom:10px;
     left:1510px;
@@ -2275,7 +2275,7 @@ input[type="password"] {
     background-position:center;
 }
 
-.guiMusicPlayerNext {
+.musicPlayerNext {
     position:absolute;
     bottom:10px;
     left:1570px;
@@ -2380,7 +2380,7 @@ input[type="password"] {
     border: 2px solid black;
 }
 
-#guiPlayerInfoProgressBarCurrent {
+#playerInfoProgressBarCurrent {
     display: block;
     height: 100%;
     background-color: #27a436;

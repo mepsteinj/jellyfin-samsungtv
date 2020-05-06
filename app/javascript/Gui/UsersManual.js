@@ -102,7 +102,7 @@ var UsersManualInput  = function(id) {
 				document.getElementById("pass").focus;
 			} else {
 				document.getElementById("usersRemPwd").style.color = "red";
-				document.getElementById("envUsersManualPwd").focus();
+				document.getElementById("evnUsersManualPwd").focus();
 			}
 		});
 

@@ -84,10 +84,10 @@ Users.start = function(runAutoLogin) {
 		if (this.userData.length != 0) {
 			this.updateDisplayedUsers();
 			this.updateSelectedUser();
-			document.getElementById("envUsers").focus();
+			document.getElementById("evnUsers").focus();
 		} else {
 			//Probably need some padding here to make it look nice!
-			document.getElementById("envUsers").focus();
+			document.getElementById("evnUsers").focus();
 		}
 	}
 };
@@ -137,8 +137,8 @@ Users.processSelectedUser = function() {
 				authenticateSuccess = Server.Authenticate(userId, user, password);
 				if (authenticateSuccess) {
 					//Hide loading
-					document.getElementById("guiLoading").style.visibility = "hidden";
-					//document.getElementById("envUsers").focus();
+					document.getElementById("loading").style.visibility = "hidden";
+					//document.getElementById("evnUsers").focus();
 					//Set File User Entry
 					File.setUserEntry(index);
 					//Change Focus and call function in GuiMain to initiate the page!
@@ -146,8 +146,8 @@ Users.processSelectedUser = function() {
 				} else {
 					//Doesn't delete, allows user to correct password for the user.
 					//Hide loading
-					document.getElementById("guiLoading").style.visibility = "hidden";
-					document.getElementById("envUsers").focus();
+					document.getElementById("loading").style.visibility = "hidden";
+					document.getElementById("evnUsers").focus();
 					//Saved password failed - likely due to a user changing their password or user forgetting passwords!
 					new UsersInput("usersPassword");
 				}
@@ -159,8 +159,8 @@ Users.processSelectedUser = function() {
 		if (this.userData[this.selectedUser].HasPassword) {
 			//Has password - Load IME
 			//Hide loading
-			document.getElementById("guiLoading").style.visibility = "hidden";
-			document.getElementById("envUsers").focus();
+			document.getElementById("loading").style.visibility = "hidden";
+			document.getElementById("evnUsers").focus();
 			new UsersInput("usersPassword");
 		} else {
 			authenticateSuccess = Server.Authenticate(this.userData[this.selectedUser].Id, this.userData[this.selectedUser].Name, "");
@@ -174,8 +174,8 @@ Users.processSelectedUser = function() {
 				MainMenu.start();
 			} else {
 				//Hide loading
-				document.getElementById("guiLoading").style.visibility = "hidden";
-				document.getElementById("envUsers").focus();
+				document.getElementById("loading").style.visibility = "hidden";
+				document.getElementById("evnUsers").focus();
 				//Div to display Network Failure - No password therefore no password error
 				//This event should be impossible under normal circumstances
 				Notifications.setNotification(Main.messages.LabNetworkError);
@@ -329,17 +329,17 @@ var UsersInput = function(id) {
 			var pwd = document.getElementById("usersPassword").value;
 			ime.setString("");
 			//Set focus back to Users to reset IME
-			document.getElementById("envUsers").focus();
+			document.getElementById("evnUsers").focus();
 			Users.IMEAuthenticate(pwd);
 		});
 		//Keycode to abort login from password screen
 		ime.setKeyFunc(tvKey.KEY_RED, function(keyCode) {
 			document.getElementById("usersPwd").style.visibility="hidden";
-			document.getElementById("envUsers").focus();
+			document.getElementById("evnUsers").focus();
 		});
 		ime.setKeyFunc(tvKey.KEY_DOWN, function(keyCode) {
 			document.getElementById("usersRemPwd").style.color = "red";
-			document.getElementById("envUsersPwd").focus();
+			document.getElementById("evnUsersPwd").focus();
 		});
 		ime.setKeyFunc(tvKey.KEY_RETURN, function(keyCode) {
 			widgetAPI.blockNavigation(event);

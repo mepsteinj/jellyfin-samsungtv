@@ -1,4 +1,4 @@
-var GuiImagePlayerScreensaver = {
+var ImagePlayerScreensaver = {
 	ImageViewer : null,
 	newItemData : null,
 	imagesToUse : "MetaData",
@@ -10,13 +10,13 @@ var GuiImagePlayerScreensaver = {
 	effectNames : ['FADE1', 'FADE2', 'BLIND', 'SPIRAL','CHECKER', 'LINEAR', 'STAIRS', 'WIPE', 'RANDOM'],
 };
 
-GuiImagePlayerScreensaver.kill = function() {
+ImagePlayerScreensaver.kill = function() {
 	if (this.ImageViewer != null) {
 		this.ImageViewer.destroy();
 	}
 };
 
-GuiImagePlayerScreensaver.start = function() {
+ImagePlayerScreensaver.start = function() {
 	this.imagesToUse = File.getUserProperty("ScreensaverImages");
 	alert(this.imagesToUse);
 	this.images = [];
@@ -32,7 +32,7 @@ GuiImagePlayerScreensaver.start = function() {
 		sf.service.VideoPlayer.stop();
 		sf.service.VideoPlayer.hide();
 	}
-	Support.styleSubtitles("guiImagePlayerScreenSaverOverlay");
+	Support.styleSubtitles("imagePlayerScreensaverOverlay");
 	if (this.imagesToUse == "Media") {
 		var randomImageURL = Server.getItemTypeURL("&SortBy=Random&MediaTypes=Photo&Recursive=true&CollapseBoxSetItems=false&Limit=1000");
 		var randomImageData = Server.getContent(randomImageURL);
@@ -87,25 +87,25 @@ GuiImagePlayerScreensaver.start = function() {
 
 // Set Slideshow mode
 // You can use Transtion effect
-GuiImagePlayerScreensaver.setSlideshowMode = function() {
+ImagePlayerScreensaver.setSlideshowMode = function() {
 	this.ImageViewer.startSlideshow();
 	this.ImageViewer.setOnBufferingComplete(function(){
-		GuiImagePlayerScreensaver.ImageViewer.showNow();
+		ImagePlayerScreensaver.ImageViewer.showNow();
 		});
 	this.ImageViewer.setOnRenderingComplete(function(){
-		clearTimeout(GuiImagePlayerScreensaver.Timeout);
-		if (GuiImagePlayerScreensaver.imagesToUse == "Media") {
-			Support.setImagePlayerOverlay(GuiImagePlayerScreensaver.overlay[GuiImagePlayerScreensaver.imageIdx], GuiImagePlayer.overlayFormat);
+		clearTimeout(ImagePlayerScreensaver.Timeout);
+		if (ImagePlayerScreensaver.imagesToUse == "Media") {
+			Support.setImagePlayerOverlay(ImagePlayerScreensaver.overlay[ImagePlayerScreensaver.imageIdx], ImagePlayer.overlayFormat);
 		} else {
-			Support.setImagePlayerOverlay(GuiImagePlayerScreensaver.overlay[GuiImagePlayerScreensaver.imageIdx], 2);
+			Support.setImagePlayerOverlay(ImagePlayerScreensaver.overlay[ImagePlayerScreensaver.imageIdx], 2);
 		}
 
-		GuiImagePlayerScreensaver.Timeout = setTimeout(function(){
-			GuiImagePlayerScreensaver.imageIdx = GuiImagePlayerScreensaver.imageIdx+1;
-			if (GuiImagePlayerScreensaver.imageIdx >= GuiImagePlayerScreensaver.images.length ) {
-				GuiImagePlayerScreensaver.imageIdx = 0;
+		ImagePlayerScreensaver.Timeout = setTimeout(function(){
+			ImagePlayerScreensaver.imageIdx = ImagePlayerScreensaver.imageIdx+1;
+			if (ImagePlayerScreensaver.imageIdx >= ImagePlayerScreensaver.images.length ) {
+				ImagePlayerScreensaver.imageIdx = 0;
 			}
-			GuiImagePlayerScreensaver.ImageViewer.prepareNext(GuiImagePlayerScreensaver.images[GuiImagePlayerScreensaver.imageIdx], GuiImagePlayerScreensaver.ImageViewer.Effect.FADE1);
+			ImagePlayerScreensaver.ImageViewer.prepareNext(ImagePlayerScreensaver.images[ImagePlayerScreensaver.imageIdx], ImagePlayerScreensaver.ImageViewer.Effect.FADE1);
 		}, File.getUserProperty("ScreensaverImageTime"));
 	});
 
@@ -115,20 +115,20 @@ GuiImagePlayerScreensaver.setSlideshowMode = function() {
 
 // Play image - only called once in slideshow!
 //SS calls  play -> BufferComplete, then the showNow will call RendComplete which starts timer for next image
-GuiImagePlayerScreensaver.playImage = function() {
-	var url = GuiImagePlayerScreensaver.images[GuiImagePlayerScreensaver.imageIdx];
-	GuiImagePlayerScreensaver.ImageViewer.play(url, 1920, 1080);
+ImagePlayerScreensaver.playImage = function() {
+	var url = ImagePlayerScreensaver.images[ImagePlayerScreensaver.imageIdx];
+	ImagePlayerScreensaver.ImageViewer.play(url, 1920, 1080);
 };
 
-GuiImagePlayerScreensaver.stopScreensaver = function() {
+ImagePlayerScreensaver.stopScreensaver = function() {
 	clearTimeout(this.Timeout);
 	this.Timeout = null;
 	this.images = [];
 	this.ImageViewer.endSlideshow();
 	this.ImageViewer.hide();
 	widgetAPI.blockNavigation(event);
-	GuiImagePlayerScreensaver.kill();
-	document.getElementById("guiImagePlayerScreenSaverOverlay").innerHTML = "";
+	ImagePlayerScreensaver.kill();
+	document.getElementById("imagePlayerScreensaverOverlay").innerHTML = "";
 	//Show Page Contents
 	document.getElementById("everything").style.visibility="";
 };

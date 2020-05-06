@@ -11,8 +11,8 @@ Helper.getHelpPage = function() {
 //------------------------------------------------------------------------------------------------
 
 Helper.toggleHelp = function(helpPage) {
-	if (document.getElementById("guiImagePlayerScreenSaverOverlay").style.visibility == ""){
-		document.getElementById("guiImagePlayerScreenSaverOverlay").style.visibility = "hidden";
+	if (document.getElementById("imagePlayerScreenSaverOverlay").style.visibility == ""){
+		document.getElementById("imagePlayerScreenSaverOverlay").style.visibility = "hidden";
 	}
 	Helper.setHelpPage(helpPage);
 	//Unhide help window
@@ -33,10 +33,10 @@ Helper.keyDown = function() {
 		case tvKey.KEY_RETURN:
 			//Stops Return causing the app to exit when closing help text.
 			widgetAPI.blockNavigation(event);
-			if (document.getElementById("guiImagePlayerScreenSaverOverlay").style.visibility == "hidden"){
-				document.getElementById("guiImagePlayerScreenSaverOverlay").style.visibility = "";
+			if (document.getElementById("imagePlayerScreenSaverOverlay").style.visibility == "hidden"){
+				document.getElementById("imagePlayerScreenSaverOverlay").style.visibility = "";
 			}
-			//If required for Screensaver call in GuiImagePlayerScreensaver
+			//If required for Screensaver call in ImagePlayerScreensaver
 			if (document.getElementById("help").style.visibility == "") {
 				//Hide help window
 				document.getElementById("help").style.visibility = "hidden";
@@ -56,7 +56,7 @@ Helper.setHelpPage = function(helpPage) {
 
 Helper.generateDisplayOneItemHelp = function() {
 	var htmlToAdd = "";
-	if (this.getHelpPage() == "GuiImagePlayer") {
+	if (this.getHelpPage() == "ImagePlayer") {
 		htmlToAdd = Main.messages.LabHelpImagePlayer;
 	} else {
 		htmlToAdd = Main.messages.LabHelpOtherPlayer;
@@ -72,31 +72,31 @@ Helper.setControlButtons = function(redText, greenText, yellowText, blueText, re
 
 	//Get the current text if needed.
 	if (redText == 0) {
-		redText = document.getElementById("guiRedButton").innerHTML;
+		redText = document.getElementById("redButton").innerHTML;
 		if (redText == "") {
 			redText = null;
 		}
 	}
 	if (greenText == 0) {
-		greenText = document.getElementById("guiGreenButton").innerHTML;
+		greenText = document.getElementById(greenButton").innerHTML;
 		if (greenText == "") {
 			greenText = null;
 		}
 	}
 	if (yellowText == 0) {
-		yellowText = document.getElementById("guiYellowButton").innerHTML;
+		yellowText = document.getElementById("yellowButton").innerHTML;
 		if (yellowText == "") {
 			yellowText = null;
 		}
 	}
 	if (blueText == 0) {
-		blueText = document.getElementById("guiBlueButton").innerHTML;
+		blueText = document.getElementById("blueButton").innerHTML;
 		if (blueText == "") {
 			blueText = null;
 		}
 	}
 	if (returnText == 0) {
-		returnText = document.getElementById("guiReturnButton").innerHTML;
+		returnText = document.getElementById("returnButton").innerHTML;
 		if (returnText == "") {
 			returnText = null;
 		}
@@ -154,44 +154,44 @@ Helper.setControlButtons = function(redText, greenText, yellowText, blueText, re
 	}
 	//Set control button visibility, inner text and position.
 	if (redText == null) {
-		document.getElementById("guiRedButton").style.visibility = "hidden";
-		Support.widgetPutInnerHTML("guiRedButton", null);
+		document.getElementById("redButton").style.visibility = "hidden";
+		Support.widgetPutInnerHTML("redButton", null);
 	} else {
-		document.getElementById("guiRedButton").style.visibility = "";
-		Support.widgetPutInnerHTML("guiRedButton", redText);
-		document.getElementById("guiRedButton").style.right = redPos + "px";
+		document.getElementById("redButton").style.visibility = "";
+		Support.widgetPutInnerHTML("redButton", redText);
+		document.getElementById("redButton").style.right = redPos + "px";
 	}
 	if (greenText == null) {
-		document.getElementById("guiGreenButton").style.visibility = "hidden";
-		Support.widgetPutInnerHTML("guiGreenButton", null);
+		document.getElementById("greenButton").style.visibility = "hidden";
+		Support.widgetPutInnerHTML("greenButton", null);
 	} else {
-		document.getElementById("guiGreenButton").style.visibility = "";
-		Support.widgetPutInnerHTML("guiGreenButton", greenText);
-		document.getElementById("guiGreenButton").style.right = greenPos + "px";
+		document.getElementById("greenButton").style.visibility = "";
+		Support.widgetPutInnerHTML("greenButton", greenText);
+		document.getElementById("greenButton").style.right = greenPos + "px";
 	}
 	if (yellowText == null) {
-		document.getElementById("guiYellowButton").style.visibility = "hidden";
-		Support.widgetPutInnerHTML("guiYellowButton", null);
+		document.getElementById("yellowButton").style.visibility = "hidden";
+		Support.widgetPutInnerHTML("yellowButton", null);
 	} else {
-		document.getElementById("guiYellowButton").style.visibility = "";
-		Support.widgetPutInnerHTML("guiYellowButton", yellowText);
-		document.getElementById("guiYellowButton").style.right = yellowPos + "px";
+		document.getElementById("yellowButton").style.visibility = "";
+		Support.widgetPutInnerHTML("yellowButton", yellowText);
+		document.getElementById("yellowButton").style.right = yellowPos + "px";
 	}
 	if (blueText == null) {
-		document.getElementById("guiBlueButton").style.visibility = "hidden";
-		Support.widgetPutInnerHTML("guiBlueButton", null);
+		document.getElementById("blueButton").style.visibility = "hidden";
+		Support.widgetPutInnerHTML("blueButton", null);
 	} else {
-		document.getElementById("guiBlueButton").style.visibility = "";
-		Support.widgetPutInnerHTML("guiBlueButton", blueText);
-		document.getElementById("guiBlueButton").style.right = bluePos + "px";
+		document.getElementById("blueButton").style.visibility = "";
+		Support.widgetPutInnerHTML("blueButton", blueText);
+		document.getElementById("blueButton").style.right = bluePos + "px";
 	}
 	if (returnText == null) {
-		document.getElementById("guiReturnButton").style.visibility = "hidden";
-		Support.widgetPutInnerHTML("guiReturnButton", null);
+		document.getElementById("returnButton").style.visibility = "hidden";
+		Support.widgetPutInnerHTML("returnButton", null);
 	} else {
-		document.getElementById("guiReturnButton").style.visibility = "";
-		Support.widgetPutInnerHTML("guiReturnButton", returnText);
-		document.getElementById("guiReturnButton").style.right = returnPos + "px";
+		document.getElementById("returnButton").style.visibility = "";
+		Support.widgetPutInnerHTML("returnButton", returnText);
+		document.getElementById("returnButton").style.right = returnPos + "px";
 	}
 };
 

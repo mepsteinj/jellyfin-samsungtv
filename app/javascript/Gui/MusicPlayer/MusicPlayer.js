@@ -21,7 +21,7 @@ MusicPlayer.onFocus = function() {
 };
 
 MusicPlayer.init = function() {
-	GuiPlayer.stopOnAppExit();
+	Player.stopOnAppExit();
 	this.pluginMusic = document.getElementById("pluginPlayer");
 	this.pluginAudioMusic = document.getElementById("pluginObjectAudio");
 	//Set up Player
@@ -48,27 +48,27 @@ MusicPlayer.showMusicPlayer = function(playedFromPage,selectedDivId,selectedDivC
 			} else {
 				this.selectedDivClass = selectedDivClass;
 			}
-			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("guiSettingChanging arrowUpDown", "");
+			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("settingChanging arrowUpDown", "");
 			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("highlight" + Main.highlightColour + "Background", "");
 			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("highlight" + Main.highlightColour + "Text", "");
 			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("seriesSelected","");
 			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("highlight" + Main.highlightColour + "Background", "");
 			document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("selected", "");
 		}
-		if (playedFromPage == "GuiImagePlayer") {
-			clearTimeout(GuiImagePlayer.infoTimer);
-			document.getElementById("guiImagePlayerScreenSaverOverlay").style.visibility="hidden";
-			document.getElementById("guiButtonShade").style.visibility = "";
+		if (playedFromPage == "ImagePlayer") {
+			clearTimeout(ImagePlayer.infoTimer);
+			document.getElementById("imagePlayerScreenSaverOverlay").style.visibility="hidden";
+			document.getElementById("buttonShade").style.visibility = "";
 		}
-		document.getElementById("guiMusicPlayerDiv").style.bottom = "-60px";
-		document.getElementById("guiMusicPlayerDiv").style.visibility = "";
-		$('.guiMusicPlayerDiv').animate({
+		document.getElementById("musicPlayerDiv").style.bottom = "-60px";
+		document.getElementById("musicPlayerDiv").style.visibility = "";
+		$('.musicPlayerDiv').animate({
 			bottom: 0
 		}, 300, function() {
 			//animate complete.
 		});
 		document.getElementById("counter").style.visibility = "hidden";
-		document.getElementById("envMusicPlayer").focus();
+		document.getElementById("evnMusicPlayer").focus();
 	}
 };
 
@@ -147,17 +147,17 @@ MusicPlayer.start = function(title,url,playedFromPage,isQueue,showThemeId,itemId
 };
 
 MusicPlayer.updateSelectedItem = function() {
-	/*document.getElementById("guiMusicPlayerNowPlaying").style.color = "white";*/
-	document.getElementById("guiMusicPlayerScreenOff").style.color = "white";
+	/*document.getElementById("musicPlayerNowPlaying").style.color = "white";*/
+	document.getElementById("musicPlayerScreenOff").style.color = "white";
 	switch (this.selectedItem ) {
 /*      case 0:
-			document.getElementById("guiMusicPlayerNowPlaying").style.color = "#27a436";
+			document.getElementById("musicPlayerNowPlaying").style.color = "#27a436";
 			break;*/
 		case 0:
-			document.getElementById("guiMusicPlayerScreenOff").className = "guiMusicPlayerScreenOff highlight" + Main.highlightColour + "Background";
+			document.getElementById("musicPlayerScreenOff").className = "musicPlayerScreenOff highlight" + Main.highlightColour + "Background";
 			break;
 		default:
-			document.getElementById("guiMusicPlayerNowPlaying").className = "guiMusicPlayerNowPlaying highlight" + Main.highlightColour + "Background";
+			document.getElementById("musicPlayerNowPlaying").className = "musicPlayerNowPlaying highlight" + Main.highlightColour + "Background";
 			break;
 		}
 };
@@ -188,7 +188,7 @@ MusicPlayer.keyDown = function() {
 		//Update Main.js isScreensaverRunning - Sets to True
 		Main.setIsScreensaverRunning();
 		//End Screensaver
-		GuiImagePlayerScreensaver.stopScreensaver();
+		ImagePlayerScreensaver.stopScreensaver();
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
@@ -213,14 +213,14 @@ MusicPlayer.keyDown = function() {
 			switch (this.selectedItem) {
 				/*case 0:
 					//Hide the music player.
-					$('.guiMusicPlayerDiv').animate({
+					$('.musicPlayerDiv').animate({
 						bottom: -60
 					}, 400, function() {
-						document.getElementById("guiMusicPlayerDiv").style.visibility = "hidden";
-						document.getElementById("guiMusicPlayerDiv").style.bottom = "0";
+						document.getElementById("musicPlayerDiv").style.visibility = "hidden";
+						document.getElementById("musicPlayerDiv").style.bottom = "0";
 					});
 					//Set Focus for Key Events
-					//document.getElementById("GuiMusic").focus();
+					//document.getElementById("Music").focus();
 					break;*/
 				case 0:
 					this.handleScreenKey();
@@ -251,17 +251,17 @@ MusicPlayer.keyDown = function() {
 			if (this.status == "PAUSED") {
 				this.handleStopKey();
 			} else {
-				if (this.playedFromPage == "GuiImagePlayer") {
-					document.getElementById("guiButtonShade").style.visibility = "hidden";
-					document.getElementById("guiImagePlayerScreenSaverOverlay").style.visibility="";
+				if (this.playedFromPage == "ImagePlayer") {
+					document.getElementById("buttonShade").style.visibility = "hidden";
+					document.getElementById("imagePlayerScreenSaverOverlay").style.visibility="";
 				}
 				//Hide the music player.
-				document.getElementById("guiMusicPlayerDiv").style.visibility = "hidden";
-				document.getElementById("guiMusicPlayerDiv").style.bottom = "0";
+				document.getElementById("musicPlayerDiv").style.visibility = "hidden";
+				document.getElementById("musicPlayerDiv").style.bottom = "0";
 				document.getElementById("counter").style.visibility = "";
 
 				//Hide colour buttons if a slideshow is running.
-				if (GuiImagePlayer.ImageViewer != null){
+				if (ImagePlayer.ImageViewer != null){
 					Helper.setControlButtons(null,null,null,null,null);
 				}
 
@@ -296,8 +296,8 @@ MusicPlayer.handlePlayKey = function() {
 			//Calculate position in seconds
 			this.pluginMusic.Play(this.videoURL);
 		}
-		document.getElementById("guiMusicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-active-29x37.png')";
-		document.getElementById("guiMusicPlayerPause").style.backgroundImage="url('images/musicplayer/pause-32x37.png')";
+		document.getElementById("musicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-active-29x37.png')";
+		document.getElementById("musicPlayerPause").style.backgroundImage="url('images/musicplayer/pause-32x37.png')";
 		this.Status = "PLAYING";
 	}
 };
@@ -305,8 +305,8 @@ MusicPlayer.handlePlayKey = function() {
 MusicPlayer.handlePauseKey = function() {
 	this.pluginMusic.Pause();
 	Server.videoPaused(this.queuedItems[this.currentPlayingItem].Id, this.queuedItems[this.currentPlayingItem].MediaSources[0].Id, this.currentTime, "DirectStream");
-	document.getElementById("guiMusicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-29x37.png')";
-	document.getElementById("guiMusicPlayerPause").style.backgroundImage="url('images/musicplayer/pause-active-32x37.png')";
+	document.getElementById("musicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-29x37.png')";
+	document.getElementById("musicPlayerPause").style.backgroundImage="url('images/musicplayer/pause-active-32x37.png')";
 	this.Status = "PAUSED";
 };
 
@@ -320,11 +320,11 @@ MusicPlayer.stopPlayback = function() {
 	this.currentPlayingItem = 0;
 	this.queuedItems.length = 0;
 	this.pluginMusic.Stop();
-	document.getElementById("guiMusicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-29x37.png')";
-	document.getElementById("guiMusicPlayerPause").style.backgroundImage="url('images/musicplayer/pause-32x37.png')";
-	document.getElementById("guiMusicPlayerStop").style.backgroundImage="url('images/musicplayer/stop-active-37x37.png')";
+	document.getElementById("musicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-29x37.png')";
+	document.getElementById("musicPlayerPause").style.backgroundImage="url('images/musicplayer/pause-32x37.png')";
+	document.getElementById("musicPlayerStop").style.backgroundImage="url('images/musicplayer/stop-active-37x37.png')";
 	setTimeout(function(){
-		document.getElementById("guiMusicPlayerStop").style.backgroundImage="url('images/musicplayer/stop-37x37.png')";
+		document.getElementById("musicPlayerStop").style.backgroundImage="url('images/musicplayer/stop-37x37.png')";
 	}, 400);
 };
 
@@ -345,9 +345,9 @@ MusicPlayer.returnToPage = function() {
 	//Set queued Items to 0
 	this.isThemeMusicPlaying = false;
 	this.queuedItems.length = 0;
-	if (document.getElementById("guiMusicPlayerDiv").style.visibility == "") {
-		document.getElementById("guiMusicPlayerDiv").style.visibility = "hidden";
-		document.getElementById("guiMusicPlayerDiv").style.bottom = "0";
+	if (document.getElementById("musicPlayerDiv").style.visibility == "") {
+		document.getElementById("musicPlayerDiv").style.visibility = "hidden";
+		document.getElementById("musicPlayerDiv").style.bottom = "0";
 	}
 	//Set Page GUI elements Correct & Set Focus
 	if (this.selectedDivId != null) {
@@ -375,12 +375,12 @@ MusicPlayer.handleNextKey = function() {
 		//Start Playback
 		this.handlePlayKey();
 	}
-	document.getElementById("guiMusicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-29x37.png')";
-	document.getElementById("guiMusicPlayerPause").style.backgroundImage="url('images/musicplayer/pause-32x37.png')";
-	document.getElementById("guiMusicPlayerNext").style.backgroundImage="url('images/musicplayer/skip-next-active-36x37.png')";
+	document.getElementById("musicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-29x37.png')";
+	document.getElementById("musicPlayerPause").style.backgroundImage="url('images/musicplayer/pause-32x37.png')";
+	document.getElementById("musicPlayerNext").style.backgroundImage="url('images/musicplayer/skip-next-active-36x37.png')";
 	setTimeout(function(){
-		document.getElementById("guiMusicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-active-29x37.png')";
-		document.getElementById("guiMusicPlayerNext").style.backgroundImage="url('images/musicplayer/skip-next-36x37.png')";
+		document.getElementById("musicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-active-29x37.png')";
+		document.getElementById("musicPlayerNext").style.backgroundImage="url('images/musicplayer/skip-next-36x37.png')";
 	}, 300);
 };
 
@@ -403,12 +403,12 @@ MusicPlayer.handlePreviousKey = function() {
 		//Start Playback
 		this.handlePlayKey();
 	}
-	document.getElementById("guiMusicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-29x37.png')";
-	document.getElementById("guiMusicPlayerPause").style.backgroundImage="url('images/musicplayer/pause-32x37.png')";
-	document.getElementById("guiMusicPlayerPrevious").style.backgroundImage="url('images/musicplayer/skip-previous-active-36x37.png')";
+	document.getElementById("musicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-29x37.png')";
+	document.getElementById("musicPlayerPause").style.backgroundImage="url('images/musicplayer/pause-32x37.png')";
+	document.getElementById("musicPlayerPrevious").style.backgroundImage="url('images/musicplayer/skip-previous-active-36x37.png')";
 	setTimeout(function(){
-		document.getElementById("guiMusicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-active-29x37.png')";
-		document.getElementById("guiMusicPlayerPrevious").style.backgroundImage="url('images/musicplayer/skip-previous-36x37.png')";
+		document.getElementById("musicPlayerPlay").style.backgroundImage="url('images/musicplayer/play-active-29x37.png')";
+		document.getElementById("musicPlayerPrevious").style.backgroundImage="url('images/musicplayer/skip-previous-36x37.png')";
 	}, 300);
 };
 MusicPlayer.handleScreenKey = function() {
@@ -420,15 +420,15 @@ MusicPlayer.handleScreenKey = function() {
 MusicPlayer.handlePlaylistKey = function() {
 	//Redo another day
 	/*
-	if (document.getElementById("guiMusicPlayerShowPlaylist").style.visibility == "hidden") {
-		document.getElementById("guiMusicPlayerShowPlaylist").style.visibility = "";
+	if (document.getElementById("musicPlayerShowPlaylist").style.visibility == "hidden") {
+		document.getElementById("musicPlayerShowPlaylist").style.visibility = "";
 	} else {
-		document.getElementById("guiMusicPlayerShowPlaylist").style.visibility = "hidden";
+		document.getElementById("musicPlayerShowPlaylist").style.visibility = "hidden";
 	}
 
-	document.getElementById("guiMusicPlayerShowPlaylistContent").innerHTML = "";
+	document.getElementById("musicPlayerShowPlaylistContent").innerHTML = "";
 	for (var index = 0; index < this.queuedItems.length; index++) {
-		document.getElementById("guiMusicPlayerShowPlaylistContent").innerHTML += this.queuedItems[index].Name;
+		document.getElementById("musicPlayerShowPlaylistContent").innerHTML += this.queuedItems[index].Name;
 	}
 	*/
 };
@@ -465,7 +465,7 @@ MusicPlayer.setCurrentTime = function(time){
 		this.currentTime = time;
 		this.updateTimeCount++;
 		if (this.queuedItems[this.currentPlayingItem].Type == "AudioPodcast") {
-			Support.widgetPutInnerHTML("guiMusicPlayerTime", Support.convertTicksToTimeSingle(this.currentTime));
+			Support.widgetPutInnerHTML("musicPlayerTime", Support.convertTicksToTimeSingle(this.currentTime));
 		} else {
 			//Update Server every 8 ticks
 			if (this.updateTimeCount == 8) {
@@ -473,7 +473,7 @@ MusicPlayer.setCurrentTime = function(time){
 				//Update Server
 				Server.videoPaused(this.queuedItems[this.currentPlayingItem].Id, this.queuedItems[this.currentPlayingItem].MediaSources[0].Id, this.currentTime, "DirectStream");
 			}
-			Support.widgetPutInnerHTML("guiMusicPlayerTime", Support.convertTicksToTime(this.currentTime, (this.queuedItems[this.currentPlayingItem].RunTimeTicks / 10000)));
+			Support.widgetPutInnerHTML("musicPlayerTime", Support.convertTicksToTime(this.currentTime, (this.queuedItems[this.currentPlayingItem].RunTimeTicks / 10000)));
 		}
 	}
 };
@@ -502,11 +502,11 @@ MusicPlayer.OnStreamInfoReady = function() {
 		if (title.length > 67){
 			title = title.substring(0,65) + "...";
 		}
-		Support.widgetPutInnerHTML("guiMusicPlayerTitle", title);
+		Support.widgetPutInnerHTML("musicPlayerTitle", title);
 	} else {
-		Support.widgetPutInnerHTML("guiMusicPlayerTitle", "Theme Music");
+		Support.widgetPutInnerHTML("musicPlayerTitle", "Theme Music");
 	}
-	Support.widgetPutInnerHTML("guiMusicPlayerTime", Support.convertTicksToTime(this.currentTime, (this.queuedItems[this.currentPlayingItem].RunTimeTicks / 10000)));
+	Support.widgetPutInnerHTML("musicPlayerTime", Support.convertTicksToTime(this.currentTime, (this.queuedItems[this.currentPlayingItem].RunTimeTicks / 10000)));
 	//Playback Checkin
 	Server.videoStarted(this.queuedItems[this.currentPlayingItem].Id,this.queuedItems[this.currentPlayingItem].MediaSources[0].Id,"DirectStream");
 	//Volume & Mute Control - Works!

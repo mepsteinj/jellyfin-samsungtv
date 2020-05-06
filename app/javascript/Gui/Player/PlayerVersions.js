@@ -1,4 +1,4 @@
-var GuiPlayerVersions = {
+var PlayerVersions = {
 	//Holders
 	PlayerData : null,
 	resumeTicks : 0,
@@ -16,7 +16,7 @@ var GuiPlayerVersions = {
 	MediaSelections : [],
 };
 
-GuiPlayerVersions.start = function(playerData,resumeTicks,playedFromPage) {
+PlayerVersions.start = function(playerData,resumeTicks,playedFromPage) {
 	//Reset Vars
 	this.MediaOptions.length = 0;
 	this.MediaPlayback.length = 0;
@@ -57,7 +57,7 @@ GuiPlayerVersions.start = function(playerData,resumeTicks,playedFromPage) {
 	if (this.MediaPlayback.length <= 0) {
 		FileLog.write("Video : No Playback Options");
 		//Error - No media playback options!
-		document.getElementById("guiPlayerLoading").style.visibility = "hidden";
+		document.getElementById("PlayerLoading").style.visibility = "hidden";
 		Notifications.setNotification("None of the MediaSources are playable","Unable To Play");
 		//Removes URL to fix Navigation
 		Support.removeLatestURL();
@@ -83,7 +83,7 @@ GuiPlayerVersions.start = function(playerData,resumeTicks,playedFromPage) {
 			GuiPlayer.startPlayback(this.MediaSelections[0],resumeTicks);
 		} else if (this.MediaSelections.length > 1) {
 			FileLog.write("Video : Multiple Direct Stream - Option Presented to User");
-			document.getElementById("guiPlayerVersions").focus();
+			document.getElementById("evnPlayerVersions").focus();
 			this.updateDisplayedItems();
 			this.updateSelectedItems();
 		} else {
@@ -102,7 +102,7 @@ GuiPlayerVersions.start = function(playerData,resumeTicks,playedFromPage) {
 				GuiPlayer.startPlayback(this.MediaSelections[0],resumeTicks);
 			} else if (this.MediaSelections.length > 1) {
 				FileLog.write("Video : Multiple Audio Only Transcode - Option Presented to User");
-				document.getElementById("guiPlayerVersions").focus();
+				document.getElementById("PlayerVersions").focus();
 				this.updateDisplayedItems();
 				this.updateSelectedItems();
 			} else {
@@ -114,18 +114,18 @@ GuiPlayerVersions.start = function(playerData,resumeTicks,playedFromPage) {
 	}
 };
 
-GuiPlayerVersions.updateDisplayedItems = function() {
-	document.getElementById("guiPlayerVersionsPlayables").style.visibility = "";
-	Support.widgetPutInnerHTML("guiPlayerVersionsPlayables", "");
+PlayerVersions.updateDisplayedItems = function() {
+	document.getElementById("playerVersionsPlayables").style.visibility = "";
+	Support.widgetPutInnerHTML("playerVersionsPlayables", "");
 	var html = "";
 	for (var index = this.topLeftItem; index < Math.min(this.MediaSelections.length, this.topLeftItem + this.maxDisplay); index++) {
 		html += "<div id="+this.MediaSelections[index][0].Id+" class=videoVersionOption>"+this.MediaSelections[index][0].Name
 		+ "<div class=videoVersionType>D</div></div>";
 	}
-	Support.widgetPutInnerHTML("guiPlayerVersionsPlayables", html);
+	Support.widgetPutInnerHTML("playerVersionsPlayables", html);
 };
 
-GuiPlayerVersions.updateSelectedItems = function() {
+PlayerVersions.updateSelectedItems = function() {
 	for (var index = this.topLeftItem; index < Math.min(this.MediaSelections.length,this.topLeftItem + this.maxDisplay); index++){
 		if (index == this.selectedItem) {
 			document.getElementById(this.MediaSelections[index][0].Id).style.color = "#27a436";
@@ -137,7 +137,7 @@ GuiPlayerVersions.updateSelectedItems = function() {
 };
 
 //Gets Primary Streams - Ones that would be used on first playback)
-GuiPlayerVersions.getMainStreamIndex = function(MediaSource, MediaSourceIndex) {
+PlayerVersions.getMainStreamIndex = function(MediaSource, MediaSourceIndex) {
 	var videoStreamIfNoDefault = 0;
 	var videoIndex = -1, audioIndex = -1, subtitleIndex = -1;
 	var indexOfFirstAudio = -1;
@@ -272,7 +272,7 @@ GuiPlayerVersions.getMainStreamIndex = function(MediaSource, MediaSourceIndex) {
 	}
 };
 
-GuiPlayerVersions.keyDown = function() {
+PlayerVersions.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 	if (document.getElementById("notifications").style.visibility == "") {
@@ -310,9 +310,9 @@ GuiPlayerVersions.keyDown = function() {
 			alert("RETURN");
 			widgetAPI.blockNavigation(event);
 			//Hide Menu
-			document.getElementById("guiPlayerLoading").style.visibility = "hidden";
-			document.getElementById("guiPlayerVersionsPlayables").style.visibility = "hidden";
-			Support.widgetPutInnerHTML("guiPlayerVersionsPlayables", "");
+			document.getElementById("playerLoading").style.visibility = "hidden";
+			document.getElementById("playerVersionsPlayables").style.visibility = "hidden";
+			Support.widgetPutInnerHTML("playerVersionsPlayables", "");
 			//Remove Last URL History - as we didn't navigate away from the page!
 			Support.removeLatestURL();
 			//Reset counter to existing value
@@ -323,21 +323,21 @@ GuiPlayerVersions.keyDown = function() {
 		case tvKey.KEY_ENTER:
 		case tvKey.KEY_PANEL_ENTER:
 			alert("ENTER");
-			document.getElementById("guiPlayerVersionsPlayables").style.visibility = "hidden";
-			Support.widgetPutInnerHTML("guiPlayerVersionsPlayables", "");
+			document.getElementById("playerVersionsPlayables").style.visibility = "hidden";
+			Support.widgetPutInnerHTML("playerVersionsPlayables", "");
 			Support.widgetPutInnerHTML("counter", this.previousCounter);
 			document.getElementById(this.playedFromPage).focus();
 			GuiPlayer.startPlayback(this.MediaSelections[this.selectedItem],this.resumeTicks);
 			break;
 		case tvKey.KEY_BLUE:
 			alert("BLUE");
-			document.getElementById("guiPlayerLoading").style.visibility = "hidden";
+			document.getElementById("playerLoading").style.visibility = "hidden";
 			File.deleteFile();
 			widgetAPI.sendExitEvent();
 			break;
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY");
-			document.getElementById("guiPlayerLoading").style.visibility = "hidden";
+			document.getElementById("PlayerLoading").style.visibility = "hidden";
 			widgetAPI.sendExitEvent();
 			break;
 		default:

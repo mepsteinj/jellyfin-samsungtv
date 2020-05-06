@@ -1,4 +1,4 @@
-var GuiAddToPlaylist = {
+var AddToPlaylist = {
 	ItemData : null,
 	ItemData2 : null,
 	hasItemInPlaylist : [],
@@ -11,16 +11,16 @@ var GuiAddToPlaylist = {
 	MAXROWCOUNT : 5
 };
 
-GuiAddToPlaylist.onFocus = function() {
+AddToPlaylist.onFocus = function() {
 	Helper.setControlButtons(null, null, null,MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null,"Return");
 };
 
-GuiAddToPlaylist.getMaxDisplay = function() {
+AddToPlaylist.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
 };
 
-GuiAddToPlaylist.start=function(itemId, playedFromPage, mediaType) {
-	alert("Page Enter : GuiAddToPlaylist");
+AddToPlaylist.start=function(itemId, playedFromPage, mediaType) {
+	alert("Page Enter : AddToPlaylist");
 
 	//Update page called from
 	this.playedFromPage = playedFromPage;
@@ -36,13 +36,13 @@ GuiAddToPlaylist.start=function(itemId, playedFromPage, mediaType) {
 
 	//Set window size based on item count
 	if (this.ItemData.Items.length < 6){
-		document.getElementById("guiPlayListContainer").style.height = (this.ItemData.Items.length*40)+400 +"px";
+		document.getElementById("playListContainer").style.height = (this.ItemData.Items.length*40)+400 +"px";
 	} else {
-		document.getElementById("guiPlayListContainer").style.height = "560px";
+		document.getElementById("playListContainer").style.height = "560px";
 	}
 
 	//Create IME - Send it the name of the thing to focus.
-	new GuiAddToPlaylist_Input("guiPlayListNew");
+	new AddToPlaylist_Input("playListNew");
 
 	if (this.ItemData.Items.length == 0) {
 		document.getElementById("guiPlayListExisting").innerHTML = "<div style='padding-top:20px;padding-left:80px;'>You have no existing "+ this.mediaType.toLowerCase() +" playlists.</div>";
@@ -67,10 +67,10 @@ GuiAddToPlaylist.start=function(itemId, playedFromPage, mediaType) {
 	}
 
 	//Display Playlist Div
-	document.getElementById("guiPlayListContainer").style.visibility = "";
+	document.getElementById("playListContainer").style.visibility = "";
 };
 
-GuiAddToPlaylist.updateDisplayedItems = function() {
+AddToPlaylist.updateDisplayedItems = function() {
 	var htmlToAdd = "<table style='padding-top:20px;padding-left:80px;'><th style='width:460px'>Playlist</th><th style='width:200px'>Exists in Playlist</th>";
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length);index++) {
 		var existsInPlaylist = (this.hasItemInPlaylist[index] == true) ? "Yes" : "No";
@@ -79,7 +79,7 @@ GuiAddToPlaylist.updateDisplayedItems = function() {
 	document.getElementById("guiPlayListExisting").innerHTML = htmlToAdd + "</table>";
 };
 
-GuiAddToPlaylist.updateSelectedItems = function() {
+AddToPlaylist.updateSelectedItems = function() {
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length);index++) {
 		if (index == this.selectedItem) {
 			document.getElementById(this.ItemData.Items[index].Id).style.color = "#27a436";
@@ -89,7 +89,7 @@ GuiAddToPlaylist.updateSelectedItems = function() {
 	}
 };
 
-GuiAddToPlaylist.keyDown = function() {
+AddToPlaylist.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
@@ -130,7 +130,7 @@ GuiAddToPlaylist.keyDown = function() {
 		case tvKey.KEY_RETURN:
 			alert("RETURN");
 			widgetAPI.blockNavigation(event);
-			document.getElementById("guiPlayListContainer").style.visibility = "hidden";
+			document.getElementById("playListContainer").style.visibility = "hidden";
 			document.getElementById(this.playedFromPage).focus();
 			break;
 		case tvKey.KEY_EXIT:
@@ -142,7 +142,7 @@ GuiAddToPlaylist.keyDown = function() {
 	}
 };
 
-GuiAddToPlaylist.processSelectedItem = function() {
+AddToPlaylist.processSelectedItem = function() {
 	if (this.hasItemInPlaylist[this.selectedItem] == false) {
 		//Send update to server
 		Server.addToPlaylist(this.ItemData.Items[this.selectedItem].Id,this.itemId);
@@ -151,19 +151,19 @@ GuiAddToPlaylist.processSelectedItem = function() {
 		this.hasItemInPlaylist[this.selectedItem] = true;
 		this.updateDisplayedItems();
 		this.updateSelectedItems();
-		document.getElementById("guiPlayListResult").innerHTML = "<div style='padding-top:20px;padding-left:80px;'>The "+ this.mediaType.toLowerCase() +" was added to the playlist.</div>";
+		document.getElementById("playListResult").innerHTML = "<div style='padding-top:20px;padding-left:80px;'>The "+ this.mediaType.toLowerCase() +" was added to the playlist.</div>";
 	} else {
 		return;
 	}
 	//Close
 	setTimeout(function(){
-		document.getElementById("guiPlayListContainer").style.visibility = "hidden";
-		document.getElementById("guiPlayListResult").innerHTML = "";
-		document.getElementById(GuiAddToPlaylist.playedFromPage).focus();
+		document.getElementById("playListContainer").style.visibility = "hidden";
+		document.getElementById("playListResult").innerHTML = "";
+		document.getElementById(evnAddToPlaylist.playedFromPage).focus();
 	}, 2000);
 };
 
-GuiAddToPlaylist.processUpKey = function() {
+AddToPlaylist.processUpKey = function() {
 	this.selectedItem = this.selectedItem - this.MAXCOLUMNCOUNT;
 	if (this.selectedItem < 0) {
 		this.selectedItem = 0;
@@ -180,11 +180,11 @@ GuiAddToPlaylist.processUpKey = function() {
 	}
 };
 
-GuiAddToPlaylist.processDownKey = function() {
+AddToPlaylist.processDownKey = function() {
 	if (this.selectedItem == this.ItemData.Items.length - 1) {
 		document.getElementById(this.ItemData.Items[this.selectedItem].Id).style.color = "#f9f9f9";
 		Support.screensaverOff(); // Must turn off as not possible to catch keys!
-		document.getElementById("guiPlayListNew").focus();
+		document.getElementById("playListNew").focus();
 	} else {
 		this.selectedItem = this.selectedItem + this.MAXCOLUMNCOUNT;
 		if (this.selectedItem >= this.ItemData.Items.length) {
@@ -207,36 +207,36 @@ GuiAddToPlaylist.processDownKey = function() {
 //////////////////////////////////////////////////////////////////
 //  Input method for entering new playlist name.                //
 //////////////////////////////////////////////////////////////////
-var GuiAddToPlaylist_Input  = function(id) {
+var AddToPlaylistInput  = function(id) {
 	var imeReady = function(imeObject) {
 		installFocusKeyCallbacks();
 		document.getElementById(id).focus();
 	};
 
-	var ime = new IMEShell("guiPlayListNew", imeReady,this);
+	var ime = new IMEShell("playListNew", imeReady,this);
 	ime.setKeypadPos(1360,180);
 	ime.setKeypadChangeFunc('qwerty',onSwitchToQwerty);
 	ime.setKeypadChangeFunc('12key',onSwitchTo12key);
 
 	function onSwitchToQwerty(arg){
-		alert("IME selected:"+arg);
-		document.getElementById("guiPlayListContainer").className = "playlistContainerQwerty";
+		alert("IME selected:" + arg);
+		document.getElementById("playListContainer").className = "playlistContainerQwerty";
 	}
 
 	function onSwitchTo12key(arg){
 		alert("IME selected:"+arg);
-		document.getElementById("guiPlayListContainer").className = "playlistContainer12key";
+		document.getElementById("playListContainer").className = "playlistContainer12key";
 	}
 
 	var installFocusKeyCallbacks = function () {
 		ime.setKeyFunc(tvKey.KEY_ENTER, function (keyCode) {
 			alert("Enter key pressed");
 
-			var playlist = document.getElementById("guiPlayListNew").value;
+			var playlist = document.getElementById("playListNew").value;
 			if (playlist == "") {
-				document.getElementById("guiPlayListResult").innerHTML = "<div style='padding-top:20px;padding-left:80px;'>Enter a playlist name or press Return to cancel.</div>";
+				document.getElementById("playListResult").innerHTML = "<div style='padding-top:20px;padding-left:80px;'>Enter a playlist name or press Return to cancel.</div>";
 				setTimeout(function(){
-					document.getElementById("guiPlayListResult").innerHTML = "";
+					document.getElementById("playListResult").innerHTML = "";
 				}, 3000);
 				return;
 			}
@@ -245,28 +245,28 @@ var GuiAddToPlaylist_Input  = function(id) {
 			//Check playlist name doesnt already exist!
 
 			//Sent Server Request
-			Server.createPlaylist(playlist,GuiAddToPlaylist.itemId, GuiAddToPlaylist.mediaType);
+			Server.createPlaylist(playlist,AddToPlaylist.itemId, AddToPlaylist.mediaType);
 
-			document.getElementById("guiPlayListResult").innerHTML = "<div style='padding-top:20px;padding-left:80px;'>The playlist was created.</div>";
+			document.getElementById("playListResult").innerHTML = "<div style='padding-top:20px;padding-left:80px;'>The playlist was created.</div>";
 
 			//Close
 			setTimeout(function(){
-				document.getElementById("guiPlayListContainer").style.visibility = "hidden";
-				document.getElementById("guiPlayListResult").innerHTML = "";
-				document.getElementById(GuiAddToPlaylist.playedFromPage).focus();
+				document.getElementById("playListContainer").style.visibility = "hidden";
+				document.getElementById("playListResult").innerHTML = "";
+				document.getElementById(AddToPlaylist.playedFromPage).focus();
 			}, 2000);
 
 			//Reload page!
-			//GuiAddToPlaylist.start(GuiAddToPlaylist.itemId,GuiAddToPlaylist.playedFromPage,GuiAddToPlaylist.mediaType);
+			//AddToPlaylist.start(AddToPlaylist.itemId,AddToPlaylist.playedFromPage,AddToPlaylist.mediaType);
 
 		});
 
 		ime.setKeyFunc(tvKey.KEY_UP, function (keyCode) {
 			Support.screensaver();
 
-			if (GuiAddToPlaylist.ItemData.Items.length > 0 ) {
-				GuiAddToPlaylist.updateSelectedItems();
-				document.getElementById("GuiAddToPlaylist").focus();
+			if (AddToPlaylist.ItemData.Items.length > 0 ) {
+				AddToPlaylist.updateSelectedItems();
+				document.getElementById("evnAddToPlaylist").focus();
 			}
 		});
 
@@ -275,7 +275,7 @@ var GuiAddToPlaylist_Input  = function(id) {
 			//Handle Return
 			Support.screensaver();
 			document.getElementById("guiPlayListContainer").style.visibility = "hidden";
-			document.getElementById(GuiAddToPlaylist.playedFromPage).focus();
+			document.getElementById(AddToPlaylist.playedFromPage).focus();
 		});
 
 		ime.setKeyFunc(tvKey.KEY_EXIT, function (keyCode) {

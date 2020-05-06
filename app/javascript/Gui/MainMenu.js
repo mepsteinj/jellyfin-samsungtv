@@ -126,8 +126,7 @@ MainMenu.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 	if (document.getElementById("notifications").style.visibility == "") {
-		document.getElementById("notifications").style.visibility = "hidden";
-		Support.widgetPutInnerHTML("notificationText", "");
+    Notifications.delNotification()
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -139,7 +138,7 @@ MainMenu.keyDown = function() {
 		//Update Main.js isScreensaverRunning - Sets to True
 		Main.setIsScreensaverRunning();
 		//End Screensaver
-		GuiImagePlayerScreensaver.stopScreensaver();
+		ImagePlayerScreensaver.stopScreensaver();
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
@@ -185,7 +184,7 @@ MainMenu.processSelectedItems = function() {
 			return;
 	}
 	//If a trailer was paused when we arrived in the menu, stop it now.
-	if (GuiItemDetails.trailerState == sf.service.VideoPlayer.STATE_PAUSED) {
+	if (ItemDetails.trailerState == sf.service.VideoPlayer.STATE_PAUSED) {
 		sf.service.VideoPlayer.stop();
 	}
 	//Close the menu
@@ -207,7 +206,7 @@ MainMenu.playSelectedItem = function() {
 		var userViews = Server.getUserViews();
 		for (var i = 0; i < userViews.Items.length; i++){
 			if (userViews.Items[i].CollectionType == "photos"){
-				GuiImagePlayer.start(userViews,i,true);
+				ImagePlayer.start(userViews,i,true);
 			}
 		}
 	}
@@ -216,7 +215,7 @@ MainMenu.playSelectedItem = function() {
 MainMenu.processReturnKey = function() {
 	if (this.pageSelected != null) {
 		//As I don't want the settings page in the URL History I need to prevent popping it here (as its not added on leaving the settings page
-		if (this.pageSelected != "GuiSettings") {
+		if (this.pageSelected != "Settings") {
 			Support.removeLatestURL();
 		}
 		//Cheap way to unhighlight all items!
@@ -239,7 +238,7 @@ MainMenu.processReturnKey = function() {
 			}
 		}
 		//If a trailer was playing, set it going again.
-		if (GuiItemDetails.trailerState == sf.service.VideoPlayer.STATE_PAUSED) {
+		if (ItemDetails.trailerState == sf.service.VideoPlayer.STATE_PAUSED) {
 			setTimeout(function(){
 				sf.service.VideoPlayer.show();
 				sf.service.VideoPlayer.resume();
