@@ -19,14 +19,14 @@ HomeOneItem.getMaxDisplay = function() {
 };
 
 HomeOneItem.onFocus = function() {
-	Helper.setControlButtons("Favourite", "Watched", "Help", MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Exit  ");
+	Helper.setControlButtons(Main.messages.LabButtonFavourite, Main.messages.LabButtonWatched, Main.messages.LabButtonHelp, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? Main.messages.LabButtonMusic : null, Main.messages.LabButtonExit);
 };
 
-HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
+HomeOneItem.start = function(title, url, selectedItem, topLeftItem) {
 	alert("Page Enter : HomeOneItem");
 
 	//Save Start Params
-	this.startParams = [title,url];
+	this.startParams = [title, url];
 
 	//Reset Values
 	this.indexSeekPos = -1;
@@ -44,7 +44,7 @@ HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
 	
 	//If all user selected homepages are blank try media items
 	if (this.ItemData.Items.length == 0) {
-		title = "Media Folders";
+		title = Main.messages.LabMediaFolders;
 		var newURL = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&CollapseBoxSetItems=false&fields=SortName");
 		this.ItemData = Server.getContent(newURL);
 		if (this.ItemData == null) { Support.processReturnURLHistory(); }
@@ -63,7 +63,7 @@ HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
 		}
 
 		//Set page content
-		document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='bannerMenu'></div><div id=Center class='HomeOneCenter'><p id='title' style='position:relative;font-size:1.4em;z-index:5;'>"+title+"</p><div id=Content></div></div>";
+		document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='bannerMenu'></div><div id=Center class='homeOneCenter'><p id='title' style='position:relative;font-size:1.4em;z-index:5;'>"+title+"</p><div id=Content></div></div>";
 
 		//Set isResume based on title - used in UpdateDisplayedItems
 		this.isResume = (title == "Resume" ||  title == "Continue Watching" ) ? true : false;
@@ -78,10 +78,10 @@ HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
 		
 		//Generate Banner display
 		for (var index = 0; index < this.menuItems.length; index++) {
-			if (index != this.menuItems.length-1) {
-				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItemHome bannerItemPadding'>"+this.menuItems[index].replace(/_/g, ' ')+"</div>";
+			if (index != this.menuItems.length - 1) {
+				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItemHome bannerItemPadding'>" + Support.getMenuItemName(this.menuItems[index]) + "</div>";
 			} else {
-				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItemHome'>"+this.menuItems[index].replace(/_/g, ' ')+"</div>";
+				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItemHome'>" + Support.getMenuItemName(this.menuItems[index]) + "</div>";
 			}
 		}
 
@@ -108,11 +108,11 @@ HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
 		}, 500);
 
 		//Set Focus for Key Events
-		document.getElementById("envHomeOneItem").focus();
+		document.getElementById("evnHomeOneItem").focus();
 
 	} else {
 		//Set message to user
-		document.getElementById("pageContent").innerHTML = "<p id='title' class=pageTitle>"+title+"</p><div id=content></div></div>";
+		document.getElementById("pageContent").innerHTML = "<p id='title' class=pageTitle>" + title + "</p><div id=content></div></div>";
 		document.getElementById("counter").innerHTML = "";
 		document.getElementById("title").innerHTML = "Sorry";
 		document.getElementById("content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid";
@@ -126,8 +126,7 @@ HomeOneItem.start = function(title,url,selectedItem,topLeftItem) {
 };
 
 HomeOneItem.updateDisplayedItems = function() {
-	Support.updateDisplayedItems(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Content","",this.isResume,null,true);
+	Support.updateDisplayedItems(this.ItemData.Items,this.selectedItem,this.topLeftItem, Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length), "Content", "", this.isResume, null, true);
 };
 
 //Function sets CSS Properties so show which user is selected
@@ -140,15 +139,15 @@ HomeOneItem.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.menuItems.length; index++) {
 		if (index == this.selectedBannerItem && this.selectedItem == -1) {
 			if (index != this.menuItems.length-1) {
-				document.getElementById("bannerItem"+index).className = "bannerItemHome bannerItemPadding highlight"+Main.highlightColour+"Text";
+				document.getElementById("bannerItem" + index).className = "bannerItemHome bannerItemPadding highlight" + Main.highlightColour + "Text";
 			} else {
-				document.getElementById("bannerItem"+index).className = "bannerItemHome highlight"+Main.highlightColour+"Text";
+				document.getElementById("bannerItem" + index).className = "bannerItemHome highlight" + Main.highlightColour + "Text";
 			}
 		} else {
-			if (index != this.menuItems.length-1) {
-				document.getElementById("bannerItem"+index).className = "bannerItemHome bannerItemPadding offWhite";
+			if (index != this.menuItems.length - 1) {
+				document.getElementById("bannerItem" + index).className = "bannerItemHome bannerItemPadding offWhite";
 			} else {
-				document.getElementById("bannerItem"+index).className = "bannerItemHome offWhite";
+				document.getElementById("bannerItem" + index).className = "bannerItemHome offWhite";
 			}
 		}
 	}
@@ -175,7 +174,7 @@ HomeOneItem.keyDown = function() {
 		Main.setIsScreensaverRunning();
 
 		//End Screensaver
-		GuiImagePlayerScreensaver.stopScreensaver();
+		ImagePlayerScreensaver.stopScreensaver();
 
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -255,13 +254,13 @@ HomeOneItem.keyDown = function() {
 			break;
 		case tvKey.KEY_BLUE:
 			if (this.selectedItem == -1) {
-				if (this.selectedBannerItem == this.menuItems.length-1) {
-					MusicPlayer.showMusicPlayer("HomeOneItem","bannerItem"+this.selectedBannerItem,"bannerItemHome highlight"+Main.highlightColour+"Text");
+				if (this.selectedBannerItem == this.menuItems.length - 1) {
+					MusicPlayer.showMusicPlayer("HomeOneItem", "bannerItem"+this.selectedBannerItem, "bannerItemHome highlight" + Main.highlightColour + "Text");
 				} else {
-					MusicPlayer.showMusicPlayer("HomeOneItem","bannerItem"+this.selectedBannerItem,"bannerItemHome bannerItemPadding highlight"+Main.highlightColour+"Text");
+					MusicPlayer.showMusicPlayer("HomeOneItem", "bannerItem"+this.selectedBannerItem, "bannerItemHome bannerItemPadding highlight" + Main.highlightColour + "Text");
 				}
 			} else {
-				MusicPlayer.showMusicPlayer("HomeOneItem",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
+				MusicPlayer.showMusicPlayer("HomeOneItem", this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
 			}
 			break;
 		case tvKey.KEY_TOOLS:
@@ -286,20 +285,20 @@ HomeOneItem.processSelectedItem = function() {
 };
 
 HomeOneItem.playSelectedItem = function () {
-	Support.playSelectedItem("HomeOneItem",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null);
+	Support.playSelectedItem("HomeOneItem", this.ItemData, this.startParams, this.selectedItem, this.topLeftItem,null);
 };
 
 HomeOneItem.openMenu = function() {
 	if (this.selectedItem == -1) {
-		Support.updateURLHistory("HomeOneItem",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
-		if (this.selectedBannerItem == this.menuItems.length-1) {
-			MainMenu.requested("HomeOneItem","bannerItem"+this.selectedBannerItem,"bannerItemHome highlight"+Main.highlightColour+"Text");
+		Support.updateURLHistory("HomeOneItem", this.startParams[0],this.startParams[1], null, null, this.selectedItem,this.topLeftItem, null);
+		if (this.selectedBannerItem == this.menuItems.length - 1) {
+			MainMenu.requested("HomeOneItem", "bannerItem" + this.selectedBannerItem,"bannerItemHome highlight" + Main.highlightColour + "Text");
 		} else {
-			MainMenu.requested("HomeOneItem","bannerItem"+this.selectedBannerItem,"bannerItemHome bannerItemPadding highlight"+Main.highlightColour+"Text");
+			MainMenu.requested("HomeOneItem", "bannerItem" + this.selectedBannerItem, "bannerItemHome bannerItemPadding highlight" + Main.highlightColour + "Text");
 		}
 	} else {
-		Support.updateURLHistory("HomeOneItem",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
-		MainMenu.requested("HomeOneItem",this.ItemData.Items[this.selectedItem].Id);
+		Support.updateURLHistory("HomeOneItem", this.startParams[0],this.startParams[1], null, null, this.selectedItem,this.topLeftItem, null);
+		MainMenu.requested("HomeOneItem", this.ItemData.Items[this.selectedItem].Id);
 	}
 };
 

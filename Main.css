@@ -15,16 +15,19 @@ td {
 }
 
 input:focus {
-    outline: solid;
+    outline-style: solid;
     outline-color: rgba(39,164,54,0.85);
+    outline-width: 3px;
 }
 
 input[type="text"] {
     font-size: 1em;
+    background: #d1d1d1;
 }
 
 input[type="password"] {
     font-size: 1em;
+    background: #d1d1d1;
 }
 
 .loading {
@@ -149,14 +152,20 @@ input[type="password"] {
 
 .menu {
     position: absolute;
-    left: -350px;
+    left: 0px;
     top: 0px;
     height: 1080px;
-    width: 350px;
+    width: 400px;
     color: #f9f9f9;
     text-align: left;
     font-size: 1em;
     z-index: 8;
+    border-right: 5px solid gray;
+    background-color: rgba(0,0,0,0.9);
+}
+
+.menuItems {
+    padding-top: 10px;
 }
 
 .menuUserImage {
@@ -169,12 +178,6 @@ input[type="password"] {
     background-position: center;
 }
 
-.menuUserImageContainer {
-    position: relative;
-    width: 350px;
-    height: 72px;
-}
-
 .menuUserName {
     position: relative;
     text-align: center;
@@ -185,29 +188,20 @@ input[type="password"] {
     position: relative;
     left: 0px;
     top: 0px;
-    width: 270px;
+    width: 320px;
     height: 65px;
     line-height: 60px;
     padding-left: 80px;
-    border-bottom: 2px solid grey;
 }
 
 .menuIcon {
     position: absolute;
-    left: 10px;
+    left: 30px;
     width: 46px;
     height: 65px;
     background-position: center;
     background-repeat: no-repeat;
     background-image: url('images/menu/folder-23x19.png');
-}
-
-.menuVersion {
-    position: absolute;
-    padding-left: 5px;
-    width: 100%;
-    font-size: 0.9em;
-    bottom: 5px;
 }
 
 /*----------------------------------------------------------------------------------------------*/
@@ -261,8 +255,6 @@ input[type="password"] {
 .redButton {
     position: absolute;
     bottom: 5px;
-    right: 390px;
-    width: 150px;
     height: 40px;
     line-height: 40px;
     padding-left: 45px;
@@ -277,7 +269,6 @@ input[type="password"] {
 .greenButton {
     position: absolute;
     bottom: 5px;
-    width: 150px;
     height: 40px;
     line-height: 40px;
     padding-left: 45px;
@@ -286,13 +277,12 @@ input[type="password"] {
     background-position: left;
     font-size: 1.1em;
     color: white;
-    z-index: 16;
+    z-index: 15;
 }
 
 .yellowButton {
     position: absolute;
     bottom: 5px;
-    width: 155px;
     height: 40px;
     line-height: 40px;
     padding-left: 45px;
@@ -301,13 +291,12 @@ input[type="password"] {
     background-position: left;
     font-size: 1.1em;
     color: white;
-    z-index: 17;
+    z-index: 15;
 }
 
 .blueButton {
     position: absolute;
     bottom: 5px;
-    width: 150px;
     height: 40px;
     line-height: 40px;
     padding-left: 45px;
@@ -316,13 +305,12 @@ input[type="password"] {
     background-position: left;
     font-size: 1.1em;
     color: white;
-    z-index: 18;
+    z-index: 15;
 }
 
 .returnButton {
     position: absolute;
     bottom: 5px;
-    width: 84px;
     height: 40px;
     line-height: 40px;
     padding-left: 45px;
@@ -331,7 +319,7 @@ input[type="password"] {
     background-position: left;
     font-size: 1.1em;
     color: white;
-    z-index: 21;
+    z-index: 15;
 }
 
 /*----------------------------------------------------------------------------------------------*/
@@ -386,9 +374,10 @@ input[type="password"] {
     position: absolute;
     bottom: 4px;
     left: 7px;
+    height: 35px;
     font-size: 1.1em;
     color: white;
-    z-index: 5
+    z-index: 5;
 }
 
 .time {
@@ -396,6 +385,7 @@ input[type="password"] {
     bottom: 4px;
     right: 10px;
     width: 100px;
+    padding-left: 10px;
     height: 35px;
     font-size: 1.1em;
     line-height: 30px;
@@ -428,8 +418,8 @@ input[type="password"] {
 .serversAddNew {
     position: relative;
     top: 0px;
-    left: 760px;
-    width: 400px;
+    left: 560px;
+    width: 800px;
     height: 60px;
     margin-top: 40px;
     border: 2px solid black;
@@ -443,8 +433,8 @@ input[type="password"] {
 .usersManual {
     position: relative;
     top: 0px;
-    left: 760px;
-    width: 400px;
+    left: 560px;
+    width: 800px;
     height: 60px;
     margin-top: 5px;
     border: 2px solid black;
@@ -458,8 +448,8 @@ input[type="password"] {
 .serversChange {
     position: relative;
     top: 0px;
-    left: 760px;
-    width: 400px;
+    left: 560px;
+    width: 800px;
     height: 60px;
     margin-top: 5px;
     border: 2px solid black;
@@ -995,7 +985,7 @@ input[type="password"] {
 }
 
 /*----------------------------------------------------------------------------------------------*/
-.menuItem2 {
+.listItem {
     position: absolute;
     bottom: 0px;
     width: 100%;

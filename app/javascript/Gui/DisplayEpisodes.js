@@ -396,7 +396,7 @@ GuiDisplayEpisodes.processSelectedItem = function() {
 		}
 	} else {
 		var url = Server.getItemInfoURL(this.ItemData.Items[this.selectedItem].Id,null);
-		GuiItemDetails.start(this.ItemData.Items[this.selectedItem].Name,url,0);
+		ItemDetails.start(this.ItemData.Items[this.selectedItem].Name, url, 0);
 	}
 };
 

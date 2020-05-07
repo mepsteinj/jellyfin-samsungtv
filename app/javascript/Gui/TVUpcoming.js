@@ -546,9 +546,9 @@ GuiTVUpcoming.processSelectedItem = function (isBottom) {
 		}
 	} else {
 		var selectedItem = (isBottom) ? this.selectedItem2 : this.selectedItem;
-		Support.updateURLHistory("GuiTVUpcoming",null,null,null,null,null,null,null);
+		Support.updateURLHistory("GuiTVUpcoming", null, null, null, null, null, null, null);
 
-		var url = Server.getItemInfoURL(this.upcomingData[this.selectedDayItem][selectedItem].Id,null);
-		GuiItemDetails.start(this.upcomingData[this.selectedDayItem][selectedItem].Name,url,0);
+		var url = Server.getItemInfoURL(this.upcomingData[this.selectedDayItem][selectedItem].Id, null);
+		ItemDetails.start(this.upcomingData[this.selectedDayItem][selectedItem].Name, url, 0);
 	}
 };

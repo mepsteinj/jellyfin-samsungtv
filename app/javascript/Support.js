@@ -59,7 +59,7 @@ Support.logout = function() {
 		MusicPlayer.handleStopKey();
 	}
 	FileLog.write("User "+ Server.getUserName() + " logged out.");
-	document.getElementById("menuUserImage").style.backgroundImage = "";
+	//document.getElementById("menuUserImage").style.backgroundImage = "";
 	this.widgetPutInnerHTML("menuItems", "");
 	Server.setUserID("");
 	Server.setUserName("");
@@ -558,7 +558,7 @@ Support.updateDisplayedItems = function(items, selectedItemID, startPos, endPos,
 					var imgsrc = Server.getBackgroundImageURL(items[index].Id, "Backdrop", Main.posterWidth, Main.posterHeight, 0, false, 0, items[index].BackdropImageTags.length);
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-image:url(" + imgsrc + ")><div class=menuItem>" + title + "</div></div>";
 				} else {
-					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-color:rgba(0,0,0,0.5);><div class=menuItem>"+ title + "</div></div>";
+					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-color:rgba(0,0,0,0.5);><div class=menuItem>" + title + "</div></div>";
 				}
 			//----------------------------------------------------------------------------------------------
 			} else {
@@ -932,6 +932,115 @@ Support.scrollingText = function(divToScroll) {
 	}, 10000);  //Intial delay
 };
 
+Support.getMenuItemName = function(index) {
+	var name = "";
+	switch(index) {
+		case "Home":
+			name = Main.messages.LabHome;
+			break;
+		case "Favourites":
+			name = Main.messages.LabFavourites;
+			break;
+		case "TVShows":
+			name = Main.messages.LabTVShows;
+			break;
+		case "HomeMovies":
+			name = Main.messages.LabHomeMovies;
+			break;
+		case "Collections":
+			name = Main.messages.LabCollections;
+			break;
+		case "Movies":
+			name = Main.messages.LabMovies;
+			break;
+		case "Photos":
+			name = Main.messages.LabPhotos;
+			break;
+		case "Music":
+			name = Main.messages.LabMusic;
+			break;
+		case "Playlists":
+			name = Main.messages.LabPlaylists;
+			break;
+		case "LiveTV":
+			name = Main.messages.LabLiveTV;
+			break;
+		case "Channels":
+			name = Main.messages.LabChannels;
+			break;
+		case "MediaFolders":
+			name = Main.messages.LabMediaFolders;
+			break;
+		case "Search":
+			name = Main.messages.LabSearch;
+			break;
+		case "Settings":
+			name = Main.messages.LabSettings;
+			break;
+		case "LogOut":
+			name = Main.messages.LabLogOut;
+			break;
+		default:
+			alert("Unhandled index");
+			break;
+	}
+	return name;
+}
+
+Support.getMenuItemImage = function(index) {
+	var image = "";
+	switch(index) {
+		case "Home":
+			image = "Home";
+			break;
+		case "Favourites":
+			image = "Favourites";
+			break;
+		case "TVShows":
+			image = "TVShows";
+			break;
+		case "HomeMovies":
+			image = "Home_Movies";
+			break;
+		case "Collections":
+			image = "Collections";
+			break;
+		case "Movies":
+			image = "Movies";
+			break;
+		case "Photos":
+			image = "Photos";
+			break;
+		case "Music":
+			image = "Music";
+			break;
+		case "Playlists":
+			image = "Playlists";
+			break;
+		case "LiveTV":
+			image = "Live_TV";
+			break;
+		case "Channels":
+			image = "Channels";
+			break;
+		case "MediaFolders":
+			image = "Media_Folders";
+			break;
+		case "Search":
+			image = "Search";
+			break;
+		case "Settings":
+			image = "Settings";
+			break;
+		case "LogOut":
+			image = "Logout";
+			break;
+		default:
+			alert("Unhandled index");
+			break;	
+	}
+	return image;
+}
 
 Support.generateMainMenu = function() {
 	var menuItems = [];
@@ -946,14 +1055,14 @@ Support.generateMainMenu = function() {
 	var userViews = Server.getUserViews();
 	for (var i = 0; i < userViews.Items.length; i++){
 		if (userViews.Items[i].CollectionType == "tvshows" ||
-				userViews.Items[i].CollectionType == "homevideos" ||
-				userViews.Items[i].CollectionType == "boxsets" ||
-				userViews.Items[i].CollectionType == "movies" ||
-				userViews.Items[i].CollectionType == "photos" ||
-				userViews.Items[i].CollectionType == "music"){
+			userViews.Items[i].CollectionType == "homevideos" ||
+			userViews.Items[i].CollectionType == "boxsets" ||
+			userViews.Items[i].CollectionType == "movies" ||
+			userViews.Items[i].CollectionType == "photos" ||
+			userViews.Items[i].CollectionType == "music"){
 			var name = "";
 			if (userViews.Items[i].CollectionType == "tvshows") {
-				name = "TV";
+				name = "TVShows";
 			} else if (userViews.Items[i].CollectionType == "homevideos") {
 				name = "HomeMovies";
 			} else if (userViews.Items[i].CollectionType == "boxsets") {
@@ -985,7 +1094,7 @@ Support.generateMainMenu = function() {
 	if (Main.isLiveTVEnabled() && hasLiveTV.IsEnabled) {
 		for (var index = 0; index < hasLiveTV.EnabledUsers.length; index++) {
 			if (Server.getUserID() == hasLiveTV.EnabledUsers[index]) {
-				menuItems.push("Live_TV");
+				menuItems.push("LiveTV");
 				liveTvAdded = true;
 				break;
 			}
@@ -1020,19 +1129,18 @@ Support.generateMainMenu = function() {
 	return menuItems;
 };
 
-
 Support.generateTopMenu = function() {
 	var menuItems = [];
 	var userViews = Server.getUserViews();
 	for (var i = 0; i < userViews.Items.length; i++){
 		if (userViews.Items[i].CollectionType == "tvshows" ||
-				userViews.Items[i].CollectionType == "boxsets" ||
-				userViews.Items[i].CollectionType == "movies" ||
-				userViews.Items[i].CollectionType == "photos" ||
-				userViews.Items[i].CollectionType == "music"){
+			userViews.Items[i].CollectionType == "boxsets" ||
+			userViews.Items[i].CollectionType == "movies" ||
+			userViews.Items[i].CollectionType == "photos" ||
+			userViews.Items[i].CollectionType == "music"){
 			var name = "";
 			if (userViews.Items[i].CollectionType == "tvshows") {
-				name = "TV";
+				name = "TVShows";
 			} else if (userViews.Items[i].CollectionType == "boxsets") {
 				name = "Collections";
 			} else if (userViews.Items[i].CollectionType == "movies") {
@@ -1057,7 +1165,6 @@ Support.generateTopMenu = function() {
 	return menuItems;
 };
 
-
 Support.initViewUrls = function() {
 	alert("Initialising View URL's for this user");
 	this.TVNextUp = Server.getServerAddr() + "/Shows/NextUp?format=json&UserId=" + Server.getUserID() + "&IncludeItemTypes=Episode&ExcludeLocationTypes=Virtual&Limit=24&Fields=PrimaryImageAspectRatio,SeriesInfo,DateCreated,SyncInfo,SortName&ImageTypeLimit=1&EnableImageTypes=Primary,Backdrop,Banner,Thumb&EnableTotalRecordCount=false";
@@ -1071,12 +1178,10 @@ Support.initViewUrls = function() {
 	this.LatestMovies = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&IncludeItemTypes=Movie" + Server.getMoviesViewQueryPart() + "&IsFolder=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
 };
 
-
 Support.getViewUrl = function(viewName) {
 	alert("returning url for " + viewName + " : " + this[viewName]);
 	return this[viewName];
 };
-
 
 Support.removeSplashScreen = function () {
 	setTimeout(function(){
@@ -1667,4 +1772,17 @@ Support.tvGuideOffsetMins = function(date) {
 	var offset = (now.getTime() - TVGuide.guideStartTime.getTime()) / 60000;
 	return(~~offset);
 };
+
+//Get user details.
+//var userURL = Server.getServerAddr() + "/Users/" + Server.getUserID() + "?format=json&Fields=PrimaryImageTag";
+//var userData = Server.getContent(userURL);
+//if (userData == null) { return; }
+////User Image
+//if (userData.PrimaryImageTag) {
+//	var imgsrc = Server.getImageURL(userData.Id, "UsersPrimary", 70, 70, 0, false, 0);
+//	document.getElementById("menuUserImage").style.backgroundImage = "url(" + imgsrc + ")";
+//} else {
+//	document.getElementById("menuUserImage").style.backgroundImage = "url(images/loginusernoimage.png)";
+//}
+
 

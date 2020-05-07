@@ -24,37 +24,25 @@ MainMenu.start = function() {
 	FileLog.write(this.menuItemsHomePages);
 	this.menuItems = Support.generateMainMenu();
 	FileLog.write(this.menuItems);
-	//Get user details.
-	//document.getElementById("menuUserName").innerHTML = "<br>"+Server.getUserName()+"<br><br>";
-	var userURL = Server.getServerAddr() + "/Users/" + Server.getUserID() + "?format=json&Fields=PrimaryImageTag";
-	var userData = Server.getContent(userURL);
-	if (userData == null) { return; }
-	//User Image
-	if (userData.PrimaryImageTag) {
-		var imgsrc = Server.getImageURL(userData.Id,"UsersPrimary",70,70,0,false,0);
-		document.getElementById("menuUserImage").style.backgroundImage = "url(" + imgsrc + ")";
-	} else {
-		document.getElementById("menuUserImage").style.backgroundImage = "url(images/loginusernoimage.png)";
-	}
+
 	//Add menu entries
 	var htmlToAdd = "";
 	for (var index = 0; index < this.menuItems.length;index++) {
-		htmlToAdd += "<div id='" + this.menuItems[index] + "' class='menuItem'><div id='menuIcon' class='menuIcon' style='background-image:url(images/menu/" + this.menuItems[index] + "-46x37.png)'></div>" + this.menuItems[index].replace(/_/g, ' ') + "</div>";
+		htmlToAdd += "<div id='" + this.menuItems[index] + "' class='menuItem'><div id='menuIcon' class='menuIcon' style='background-image:url(images/menu/" + Support.getMenuItemImage(this.menuItems[index]) + "-46x37.png)'></div>" + Support.getMenuItemName(this.menuItems[index]) + "</div>";
 	}
 	//Add settings and logout
 	htmlToAddAdv = "";
 	this.menuItems.push("Search");
-	htmlToAddAdv += "<div id=Search class='menuItem'><div id='menuIcon' class='menuIcon' style='background-image:url(images/menu/Search-46x37.png)'></div>Search</div>";
+	htmlToAddAdv += "<div id=Search class='menuItem'><div id='menuIcon' class='menuIcon' style='background-image:url(images/menu/" + Support.getMenuItemImage("Search") + "-46x37.png)'></div>" + Support.getMenuItemName("Search") + "</div>";
 	this.menuItems.push("Settings");
-	htmlToAddAdv += "<div id=Settings class='menuItem'><div id='menuIcon' class='menuIcon' style='background-image:url(images/menu/Settings-46x37.png)'></div>Settings</div>";
+	htmlToAddAdv += "<div id=Settings class='menuItem'><div id='menuIcon' class='menuIcon' style='background-image:url(images/menu/" + Support.getMenuItemImage("Settings") + "-46x37.png)'></div>" + Support.getMenuItemName("Settings") + "</div>";
 	this.menuItems.push("LogOut");
-	htmlToAddAdv += "<div id=Log_Out class='menuItem'><div id='menuIcon' class='menuIcon' style='background-image:url(images/menu/Logout-46x37.png)'></div>Log Out</div>";
+	htmlToAddAdv += "<div id=LogOut class='menuItem'><div id='menuIcon' class='menuIcon' style='background-image:url(images/menu/" + Support.getMenuItemImage("LogOut") + "-46x37.png)'></div>" + Support.getMenuItemName("LogOut") + "</div>";
 	Support.widgetPutInnerHTML("menuItems", htmlToAdd + htmlToAddAdv);
 	//Turn On Screensaver
 	Support.screensaverOn();
 	Support.screensaver();
 	//Validate and update home page URL's
-	//Convert views in http format to viewnames for settings in versions <=2.1.3
 	var url1 = File.getUserProperty("View1");
 	if (url1.substring(0,4) == "http") {
 		alert("Converting View1");
@@ -92,7 +80,7 @@ MainMenu.requested = function(pageSelected, selectedDivId, selectedDivClass) {
 		} else {
 			this.selectedDivClass = selectedDivClass;
 		}
-		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("guiSettingChanging arrowUpDown",""); //?????
+		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("settingChanging arrowUpDown","");
 		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("highlight" + Main.highlightColour + "Background","");
 		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("highlight" + Main.highlightColour + "Text","");
 		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("seriesSelected","");
@@ -100,18 +88,16 @@ MainMenu.requested = function(pageSelected, selectedDivId, selectedDivClass) {
 	}
 	//Show Menu
 	document.getElementById("menu").style.visibility = "";
-	document.getElementById("menu").style.left = "0px";
-	document.getElementById("page").style.left = "350px";
 	//Show submenu dependant on selectedMainMenuItem
 	this.updateSelectedItems();
 	//Set Focus
-	document.getElementById("envMainMenu").focus();
+	document.getElementById("evnMainMenu").focus();
 };
 
 MainMenu.updateSelectedItems = function () {
 	for (var index = 0; index < this.menuItems.length; index++){
 		if (index == this.selectedMainMenuItem) {
-			document.getElementById(this.menuItems[index]).className = "menuItem highlight"+Main.highlightColour+"Background";
+			document.getElementById(this.menuItems[index]).className = "menuItem highlight" + Main.highlightColour + "Background";
 		} else {
 			document.getElementById(this.menuItems[index]).className = "menuItem";
 		}
@@ -126,7 +112,7 @@ MainMenu.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 	if (document.getElementById("notifications").style.visibility == "") {
-    Notifications.delNotification()
+	Notifications.delNotification()
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -188,9 +174,7 @@ MainMenu.processSelectedItems = function() {
 		sf.service.VideoPlayer.stop();
 	}
 	//Close the menu
-	document.getElementById("menu").style.visibility = "none";
-	document.getElementById("menu").style.left = "-350px";
-	document.getElementById("page").style.left = "0px";
+	document.getElementById("menu").style.visibility = "hidden";
 	setTimeout(function(){
 		Support.processHomePageMenu(MainMenu.menuItems[MainMenu.selectedMainMenuItem]);
 	}, 200);
@@ -200,9 +184,7 @@ MainMenu.playSelectedItem = function() {
 	//Pressing play on Photos in the main menu plays a random slideshow.
 	if (this.menuItems[this.selectedMainMenuItem] == "Photos") {
 		//Close the menu
-		document.getElementById("menu").style.visibility = "none";
-		document.getElementById("menu").style.left = "-350px";
-		document.getElementById("page").style.left = "0px";
+		document.getElementById("menu").style.visibility = "hidden";
 		var userViews = Server.getUserViews();
 		for (var i = 0; i < userViews.Items.length; i++){
 			if (userViews.Items[i].CollectionType == "photos"){
@@ -223,9 +205,7 @@ MainMenu.processReturnKey = function() {
 		this.updateSelectedItems();
 		this.selectedMainMenuItem = 0;
 		//Close the menu
-		document.getElementById("menu").style.visibility = "none";
-		document.getElementById("menu").style.left = "-350px";
-		document.getElementById("page").style.left = "0px";
+		document.getElementById("menu").style.visibility = "hidden";
 		if (this.pageSelected == "MusicPlayer") {
 			MusicPlayer.showMusicPlayer(this.selectedDivId);
 		}
@@ -244,7 +224,8 @@ MainMenu.processReturnKey = function() {
 				sf.service.VideoPlayer.resume();
 			}, 300);
 		}
-		document.getElementById(this.pageSelected).focus();
+		FileLog.write(this.pageSelected);
+		document.getElementById('evn' + this.pageSelected).focus();
 	}
 };
 

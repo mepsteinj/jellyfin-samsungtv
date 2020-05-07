@@ -97,9 +97,9 @@ Users.updateDisplayedUsers = function() {
 	for (var index = this.topLeftItem; index < (Math.min(this.topLeftItem + this.getMaxDisplay(), this.userData.length)); index++) {
 		if (this.userData[index].PrimaryImageTag) {
 			var imgsrc = Server.getImageURL(this.userData[index].Id, "UsersPrimary", 400, 400, 0, false, 0);
-			htmlToAdd += "<div id=" + this.userData[index].Id + " style=background-image:url(" + imgsrc + ")><div class=menuItem2>" + this.userData[index].Name + "</div></div>";
+			htmlToAdd += "<div id=" + this.userData[index].Id + " style=background-image:url(" + imgsrc + ")><div class=listItem>" + this.userData[index].Name + "</div></div>";
 		} else {
-			htmlToAdd += "<div id=" + this.userData[index].Id + " style=background-image:url(images/loginusernoimage.png)><div class=menuItem2>"+ this.userData[index].Name + "</div></div>";
+			htmlToAdd += "<div id=" + this.userData[index].Id + " style=background-image:url(images/loginusernoimage.png)><div class=listItem>"+ this.userData[index].Name + "</div></div>";
 		}
 	}
 	//Set Content to Server Data
@@ -118,7 +118,7 @@ Users.processSelectedUser = function() {
 	var authenticateSuccess = false;
 	//Remove Focus & Display Loading
 	document.getElementById("noItems").focus();
-	document.getElementById("guiLoading").style.visibility = "";
+	document.getElementById("videoLoading").style.visibility = "";
 	//Load JSON File
 	var userInFile = false;
 	var fileJson = JSON.parse(File.loadFile());
@@ -137,7 +137,7 @@ Users.processSelectedUser = function() {
 				authenticateSuccess = Server.Authenticate(userId, user, password);
 				if (authenticateSuccess) {
 					//Hide loading
-					document.getElementById("loading").style.visibility = "hidden";
+					document.getElementById("videoLoading").style.visibility = "hidden";
 					//document.getElementById("evnUsers").focus();
 					//Set File User Entry
 					File.setUserEntry(index);
@@ -146,7 +146,7 @@ Users.processSelectedUser = function() {
 				} else {
 					//Doesn't delete, allows user to correct password for the user.
 					//Hide loading
-					document.getElementById("loading").style.visibility = "hidden";
+					document.getElementById("videoLoading").style.visibility = "hidden";
 					document.getElementById("evnUsers").focus();
 					//Saved password failed - likely due to a user changing their password or user forgetting passwords!
 					new UsersInput("usersPassword");
@@ -159,7 +159,7 @@ Users.processSelectedUser = function() {
 		if (this.userData[this.selectedUser].HasPassword) {
 			//Has password - Load IME
 			//Hide loading
-			document.getElementById("loading").style.visibility = "hidden";
+			document.getElementById("videoLoading").style.visibility = "hidden";
 			document.getElementById("evnUsers").focus();
 			new UsersInput("usersPassword");
 		} else {
@@ -167,14 +167,14 @@ Users.processSelectedUser = function() {
 			if (authenticateSuccess) {
 				//Reset GUI to as new - Not Required as it already is!!
 				//Hide loading
-				document.getElementById("guiLoading").style.visibility = "hidden";
+				document.getElementById("videoLoading").style.visibility = "hidden";
 				//Add Username & Password to DB
 				File.addUser(this.userData[this.selectedUser].Id, this.userData[this.selectedUser].Name, "", this.rememberPassword);
 				//Change Focus and call function in GuiMain to initiate the page!
 				MainMenu.start();
 			} else {
 				//Hide loading
-				document.getElementById("loading").style.visibility = "hidden";
+				document.getElementById("videoLoading").style.visibility = "hidden";
 				document.getElementById("evnUsers").focus();
 				//Div to display Network Failure - No password therefore no password error
 				//This event should be impossible under normal circumstances

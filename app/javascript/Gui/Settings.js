@@ -71,10 +71,10 @@ GuiSettings.getMaxDisplay = function() {
 };
 
 GuiSettings.initiateViewValues = function() {
-	this.View1Options = ["Next Up","All Favourites","Favourite Movies","Favourite Series","Favourite Episodes","Suggested For You","Media Folders","Latest TV","Latest Movies"];
-	this.View1Values = ["TVNextUp","Favourites","FavouriteMovies","FavouriteSeries","FavouriteEpisodes","SuggestedMovies","MediaFolders","LatestTV","LatestMovies"];
-	this.View2Options = ["None","Next Up","All Favourites","Favourite Movies","Favourite Series","Favourite Episodes","Suggested For You","Media Folders","Latest TV","Latest Movies"];
-	this.View2Values = [null,"TVNextUp","Favourites","FavouriteMovies","FavouriteSeries","FavouriteEpisodes","SuggestedMovies","MediaFolders","LatestTV","LatestMovies"];
+	this.View1Options = ["Next Up", "All Favourites", "Favourite Movies", "Favourite Series", "Favourite Episodes", "Suggested For You", "Media Folders", "Latest TV", "Latest Movies"];
+	this.View1Values = ["TVNextUp", "Favourites", "FavouriteMovies", "FavouriteSeries", "FavouriteEpisodes", "SuggestedMovies", "MediaFolders", "LatestTV", "LatestMovies"];
+	this.View2Options = ["None", "Next Up", "All Favourites", "Favourite Movies", "Favourite Series", "Favourite Episodes", "Suggested For You", "Media Folders", "Latest TV", "Latest Movies"];
+	this.View2Values = [null,"TVNextUp", "Favourites", "FavouriteMovies", "FavouriteSeries", "FavouriteEpisodes", "SuggestedMovies", "MediaFolders", "LatestTV", "LatestMovies"];
 
 	this.SettingsDefaults[2] = "TVNextUp";
 	this.SettingsDefaults[3] = "LatestMovies";

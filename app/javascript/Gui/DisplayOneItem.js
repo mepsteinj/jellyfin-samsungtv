@@ -337,7 +337,7 @@ GuiDisplayOneItem.processIndexing = function() {
 
 GuiDisplayOneItem.setPadding = function(title) {
 	switch (title) {
-	case "Media Folders":
+	case "MediaFolders":
 	case "Collections":
 		if (this.ItemData.Items.length <= this.MAXCOLUMNCOUNT) {
 			document.getElementById("Center").style.top = "220px";

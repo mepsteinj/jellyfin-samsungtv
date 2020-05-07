@@ -18,7 +18,7 @@ var HomeTwoItems = {
 };
 
 HomeTwoItems.onFocus = function() {
-	Helper.setControlButtons("Favourite", "Watched", "Help", MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Exit  ");
+	Helper.setControlButtons(Main.messages.LabButtonFavourite, Main.messages.LabButtonWatched, Main.messages.LabButtonHelp, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? Main.messages.LabButtonMusic : null, Main.messages.LabButtonExit);
 };
 
 HomeTwoItems.getMaxDisplay = function() {
@@ -86,7 +86,7 @@ HomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,topLeftIte
 
 		//Set PageContent
 		document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='bannerMenu'></div>" +
-				"<div id=Center class='HomeOneCenter'>" +
+				"<div id=Center class='homeOneCenter'>" +
 				"<p style='position:relative;font-size:1.4em;padding-left:11px;z-index:5;'>"+title1+"</p><div id='TopRow' style='margin-bottom:50px'><div id=content></div></div>" +
 				"<p style='position:relative;font-size:1.4em;padding-left:11px;z-index:5;'>"+title2+"</p><div id='BottomRow'><div id=Content2></div></div>" +
 				"</div>";
@@ -147,7 +147,7 @@ HomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,topLeftIte
 	} else if (this.ItemData.Items.length > 0 && this.ItemData2.Items.length == 0) {
 		HomeOneItem.start(title1, url1, 0, 0);
 	} else if (this.ItemData.Items.length == 0 && this.ItemData2.Items.length > 0) {
-		HomeOneItem.start(title2,url2, 0, 0);
+		HomeOneItem.start(title2, url2, 0, 0);
 	} else if (this.ItemData.Items.length == 0 && this.ItemData2.Items.length == 0) {
 		//No data to Show at all!!
 		//Generate Media Collections title & URL!

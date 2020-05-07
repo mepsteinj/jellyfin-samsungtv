@@ -378,7 +378,7 @@ GuiPlaylist.processSelectedItem = function() {
 			Support.updateURLHistory("GuiPlaylist",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem,this.topLeftItem,null);
 			if (this.startParams[2] == "Video") {
 				var url = Server.getItemInfoURL(this.AlbumData.Items[this.selectedItem].Id);
-				GuiItemDetails.start(this.AlbumData.Items[this.selectedItem].Name,url,0);
+				ItemDetails.start(this.AlbumData.Items[this.selectedItem].Name, url, 0);
 			} else if (this.startParams[2] == "Audio"){
 				var url = Server.getChildItemsURL(this.AlbumData.Items[this.selectedItem].AlbumId,"&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Audio&Recursive=true&CollapseBoxSetItems=false");
 				alert (url);

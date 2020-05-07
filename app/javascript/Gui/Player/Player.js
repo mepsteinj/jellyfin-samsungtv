@@ -86,7 +86,7 @@ Player.start = function(title, url, startingPlaybackTick, playedFromPage, isCine
 		if (File.getUserProperty("EnableCinemaMode") && intros.TotalRecordCount > 0 && startingPlaybackTick == 0) {
 			FileLog.write("Playback: Switching to Cinema Mode.");
 			//Start again in Cinema Mode.
-			Player.start("PlayAll",introsUrl,0,"GuiItemDetails",true,this.startParams[1]);
+			Player.start("PlayAll", introsUrl, 0, "ItemDetails", true, this.startParams[1]);
 			return;
 		} else {
 			this.PlayerData = this.VideoData;

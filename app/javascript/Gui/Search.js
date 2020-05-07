@@ -103,12 +103,12 @@ GuiSearch.processSelectedItem = function() {
 	case "Movie":
 		if (this.playItems[this.selectedItem2] == "Play_") {
 			//Play URL
-			var url = Server.getItemInfoURL(this.ItemData.SearchHints[this.selectedItem].ItemId,"&ExcludeLocationTypes=Virtual");
-			GuiPlayer.start("PLAY",url,0,"GuiSearch");
+			var url = Server.getItemInfoURL(this.ItemData.SearchHints[this.selectedItem].ItemId, "&ExcludeLocationTypes=Virtual");
+			GuiPlayer.start("PLAY", url, 0, "GuiSearch");
 		} else if (this.playItems[this.selectedItem2] == "View_") {
 			//Display Item Page
-			var url = Server.getItemInfoURL(this.ItemData.SearchHints[this.selectedItem].ItemId,null);
-			GuiItemDetails.start(this.ItemData.SearchHints[this.selectedItem].Name,url,0);
+			var url = Server.getItemInfoURL(this.ItemData.SearchHints[this.selectedItem].ItemId, null);
+			ItemDetails.start(this.ItemData.SearchHints[this.selectedItem].Name, url, 0);
 		}
 		break;
 	case "Series":

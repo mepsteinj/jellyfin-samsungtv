@@ -45,7 +45,7 @@ Servers.start = function(runAutoLogin) {
 Servers.updateDisplayedUsers = function() {
 	var htmlToAdd = "";
 	for (var index = this.topLeftItem; index < (Math.min(this.topLeftItem + this.getMaxDisplay(), this.serverData.Servers.length)); index++) {
-		htmlToAdd += "<div id=" + this.serverData.Servers[index].Id + " style=background-image:url(images/server.png)><div class=menuItem2>" + this.serverData.Servers[index].Name + "</div></div>";
+		htmlToAdd += "<div id=" + this.serverData.Servers[index].Id + " style=background-image:url(images/server.png)><div class=listItem>" + this.serverData.Servers[index].Name + "</div></div>";
 	}
 	//Set Content to Server Data
 	Support.widgetPutInnerHTML("serversAllUsers", htmlToAdd);
