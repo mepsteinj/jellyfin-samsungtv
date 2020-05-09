@@ -314,6 +314,7 @@ Users.keyDown = function() {
 //////////////////////////////////////////////////////////////////
 
 var UsersInput = function(id) {
+	
 	var imeReady = function(imeObject) {
 		installFocusKeyCallbacks();
 		document.getElementById("usersPwd").style.visibility="";

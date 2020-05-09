@@ -27,8 +27,10 @@ TVShow.GetDetail = function(itemid) {
 	this.seasondata = Server.getContent(url3);
 };
 
-TVShow.start = function(title,url,selectedItem,topLeftItem) {
+TVShow.start = function(title, url, selectedItem, topLeftItem) {
 	alert("Page Enter : TVShow");
+	
+	var imgsrc = "";
 
 	//Save Start Params
 	this.startParams = [title,url];
@@ -49,25 +51,24 @@ TVShow.start = function(title,url,selectedItem,topLeftItem) {
 
 	if (this.ItemData.Items.length == 1 && File.getUserProperty("SkipShow")) {
 		//DO NOT UPDATE URL HISTORY AS SKIPPING THIS PAGE
-		var url = Server.getChildItemsURL(this.ItemData.Items[this.selectedItem].Id,"&IncludeItemTypes=Episode&fields=SortName,Overview");
-		DisplayEpisodes.start(this.ShowData.Name + " " + this.ItemData.Items[this.selectedItem].Name,url,0,0);
+		var url1 = Server.getChildItemsURL(this.ItemData.Items[this.selectedItem].Id, "&IncludeItemTypes=Episode&fields=SortName,Overview");
+		DisplayEpisodes.start(this.ShowData.Name + " " + this.ItemData.Items[this.selectedItem].Name, url1, 0, 0);
 	} else {
 		if (this.ItemData.Items.length > 0) {
-		  var pageContent = "<div id=allOptions>" +
-			"<span id='bannerItem0'>Play All</span>" +
-			"<span id='bannerItem1'>Shuffle All</span></div><div id=content></div>" +
-			"<div id='ShowSeriesInfo'></div>" +
-			"<div id='ShowImage'></div>" +
-			"<div id='InfoContainer' class='showItemContainer'>" +
-				"<div id='ShowTitle' style='position:relative; height:44px; font-size:1.7em;'></div>" +
-				"<div id='ShowMetadata' style='padding-top:4px;color:#0099FF;padding-bottom:10px;'></div>" +
-				"<div id='ShowOverview' class='ShowOverview'></div>" +
-				"</div>";
-				Support.widgetPutInnerHTML("pageContent", pageContent);
-
+		  	Support.widgetPutInnerHTML("pageContent", "<div id=allOptions>" +
+		  	"<span id='bannerItem0'>Play All</span>" +
+		  	"<span id='bannerItem1'>Shuffle All</span></div><div id=content></div>" +
+		  	"<div id='ShowSeriesInfo'></div>" +
+		  	"<div id='ShowImage'></div>" +
+		  	"<div id='InfoContainer' class='showItemContainer'>" +
+		  	"<div id='ShowTitle' style='position:relative; height:44px; font-size:1.7em;'></div>" +
+		  	"<div id='ShowMetadata' style='padding-top:4px;color:#0099FF;padding-bottom:10px;'></div>" +
+			"<div id='ShowOverview' class='ShowOverview'></div>" +
+			"</div>");
+				
 			//Load Background
 			if (this.ShowData.BackdropImageTags.length > 0){
-				var imgsrc = Server.getBackgroundImageURL(this.ShowData.Id,"Backdrop",Main.backdropWidth,Main.backdropHeight,0,false,0,this.ShowData.BackdropImageTags.length);
+				imgsrc = Server.getBackgroundImageURL(this.ShowData.Id,"Backdrop",Main.backdropWidth,Main.backdropHeight,0,false,0,this.ShowData.BackdropImageTags.length);
 				Support.fadeImage(imgsrc);
 			}
 
@@ -88,7 +89,7 @@ TVShow.start = function(title,url,selectedItem,topLeftItem) {
 
 			//If cover art use that else use text
 			if (this.ShowData.ImageTags.Logo) {
-				var imgsrc = Server.getImageURL(this.ShowData.Id,"Logo",600,80,0,false,0);
+				imgsrc = Server.getImageURL(this.ShowData.Id,"Logo",600,80,0,false,0);
 				document.getElementById("ShowSeriesInfo").style.backgroundImage="url('"+imgsrc+"')";
 				document.getElementById("ShowSeriesInfo").className = 'EpisodesSeriesInfoLogo';
 			} else {
@@ -97,7 +98,7 @@ TVShow.start = function(title,url,selectedItem,topLeftItem) {
 			}
 
 			//Update Overview
-			htmlForOverview = "";
+			var htmlForOverview = "";
 			if (this.ShowData.Overview !== undefined) {
 				htmlForOverview = this.ShowData.Overview ;
 			}
@@ -132,18 +133,19 @@ TVShow.start = function(title,url,selectedItem,topLeftItem) {
 
 TVShow.updateDisplayedItems = function() {
 	var htmlToAdd = "";
+	var imgsrc = "";
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length); index++) {
 		if (this.ItemData.Items[index].ImageTags.Thumb) {
-			var imgsrc = Server.getImageURL(this.ItemData.Items[index].Id,"Thumb",200,92,0,false,0);
+			imgsrc = Server.getImageURL(this.ItemData.Items[index].Id,"Thumb",200,92,0,false,0);
 			htmlToAdd += "<div id=" + this.ItemData.Items[index].Id + "><div class='ShowListSingleImage' style=background-image:url(" +imgsrc+ ")></div><div class='ShowListSingleTitle'><div class='ShowListTextOneLine'>"+ this.ItemData.Items[index].Name + "</div></div>";
 		} else if (this.ItemData.Items[index].BackdropImageTags.length > 0) {
-			var imgsrc = Server.getBackgroundImageURL(this.ItemData.Items[index].Id,"Backdrop",200,92,0,false,0,this.ItemData.Items[index].BackdropImageTags.length);
+			imgsrc = Server.getBackgroundImageURL(this.ItemData.Items[index].Id,"Backdrop",200,92,0,false,0,this.ItemData.Items[index].BackdropImageTags.length);
 			htmlToAdd += "<div id=" + this.ItemData.Items[index].Id + "><div class='ShowListSingleImage' style=background-image:url(" +imgsrc+ ")></div><div class='ShowListSingleTitle'><div class='ShowListTextOneLine'>"+ this.ItemData.Items[index].Name + "</div></div>";
 		} else if (this.ShowData.ImageTags.Thumb) {
-			var imgsrc = Server.getImageURL(this.ShowData.Id,"Thumb",200,92,0,false,0);
+			imgsrc = Server.getImageURL(this.ShowData.Id,"Thumb",200,92,0,false,0);
 			htmlToAdd += "<div id=" + this.ItemData.Items[index].Id + "><div class='ShowListSingleImage' style=background-image:url(" +imgsrc+ ")></div><div class='ShowListSingleTitle'><div class='ShowListTextOneLine'>"+ this.ItemData.Items[index].Name + "</div></div>";
 		} else if (this.ShowData.BackdropImageTags.length > 0) {
-			var imgsrc = Server.getBackgroundImageURL(this.ShowData.Id,"Backdrop",200,92,0,false,0,this.ShowData.BackdropImageTags.length);
+			imgsrc = Server.getBackgroundImageURL(this.ShowData.Id,"Backdrop",200,92,0,false,0,this.ShowData.BackdropImageTags.length);
 			htmlToAdd += "<div id=" + this.ItemData.Items[index].Id + "><div class='ShowListSingleImage' style=background-image:url(" +imgsrc+ ")></div><div class='ShowListSingleTitle'><div class='ShowListTextOneLine'>"+ this.ItemData.Items[index].Name + "</div></div>";
 		} else {
 			htmlToAdd += "<div id=" + this.ItemData.Items[index].Id + "><div class='ShowListSingleImage' style=background-image:url(images/ShowNoImage.png)></div><div class='ShowListSingleTitle'><div class='ShowListTextOneLine'>"+ this.ItemData.Items[index].Name + "</div></div>";
@@ -196,7 +198,7 @@ TVShow.updateSelectedItems = function () {
 					//CD136 Removed - Not coded correctly
 					Support.widgetPutInnerHTML("ShowImage", "<div class='genreItemCount highlight" + Main.highlightColour + "Background'>" +  this.ItemData.Items[this.selectedItem].UserData.UnplayedItemCount + "</div>");
 				} else {
-				  Support.widgetPutInnerHTML("ShowImage", "<div class='genreItemCount highlight" + Main.highlightColour + "Background'>&#10003</div>";
+				  Support.widgetPutInnerHTML("ShowImage", "<div class='genreItemCount highlight" + Main.highlightColour + "Background'>&#10003</div>");
 				}
 		}
 
@@ -307,7 +309,7 @@ TVShow.keyDown = function() {
 					Server.setFavourite(this.ShowData.Id);
 					this.ShowData.UserData.IsFavorite = true;
 				}
-				setTimeout(function(){
+				setTimeout(function() {
 					TVShow.updateDisplayedItems();
 					TVShow.updateSelectedItems();
 				}, 150);
@@ -318,13 +320,13 @@ TVShow.keyDown = function() {
 				var url = Server.getChildItemsURL(this.ItemData.Items[this.selectedItem].Id,"&IncludeItemTypes=Episode&fields=SortName,Overview");
 				var episodes = Server.getContent(url);
 				if (this.ItemData.Items[this.selectedItem].UserData.Played) {
-					for (var e = 0; e < episodes.Items.length; e++){
-						Server.deleteWatchedStatus(episodes.Items[e].Id);
+					for (var e1 = 0; e < episodes.Items.length; e1++){
+						Server.deleteWatchedStatus(episodes.Items[e1].Id);
 					}
 					this.ItemData.Items[this.selectedItem].UserData.Played = false;
 				} else {
-					for (var e = 0; e < episodes.Items.length; e++){
-						Server.setWatchedStatus(episodes.Items[e].Id);
+					for (var e2 = 0; e < episodes.Items.length; e2++){
+						Server.setWatchedStatus(episodes.Items[e2].Id);
 					}
 					this.ItemData.Items[this.selectedItem].UserData.Played = true;
 				}
@@ -352,9 +354,10 @@ TVShow.keyDown = function() {
 };
 
 TVShow.processSelectedItem = function() {
+	var urlToPlay = "";
 	if (this.selectedItem == -1) {
 		//Fix for return!
-		Support.updateURLHistory("TVShow", this.startParams[0],this.startParams[1], null, null, 0, this.topLeftItem,null);
+		Support.updateURLHistory("TVShow", this.startParams[0], this.startParams[1], null, null, 0, this.topLeftItem,null);
 	} else {
 		Support.updateURLHistory("TVShow", this.startParams[0], this.startParams[1], null, null, this.selectedItem, this.topLeftItem, null);
 	}
@@ -363,11 +366,11 @@ TVShow.processSelectedItem = function() {
 	if (this.selectedItem == -1) {
 		if (this.selectedBannerItem == 0) {
 			//Play All Episodes in Show
-			var urlToPlay= Server.getChildItemsURL(this.ShowData.Id,"&ExcludeLocationTypes=Virtual&IncludeItemTypes=Episode&Recursive=true&SortBy=SortName&SortOrder=Ascending&Fields=ParentId,SortName,MediaSources");
+			urlToPlay= Server.getChildItemsURL(this.ShowData.Id, "&ExcludeLocationTypes=Virtual&IncludeItemTypes=Episode&Recursive=true&SortBy=SortName&SortOrder=Ascending&Fields=ParentId,SortName,MediaSources");
 			Player.start("PlayAll", urlToPlay, 0, "TVShow");
 		} else if (this.selectedBannerItem == 1) {
 			//Shuffle All Episodes in Show
-			var urlToPlay= Server.getChildItemsURL(this.ShowData.Id,"&ExcludeLocationTypes=Virtual&IncludeItemTypes=Episode&Recursive=true&SortBy=Random&SortOrder=Ascending&Fields=ParentId,SortName,MediaSources");
+			urlToPlay= Server.getChildItemsURL(this.ShowData.Id, "&ExcludeLocationTypes=Virtual&IncludeItemTypes=Episode&Recursive=true&SortBy=Random&SortOrder=Ascending&Fields=ParentId,SortName,MediaSources");
 			Player.start("PlayAll", urlToPlay, 0, "TVShow");
 		}
 	} else {
@@ -384,7 +387,8 @@ TVShow.processUpKey = function() {
 	this.selectedItem = this.selectedItem - this.MAXCOLUMNCOUNT;
 	if (this.selectedItem < -1) {
 		this.selectedItem = -1;
-	} if (this.selectedItem == -1) {
+	} 
+	if (this.selectedItem == -1) {
 		this.updateSelectedBannerItems();
 		this.updateSelectedItems();
 	} else {
