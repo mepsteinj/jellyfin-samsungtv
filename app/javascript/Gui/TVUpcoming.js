@@ -1,4 +1,4 @@
-var GuiTVUpcoming = {
+var TVUpcoming = {
 	upcomingData : [],
 	dateArray : [],
 	topDayItem : 0,
@@ -14,16 +14,16 @@ var GuiTVUpcoming = {
 	backdropTimeout : null
 };
 
-GuiTVUpcoming.getMaxDisplay = function() {
+TVUpcoming.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
 };
 
-GuiTVUpcoming.getMaxDisplayBottom = function() {
+TVUpcoming.getMaxDisplayBottom = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
 };
 
-GuiTVUpcoming.start = function() {
-	alert("Page Enter : GuiTVUpcoming");
+TVUpcoming.start = function() {
+	alert("Page Enter : TVUpcoming");
 	Helper.setControlButtons(null, null, null, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
 
 	//Load Data
@@ -62,27 +62,33 @@ GuiTVUpcoming.start = function() {
 	}
 
 	//Set PageContent
-	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='bannerMenu'></div>" +
+	var pageContent = "<div id=bannerSelection class='bannerMenu'></div>" +
 			"<div id=Center class='HomeOneCenter'>" +
 			"<p id='title1' style='position:relative;font-size:1.2em;padding-left:22px;z-index:5;'></p><div id='TopRow' style='margin-bottom:60px'><div id=Content></div></div>" +
 			"<p id='title2' style='position:relative;font-size:1.2em;padding-left:22px;z-index:5;'></p><div id='BottomRow'><div id=Content2></div></div>" +
 			"</div>";
+	Support.widgetPutInnerHTML("pageContent", pageContent);
 
 
 	//If to determine positioning of content
 	document.getElementById("Center").style.top = "140px";
 	document.getElementById("Center").style.left = "200px";
 	document.getElementById("Center").style.width = "1520px";
-
+	
+	var bannerSelection = "";
 	if (ItemData.Items.length > 0) {
 		//Generate Banner display
 		for (var index = 0; index < this.bannerItems.length; index++) {
 			if (index != this.bannerItems.length-1) {
-				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem bannerItemPadding'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";
+				bannerSelection += "<div id='bannerItem" + index + "' class='bannerItem bannerItemPadding'>"+this.bannerItems[index].replace(/_/g, ' ') +
+				"</div>";
+				
 			} else {
-				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";
+				bannerSelection += "<div id='bannerItem" + index + "' class='bannerItem'>"+this.bannerItems[index].replace(/_/g, ' ') + 
+				"</div>";
 			}
 		}
+		Support.widgetPutInnerHTML("bannerSelection", bannerSelection);
 
 		//Display first XX series
 		this.updateDisplayedItems();
@@ -95,25 +101,21 @@ GuiTVUpcoming.start = function() {
 
 		//Update Selected Collection CSS
 		this.updateSelectedItems2();
-
 		//Update Titles
 		this.updateTitles();
-
 		//Update Banner
 		this.selectedBannerItem = -1;
 		this.updateSelectedBannerItems();
 		this.selectedBannerItem = 0;
-
 		//Update Counter
 		this.updateCounter();
-
-		document.getElementById("GuiTVUpcoming").focus();
+		document.getElementById("evnTVUpcoming").focus();
 	} else  {
 		//Set message to user
-		document.getElementById("counter").innerHTML = "";
+		Support.widgetPutInnerHTML("counter", "");
 		document.getElementById("content").style.fontSize="1.3em";
-		document.getElementById("content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid<br>Press return to get back to the previous screen";
-
+		var content = "Huh.. Looks like I have no content to show you in this view I'm afraid<br>Press return to get back to the previous screen";
+		Support.widgetPutInnerHTML("content", content);
 		document.getElementById("noItems").focus();
 	}
 };
@@ -121,36 +123,38 @@ GuiTVUpcoming.start = function() {
 //---------------------------------------------------------------------------------------------------
 //      TITLE + COUNTER SETTER
 //---------------------------------------------------------------------------------------------------
-GuiTVUpcoming.updateTitles = function() {
-	document.getElementById("title1").innerHTML = this.dateArray[this.topDayItem];
-	document.getElementById("title2").innerHTML = this.dateArray[this.topDayItem+1];
+TVUpcoming.updateTitles = function() {
+	Support.widgetPutInnerHTML("title1", this.dateArray[this.topDayItem]);
+  Support.widgetPutInnerHTML("title2", this.dateArray[this.topDayItem + 1]);
 };
 
-GuiTVUpcoming.updateCounter = function(isBottom) {
+TVUpcoming.updateCounter = function(isBottom) {
+  var counter = "";
 	if (this.selectedItem == -2) {
-		document.getElementById("counter").innerHTML = (this.selectedBannerItem+1) + "/" + this.bannerItems.length;
+		counter = (this.selectedBannerItem+1) + "/" + this.bannerItems.length;
 	} else if (isBottom){
-		document.getElementById("counter").innerHTML = (this.selectedDayItem+1) + "/" + this.upcomingData.length + " - " + (this.selectedItem2+1) + "/" + this.upcomingData[this.selectedDayItem].length;
+	  counter = (this.selectedDayItem+1) + "/" + this.upcomingData.length + " - " + (this.selectedItem2+1) + "/" + this.upcomingData[this.selectedDayItem].length;
 	} else {
-		document.getElementById("counter").innerHTML = (this.selectedDayItem+1) + "/" + this.upcomingData.length + " - " + (this.selectedItem+1) + "/" + this.upcomingData[this.selectedDayItem].length;
+		counter = (this.selectedDayItem+1) + "/" + this.upcomingData.length + " - " + (this.selectedItem+1) + "/" + this.upcomingData[this.selectedDayItem].length;
 	}
+	Support.widgetPutInnerHTML("counter", counter);
 };
 
 //---------------------------------------------------------------------------------------------------
 //      TOP ITEMS HANDLERS
 //---------------------------------------------------------------------------------------------------
-GuiTVUpcoming.updateDisplayedItems = function() {
-	Support.updateDisplayedItems(this.upcomingData[this.topDayItem],this.selectedItem,this.topLeftItem,
-			Math.min(this.topLeftItem + this.getMaxDisplay(),this.upcomingData[this.topDayItem].length),"Content",this.divprepend1,false,null,true);
+TVUpcoming.updateDisplayedItems = function() {
+	Support.updateDisplayedItems(this.upcomingData[this.topDayItem], this.selectedItem,this.topLeftItem,
+			 Math.min(this.topLeftItem + this.getMaxDisplay(), this.upcomingData[this.topDayItem].length), "Content", this.divprepend1, false, null, true);
 };
 
 //Function sets CSS Properties so show which user is selected
-GuiTVUpcoming.updateSelectedItems = function () {
+TVUpcoming.updateSelectedItems = function () {
 	Support.updateSelectedNEW(this.upcomingData[this.topDayItem], this.selectedItem, this.topLeftItem,
 			Math.min(this.topLeftItem + this.getMaxDisplay(), this.upcomingData[this.topDayItem].length), "series collection selected", "series collection", this.divprepend1, true);
 };
 
-GuiTVUpcoming.updateSelectedBannerItems = function() {
+TVUpcoming.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.bannerItems.length; index++) {
 		if (index == this.selectedBannerItem) {
 			if (index != this.bannerItems.length-1) {
@@ -176,14 +180,13 @@ GuiTVUpcoming.updateSelectedBannerItems = function() {
 	}
 };
 
-GuiTVUpcoming.keyDown = function()
+TVUpcoming.keyDown = function()
 {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
 	if (document.getElementById("notifications").style.visibility == "") {
-		document.getElementById("notifications").style.visibility = "hidden";
-		document.getElementById("notificationText").innerHTML = "";
+    Notifications.delNotification();
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -197,7 +200,7 @@ GuiTVUpcoming.keyDown = function()
 		//Update Main.js isScreensaverRunning - Sets to True
 		Main.setIsScreensaverRunning();
 		//End Screensaver
-		GuiImagePlayerScreensaver.stopScreensaver();
+		ImagePlayerScreensaver.stopScreensaver();
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
@@ -314,7 +317,7 @@ GuiTVUpcoming.keyDown = function()
 					this.selectedItem = 0;
 
 					//Set Focus
-					document.getElementById("GuiTVUpcomingBottom").focus();
+					document.getElementById("evnTVUpcomingBottom").focus();
 					//Update Selected
 					this.selectedItem2 = 0;
 					this.updateSelectedItems2();
@@ -354,7 +357,7 @@ GuiTVUpcoming.keyDown = function()
 	}
 };
 
-GuiTVUpcoming.openMenu = function() {
+TVUpcoming.openMenu = function() {
 	if (this.selectedItem == -2) { //Banner menu
 		if (this.selectedBannerItem == this.bannerItems.length-1) {
 			document.getElementById("bannerItem"+this.selectedBannerItem).className = "bannerItem";
@@ -374,28 +377,27 @@ GuiTVUpcoming.openMenu = function() {
 //      BOTTOM ITEMS HANDLERS
 //---------------------------------------------------------------------------------------------------
 
-GuiTVUpcoming.updateDisplayedItems2 = function() {
+TVUpcoming.updateDisplayedItems2 = function() {
 	var item = this.topDayItem+1;
 	Support.updateDisplayedItems(this.upcomingData[item],this.selectedItem2,this.topLeftItem2,
 			Math.min(this.topLeftItem2 + this.getMaxDisplayBottom(),this.upcomingData[item].length),"Content2",this.divprepend2,false,null,true);
 };
 
 //Function sets CSS Properties so show which user is selected
-GuiTVUpcoming.updateSelectedItems2 = function () {
+TVUpcoming.updateSelectedItems2 = function () {
 	var item = this.topDayItem+1;
 	Support.updateSelectedNEW(this.upcomingData[item], this.selectedItem2, this.topLeftItem2,
 			Math.min(this.topLeftItem2 + this.getMaxDisplayBottom(), this.upcomingData[item].length), "series collection selected", "series collection", this.divprepend2, true);
 };
 
 
-GuiTVUpcoming.bottomKeyDown = function()
+TVUpcoming.bottomKeyDown = function()
 {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
 	if (document.getElementById("notifications").style.visibility == "") {
-		document.getElementById("notifications").style.visibility = "hidden";
-		document.getElementById("notificationText").innerHTML = "";
+    Notifications.delNotification();
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -409,7 +411,7 @@ GuiTVUpcoming.bottomKeyDown = function()
 		//Update Main.js isScreensaverRunning - Sets to True
 		Main.setIsScreensaverRunning();
 		//End Screensaver
-		GuiImagePlayerScreensaver.stopScreensaver();
+		ImagePlayerScreensaver.stopScreensaver();
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
@@ -460,7 +462,7 @@ GuiTVUpcoming.bottomKeyDown = function()
 			this.selectedDayItem--;
 
 			//Set Focus
-			document.getElementById("guiTVUpcoming").focus();
+			document.getElementById("evnTVUpcoming").focus();
 			//Update Selected
 			this.selectedItem = 0;
 			this.updateSelectedItems();
@@ -512,41 +514,41 @@ GuiTVUpcoming.bottomKeyDown = function()
 	}
 };
 
-GuiTVUpcoming.openMenu2 = function() {
+TVUpcoming.openMenu2 = function() {
 	Support.updateURLHistory("TVUpcoming", null,null,null,null,this.selectedItem2,this.topLeftItem2,false);
 	MainMenu.requested("TVUpcomingBottom", this.divprepend2 + this.upcomingData[this.selectedDayItem][this.selectedItem2].Id);
 };
 
 //--------------------------------------------------------------------------------------------------------
 
-GuiTVUpcoming.processSelectedItem = function (isBottom) {
+TVUpcoming.processSelectedItem = function (isBottom) {
 	clearTimeout(this.backdropTimeout);
 	if (this.selectedItem == -2) {
 		switch (this.bannerItems[this.selectedBannerItem]) {
 		case "Series":
 			var url = Server.getItemTypeURL("&IncludeItemTypes=Series"+Server.getTVViewQueryPart()+"&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
-			GuiDisplaySeries.start("All TV",url,0,0);
+			DisplaySeries.start("All TV",url,0,0);
 		break;
 		case "Unwatched":
 			var url = Server.getItemTypeURL("&IncludeItemTypes=Series"+Server.getTVViewQueryPart()+"&SortBy=SortName&SortOrder=Ascending&isPlayed=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
-			GuiDisplaySeries.start("Unwatched TV",url,0,0);
+		  DisplaySeries.start("Unwatched TV", url, 0, 0);
 		break;
 		case "Latest":
 			var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&IncludeItemTypes=Episode&isPlayed=false&IsFolder=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
-			GuiDisplaySeries.start("Latest TV",url,0,0);
+			DisplaySeries.start("Latest TV", url, 0, 0);
 
 		break;
 		case "Genre":
 			var url1 = Server.getCustomURL("/Genres?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Series"+Server.getTVViewQueryPart()+"&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,ItemCounts&userId=" + Server.getUserID());
-			GuiDisplaySeries.start("Genre TV",url1,0,0);
+			DisplaySeries.start("Genre TV", url, 0, 0);
 		break;
 		case"A-Z":
-			GuiMusicAZ.start("TV",0);
+			MusicAZ.start("TV",0);
 			break;
 		}
 	} else {
 		var selectedItem = (isBottom) ? this.selectedItem2 : this.selectedItem;
-		Support.updateURLHistory("GuiTVUpcoming", null, null, null, null, null, null, null);
+		Support.updateURLHistory("TVUpcoming", null, null, null, null, null, null, null);
 
 		var url = Server.getItemInfoURL(this.upcomingData[this.selectedDayItem][selectedItem].Id, null);
 		ItemDetails.start(this.upcomingData[this.selectedDayItem][selectedItem].Name, url, 0);

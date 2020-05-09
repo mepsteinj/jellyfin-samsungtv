@@ -152,8 +152,7 @@ ImagePlayer.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 	if (document.getElementById("notifications").style.visibility == "") {
-		document.getElementById("notifications").style.visibility = "hidden";
-		Support.widgetPutInnerHTML("notificationText", "");
+		Notifications.delNotification();
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -167,7 +166,7 @@ ImagePlayer.keyDown = function() {
 			this.Timeout = null;
 			this.images = [];
 			this.overlay = [];
-			document.getElementById("imagePlayerScreenSaverOverlay").innerHTML = "";
+			Support.widgetPutInnerHTML("imagePlayerScreenSaverOverlay", "");
 			document.getElementById("buttonShade").style.visibility = "hidden";
 			document.getElementById("clock").style.visibility = "";
 			this.ImageViewer.endSlideshow();

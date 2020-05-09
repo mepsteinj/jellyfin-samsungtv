@@ -9,7 +9,7 @@
 //Once you've got your ID you can go look for it in this.Channels or this.Programs to find out more.
 //Row -1 is the banner menu. Column -1 is the channel name list.
 
-var GuiTVGuide = {
+var TVGuide = {
 	Programs : null,
 	Channels : null,
 	programGrid : [],
@@ -23,11 +23,11 @@ var GuiTVGuide = {
 	startParams : []
 };
 
-GuiTVGuide.onFocus = function() {
+TVGuide.onFocus = function() {
 	Helper.setControlButtons("Record  ",null, null, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
 };
 
-GuiTVGuide.start = function(title,url,selectedRow,selectedColumn,topChannel,startTime) {
+TVGuide.start = function(title, url, selectedRow, selectedColumn, topChannel, startTime) {
 	//Save Start Params
 	this.startParams = [title,url];
 
@@ -40,21 +40,22 @@ GuiTVGuide.start = function(title,url,selectedRow,selectedColumn,topChannel,star
 	this.selectedBannerItem = 0;
 	this.topChannel = topChannel;
 	this.guideStartTime = startTime;
-	document.getElementById("counter").innerHTML = "";
-
+	Support.widgetPutInnerHTML("counter", "");
 	//Create the banner menu and program details.
-	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='bannerMenu'></div>" +
+	Support.widgetPutInnerHTML("pageContent", "<div id=bannerSelection class='bannerMenu'></div>" +
 			"<div id='tvGuide' class='tvGuide'></div>" +
 			"<div id='tvGuideProgramImage' class='tvGuideProgramImage'></div>" +
 			"<div id=tvGuideProgramDetails class='tvGuideProgramDetails'>" +
 				"<div id='tvGuideSubData' class='tvGuideSubData'></div>" +
 				"<div id='tvGuideOverview' class='tvGuideOverview'></div>" +
-			"</div>";
+			"</div>");
 
 	//Populate the banner menu.
+	var bannerSelection = "";
 	for (var index = 0; index < this.bannerItems.length; index++) {
-		document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";
+		bannerSelection += "<div id='bannerItem" + index + "'>"+this.bannerItems[index].replace(/_/g, ' ') + "</div>";
 	}
+	Support.widgetPutInnerHTML("bannerSelection", bannerSelection);
 
 	//Load Data
 	this.Channels = Server.getContent(url);
@@ -117,15 +118,15 @@ GuiTVGuide.start = function(title,url,selectedRow,selectedColumn,topChannel,star
 		this.updateSelectedItems();
 
 	} else {
-		document.getElementById("tvGuide").innerHTML = "Hmm, it looks like there is no guide data right now.";
+	  Support.widgetPutInnerHTML("tvGuide", "Hmm, it looks like there is no guide data right now.");
 		this.selectedRow = -1;
 		this.updateSelectedItems();
 	}
 	//Set Focus for Key Events
-	document.getElementById("guiTVGuide").focus();
+	document.getElementById("evnTVGuide").focus();
 };
 
-GuiTVGuide.updateDisplayedItems = function() {
+TVGuide.updateDisplayedItems = function() {
 	//Create Table
 	var d = Support.tvGuideStartTime(this.guideStartTime);
 	var offset = File.getTVProperty("ClockOffset");
@@ -235,10 +236,10 @@ GuiTVGuide.updateDisplayedItems = function() {
 	var timeLineHeight = 80 + (this.programGrid.length * 104);
 	var timeLinePos = 355 + (Support.tvGuideOffsetMins() * 7.9);
 	htmlToAdd += "<div id='tvGuideCurrentTime' class='tvGuideCurrentTime' style='height:" + timeLineHeight + "px;left:" + timeLinePos + "px;'>";
-	document.getElementById("tvGuide").innerHTML = htmlToAdd;
+	Support.widgetPutInnerHTML("tvGuide", htmlToAdd);
 };
 
-GuiTVGuide.updateSelectedItems = function () {
+TVGuide.updateSelectedItems = function () {
 	//Check in case the defaults point to a channel line with no program data.
 	if (this.selectedRow == 0 && this.selectedColumn == 0 && this.programGrid[0].length == 0){
 		this.selectedColumn = -1;
@@ -335,13 +336,13 @@ GuiTVGuide.updateSelectedItems = function () {
 				}
 			}
 			document.getElementById("tvGuideProgramImage").style.backgroundImage = "url(" +programImage+ ")";
-			document.getElementById("tvGuideSubData").innerHTML = subdata;
-			document.getElementById("tvGuideOverview").innerHTML = overview;
+			Support.widgetPutInnerHTML("tvGuideSubData", subdata);
+			Support.widgetPutInnerHTML("tvGuideOverview", overview);
 		}
 	}
 };
 
-GuiTVGuide.getProgramFromId = function(programId){
+TVGuide.getProgramFromId = function(programId){
 	var program = null;
 	for (var programIndex = 0; programIndex < this.Programs.Items.length; programIndex++) {
 		if (this.Programs.Items[programIndex].Id == programId) {
@@ -351,13 +352,12 @@ GuiTVGuide.getProgramFromId = function(programId){
 	return program;
 };
 
-GuiTVGuide.keyDown = function() {
+TVGuide.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
 	if (document.getElementById("notifications").style.visibility == "") {
-		document.getElementById("notifications").style.visibility = "hidden";
-		document.getElementById("notificationText").innerHTML = "";
+		Notifications.delNotification();
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -433,7 +433,7 @@ GuiTVGuide.keyDown = function() {
 			break;
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
-			Support.updateURLHistory("GuiTVGuide",this.startParams[0],this.startParams[1],null,null,this.selectedRow,this.topChannel,null);
+			Support.updateURLHistory("TVGuide", this.startParams[0],this.startParams[1], null, null, this.selectedRow, this.topChannel, null);
 			MainMenu.requested("TVGuide", this.ItemData.Items[this.selectedRow].Id);
 			break;
 		case tvKey.KEY_EXIT:
@@ -443,17 +443,17 @@ GuiTVGuide.keyDown = function() {
 	}
 };
 
-GuiTVGuide.openMenu = function() {
+TVGuide.openMenu = function() {
 	if (this.selectedRow == -1) { //Banner menu
 		document.getElementById("bannerItem0").className = "bannerItem bannerItemPadding offWhite";
-		MainMenu.requested("TVGuide","bannerItem0","bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
+		MainMenu.requested("TVGuide", "bannerItem0","bannerItem bannerItemPadding highlight" + Main.highlightColour + "Text");
 	} else { //Channel column
 		document.getElementById(this.Channels.Items[this.selectedRow + this.topChannel].Id).className = "tvGuideChannelName tvGuideChannelNameBg";
 		MainMenu.requested("TVGuide",this.Channels.Items[this.selectedRow + this.topChannel].Id,"tvGuideChannelName highlight"+Main.highlightColour+"Background");
 	}
 };
 
-GuiTVGuide.processLeftKey = function() {
+TVGuide.processLeftKey = function() {
 	var nowTime = new Date();
 	if (this.selectedRow < 0) {
 		//Move left along the banner menu.
@@ -478,11 +478,11 @@ GuiTVGuide.processLeftKey = function() {
 		//Refocus the guide time.
 		var guideTime = new Date();
 		guideTime.setTime(this.guideStartTime.getTime() - 9000000); //move the clock back 2.5 hours.
-		GuiTVGuide.start("Guide",this.startParams[1],this.selectedRow,0,this.topChannel,guideTime);
+		TVGuide.start("Guide",this.startParams[1],this.selectedRow,0,this.topChannel,guideTime);
 	}
 };
 
-GuiTVGuide.processRightKey = function() {
+TVGuide.processRightKey = function() {
 	if (this.selectedRow < 0) {
 		this.selectedBannerItem++;
 		if (this.selectedBannerItem == this.bannerItems.length){
@@ -498,13 +498,13 @@ GuiTVGuide.processRightKey = function() {
 		//this.guideStartTime = guideTime;
 		//this.updateDisplayedItems();
 		//this.updateSelectedItems();
-		GuiTVGuide.start("Guide",this.startParams[1],this.selectedRow,0,this.topChannel,guideTime);
+		TVGuide.start("Guide",this.startParams[1],this.selectedRow,0,this.topChannel,guideTime);
 	} else {
 		//Nowhere to move right to.
 	}
 };
 
-GuiTVGuide.processUpKey = function() {
+TVGuide.processUpKey = function() {
 	if (this.selectedRow > 0) { //Move up a row.
 		while (this.selectedColumn > this.programGrid[this.selectedRow-1].length-1) {
 			this.selectedColumn--;
@@ -514,9 +514,9 @@ GuiTVGuide.processUpKey = function() {
 	} else if (this.topChannel > 0) { //Scroll up a page.
 		var newTopChannel = this.topChannel - 7;
 		if (this.selectedColumn == -1) {
-			GuiTVGuide.start("Guide",this.startParams[1],6,-1,newTopChannel,this.guideStartTime);
+			TVGuide.start("Guide",this.startParams[1],6,-1,newTopChannel,this.guideStartTime);
 		} else {
-			GuiTVGuide.start("Guide",this.startParams[1],6,0,newTopChannel,this.guideStartTime);
+			TVGuide.start("Guide",this.startParams[1],6,0,newTopChannel,this.guideStartTime);
 		}
 	} else { //Move up to the banner menu.
 		this.selectedRow--;
@@ -527,24 +527,24 @@ GuiTVGuide.processUpKey = function() {
 	}
 };
 
-GuiTVGuide.processChannelUpKey = function() {
+TVGuide.processChannelUpKey = function() {
 	if (this.topChannel > 0) { //Scroll up a page.
 		var newTopChannel = this.topChannel - 7;
 		if (this.selectedColumn == -1) {
-			GuiTVGuide.start("Guide",this.startParams[1],0,-1,newTopChannel,this.guideStartTime);
+			this.start("Guide",this.startParams[1], 0, -1, newTopChannel, this.guideStartTime);
 		} else {
-			GuiTVGuide.start("Guide",this.startParams[1],0,0,newTopChannel,this.guideStartTime);
+			this.start("Guide", this.startParams[1], 0, 0, newTopChannel, this.guideStartTime);
 		}
 	} else { // If we're already on the first page, jump to the top row.
 		if (this.selectedColumn == -1) {
-			GuiTVGuide.start("Guide",this.startParams[1],0,-1,0,this.guideStartTime);
+			this.start("Guide", this.startParams[1], 0, -1, 0, this.guideStartTime);
 		} else {
-			GuiTVGuide.start("Guide",this.startParams[1],0,0,0,this.guideStartTime);
+			TVGuide.start("Guide", this.startParams[1], 0, 0, 0, this.guideStartTime);
 		}
 	}
 };
 
-GuiTVGuide.processDownKey = function() {
+TVGuide.processDownKey = function() {
 	if (this.selectedRow < this.programGrid.length-1) { //Move down a row.
 		while (this.selectedColumn > this.programGrid[this.selectedRow+1].length-1) {
 			this.selectedColumn--;
@@ -554,20 +554,20 @@ GuiTVGuide.processDownKey = function() {
 	} else if (this.Channels.Items.length > this.topChannel + 7) { //Scroll down a page.
 		var newTopChannel = this.topChannel + 7;
 		if (this.selectedColumn == -1) {
-			GuiTVGuide.start("Guide",this.startParams[1],0,-1,newTopChannel,this.guideStartTime);
+			this.start("Guide", this.startParams[1], 0, -1, newTopChannel, this.guideStartTime);
 		} else {
-			GuiTVGuide.start("Guide",this.startParams[1],0,0,newTopChannel,this.guideStartTime);
+			this.start("Guide", this.startParams[1], 0, 0, newTopChannel, this.guideStartTime);
 		}
 	}
 };
 
-GuiTVGuide.processChannelDownKey = function() {
+TVGuide.processChannelDownKey = function() {
 	if (this.Channels.Items.length > this.topChannel + 7) { //Scroll down a page.
 		var newTopChannel = this.topChannel + 7;
 		if (this.selectedColumn == -1) {
-			GuiTVGuide.start("Guide",this.startParams[1],0,-1,newTopChannel,this.guideStartTime);
+			this.start("Guide", this.startParams[1], 0, -1, newTopChannel, this.guideStartTime);
 		} else {
-			GuiTVGuide.start("Guide",this.startParams[1],0,0,newTopChannel,this.guideStartTime);
+			this.start("Guide", this.startParams[1], 0, 0, newTopChannel, this.guideStartTime);
 		}
 	} else { // If we're already on the last page, jump to the bottom row.
 		this.selectedRow = this.Channels.Items.length % 8;
@@ -575,7 +575,7 @@ GuiTVGuide.processChannelDownKey = function() {
 	}
 };
 
-GuiTVGuide.processRecord = function () {
+TVGuide.processRecord = function () {
 	if (this.selectedRow >= 0 && this.selectedColumn >= 0) {
 		var programId = this.programGrid[this.selectedRow][this.selectedColumn][1];
 		var program = this.getProgramFromId(programId);
@@ -598,12 +598,12 @@ GuiTVGuide.processRecord = function () {
 	}
 };
 
-GuiTVGuide.getTimers = function() {
+TVGuide.getTimers = function() {
 	var url = Server.getServerAddr() + "/LiveTv/Timers";
 	return Server.getContent(url);
 };
 
-GuiTVGuide.getNewLiveTvTimerDefaults = function (options) {
+TVGuide.getNewLiveTvTimerDefaults = function (options) {
 
 	options = options || {};
 
@@ -612,7 +612,7 @@ GuiTVGuide.getNewLiveTvTimerDefaults = function (options) {
 	return Server.getContent(url);
 };
 
-GuiTVGuide.createLiveTvTimer = function (item) {
+TVGuide.createLiveTvTimer = function (item) {
 
 	if (!item) {
 		return;
@@ -624,11 +624,11 @@ GuiTVGuide.createLiveTvTimer = function (item) {
 	Support.loading(1250);
 	document.getElementById("noItems").focus();
 	setTimeout(function(){
-		GuiTVGuide.start("Guide",GuiTVGuide.startParams[1],GuiTVGuide.selectedRow,GuiTVGuide.selectedColumn,GuiTVGuide.topChannel,GuiTVGuide.guideStartTime);
+		TVGuide.start("Guide",TVGuide.startParams[1],TVGuide.selectedRow,TVGuide.selectedColumn,TVGuide.topChannel,TVGuide.guideStartTime);
 	}, 1250);
 };
 
-GuiTVGuide.createLiveTvSeriesTimer = function (item) {
+TVGuide.createLiveTvSeriesTimer = function (item) {
 	if (!item) {
 		return;
 	}
@@ -637,11 +637,11 @@ GuiTVGuide.createLiveTvSeriesTimer = function (item) {
 	Support.loading(1250);
 	document.getElementById("noItems").focus();
 	setTimeout(function(){
-		GuiTVGuide.start("Guide",GuiTVGuide.startParams[1],GuiTVGuide.selectedRow,GuiTVGuide.selectedColumn,GuiTVGuide.topChannel,GuiTVGuide.guideStartTime);
+		TVGuide.start("Guide",TVGuide.startParams[1],TVGuide.selectedRow,TVGuide.selectedColumn,TVGuide.topChannel,TVGuide.guideStartTime);
 	}, 1250);
 };
 
-GuiTVGuide.cancelLiveTvSeriesTimer = function (id) {
+TVGuide.cancelLiveTvSeriesTimer = function (id) {
 	if (!id) {
 		return;
 	}
@@ -652,11 +652,11 @@ GuiTVGuide.cancelLiveTvSeriesTimer = function (id) {
 	Support.loading(1250);
 	document.getElementById("noItems").focus();
 	setTimeout(function(){
-		GuiTVGuide.start("Guide",GuiTVGuide.startParams[1],GuiTVGuide.selectedRow,GuiTVGuide.selectedColumn,GuiTVGuide.topChannel,GuiTVGuide.guideStartTime);
+		TVGuide.start("Guide",TVGuide.startParams[1],TVGuide.selectedRow,TVGuide.selectedColumn,TVGuide.topChannel,TVGuide.guideStartTime);
 	}, 1250);
 };
 
-GuiTVGuide.cancelLiveTvTimer = function (id) {
+TVGuide.cancelLiveTvTimer = function (id) {
 	if (!id) {
 		return;
 	}
@@ -667,12 +667,12 @@ GuiTVGuide.cancelLiveTvTimer = function (id) {
 	Support.loading(1250);
 	document.getElementById("noItems").focus();
 	setTimeout(function(){
-		GuiTVGuide.start("Guide",GuiTVGuide.startParams[1],GuiTVGuide.selectedRow,GuiTVGuide.selectedColumn,GuiTVGuide.topChannel,GuiTVGuide.guideStartTime);
+		TVGuide.start("Guide",TVGuide.startParams[1],TVGuide.selectedRow,TVGuide.selectedColumn,TVGuide.topChannel,TVGuide.guideStartTime);
 	}, 1250);
 };
 
 
-GuiTVGuide.processSelectedItem = function () {
+TVGuide.processSelectedItem = function () {
 	if (this.selectedRow == -1) {
 		switch (this.bannerItems[this.selectedBannerItem]) {
 		case "Guide":
@@ -681,15 +681,15 @@ GuiTVGuide.processSelectedItem = function () {
 			var timeMsec = guideTime.getTime();
 			var startTime = timeMsec - 300000; //rewind the clock five minutes.
 			guideTime.setTime(startTime);
-			GuiTVGuide.start("Guide",url,0,0,0,guideTime);
+			TVGuide.start("Guide",url,0,0,0,guideTime);
 			break;
 		case "Channels":
-			Support.updateURLHistory("GuiTVGuide",null,null,null,null,null,null,false);
+			Support.updateURLHistory("TVGuide",null,null,null,null,null,null,false);
 			var url = Server.getCustomURL("/LiveTV/Channels?StartIndex=0&EnableFavoriteSorting=true&userId=" + Server.getUserID());
 			GuiDisplaySeries.start("Channels LiveTV",url,0,0);
 			break;
 		case "Recordings":
-			Support.updateURLHistory("GuiTVGuide",null,null,null,null,null,null,false);
+			Support.updateURLHistory("TVGuide",null,null,null,null,null,null,false);
 			var url = Server.getCustomURL("/LiveTV/Recordings?SortBy=StartDate&SortOrder=Descending&StartIndex=0&fields=SortName&UserId=" + Server.getUserID());
 			GuiDisplaySeries.start("Recordings LiveTV",url,0,0);
 			break;
@@ -699,15 +699,15 @@ GuiTVGuide.processSelectedItem = function () {
 	}
 };
 
-GuiTVGuide.playCurrentChannel = function () {
+TVGuide.playCurrentChannel = function () {
 	if (this.selectedRow >= 0) {
-		Support.updateURLHistory("GuiTVGuide",this.startParams[0],this.startParams[1],null,null,this.selectedRow,this.topChannel,null);
+		Support.updateURLHistory("TVGuide",this.startParams[0],this.startParams[1],null,null,this.selectedRow,this.topChannel,null);
 		var url = Server.getItemInfoURL(this.Channels.Items[this.selectedRow + this.topChannel].Id,"");
 		GuiPlayer.start("PLAY",url,0,page);
 	}
 };
 
-GuiTVGuide.returnFromMusicPlayer = function() {
+TVGuide.returnFromMusicPlayer = function() {
 	this.selectedRow = 0;
 	this.updateDisplayedItems();
 	this.updateselectedRows();

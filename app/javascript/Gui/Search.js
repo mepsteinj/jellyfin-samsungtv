@@ -1,4 +1,4 @@
-var GuiSearch = {
+var Search = {
 	ItemData : null,
 	startParams : [],
 	selectedItem : 0,
@@ -9,16 +9,16 @@ var GuiSearch = {
 	playItems : ["Play_","View_"]
 };
 
-GuiSearch.onFocus = function() {
+Search.onFocus = function() {
 	Helper.setControlButtons(null, null, null, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
 };
 
-GuiSearch.getMaxDisplay = function() {
+Search.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
 };
 
-GuiSearch.start = function(title, url) {
-	alert("Page Enter : GuiSearch");
+Search.start = function(title, url) {
+	alert("Page Enter : Search");
 
 	//Reset Properties
 	this.ItemData = null;
@@ -27,27 +27,27 @@ GuiSearch.start = function(title, url) {
 	this.startParams = [],
 
 	//Change Display
-	document.getElementById("pageContent").innerHTML = "<div id='title' class='EpisodesSeriesInfo'>Search</div><div class='searchPageInput'> \
+	Support.widgetPutInnerHTML("pageContent", "<div id='title' class='EpisodesSeriesInfo'>Search</div><div class='searchPageInput'> \
 		<form><input id='searchInput' type='text' size='50' value=''/></form> \
-		</div><div id='ResultsTitle' class='searchPageTitle'></div><div id=Results class='searchPageResults'></div>";
+		</div><div id='ResultsTitle' class='searchPageTitle'></div><div id=Results class='searchPageResults'></div>");
 
 	//Allows time for innerhtml to execute before creating ime
 	setTimeout(function () {
 		//Create IME
-		new GuiSearch_Input();
+		new SearchInput();
 
 		if (title !== undefined && url !== undefined && title != null && url != null) {
-			GuiSearch.ItemData = Server.getContent(url);
-			if (GuiSearch.ItemData == null) { return; }
+			this.ItemData = Server.getContent(url);
+			if (Search.ItemData == null) { return; }
 
-			document.getElementById("ResultsTitle").innerHTML = title;
+      Support.widgetPutInnerHTML("resultsTitle", title);
 
-			if (GuiSearch.ItemData.SearchHints.length > 0) {
-				GuiSearch.startParams[0] = title;
-				GuiSearch.startParams[1] = url;
-				GuiSearch.updateDisplayedItems();
-				GuiSearch.updateSelectedItems();
-				document.getElementById("GuiSearch").focus();
+			if (Search.ItemData.SearchHints.length > 0) {
+				Search.startParams[0] = title;
+				Search.startParams[1] = url;
+				Search.updateDisplayedItems();
+				ki8.updateSelectedItems();
+				document.getElementById("evnSearch").focus();
 			} else {
 				//Must turn off as cannot catch keys during IME!
 				Support.screensaverOff();
@@ -61,51 +61,51 @@ GuiSearch.start = function(title, url) {
 	}, 500);
 };
 
-GuiSearch.updateDisplayedItems = function() {
+Search.updateDisplayedItems = function() {
 	htmlToAdd = "<table><th style='width:66px'></th><th style='width:72px'></th><th style='width:600px'></th><th style='width:100px'></th>";
 	var epName = "";
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.SearchHints.length); index++){
 		epName = (this.ItemData.SearchHints[index].Type == "Episode") ? Support.getNameFormat(null,this.ItemData.SearchHints[index].ParentIndexNumber,null,this.ItemData.SearchHints[index].IndexNumber) + " - " + this.ItemData.SearchHints[index].Name : this.ItemData.SearchHints[index].Name;
-		htmlToAdd += "<tr><td id=Play_"+this.ItemData.SearchHints[index].ItemId+" class='guiMusic_TableTd'>Play</td><td id=View_"+this.ItemData.SearchHints[index].ItemId+" class='guiMusic_TableTd'>View</td>" +
-				"<td id="+ this.ItemData.SearchHints[index].ItemId +" class='guiMusic_TableTd'>" + epName + "</td><td id=Type_"+ this.ItemData.SearchHints[index].ItemId +" class='guiMusic_TableTd'>" + this.ItemData.SearchHints[index].Type + "</td></tr>";
+		htmlToAdd += "<tr><td id=Play_"+this.ItemData.SearchHints[index].ItemId+" class='musicTableTd'>Play</td><td id=view_"+this.ItemData.SearchHints[index].ItemId+" class='musicTableTd'>View</td>" +
+				"<td id="+ this.ItemData.SearchHints[index].ItemId +" class='musicTableTd'>" + epName + "</td><td id=type_"+ this.ItemData.SearchHints[index].ItemId +" class='musicTableTd'>" + this.ItemData.SearchHints[index].Type + "</td></tr>";
 	}
-	document.getElementById("Results").innerHTML = htmlToAdd + "</table>";
+	Support.widgetPutInnerHTML("results", htmlToAdd + "</table>");
 };
 
 //Function sets CSS Properties so show which user is selected
-GuiSearch.updateSelectedItems = function () {
+Search.updateSelectedItems = function () {
 	//Highlight the selected list item.
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.SearchHints.length); index++){
 		if (index == this.selectedItem) {
 			for (var index2 = 0; index2 < this.playItems.length; index2++) {
 				if (index2 == this.selectedItem2) {
-					document.getElementById(this.playItems[index2]+this.ItemData.SearchHints[index].ItemId).className = "guiMusic_TableTd highlight"+Main.highlightColour+"Background";
+					document.getElementById(this.playItems[index2]+this.ItemData.SearchHints[index].ItemId).className = "musicTableTd highlight" + Main.highlightColour + "Background";
 				} else {
-					document.getElementById(this.playItems[index2]+this.ItemData.SearchHints[index].ItemId).className = "guiMusic_TableTd";
+					document.getElementById(this.playItems[index2] + this.ItemData.SearchHints[index].ItemId).className = "musicTableTd";
 				}
 			}
 		} else {
-			document.getElementById(this.ItemData.SearchHints[index].ItemId).className = "guiMusic_TableTd";
+			document.getElementById(this.ItemData.SearchHints[index].ItemId).className = "musicTableTd";
 			for (var index2 = 0; index2 < this.playItems.length; index2++) {
-				document.getElementById(this.playItems[index2]+this.ItemData.SearchHints[index].ItemId).className = "guiMusic_TableTd";
+				document.getElementById(this.playItems[index2]+this.ItemData.SearchHints[index].ItemId).className = "musicTableTd";
 			}
 		}
 	}
 
 	//Set Counter to be album count or x/3 for top part
-	document.getElementById("counter").innerHTML = (this.selectedItem + 1) + "/" + this.ItemData.SearchHints.length;
+	Support.widgetPutInnerHTML("counter", (this.selectedItem + 1) + "/" + this.ItemData.SearchHints.length);
 };
 
-GuiSearch.processSelectedItem = function() {
-	Support.updateURLHistory("GuiSearch",this.startParams[0],this.startParams[1],null,null,0,0,null);
+Search.processSelectedItem = function() {
+	Support.updateURLHistory("Search", this.startParams[0], this.startParams[1], null, null, 0, 0, null);
 	switch (this.ItemData.SearchHints[this.selectedItem].Type) {
 	case "Episode":
 	case "Movie":
 		if (this.playItems[this.selectedItem2] == "Play_") {
 			//Play URL
 			var url = Server.getItemInfoURL(this.ItemData.SearchHints[this.selectedItem].ItemId, "&ExcludeLocationTypes=Virtual");
-			GuiPlayer.start("PLAY", url, 0, "GuiSearch");
-		} else if (this.playItems[this.selectedItem2] == "View_") {
+			Player.start("PLAY", url, 0, "Search");
+		} else if (this.playItems[this.selectedItem2] == "view_") {
 			//Display Item Page
 			var url = Server.getItemInfoURL(this.ItemData.SearchHints[this.selectedItem].ItemId, null);
 			ItemDetails.start(this.ItemData.SearchHints[this.selectedItem].Name, url, 0);
@@ -115,11 +115,11 @@ GuiSearch.processSelectedItem = function() {
 		if (this.playItems[this.selectedItem2] == "Play_") {
 			//Play URL
 			var url= Server.getChildItemsURL(this.ItemData.SearchHints[this.selectedItem].ItemId,"&ExcludeLocationTypes=Virtual&IncludeItemTypes=Episode&Recursive=true&SortBy=SortName&SortOrder=Ascending&Fields=ParentId,SortName,MediaSources");
-			GuiPlayer.start("PlayAll",url,0,"GuiSearch");
-		} else if (this.playItems[this.selectedItem2] == "View_") {
+			Player.start("PlayAll",url,0,"Search");
+		} else if (this.playItems[this.selectedItem2] == "view_") {
 			//Display Item Page
-			var url = Server.getItemInfoURL(this.ItemData.SearchHints[this.selectedItem].ItemId,null);
-			GuiTVShow.start(this.ItemData.SearchHints[this.selectedItem].Name,url,0,0);
+			var url = Server.getItemInfoURL(this.ItemData.SearchHints[this.selectedItem].ItemId, null);
+			TVShow.start(this.ItemData.SearchHints[this.selectedItem].Name, url, 0, 0);
 		}
 		break;
 	default:
@@ -132,7 +132,7 @@ GuiSearch.processSelectedItem = function() {
 //Input method for entering user password                     //
 //////////////////////////////////////////////////////////////////
 
-var GuiSearch_Input  = function() {
+var SearchInput  = function() {
 var imeReady = function(imeObject) {
 	installFocusKeyCallbacks();
 };
@@ -147,48 +147,48 @@ var installFocusKeyCallbacks = function () {
 		if (searchString != "") {
 			//Load Data
 			var url = Server.getSearchURL(searchString);
-			GuiSearch.ItemData = Server.getContent(url);
-			if (GuiSearch.ItemData == null) { return; }
-
-			document.getElementById("ResultsTitle").innerHTML = GuiSearch.ItemData.TotalRecordCount + " Results for: " + searchString;
+			Search.ItemData = Server.getContent(url);
+			if (Search.ItemData == null) { return; }
+      
+      Support.widgetPutInnerHTML("resultsTitle", Search.ItemData.TotalRecordCount + " Results for: " + searchString);
 			ime.setString("");
 
-			if (GuiSearch.ItemData.SearchHints.length > 0) {
+			if (Search.ItemData.SearchHints.length > 0) {
 
 				//Turn On Screensaver
 				Support.screensaverOn();
 				Support.screensaver();
 
-				GuiSearch.startParams[0] = document.getElementById("ResultsTitle").innerHTML;
-				GuiSearch.startParams[1] = url;
-				GuiSearch.selectedItem = 0;
-				GuiSearch.updateDisplayedItems();
-				GuiSearch.updateSelectedItems();
-				document.getElementById("GuiSearch").focus();
+				Search.startParams[0] = document.getElementById("resultsTitle").innerHTML;
+				Search.startParams[1] = url;
+				Search.selectedItem = 0;
+				Search.updateDisplayedItems();
+				Search.updateSelectedItems();
+				document.getElementById("evnSearch").focus();
 			}
 		}
 	});
 
 	ime.setKeyFunc(tvKey.KEY_DOWN, function (keyCode) {
-		alert ("Down Key IME: " + GuiSearch.ItemData.TotalRecordCount);
-		if (GuiSearch.ItemData.TotalRecordCount > 0) {
+		alert ("Down Key IME: " + Search.ItemData.TotalRecordCount);
+		if (Search.ItemData.TotalRecordCount > 0) {
 			//Turn On Screensaver
 			Support.screensaverOn();
 			Support.screensaver();
 
-			GuiSearch.selectedItem = 0;
-			GuiSearch.selectedItem2 = 0;
-			GuiSearch.updateSelectedItems();
+			Search.selectedItem = 0;
+			Search.selectedItem2 = 0;
+			Search.updateSelectedItems();
 
 			setTimeout(function () {
-				document.getElementById("GuiSearch").focus();
+				document.getElementById("evnSearch").focus();
 			},500);
 
 		}
 	});
 
 	ime.setKeyFunc(tvKey.KEY_INFO, function (keyCode) {
-		Helper.toggleHelp("GuiSearch");
+		Helper.toggleHelp("Search");
 	});
 
 	ime.setKeyFunc(tvKey.KEY_RETURN, function (keyCode) {
@@ -205,13 +205,12 @@ var installFocusKeyCallbacks = function () {
 };
 
 
-GuiSearch.keyDown = function() {
+Search.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
 	if (document.getElementById("notifications").style.visibility == "") {
-		document.getElementById("notifications").style.visibility = "hidden";
-		document.getElementById("notificationText").innerHTML = "";
+		Notifications.delNotification();
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -225,7 +224,7 @@ GuiSearch.keyDown = function() {
 		//Update Main.js isScreensaverRunning - Sets to True
 		Main.setIsScreensaverRunning();
 		//End Screensaver
-		GuiImagePlayerScreensaver.stopScreensaver();
+		ImagePlayerScreensaver.stopScreensaver();
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
@@ -269,7 +268,7 @@ GuiSearch.keyDown = function() {
 			//Favourites - May not be needed on this page
 			break;
 		case tvKey.KEY_BLUE:
-			MusicPlayer.showMusicPlayer("Search", this.playItems[this.selectedItem2]+this.ItemData.SearchHints[this.selectedItem].ItemId, "guiMusic_TableTd highlight"+Main.highlightColour+"Background");
+			MusicPlayer.showMusicPlayer("Search", this.playItems[this.selectedItem2]+this.ItemData.SearchHints[this.selectedItem].ItemId, "musicTableTd highlight" + Main.highlightColour+"Background");
 			break;
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY");
@@ -278,22 +277,22 @@ GuiSearch.keyDown = function() {
 	}
 };
 
-GuiSearch.openMenu = function(hasData) {
+Search.openMenu = function(hasData) {
 	if (hasData) {
-		Support.updateURLHistory("GuiSearch",this.startParams[0],this.startParams[1],null,null,0,0,null);
+		Support.updateURLHistory("Search", this.startParams[0], this.startParams[1], null, null, 0, 0, null);
 
-		for (var index = 0; index<this.playItems.length;index++) {
-			document.getElementById(this.playItems[index]+this.ItemData.SearchHints[this.selectedItem].ItemId).className = "guiMusic_TableTd";
+		for (var index = 0; index < this.playItems.length; index++) {
+			document.getElementById(this.playItems[index] + this.ItemData.SearchHints[this.selectedItem].ItemId).className = "musicTableTd";
 		}
 		this.selectedItem2 = 0;
-		MainMenu.requested("Search",this.playItems[this.selectedItem2]+this.ItemData.SearchHints[this.selectedItem].ItemId,"guiMusic_TableTd highlight"+Main.highlightColour+"Background");
+		MainMenu.requested("Search",this.playItems[this.selectedItem2]+this.ItemData.SearchHints[this.selectedItem].ItemId,"musicTableTd highlight" + Main.highlightColour + "Background");
 	} else {
-		Support.updateURLHistory("GuiSearch",null,null,null,null,null,null,null);
+		Support.updateURLHistory("Search", null, null, null, null, null, null, null);
 		MainMenu.requested("Search","searchInput");
 	}
 };
 
-GuiSearch.processUpKey = function() {
+Search.processUpKey = function() {
 	this.selectedItem--;
 	if (this.selectedItem < 0) {
 		//Reset and focus on IME
@@ -318,7 +317,7 @@ GuiSearch.processUpKey = function() {
 
 };
 
-GuiSearch.processDownKey = function() {
+Search.processDownKey = function() {
 	this.selectedItem++;
 	if (this.selectedItem >= this.ItemData.SearchHints.length) {
 		this.selectedItem--;
@@ -335,7 +334,7 @@ GuiSearch.processDownKey = function() {
 	this.updateSelectedItems();
 };
 
-GuiSearch.processLeftKey = function() {
+Search.processLeftKey = function() {
 	this.selectedItem2--;
 	if (this.selectedItem2 == -1) {
 		this.selectedItem2 = 0;
@@ -345,7 +344,7 @@ GuiSearch.processLeftKey = function() {
 	}
 };
 
-GuiSearch.processRightKey = function() {
+Search.processRightKey = function() {
 	this.selectedItem2++;
 	if (this.selectedItem2 > this.playItems.length-1) {
 		this.selectedItem2--;
@@ -354,7 +353,7 @@ GuiSearch.processRightKey = function() {
 	}
 };
 
-GuiSearch.processChannelUpKey = function() {
+Search.processChannelUpKey = function() {
 	if (this.selectedItem > -1) {
 		this.selectedItem = this.selectedItem - this.getMaxDisplay();
 		if (this.selectedItem < 0) {
@@ -373,7 +372,7 @@ GuiSearch.processChannelUpKey = function() {
 	}
 };
 
-GuiSearch.processChannelDownKey = function() {
+Search.processChannelDownKey = function() {
 	if (this.selectedItem > -1) {
 		this.selectedItem = this.selectedItem + this.getMaxDisplay();
 		if (this.selectedItem >= this.ItemData.SearchHints.length) {

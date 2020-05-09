@@ -9,7 +9,7 @@ UsersManual.getRememberPasswordWord = function() {
 	return res;
 };
 
-UsersManual.start = function() {
+UsersManual.start = function(userName) {
 	alert("Page Enter : UsersManual");
 	Helper.setControlButtons(null, null, null, null, Main.messages.LabButtonReturn);
 	//Reset Properties

@@ -1,4 +1,4 @@
-var GuiMusicArtist = {
+var MusicArtist = {
 	ItemData : null,
 	selectedItem : 0,
 	topLeftItem : 0,
@@ -18,23 +18,23 @@ var GuiMusicArtist = {
 	startParams : []
 };
 
-GuiMusicArtist.onFocus = function() {
+MusicArtist.onFocus = function() {
 	Helper.setControlButtons(null, null, null, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
 };
 
-GuiMusicArtist.getMaxDisplay = function() {
+MusicArtist.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
 };
 
-GuiMusicArtist.getMaxDisplay2 = function() {
+MusicArtist.getMaxDisplay2 = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROW2COUNT;
 };
 
-GuiMusicArtist.start = function(title1, url1, selectedItem, topLeftItem) {
-	alert("Page Enter : GuiMusicArtist");
+MusicArtist.start = function(title1, url1, selectedItem, topLeftItem) {
+	alert("Page Enter : MusicArtist");
 
 	//Save Start Vars
-	Support.pageLoadTimes("GuiMusicArtist","Start",true);
+	Support.pageLoadTimes("MusicArtist","Start",true);
 	this.startParams = [title1,url1];
 
 	//Reset Vars
@@ -50,7 +50,7 @@ GuiMusicArtist.start = function(title1, url1, selectedItem, topLeftItem) {
 	this.ItemData = Server.getContent(url1 + "&Limit="+File.getTVProperty("ItemPaging"));
 	if (this.ItemData == null) { Support.processReturnURLHistory(); }
 	this.totalRecordCount = this.ItemData.TotalRecordCount;
-	Support.pageLoadTimes("GuiMusicArtist","RetrievedServerData",false);
+	Support.pageLoadTimes("MusicArtist","RetrievedServerData",false);
 
 	//Create pageContent
 	var htmlToAdd = "<div id=bannerSelection class='bannerMenu'></div>";
@@ -59,7 +59,7 @@ GuiMusicArtist.start = function(title1, url1, selectedItem, topLeftItem) {
 	htmlToAdd += "</div>";
 	htmlToAdd += "<div id=lowerTitle class='albumArtistLowerTitle offWhite'></div>";
 	htmlToAdd += "<div id=lowerContent class='albumArtistLowerContent'></div>";
-	document.getElementById("pageContent").innerHTML = htmlToAdd;
+	Support.widgetPutInnerHTML("pageContent", htmlToAdd);
 
 	//Set banner Styling
 	document.getElementById("bannerSelection").style.paddingTop="25px";
@@ -82,26 +82,29 @@ GuiMusicArtist.start = function(title1, url1, selectedItem, topLeftItem) {
 		}
 
 		//Set Banner Items
+		var bannerSelection = "";
 		for (var index = 0; index < this.bannerItems.length; index++) {
 			if (index != this.bannerItems.length-1) {
-				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem bannerItemPadding'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";
+				bannerSelection += "<div id='bannerItem" + index + "' class='bannerItem bannerItemPadding'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";
 			} else {
-				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";
+				bannerSelection += "<div id='bannerItem" + index + "' class='bannerItem'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";
 			}
 		}
+		Support.widgetPutInnerHTML("bannerSelection", bannerSelection);
 
 		this.selectedBannerItem = -1;
 		this.updateSelectedBannerItems();
 		this.selectedBannerItem = 0;
 
 		//Set Focus for Key Events
-		document.getElementById("GuiMusicArtist").focus();
-		Support.pageLoadTimes("GuiMusicArtist","UserControl",false);
+		document.getElementById("evnMusicArtist").focus();
+		Support.pageLoadTimes("MusicArtist", "UserControl",false);
 	} else {
 		//Set message to user
-		document.getElementById("counter").innerHTML = "";
+		Support.widgetPutInnerHTML("counter", "");
 		document.getElementById("content").style.fontSize="40px";
-		document.getElementById("content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid<br>Press return to get back to the previous screen";
+		
+		Support.widgetPutInnerHTML("content", "Huh.. Looks like I have no content to show you in this view I'm afraid<br>Press return to get back to the previous screen");
 
 		//Set Background
 		Support.fadeImage("images/bg1.jpg");
@@ -114,7 +117,7 @@ GuiMusicArtist.start = function(title1, url1, selectedItem, topLeftItem) {
 //      TOP ITEMS HANDLERS
 //---------------------------------------------------------------------------------------------------
 
-GuiMusicArtist.updateDisplayedItems = function() {
+MusicArtist.updateDisplayedItems = function() {
 
 	if (this.topLeftItem + this.getMaxDisplay() > this.ItemData.Items.length) {
 		if (this.totalRecordCount > this.ItemData.Items.length) {
@@ -127,7 +130,7 @@ GuiMusicArtist.updateDisplayedItems = function() {
 };
 
 //Function sets CSS Properties so show which user is selected
-GuiMusicArtist.updateSelectedItems = function (bypassCounter) {
+MusicArtist.updateSelectedItems = function (bypassCounter) {
 	Support.updateSelectedNEW(this.ItemData.Items, this.selectedItem, this.topLeftItem,
 			Math.min(this.topLeftItem + this.getMaxDisplay(), this.ItemData.Items.length), "music selected", "music", this.divprepend1, bypassCounter, this.totalRecordCount);
     var url2 = ""; //WARN IGNORY
@@ -135,7 +138,7 @@ GuiMusicArtist.updateSelectedItems = function (bypassCounter) {
 	if (this.selectedItem != -1) {
 
 		//Set Title2
-		document.getElementById("lowerTitle").innerHTML = "Albums by " + this.ItemData.Items[this.selectedItem].Name;
+		Support.widgetPutInnerHTML("lowerTitle", "Albums by " + this.ItemData.Items[this.selectedItem].Name);
 
 		//Load Data		
 		artist = this.ItemData.Items[this.selectedItem].Name.replace(/ /g, '+');
@@ -158,29 +161,29 @@ GuiMusicArtist.updateSelectedItems = function (bypassCounter) {
 
 		//Blocking code to skip getting data for items where the user has just gone past it
 		this.timeout = setTimeout(function(){
-			if (GuiMusicArtist.selectedItem == this.selectedItem) {
-				GuiMusicArtist.ItemData2 = Server.getContent(url2);
-				if (GuiMusicArtist.ItemData2 == null) { return; }
+			if (MusicArtist.selectedItem == this.selectedItem) {
+				MusicArtist.ItemData2 = Server.getContent(url2);
+				if (MusicArtist.ItemData2 == null) { return; }
 
 				//Display first XX series
-				GuiMusicArtist.updateDisplayedItems2();
+				MusicArtist.updateDisplayedItems2();
 
 				//Update Selected Collection CSS
-				GuiMusicArtist.updateSelectedItems2(true);
+				MusicArtist.updateSelectedItems2(true);
 			}
 		}, 500);
 
 		//Background Image
 		var currentSelectedItem = this.selectedItem;
 		setTimeout(function(){
-			if (GuiMusicArtist.selectedItem == currentSelectedItem) {
+			if (MusicArtist.selectedItem == currentSelectedItem) {
 					//A movie.
-					if (GuiMusicArtist.ItemData.Items[currentSelectedItem].BackdropImageTags.length > 0) {
-						var imgsrc = Server.getBackgroundImageURL(GuiMusicArtist.ItemData.Items[currentSelectedItem].Id,"Backdrop",Main.backdropWidth,Main.backdropHeight,0,false,0,GuiMusicArtist.ItemData.Items[currentSelectedItem].BackdropImageTags.length);
+					if (MusicArtist.ItemData.Items[currentSelectedItem].BackdropImageTags.length > 0) {
+						var imgsrc = Server.getBackgroundImageURL(MusicArtist.ItemData.Items[currentSelectedItem].Id,"Backdrop",Main.backdropWidth,Main.backdropHeight,0,false,0,MusicArtist.ItemData.Items[currentSelectedItem].BackdropImageTags.length);
 						Support.fadeImage(imgsrc);
 					//A music album.
-					} else if (GuiMusicArtist.ItemData.Items[currentSelectedItem].ParentBackdropImageTags) {
-						var imgsrc = Server.getBackgroundImageURL(GuiMusicArtist.ItemData.Items[currentSelectedItem].ParentBackdropItemId,"Backdrop",Main.backdropWidth,Main.backdropHeight,0,false,0,GuiMusicArtist.ItemData.Items[currentSelectedItem].ParentBackdropImageTags.length);
+					} else if (MusicArtist.ItemData.Items[currentSelectedItem].ParentBackdropImageTags) {
+						var imgsrc = Server.getBackgroundImageURL(MusicArtist.ItemData.Items[currentSelectedItem].ParentBackdropItemId,"Backdrop",Main.backdropWidth,Main.backdropHeight,0,false,0,MusicArtist.ItemData.Items[currentSelectedItem].ParentBackdropImageTags.length);
 						Support.fadeImage(imgsrc);
 					}
 			}
@@ -188,13 +191,12 @@ GuiMusicArtist.updateSelectedItems = function (bypassCounter) {
 	}
 };
 
-GuiMusicArtist.keyDown = function() {
+MusicArtist.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
 	if (document.getElementById("notifications").style.visibility == "") {
-		document.getElementById("notifications").style.visibility = "hidden";
-		document.getElementById("notificationText").innerHTML = "";
+		Notifications.delNotification();
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -208,7 +210,7 @@ GuiMusicArtist.keyDown = function() {
 		//Update Main.js isScreensaverRunning - Sets to True
 		Main.setIsScreensaverRunning();
 		//End Screensaver
-		GuiImagePlayerScreensaver.stopScreensaver();
+		ImagePlayerScreensaver.stopScreensaver();
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
@@ -273,7 +275,7 @@ GuiMusicArtist.keyDown = function() {
 	}
 };
 
-GuiMusicArtist.openMenu = function() {
+MusicArtist.openMenu = function() {
 	if (this.selectedItem == -1) {
 		if (this.selectedBannerItem == -1) {
 			document.getElementById("bannerItem0").class = "bannerItem bannerItemPadding";
@@ -281,11 +283,11 @@ GuiMusicArtist.openMenu = function() {
 		this.selectedItem = 0;
 		this.topLeftItem = 0;
 	}
-		Support.updateURLHistory("GuiMusicArtist",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,true);
+		Support.updateURLHistory("MusicArtist",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,true);
 		MainMenu.requested("MusicArtist",this.divprepend1 + this.ItemData.Items[this.selectedItem].Id);
 };
 
-GuiMusicArtist.processTopMenuLeftKey = function() {
+MusicArtist.processTopMenuLeftKey = function() {
 	if (this.selectedItem == -1) {
 		this.selectedBannerItem--;
 		if (this.selectedBannerItem == -1) { //Going left from the end of the top menu.
@@ -311,7 +313,7 @@ GuiMusicArtist.processTopMenuLeftKey = function() {
 	}
 };
 
-GuiMusicArtist.processTopMenuRightKey = function() {
+MusicArtist.processTopMenuRightKey = function() {
 	if (this.selectedItem == -1) {
 		this.selectedBannerItem++;
 		if (this.selectedBannerItem >= this.bannerItems.length) {
@@ -341,7 +343,7 @@ GuiMusicArtist.processTopMenuRightKey = function() {
 	}
 };
 
-GuiMusicArtist.processTopMenuUpKey = function() {
+MusicArtist.processTopMenuUpKey = function() {
 	this.selectedItem = this.selectedItem - this.MAXCOLUMNCOUNT;
 	if (this.selectedItem < 0) {
 		this.selectedBannerItem = 0;
@@ -364,7 +366,7 @@ GuiMusicArtist.processTopMenuUpKey = function() {
 	}
 };
 
-GuiMusicArtist.processTopMenuDownKey = function() {
+MusicArtist.processTopMenuDownKey = function() {
 	if (this.selectedItem == -1) {
 		this.selectedItem = 0;
 		this.selectedBannerItem = -1;
@@ -397,7 +399,7 @@ GuiMusicArtist.processTopMenuDownKey = function() {
 	this.updateSelectedItems();
 };
 
-GuiMusicArtist.processTopMenuEnterKey = function() {
+MusicArtist.processTopMenuEnterKey = function() {
 	alert ("TopMenuEnterKey");
 	if (this.selectedItem == -1) {
 		Support.enterMusicPage(this.bannerItems[this.selectedBannerItem]);
@@ -411,7 +413,7 @@ GuiMusicArtist.processTopMenuEnterKey = function() {
 			this.selectedItem = rememberSelectedItem;
 
 			//Set Focus
-			document.getElementById("GuiMusicArtistBottom").focus();
+			document.getElementById("evnMusicArtistBottom").focus();
 			//Update Selected
 			this.selectedItem2 = 0;
 			this.updateSelectedItems2(false);
@@ -422,24 +424,23 @@ GuiMusicArtist.processTopMenuEnterKey = function() {
 //---------------------------------------------------------------------------------------------------
 //      BOTTOM ITEMS HANDLERS
 //---------------------------------------------------------------------------------------------------
-GuiMusicArtist.updateDisplayedItems2 = function() {
+MusicArtist.updateDisplayedItems2 = function() {
 	Support.updateDisplayedItems(this.ItemData2.Items,this.selectedItem2,this.topLeftItem2,
 			Math.min(this.topLeftItem2 + this.getMaxDisplay2(),this.ItemData2.Items.length),"lowerContent",this.divprepend2,this.isResume2);
 };
 
 //Function sets CSS Properties so show which user is selected
-GuiMusicArtist.updateSelectedItems2 = function (bypassCounter) {
+MusicArtist.updateSelectedItems2 = function (bypassCounter) {
 	Support.updateSelectedNEW(this.ItemData2.Items, this.selectedItem2, this.topLeftItem2,
 			Math.min(this.topLeftItem2 + this.getMaxDisplay2(), this.ItemData2.Items.length), "music selected", "music", this.divprepend2, bypassCounter);
 };
 
-GuiMusicArtist.bottomKeyDown = function() {
+MusicArtist.bottomKeyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
 	if (document.getElementById("notifications").style.visibility == "") {
-		document.getElementById("notifications").style.visibility = "hidden";
-		document.getElementById("notificationText").innerHTML = "";
+		Notifications.delNotification();
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -453,7 +454,7 @@ GuiMusicArtist.bottomKeyDown = function() {
 		//Update Main.js isScreensaverRunning - Sets to True
 		Main.setIsScreensaverRunning();
 		//End Screensaver
-		GuiImagePlayerScreensaver.stopScreensaver();
+		ImagePlayerScreensaver.stopScreensaver();
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
@@ -465,7 +466,7 @@ GuiMusicArtist.bottomKeyDown = function() {
 			if (this.selectedItem2 == -1) {
 				this.selectedItem2 = 0; //Going left from bottom items row.
 				//Open the menu
-				Support.updateURLHistory("GuiMusicArtist",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,false);
+				Support.updateURLHistory("MusicArtist",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,false);
 				MainMenu.requested("MusicArtistBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id);
 
 			} else {
@@ -499,7 +500,7 @@ GuiMusicArtist.bottomKeyDown = function() {
 			this.topLeftItem2 = 0;
 
 			//Set Focus
-			document.getElementById("GuiMusicArtist").focus();
+			document.getElementById("evnMusicArtist").focus();
 			this.updateSelectedItems(false);
 			break;
 		case tvKey.KEY_ENTER:
@@ -539,7 +540,7 @@ GuiMusicArtist.bottomKeyDown = function() {
 			this.updateSelectedItems2(true);
 
 			//Set Focus
-			document.getElementById("GuiMusicArtist").focus();
+			document.getElementById("evnMusicArtist").focus();
 			this.updateSelectedItems(false);
 			break;
 		case tvKey.KEY_YELLOW:
@@ -557,7 +558,7 @@ GuiMusicArtist.bottomKeyDown = function() {
 
 //--------------------------------------------------------------------------------------------------------
 
-GuiMusicArtist.updateSelectedBannerItems = function() {
+MusicArtist.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.bannerItems.length; index++) {
 		if (index == this.selectedBannerItem) {
 			if (index != this.bannerItems.length-1) {
@@ -583,16 +584,16 @@ GuiMusicArtist.updateSelectedBannerItems = function() {
 	}
 };
 
-GuiMusicArtist.processSelectedItem = function () {
-	Support.updateURLHistory("GuiMusicArtist",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,false);
+MusicArtist.processSelectedItem = function () {
+	Support.updateURLHistory("MusicArtist",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,false);
 	var url = Server.getChildItemsURL(this.ItemData2.Items[this.selectedItem2].Id,"&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Audio&Recursive=true&CollapseBoxSetItems=false");
-	GuiMusic.start(this.ItemData2.Items[this.selectedItem2].Name,url,this.ItemData2.Items[this.selectedItem2].Type);
+	Music.start(this.ItemData2.Items[this.selectedItem2].Name,url,this.ItemData2.Items[this.selectedItem2].Type);
 };
 
-GuiMusicArtist.playSelectedItem = function (array,selected) {
+MusicArtist.playSelectedItem = function (array,selected) {
 };
 
-GuiMusicArtist.processIndexing = function() {
+MusicArtist.processIndexing = function() {
 	var indexPos = this.ItemIndexData[1];
 
 	this.indexSeekPos++;
@@ -608,12 +609,12 @@ GuiMusicArtist.processIndexing = function() {
 	this.updateSelectedItems();
 };
 
-GuiMusicArtist.loadMoreItems = function() {
+MusicArtist.loadMoreItems = function() {
 	if (this.totalRecordCount > this.ItemData.Items.length) {
-		Support.pageLoadTimes("GuiMusicArtist", "GetRemainingItems", false);
+		Support.pageLoadTimes("MusicArtist", "GetRemainingItems", false);
 
 		//Show Loading Div
-		document.getElementById("guiPlayerLoading").style.visibility = "";
+		document.getElementById("playerLoading").style.visibility = "";
 
 		//Remove User Control
 		document.getElementById("noKeyInput").focus();
@@ -622,26 +623,26 @@ GuiMusicArtist.loadMoreItems = function() {
 		var originalLength = this.ItemData.Items.length;
 		var ItemDataRemaining = Server.getContent(this.startParams[1] + "&Limit="+File.getTVProperty("ItemPaging") + "&StartIndex=" + originalLength);
 		if (ItemDataRemaining == null) { return; }
-		Support.pageLoadTimes("GuiMusicArtist","GotRemainingItems",false);
+		Support.pageLoadTimes("MusicArtist","GotRemainingItems",false);
 
 		for (var index = 0; index < ItemDataRemaining.Items.length; index++) {
 			this.ItemData.Items[index+originalLength] = ItemDataRemaining.Items[index];
 		}
-		document.getElementById("counter").innerHTML = (this.selectedItem + 1) + "/" + this.ItemData.Items.length;
+		Support.widgetPutInnerHTML("counter", (this.selectedItem + 1) + "/" + this.ItemData.Items.length);
 
 		//Reprocess Indexing Algorithm
 
 		//Hide Loading Div
-		document.getElementById("guiPlayerLoading").style.visibility = "hidden";
+		document.getElementById("playerLoading").style.visibility = "hidden";
 
 		//Pass back Control
-		document.getElementById("GuiMusicArtist").focus();
+		document.getElementById("MusicArtist").focus();
 
-		Support.pageLoadTimes("GuiMusicArtist", "AddedRemainingItems",false);
+		Support.pageLoadTimes("MusicArtist", "AddedRemainingItems",false);
 	}
 };
 
-GuiMusicArtist.returnFromMusicPlayer = function() {
+MusicArtist.returnFromMusicPlayer = function() {
 	this.selectedItem = 0;
 	this.updateDisplayedItems();
 	this.updateSelectedItems();

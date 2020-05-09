@@ -1,38 +1,38 @@
-var GuiContributors = {
+var Contributors = {
 	MainDevs : ["ChessDragon136","cmcg"],
 	ContribDevs : ["Cragjagged","DrWatson","im85288","arcticwaters","SamES"],
 	DonateSupport : ["c0m3r","Cbers","crashkelly","DaN","FrostByte","gbone8106","ginganinja","grimfandango","fc7","shorty1483","paulsalter","fluffykiwi","oleg","MongooseMan","SilentAssassin","gogreenpower","Ultroman","Spaceboy","JeremyG","strugglez"]
 };
 
-GuiContributors.onFocus = function() {
+Contributors.onFocus = function() {
 	Helper.setControlButtons(null, null, null, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
 };
 
-GuiContributors.start = function() {
-	alert("Page Enter : GuiContributors");
-	document.getElementById("counter").innerHTML = Main.version;
-	document.getElementById("guiReturnButton").style.visibility = "";
-	document.getElementById("guiReturnButton").innerHTML = "Return";
-	document.getElementById("pageContent").innerHTML = "<div class='EpisodesSeriesInfo'>About:</div><div id=ContentAbout style='font-size:1em;' class='guiSettingsSettings'></div>";
+Contributors.start = function() {
+	alert("Page Enter : Contributors");
+	Support.widgetPutInnerHTML("counter", Main.version);
+	document.getElementById("returnButton").style.visibility = "";
+	Support.widgetPutInnerHTML("returnButton", "Return") ;
+	Support.widgetPutInnerHTML("pageContent", "<div class='episodesSeriesInfo'>About:</div><div id=contentAbout style='font-size:1em;' class='settingsSettings'></div>");
 	var htmlToAdd = "Jellyfin for Samsung Smart TVs is a free, opensource community project. A broad range of Smarthub devices are supported due to the generously donated time and efforts of, among others, the following people.<br>";
 	htmlToAdd += "Feedback on this and other Jellyfin products is gratefully received at jellyfin/community.<br><br>";
-	htmlToAdd += "<span style='font-size:1.2em;'>Main Developers</span><table><tr class='guiSettingsRow'>";
+	htmlToAdd += "<span style='font-size:1.2em;'>Main Developers</span><table><tr class='settingsRow'>";
 	for (var index = 0; index < this.MainDevs.length; index++) {
 		if (index % 6 == 0) {
-			htmlToAdd += "<tr class='guiSettingsRow'>";
+			htmlToAdd += "<tr class='settingsRow'>";
 		}
-		htmlToAdd += "<td class='guiSettingsTD'>" + this.MainDevs[index] + "</td>";
+		htmlToAdd += "<td class='settingsTD'>" + this.MainDevs[index] + "</td>";
 		if (index+1 % 6 == 0) {
 			htmlToAdd += "</tr>";
 		}
 	}
 	htmlToAdd += "</tr></table><br><br>";
-	htmlToAdd += "<span style='font-size:1.2em;'>Contributing Developers</span><table><tr class='guiSettingsRow'>";
+	htmlToAdd += "<span style='font-size:1.2em;'>Contributing Developers</span><table><tr class='settingsRow'>";
 	for (var index = 0; index < this.ContribDevs.length; index++) {
 		if (index % 6 == 0) {
-			htmlToAdd += "<tr class='guiSettingsRow'>";
+			htmlToAdd += "<tr class='settingsRow'>";
 		}
-		htmlToAdd += "<td class='guiSettingsTD'>" + this.ContribDevs[index] + "</td>";
+		htmlToAdd += "<td class='settingsTD'>" + this.ContribDevs[index] + "</td>";
 		if (index+1 % 6 == 0) {
 			htmlToAdd += "</tr>";
 		}
@@ -48,20 +48,18 @@ GuiContributors.start = function() {
 			htmlToAdd += "</tr>";
 		}
 	}
-
-	document.getElementById("ContentAbout").innerHTML = htmlToAdd + "</tr></table>";
+  Support.widgetPutInnerHTML("ContentAbout", htmlToAdd + "</tr></table>");
 
 	//Set Focus for Key Events
-	document.getElementById("GuiContributors").focus();
+	document.getElementById("evnContributors").focus();
 };
 
-GuiContributors.keyDown = function() {
+Contributors.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
 	if (document.getElementById("notifications").style.visibility == "") {
-		document.getElementById("notifications").style.visibility = "hidden";
-		document.getElementById("notificationText").innerHTML = "";
+		Notifications.delNotification();
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -76,7 +74,7 @@ GuiContributors.keyDown = function() {
 		Main.setIsScreensaverRunning();
 
 		//End Screensaver
-		GuiImagePlayerScreensaver.stopScreensaver();
+		ImagePlayerScreensaver.stopScreensaver();
 
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -106,7 +104,7 @@ GuiContributors.keyDown = function() {
 	}
 };
 
-GuiContributors.openMenu = function() {
-	Support.updateURLHistory("GuiContributors",null,null,null,null,null,null,null);
+Contributors.openMenu = function() {
+	Support.updateURLHistory("Contributors",null,null,null,null,null,null,null);
 	MainMenu.requested("Contributors",null);
 };

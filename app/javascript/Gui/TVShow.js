@@ -1,4 +1,4 @@
-var GuiTVShow = {
+var TVShow = {
 	ItemData : null,
 	ItemIndexData : null,
 	ShowData : null,
@@ -14,21 +14,21 @@ var GuiTVShow = {
 	isLatest : false
 };
 
-GuiTVShow.onFocus = function() {
+TVShow.onFocus = function() {
 	Helper.setControlButtons("Favourite", "Watched", null, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
 };
 
-GuiTVShow.getMaxDisplay = function() {
+TVShow.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
 };
 
-GuiTVShow.GetDetail = function(itemid) {
+TVShow.GetDetail = function(itemid) {
 	var url3 = Server.getItemInfoURL(itemid);
 	this.seasondata = Server.getContent(url3);
 };
 
-GuiTVShow.start = function(title,url,selectedItem,topLeftItem) {
-	alert("Page Enter : GuiTVShow");
+TVShow.start = function(title,url,selectedItem,topLeftItem) {
+	alert("Page Enter : TVShow");
 
 	//Save Start Params
 	this.startParams = [title,url];
@@ -50,10 +50,10 @@ GuiTVShow.start = function(title,url,selectedItem,topLeftItem) {
 	if (this.ItemData.Items.length == 1 && File.getUserProperty("SkipShow")) {
 		//DO NOT UPDATE URL HISTORY AS SKIPPING THIS PAGE
 		var url = Server.getChildItemsURL(this.ItemData.Items[this.selectedItem].Id,"&IncludeItemTypes=Episode&fields=SortName,Overview");
-		GuiDisplayEpisodes.start(this.ShowData.Name + " " + this.ItemData.Items[this.selectedItem].Name,url,0,0);
+		DisplayEpisodes.start(this.ShowData.Name + " " + this.ItemData.Items[this.selectedItem].Name,url,0,0);
 	} else {
 		if (this.ItemData.Items.length > 0) {
-			document.getElementById("pageContent").innerHTML = "<div id=allOptions>" +
+		  var pageContent = "<div id=allOptions>" +
 			"<span id='bannerItem0'>Play All</span>" +
 			"<span id='bannerItem1'>Shuffle All</span></div><div id=content></div>" +
 			"<div id='ShowSeriesInfo'></div>" +
@@ -63,6 +63,7 @@ GuiTVShow.start = function(title,url,selectedItem,topLeftItem) {
 				"<div id='ShowMetadata' style='padding-top:4px;color:#0099FF;padding-bottom:10px;'></div>" +
 				"<div id='ShowOverview' class='ShowOverview'></div>" +
 				"</div>";
+				Support.widgetPutInnerHTML("pageContent", pageContent);
 
 			//Load Background
 			if (this.ShowData.BackdropImageTags.length > 0){
@@ -91,7 +92,7 @@ GuiTVShow.start = function(title,url,selectedItem,topLeftItem) {
 				document.getElementById("ShowSeriesInfo").style.backgroundImage="url('"+imgsrc+"')";
 				document.getElementById("ShowSeriesInfo").className = 'EpisodesSeriesInfoLogo';
 			} else {
-				document.getElementById("ShowSeriesInfo").innerHTML = this.ShowData.Name;
+			  Support.widgetPutInnerHTML("showSeriesInfo", this.ShowData.Name);
 				document.getElementById("ShowSeriesInfo").className = 'EpisodesSeriesInfo';
 			}
 
@@ -100,7 +101,7 @@ GuiTVShow.start = function(title,url,selectedItem,topLeftItem) {
 			if (this.ShowData.Overview !== undefined) {
 				htmlForOverview = this.ShowData.Overview ;
 			}
-			document.getElementById("ShowOverview").innerHTML = htmlForOverview;
+			Support.widgetPutInnerHTML("showOverview", htmlForOverview);
 			Support.scrollingText("ShowOverview");
 
 			//Display first XX series
@@ -114,14 +115,14 @@ GuiTVShow.start = function(title,url,selectedItem,topLeftItem) {
 			MusicPlayer.start("Theme", null, "TVShow", null, this.ShowData.Id, this.ShowData.Id);
 
 			//Set Focus for Key Events
-			document.getElementById("GuiTVShow").focus();
+			document.getElementById("evnTVShow").focus();
 		} else {
-			//Set message to user
-			document.getElementById("pageContent").innerHTML = "<div id='itemContainer' class='Columns"+this.MAXCOLUMNCOUNT+" padding10'><p id='title' class=pageTitle>"+title+"</p><div id=content></div></div>";
-			document.getElementById("counter").innerHTML = "";
-			document.getElementById("title").innerHTML = "Sorry";
+			//Set message to use
+			Support.widgetPutInnerHTML("pageContent", "<div id='itemContainer' class='Columns" + this.MAXCOLUMNCOUNT + " padding10'><p id='title' class=pageTitle>" + title + "</p><div id=content></div></div>");
+			Support.widgetPutInnerHTML("counter", "");
+			Support.widgetPutInnerHTML("title", "Sorry");
 			document.getElementById("content").className = "padding60";
-			document.getElementById("content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid";
+			Support.widgetPutInnerHTML("content", "Huh.. Looks like I have no content to show you in this view I'm afraid");
 
 			//As no content focus on menu bar and null null means user can't return off the menu bar
 			MainMenu.requested(null,null);
@@ -129,7 +130,7 @@ GuiTVShow.start = function(title,url,selectedItem,topLeftItem) {
 	}
 };
 
-GuiTVShow.updateDisplayedItems = function() {
+TVShow.updateDisplayedItems = function() {
 	var htmlToAdd = "";
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length); index++) {
 		if (this.ItemData.Items[index].ImageTags.Thumb) {
@@ -152,9 +153,8 @@ GuiTVShow.updateDisplayedItems = function() {
 		}
 		htmlToAdd += "</div>";
 	}
-	document.getElementById("content").innerHTML = htmlToAdd;
+	Support.widgetPutInnerHTML("content", htmlToAdd);
 
-	//document.getElementById("ShowTitle").innerHTML = "";
 	var htmlforTitle = "";
 	htmlforTitle += this.ShowData.Name + "<div style='display:inline-block; position:absolute; height:44px; bottom:0px'><table style='font-size:1em;padding-left:20px;'><tr>";
 	var stars = this.ShowData.CommunityRating;
@@ -178,11 +178,11 @@ GuiTVShow.updateDisplayedItems = function() {
 		htmlforTitle += "<td class=MetadataItemFav></td>";
 	}
 	htmlforTitle += "</tr><table></div>";
-	document.getElementById("ShowTitle").innerHTML = htmlforTitle;
+	Support.widgetPutInnerHTML("ShowTitle", htmlforTitle);
 };
 
 //Function sets CSS Properties so show which user is selected
-GuiTVShow.updateSelectedItems = function () {
+TVShow.updateSelectedItems = function () {
 	Support.updateSelectedNEW(this.ItemData.Items, this.selectedItem, this.topLeftItem,
 			Math.min(this.topLeftItem + this.getMaxDisplay(), this.ItemData.Items.length), "showListSingle highlight" + Main.highlightColour + "Background", "showListSingle", "");
 
@@ -194,9 +194,9 @@ GuiTVShow.updateSelectedItems = function () {
 
 				if (this.ItemData.Items[this.selectedItem].UserData.UnplayedItemCount > 0 || this.ItemData.Items[this.selectedItem].LocationType == "Virtual"){
 					//CD136 Removed - Not coded correctly
-					document.getElementById("ShowImage").innerHTML = "<div class='genreItemCount highlight"+Main.highlightColour+"Background'>" + this.ItemData.Items[this.selectedItem].UserData.UnplayedItemCount + "</div>";
+					Support.widgetPutInnerHTML("ShowImage", "<div class='genreItemCount highlight" + Main.highlightColour + "Background'>" +  this.ItemData.Items[this.selectedItem].UserData.UnplayedItemCount + "</div>");
 				} else {
-					document.getElementById("ShowImage").innerHTML = "<div class='genreItemCount highlight"+Main.highlightColour+"Background'>&#10003</div>";
+				  Support.widgetPutInnerHTML("ShowImage", "<div class='genreItemCount highlight" + Main.highlightColour + "Background'>&#10003</div>";
 				}
 		}
 
@@ -216,13 +216,13 @@ GuiTVShow.updateSelectedItems = function () {
 				+ " Episodes | ";
 		}
 
-		htmlForSeason = htmlForSeason.substring(0,htmlForSeason.length-3);
-		document.getElementById("ShowMetadata").innerHTML = htmlForSeason;
+		htmlForSeason = htmlForSeason.substring(0,htmlForSeason.length - 3);
+		Support.widgetPutInnerHTML("ShowMetadata", htmlForSeason);
 	}
 
 };
 
-GuiTVShow.updateSelectedBannerItems = function() {
+TVShow.updateSelectedBannerItems = function() {
 	for (var index = 0; index < 2; index++) {
 		if (this.selectedItem == -1) {
 			if (this.selectedBannerItem == index) {
@@ -236,13 +236,12 @@ GuiTVShow.updateSelectedBannerItems = function() {
 	}
 };
 
-GuiTVShow.keyDown = function() {
+TVShow.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
 	if (document.getElementById("notifications").style.visibility == "") {
-		document.getElementById("notifications").style.visibility = "hidden";
-		document.getElementById("notificationText").innerHTML = "";
+		Notifications.delNotification();
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -256,7 +255,7 @@ GuiTVShow.keyDown = function() {
 		//Update Main.js isScreensaverRunning - Sets to True
 		Main.setIsScreensaverRunning();
 		//End Screensaver
-		GuiImagePlayerScreensaver.stopScreensaver();
+		ImagePlayerScreensaver.stopScreensaver();
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
@@ -309,8 +308,8 @@ GuiTVShow.keyDown = function() {
 					this.ShowData.UserData.IsFavorite = true;
 				}
 				setTimeout(function(){
-					GuiTVShow.updateDisplayedItems();
-					GuiTVShow.updateSelectedItems();
+					TVShow.updateDisplayedItems();
+					TVShow.updateSelectedItems();
 				}, 150);
 			}
 			break;
@@ -330,8 +329,8 @@ GuiTVShow.keyDown = function() {
 					this.ItemData.Items[this.selectedItem].UserData.Played = true;
 				}
 				setTimeout(function(){
-					GuiTVShow.updateDisplayedItems();
-					GuiTVShow.updateSelectedItems();
+					TVShow.updateDisplayedItems();
+					TVShow.updateSelectedItems();
 				}, 150);
 			}
 		case tvKey.KEY_BLUE:
@@ -352,12 +351,12 @@ GuiTVShow.keyDown = function() {
 	}
 };
 
-GuiTVShow.processSelectedItem = function() {
+TVShow.processSelectedItem = function() {
 	if (this.selectedItem == -1) {
 		//Fix for return!
-		Support.updateURLHistory("GuiTVShow",this.startParams[0],this.startParams[1],null,null,0,this.topLeftItem,null);
+		Support.updateURLHistory("TVShow", this.startParams[0],this.startParams[1], null, null, 0, this.topLeftItem,null);
 	} else {
-		Support.updateURLHistory("GuiTVShow",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
+		Support.updateURLHistory("TVShow", this.startParams[0], this.startParams[1], null, null, this.selectedItem, this.topLeftItem, null);
 	}
 
 
@@ -365,23 +364,23 @@ GuiTVShow.processSelectedItem = function() {
 		if (this.selectedBannerItem == 0) {
 			//Play All Episodes in Show
 			var urlToPlay= Server.getChildItemsURL(this.ShowData.Id,"&ExcludeLocationTypes=Virtual&IncludeItemTypes=Episode&Recursive=true&SortBy=SortName&SortOrder=Ascending&Fields=ParentId,SortName,MediaSources");
-			GuiPlayer.start("PlayAll",urlToPlay,0,"GuiTVShow");
+			Player.start("PlayAll", urlToPlay, 0, "TVShow");
 		} else if (this.selectedBannerItem == 1) {
 			//Shuffle All Episodes in Show
 			var urlToPlay= Server.getChildItemsURL(this.ShowData.Id,"&ExcludeLocationTypes=Virtual&IncludeItemTypes=Episode&Recursive=true&SortBy=Random&SortOrder=Ascending&Fields=ParentId,SortName,MediaSources");
-			GuiPlayer.start("PlayAll",urlToPlay,0,"GuiTVShow");
+			Player.start("PlayAll", urlToPlay, 0, "TVShow");
 		}
 	} else {
 		var url = Server.getChildItemsURL(this.ItemData.Items[this.selectedItem].Id,"&IncludeItemTypes=Episode&fields=SortName,Overview");
-		GuiDisplayEpisodes.start(this.ShowData.Name + " " + this.ItemData.Items[this.selectedItem].Name,url,0,0);
+		DisplayEpisodes.start(this.ShowData.Name + " " + this.ItemData.Items[this.selectedItem].Name, url, 0, 0);
 	}
 };
 
-GuiTVShow.playSelectedItem = function () {
-	Support.playSelectedItem("GuiTVShow",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null);
+TVShow.playSelectedItem = function () {
+	Support.playSelectedItem("TVShow", this.ItemData,this.startParams, this.selectedItem, this.topLeftItem, null);
 };
 
-GuiTVShow.processUpKey = function() {
+TVShow.processUpKey = function() {
 	this.selectedItem = this.selectedItem - this.MAXCOLUMNCOUNT;
 	if (this.selectedItem < -1) {
 		this.selectedItem = -1;
@@ -401,7 +400,7 @@ GuiTVShow.processUpKey = function() {
 	}
 };
 
-GuiTVShow.processDownKey = function() {
+TVShow.processDownKey = function() {
 	this.selectedItem = this.selectedItem + this.MAXCOLUMNCOUNT;
 
 	//If now 0, was -1, update banner selection
@@ -424,7 +423,7 @@ GuiTVShow.processDownKey = function() {
 
 };
 
-GuiTVShow.processChannelUpKey = function() {
+TVShow.processChannelUpKey = function() {
 	if (this.selectedItem > -1) {
 		this.selectedItem = this.selectedItem - this.getMaxDisplay();
 		if (this.selectedItem < 0) {
@@ -443,8 +442,8 @@ GuiTVShow.processChannelUpKey = function() {
 	}
 };
 
-GuiTVShow.openMenu = function() {
-	Support.updateURLHistory("GuiTVShow",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
+TVShow.openMenu = function() {
+	Support.updateURLHistory("TVShow", this.startParams[0],this.startParams[1], null, null,this.selectedItem, this.topLeftItem, null);
 	if (this.selectedItem == -1) {
 		if (this.selectedBannerItem == -1) {
 			this.selectedBannerItem = 0;
@@ -456,7 +455,7 @@ GuiTVShow.openMenu = function() {
 	}
 };
 
-GuiTVShow.processLeftKey = function() {
+TVShow.processLeftKey = function() {
 	if (this.selectedItem == -1) {
 		this.selectedBannerItem--;
 		this.updateSelectedBannerItems();
@@ -468,7 +467,7 @@ GuiTVShow.processLeftKey = function() {
 	}
 };
 
-GuiTVShow.processRightKey = function() {
+TVShow.processRightKey = function() {
 	if (this.selectedItem == -1) {
 		if (this.selectedBannerItem == 0) {
 			this.selectedBannerItem = 1;
@@ -477,7 +476,7 @@ GuiTVShow.processRightKey = function() {
 	}
 };
 
-GuiTVShow.processChannelDownKey = function() {
+TVShow.processChannelDownKey = function() {
 	this.selectedItem = this.selectedItem + this.getMaxDisplay();
 	if (this.selectedItem >= this.ItemData.Items.length) {
 		this.selectedItem = (this.ItemData.Items.length-1);
@@ -493,7 +492,7 @@ GuiTVShow.processChannelDownKey = function() {
 };
 
 
-GuiTVShow.returnFromMusicPlayer = function() {
+TVShow.returnFromMusicPlayer = function() {
 	this.selectedItem = 0;
 	this.updateDisplayedItems();
 	this.updateSelectedItems();

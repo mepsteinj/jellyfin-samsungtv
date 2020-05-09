@@ -128,7 +128,7 @@ ImagePlayerScreensaver.stopScreensaver = function() {
 	this.ImageViewer.hide();
 	widgetAPI.blockNavigation(event);
 	ImagePlayerScreensaver.kill();
-	document.getElementById("imagePlayerScreensaverOverlay").innerHTML = "";
+	Support.widgetPutInnerHTML("imagePlayerScreensaverOverlay", "");
 	//Show Page Contents
 	document.getElementById("everything").style.visibility="";
 };

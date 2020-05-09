@@ -45,7 +45,7 @@ AddToPlaylist.start=function(itemId, playedFromPage, mediaType) {
 	new AddToPlaylist_Input("playListNew");
 
 	if (this.ItemData.Items.length == 0) {
-		document.getElementById("guiPlayListExisting").innerHTML = "<div style='padding-top:20px;padding-left:80px;'>You have no existing "+ this.mediaType.toLowerCase() +" playlists.</div>";
+	  Support.widgetPutInnerHTML("playListExisting", "<div style='padding-top:20px;padding-left:80px;'>You have no existing "+ this.mediaType.toLowerCase() +" playlists.</div>");
 		Support.screensaverOff(); // Must turn off as not possible to catch keys!
 	} else {
 		for (var index = 0; index < this.ItemData.Items.length; index++) {
@@ -76,7 +76,7 @@ AddToPlaylist.updateDisplayedItems = function() {
 		var existsInPlaylist = (this.hasItemInPlaylist[index] == true) ? "Yes" : "No";
 		htmlToAdd += "<tr><td id='"+this.ItemData.Items[index].Id+"'>"+ this.ItemData.Items[index].Name + "</td><td>"+existsInPlaylist+"</tr>";
 	}
-	document.getElementById("guiPlayListExisting").innerHTML = htmlToAdd + "</table>";
+	Support.widgetPutInnerHTML("playListExisting", htmlToAdd + "</table>");
 };
 
 AddToPlaylist.updateSelectedItems = function() {
@@ -94,8 +94,7 @@ AddToPlaylist.keyDown = function() {
 	alert("Key pressed: " + keyCode);
 
 	if (document.getElementById("notifications").style.visibility == "") {
-		document.getElementById("notifications").style.visibility = "hidden";
-		document.getElementById("notificationText").innerHTML = "";
+		Notifications.delNotification();
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -151,15 +150,15 @@ AddToPlaylist.processSelectedItem = function() {
 		this.hasItemInPlaylist[this.selectedItem] = true;
 		this.updateDisplayedItems();
 		this.updateSelectedItems();
-		document.getElementById("playListResult").innerHTML = "<div style='padding-top:20px;padding-left:80px;'>The "+ this.mediaType.toLowerCase() +" was added to the playlist.</div>";
+		Support.widgetPutInnerHTML("playListResult", "<div style='padding-top:20px;padding-left:80px;'>The "+ this.mediaType.toLowerCase() +" was added to the playlist.</div>");
 	} else {
 		return;
 	}
 	//Close
 	setTimeout(function(){
 		document.getElementById("playListContainer").style.visibility = "hidden";
-		document.getElementById("playListResult").innerHTML = "";
-		document.getElementById(evnAddToPlaylist.playedFromPage).focus();
+		Support.widgetPutInnerHTML("playListResult", "");
+		document.getElementById(this.playedFromPage).focus();
 	}, 2000);
 };
 
@@ -234,9 +233,9 @@ var AddToPlaylistInput  = function(id) {
 
 			var playlist = document.getElementById("playListNew").value;
 			if (playlist == "") {
-				document.getElementById("playListResult").innerHTML = "<div style='padding-top:20px;padding-left:80px;'>Enter a playlist name or press Return to cancel.</div>";
+			  Support.widgetPutInnerHTML("playListResult","<div style='padding-top:20px;padding-left:80px;'>Enter a playlist name or press Return to cancel.</div>");
 				setTimeout(function(){
-					document.getElementById("playListResult").innerHTML = "";
+				  Support.widgetPutInnerHTML("playListResult", "");
 				}, 3000);
 				return;
 			}
@@ -247,13 +246,13 @@ var AddToPlaylistInput  = function(id) {
 			//Sent Server Request
 			Server.createPlaylist(playlist,AddToPlaylist.itemId, AddToPlaylist.mediaType);
 
-			document.getElementById("playListResult").innerHTML = "<div style='padding-top:20px;padding-left:80px;'>The playlist was created.</div>";
+      Support.widgetPutInnerHTML("playListResult", "<div style='padding-top:20px;padding-left:80px;'>The playlist was created.</div>");
 
 			//Close
 			setTimeout(function(){
 				document.getElementById("playListContainer").style.visibility = "hidden";
-				document.getElementById("playListResult").innerHTML = "";
-				document.getElementById(AddToPlaylist.playedFromPage).focus();
+				Support.widgetPutInnerHTML("playListResult", "");
+				document.getElementById(this.playedFromPage).focus();
 			}, 2000);
 
 			//Reload page!
@@ -274,7 +273,7 @@ var AddToPlaylistInput  = function(id) {
 			widgetAPI.blockNavigation(event);
 			//Handle Return
 			Support.screensaver();
-			document.getElementById("guiPlayListContainer").style.visibility = "hidden";
+			document.getElementById("playListContainer").style.visibility = "hidden";
 			document.getElementById(AddToPlaylist.playedFromPage).focus();
 		});
 

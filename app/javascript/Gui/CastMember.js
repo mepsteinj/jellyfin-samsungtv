@@ -1,4 +1,4 @@
-var GuiCastMember = {
+var CastMember = {
 	CastData : null,
 	ItemData : null,
 	selectedItem : 0,
@@ -7,12 +7,12 @@ var GuiCastMember = {
 	MAXROWCOUNT : 1,
 };
 
-GuiCastMember.getMaxDisplay = function() {
+CastMember.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
 };
 
-GuiCastMember.start = function(title,url,selectedItem,topLeftItem) {
-	alert("Page Enter : GuiCastMember");
+CastMember.start = function(title, url, selectedItem, topLeftItem) {
+	alert("Page Enter : CastMember");
 	Helper.setControlButtons(null, null, null, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
 
 	//Save Start Params
@@ -30,17 +30,17 @@ GuiCastMember.start = function(title,url,selectedItem,topLeftItem) {
 	if (this.ItemData == null) { Support.processReturnURLHistory(); }
 
 	document.getElementById("pageContent").className = "";
-	document.getElementById("pageContent").innerHTML = "<div id='guiCastMember_Name' class='guiCastMemberName'></div> \
-		<div id='guiCastMemberDetails' class='guiCastMemberDetails'></div> \
-		<div id='guiCastMemberPoster' class='guiCastMemberPoster'></div> \
-		<div id='guiCastMemberBio' class='guiCastMemberBio'></div> \
-		<div id='guiCastMemberList' class='guiCastMemberList'></div>";
-	document.getElementById("counter").innerHTML = "1/1";
+	Support.widgetPutInnerHTML("pageContent", "<div id='castMemberName' class='castMemberName'></div> \
+		<div id='castMemberDetails' class='castMemberDetails'></div> \
+		<div id='castMemberPoster' class='castMemberPoster'></div> \
+		<div id='castMemberBio' class='castMemberBio'></div> \
+		<div id='castMemberList' class='castMemberList'></div>");
+	Support.widgetPutInnerHTML("counter", "1/1");
 
 	//Add cast member name and image.
-	document.getElementById("guiCastMemberName").innerHTML = this.CastData.Name;
-	var imgsrc = Server.getImageURL(this.CastData.Id,"Primary",350,480,0,false,0);
-	document.getElementById("guiCastMemberPoster").style.backgroundImage = "url("+imgsrc +")";
+	Support.widgetPutInnerHTML("castMemberName", this.CastData.Name);
+	var imgsrc = Server.getImageURL(this.CastData.Id, "Primary", 350, 480, 0, false, 0);
+	document.getElementById("castMemberPoster").style.backgroundImage = "url(" + imgsrc +")";
 
 	var detailsHtml = "";
 	if (this.CastData.PremiereDate && Main.getModelYear() != "D"){
@@ -57,17 +57,17 @@ GuiCastMember.start = function(title,url,selectedItem,topLeftItem) {
 		var deathday = new Date(this.CastData.EndDate);
 		detailsHtml += "Died: "+deathday.toDateString() + "</br></br>";
 	}
-	document.getElementById("guiCastMemberDetails").innerHTML = detailsHtml;
+	Support.widgetPutInnerHTML("castMemberDetails", detailsHtml);
 
 	//Person bio
 	var bio = "";
 	if (this.CastData.Overview){
 		bio += this.CastData.Overview;
 	}
-	document.getElementById("guiCastMemberBio").innerHTML = bio;
+	Support.widgetPutInnerHTML("castMemberBio", bio);
 
 	//Set Overview Scroller
-	Support.scrollingText("guiCastMemberBio");
+	Support.scrollingText("castMemberBio");
 
 	if (this.ItemData.Items.length > 0) {
 		//Display first 12 series
@@ -77,14 +77,14 @@ GuiCastMember.start = function(title,url,selectedItem,topLeftItem) {
 		this.updateSelectedItems();
 
 		//Set Focus for Key Events
-		document.getElementById("guiCastMember").focus();
+		document.getElementById("evnCastMember").focus();
 	} else {
 		//Cannot happen as link can only be generated from a Cast member - thus at minimum it will return 1 result (itself)
-		document.getElementById("guiCastMember").focus();
+		document.getElementById("evnCastMember").focus();
 	}
 };
 
-GuiCastMember.updateDisplayedItems = function() {
+CastMember.updateDisplayedItems = function() {
 	var htmlToAdd = "";
 	for (var index = this.topLeftItem;index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length); index++) {
 		var imgsrc = "images/menu/Play-46x37.png";
@@ -99,16 +99,16 @@ GuiCastMember.updateDisplayedItems = function() {
 				imgsrc = Server.getImageURL(this.ItemData.Items[index].Id,"Primary",180,100,null,null,null,index);
 			}
 		}
-		htmlToAdd += "<div id="+this.ItemData.Items[index].Id+" class='guiPageCastMemberListSingle'><div class='guiCastMemberListSingleImage' style=background-image:url(" +imgsrc+ ")></div><div class='guiCastMemberListSingleTitle'>"+this.ItemData.Items[index].Name+"</div></div>";
+		htmlToAdd += "<div id=" + this.ItemData.Items[index].Id + " class='castMemberListSingle'><div class='castMemberListSingleImage' style=background-image:url(" + imgsrc + ")></div><div class='castMemberListSingleTitle'>" + this.ItemData.Items[index].Name + "</div></div>";
 	}
-	document.getElementById("guiCastMemberList").innerHTML = htmlToAdd;
+	Support.widgetPutInnerHTML("castMemberList", htmlToAdd);
 };
 
 //Function sets CSS Properties so show which user is selected
-GuiCastMember.updateSelectedItems = function () {
+CastMember.updateSelectedItems = function () {
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length); index++){
 		if (index == this.selectedItem) {
-			document.getElementById(this.ItemData.Items[index].Id).className = "guiCastMemberListSingle highlight" + Main.highlightColour + "Background";
+			document.getElementById(this.ItemData.Items[index].Id).className = "castMemberListSingle highlight" + Main.highlightColour + "Background";
 			//Set Background based on Type:
 			switch (this.ItemData.Items[index].Type) {
 			case "Episode":
@@ -135,18 +135,17 @@ GuiCastMember.updateSelectedItems = function () {
 			}
 
 		} else {
-			document.getElementById(this.ItemData.Items[index].Id).className = "guiCastMemberListSingle";
+			document.getElementById(this.ItemData.Items[index].Id).className = "castMemberListSingle";
 		}
 	}
-	document.getElementById("counter").innerHTML = (this.selectedItem + 1) + "/" + this.ItemData.Items.length;
+	Support.widgetPutInnerHTML("counter", (this.selectedItem + 1) + "/" + this.ItemData.Items.length);
 };
 
-GuiCastMember.keyDown = function() {
+CastMember.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 	if (document.getElementById("notifications").style.visibility == "") {
-		document.getElementById("notifications").style.visibility = "hidden";
-		document.getElementById("notificationText").innerHTML = "";
+		Notifications.delNotification();
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -201,9 +200,9 @@ GuiCastMember.keyDown = function() {
 			break;
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
-			Support.updateURLHistory("GuiCastMember", this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
+			Support.updateURLHistory("CastMember", this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
 			document.getElementById(this.ItemData.Items[this.selectedItem].Id).className = "SeasonTitle";
-			MainMenu.requested("CastMember", this.ItemData.Items[this.selectedItem].Id,"EpisodeListSingle highlight"+Main.highlightColour+"Background");
+			MainMenu.requested("CastMember", this.ItemData.Items[this.selectedItem].Id,"EpisodeListSingle highlight" + Main.highlightColour + "Background");
 			break;
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY");
@@ -212,24 +211,24 @@ GuiCastMember.keyDown = function() {
 	}
 };
 
-GuiCastMember.openMenu = function() {
+CastMember.openMenu = function() {
 	Support.updateURLHistory("CastMember",null,null,null,null,null,null,null);
 	MainMenu.requested("CastMember",null);
 };
 
-GuiCastMember.processSelectedItem = function() {
-	Support.processSelectedItem("GuiCastMember", this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null,null);
+CastMember.processSelectedItem = function() {
+	Support.processSelectedItem("CastMember", this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null,null);
 };
 
-GuiCastMember.playSelectedItem = function () {
+CastMember.playSelectedItem = function () {
 	if (this.ItemData.Items[this.selectedItem].MediaType == "Video") {
-		Support.updateURLHistory("GuiCastMember",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
+		Support.updateURLHistory("CastMember",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
 		var url = Server.getItemInfoURL(this.ItemData.Items[this.selectedItem].Id);
 		GuiPlayer.start("PLAY",url,this.ItemData.Items[this.selectedItem].UserData.PlaybackPositionTicks / 10000);
 	}
 };
 
-GuiCastMember.processUpKey = function() {
+CastMember.processUpKey = function() {
 	this.selectedItem--;
 	if (this.selectedItem < 0) {
 		this.selectedItem = 0;
@@ -246,7 +245,7 @@ GuiCastMember.processUpKey = function() {
 
 };
 
-GuiCastMember.processDownKey = function() {
+CastMember.processDownKey = function() {
 	this.selectedItem++;
 	if (this.selectedItem >= this.ItemData.Items.length) {
 		this.selectedItem--;
@@ -259,7 +258,7 @@ GuiCastMember.processDownKey = function() {
 	this.updateSelectedItems();
 };
 
-GuiCastMember.returnFromMusicPlayer = function() {
+CastMember.returnFromMusicPlayer = function() {
 	this.selectedItem = 0;
 	this.updateDisplayedItems();
 	this.updateSelectedItems();

@@ -115,6 +115,7 @@ Users.updateSelectedUser = function() {
 //Function executes on the selection of a user - should log user in or generate error message on screen
 Users.processSelectedUser = function() {
 	var selectedUserId = this.userData[this.selectedUser].Id;
+  //UsersManual.start("");
 	var authenticateSuccess = false;
 	//Remove Focus & Display Loading
 	document.getElementById("noItems").focus();
@@ -275,7 +276,7 @@ Users.keyDown = function() {
 			if (this.selectedRow == 0) {
 				this.processSelectedUser();
 			} else if (this.selectedRow == 1) {
-				UsersManual.start();
+				UsersManual.start("");
 			} else if (this.selectedRow == 2) {
 				Servers.start();
 			}

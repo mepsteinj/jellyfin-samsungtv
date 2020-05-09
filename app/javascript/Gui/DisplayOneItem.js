@@ -1,4 +1,4 @@
-var GuiDisplayOneItem = {
+var DisplayOneItem = {
 		ItemData : null,
 		ItemIndexData : null,
 
@@ -16,16 +16,16 @@ var GuiDisplayOneItem = {
 		backdropTimeout : null
 };
 
-GuiDisplayOneItem.onFocus = function() {
+DisplayOneItem.onFocus = function() {
 	Helper.setControlButtons(null, null, null, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
 };
 
-GuiDisplayOneItem.getMaxDisplay = function() {
+DisplayOneItem.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
 };
 
-GuiDisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
-	alert("Page Enter : GuiDisplayOneItem");
+DisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
+	alert("Page Enter : DisplayOneItem");
 
 	//Save Start Params
 	this.startParams = [title,url];
@@ -39,13 +39,13 @@ GuiDisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
 	//Load Data
 	this.ItemData = Server.getContent(url + "&Limit="+File.getTVProperty("ItemPaging"));
 	if (this.ItemData == null) { Support.processReturnURLHistory(); }
-	//Once we've browsed the channels down to a content folder we should display them using GuiDisplaySeries.
+	//Once we've browsed the channels down to a content folder we should display them using DisplaySeries.
 	if (this.ItemData.TotalRecordCount >0){
 		if (this.ItemData.Items[0].Type == "ChannelVideoItem" ||
 				this.ItemData.Items[0].Type == "ChannelAudioItem" ||
 				this.ItemData.Items[0].Type == "Trailer" ||
 				this.ItemData.Items[0].Type == "AudioPodcast") {
-			GuiDisplaySeries.start("All "+this.ItemData.Items[0].Type,url,selectedItem,topLeftItem,this.ItemData);
+			DisplaySeries.start("All "+this.ItemData.Items[0].Type,url,selectedItem,topLeftItem,this.ItemData);
 			return;
 		}
 	}
@@ -69,12 +69,12 @@ GuiDisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
 		break;
 	}
 
-	//Set Page Content
-	document.getElementById("pageContent").innerHTML = "<div id='title' class='EpisodesSeriesInfo'>"+title+"</div>" +
-			"<div id=Center class='SeriesCenter'><div id=content></div></div>";
+	//Set Page Content 
+  Support.widgetPutInnerHTML("pageContent", "<div id='title' class='episodesSeriesInfo'>" + title + "</div>" +
+			"<div id=Center class='seriesCenter'><div id=content></div></div>");
 
 	//Set Top
-	GuiDisplayOneItem.setPadding(title);
+	DisplayOneItem.setPadding(title);
 
 	if (this.ItemData.Items.length > 0) {
 		//Set isResume based on title - used in UpdateDisplayedItems
@@ -90,24 +90,24 @@ GuiDisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
 		this.updateSelectedItems();
 
 		//Set Focus for Key Events
-		document.getElementById("GuiDisplayOneItem").focus();
+		document.getElementById("evnDisplayOneItem").focus();
 	} else {
 		//Set message to user
-		document.getElementById("counter").innerHTML = "";
+		Support.widgetPutInnerHTML("counter", "" );
 		document.getElementById("content").style.fontSize="40px";
-		document.getElementById("content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid<br>Press return to get back to the previous screen";
+		Support.widgetPutInnerHTML("content", "Huh.. Looks like I have no content to show you in this view I'm afraid<br>Press return to get back to the previous screen");
 
 		document.getElementById("noItems").focus();
 	}
 };
 
-GuiDisplayOneItem.updateDisplayedItems = function() {
+DisplayOneItem.updateDisplayedItems = function() {
 	Support.updateDisplayedItems(this.ItemData.Items,this.selectedItem,this.topLeftItem,
 			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Content","",this.isResume,this.genreType,true);
 };
 
 //Function sets CSS Properties so show which user is selected
-GuiDisplayOneItem.updateSelectedItems = function () {
+DisplayOneItem.updateSelectedItems = function () {
 	if (this.MAXCOLUMNCOUNT == 3) {
 		//Add Collections Class to add more margin
 		Support.updateSelectedNEW(this.ItemData.Items, this.selectedItem, this.topLeftItem,
@@ -118,13 +118,12 @@ GuiDisplayOneItem.updateSelectedItems = function () {
 	}
 };
 
-GuiDisplayOneItem.keyDown = function() {
+DisplayOneItem.keyDown = function() {
 	var keyCode = event.keyCode;
-	alert("GuiDisplayOneItem: Key pressed: " + keyCode);
+	alert("DisplayOneItem: Key pressed: " + keyCode);
 
 	if (document.getElementById("notifications").style.visibility == "") {
-		document.getElementById("notifications").style.visibility = "hidden";
-		document.getElementById("notificationText").innerHTML = "";
+		Notifications.delNotification();
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -139,7 +138,7 @@ GuiDisplayOneItem.keyDown = function() {
 		Main.setIsScreensaverRunning();
 
 		//End Screensaver
-		GuiImagePlayerScreensaver.stopScreensaver();
+		ImagePlayerScreensaver.stopScreensaver();
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
@@ -203,22 +202,22 @@ GuiDisplayOneItem.keyDown = function() {
 	}
 };
 
-GuiDisplayOneItem.processSelectedItem = function() {
+DisplayOneItem.processSelectedItem = function() {
 	clearTimeout(this.backdropTimeout);
-	Support.processSelectedItem("GuiDisplayOneItem",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null,this.genreType,this.isLatest);
+	Support.processSelectedItem("DisplayOneItem",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null,this.genreType,this.isLatest);
 };
 
-GuiDisplayOneItem.playSelectedItem = function () {
+DisplayOneItem.playSelectedItem = function () {
 	clearTimeout(this.backdropTimeout);
-	Support.playSelectedItem("GuiDisplayOneItem",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null);
+	Support.playSelectedItem("DisplayOneItem",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null);
 };
 
-GuiDisplayOneItem.openMenu = function() {
-	Support.updateURLHistory("GuiDisplayOneItem",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
+DisplayOneItem.openMenu = function() {
+	Support.updateURLHistory("DisplayOneItem",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
 	MainMenu.requested("DisplayOneItem",this.ItemData.Items[this.selectedItem].Id);
 };
 
-GuiDisplayOneItem.processLeftKey = function() {
+DisplayOneItem.processLeftKey = function() {
 	if (this.selectedItem % this.MAXCOLUMNCOUNT == 0){
 		this.openMenu(); //Going left from anywhere in the first column.
 	} else {
@@ -239,7 +238,7 @@ GuiDisplayOneItem.processLeftKey = function() {
 	}
 };
 
-GuiDisplayOneItem.processRightKey = function() {
+DisplayOneItem.processRightKey = function() {
 	this.selectedItem++;
 	if (this.selectedItem >= this.ItemData.Items.length) {
 		this.selectedItem--;
@@ -252,7 +251,7 @@ GuiDisplayOneItem.processRightKey = function() {
 	this.updateSelectedItems();
 };
 
-GuiDisplayOneItem.processUpKey = function() {
+DisplayOneItem.processUpKey = function() {
 	this.selectedItem = this.selectedItem - this.MAXCOLUMNCOUNT;
 	if (this.selectedItem < 0) {
 		//Check User Setting
@@ -270,7 +269,7 @@ GuiDisplayOneItem.processUpKey = function() {
 	this.updateSelectedItems();
 };
 
-GuiDisplayOneItem.processDownKey = function() {
+DisplayOneItem.processDownKey = function() {
 	this.selectedItem = this.selectedItem + this.MAXCOLUMNCOUNT;
 	if (this.selectedItem >= this.ItemData.Items.length) {
 		this.selectedItem = (this.ItemData.Items.length-1);
@@ -287,7 +286,7 @@ GuiDisplayOneItem.processDownKey = function() {
 	this.updateSelectedItems();
 };
 
-GuiDisplayOneItem.processChannelUpKey = function() {
+DisplayOneItem.processChannelUpKey = function() {
 	this.selectedItem = this.selectedItem - this.getMaxDisplay();
 	if (this.selectedItem < 0) {
 		this.selectedItem = 0;
@@ -304,7 +303,7 @@ GuiDisplayOneItem.processChannelUpKey = function() {
 	this.updateSelectedItems();
 };
 
-GuiDisplayOneItem.processChannelDownKey = function() {
+DisplayOneItem.processChannelDownKey = function() {
 	this.selectedItem = this.selectedItem + this.getMaxDisplay();
 	if (this.selectedItem >= this.ItemData.Items.length) {
 		this.selectedItem = (this.ItemData.Items.length-1);
@@ -319,7 +318,7 @@ GuiDisplayOneItem.processChannelDownKey = function() {
 	this.updateSelectedItems();
 };
 
-GuiDisplayOneItem.processIndexing = function() {
+DisplayOneItem.processIndexing = function() {
 	var indexPos = this.ItemIndexData[1];
 
 	this.indexSeekPos++;
@@ -335,7 +334,7 @@ GuiDisplayOneItem.processIndexing = function() {
 	this.updateSelectedItems();
 };
 
-GuiDisplayOneItem.setPadding = function(title) {
+DisplayOneItem.setPadding = function(title) {
 	switch (title) {
 	case "MediaFolders":
 	case "Collections":
@@ -364,7 +363,7 @@ GuiDisplayOneItem.setPadding = function(title) {
 	}
 };
 
-GuiDisplayOneItem.returnFromMusicPlayer = function() {
+DisplayOneItem.returnFromMusicPlayer = function() {
 	this.selectedItem = 0;
 	this.updateDisplayedItems();
 	this.updateSelectedItems();

@@ -1,4 +1,4 @@
-var GuiPhotos = {
+var Photos = {
 	ItemData : null,
 	selectedItem : 0,
 	topLeftItem : 0,
@@ -11,16 +11,16 @@ var GuiPhotos = {
 	backdropTimeout : null
 };
 
-GuiPhotos.onFocus = function() {
+Photos.onFocus = function() {
 	Helper.setControlButtons("Favourite", null, null, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
 };
 
-GuiPhotos.getMaxDisplay = function() {
+Photos.getMaxDisplay = function() {
 		return 15;
 };
 
-GuiPhotos.start = function(title,url,selectedItem,topLeftItem) {
-	alert("Page Enter : GuiPhotos");
+Photos.start = function(title, url, selectedItem, topLeftItem) {
+	alert("Page Enter : Photos");
 
 	//Save Start Params
 	this.startParams = [title,url];
@@ -38,11 +38,10 @@ GuiPhotos.start = function(title,url,selectedItem,topLeftItem) {
 	if (this.ItemData == null) { Support.processReturnURLHistory(); }
 
 	//Set Page Content
-	document.getElementById("pageContent").innerHTML = "<div id='title' class='EpisodesSeriesInfo'>"+title+"</div>" +
-			"<div id=Center class='SeriesCenter'><div id=content></div></div>";
+	Support.widgetPutInnerHTML("pageContent", "<div id='title' class='episodesSeriesInfo'>" + title + "</div>" + "<div id=Center class='seriesCenter'><div id=content></div></div>");
 
 	//Set Top
-	GuiPhotos.setPadding(title);
+	this.setPadding(title);
 
 	if (this.ItemData.Items.length > 0) {
 		//Set isResume based on title - used in UpdateDisplayedItems
@@ -58,18 +57,18 @@ GuiPhotos.start = function(title,url,selectedItem,topLeftItem) {
 		this.updateSelectedItems();
 
 		//Set Focus for Key Events
-		document.getElementById("GuiPhotos").focus();
+		document.getElementById("evnPhotos").focus();
 	} else {
 		//Set message to user
-		document.getElementById("counter").innerHTML = "";
+		Support.widgetPutInnerHTML("counter", "");
 		document.getElementById("content").style.fontSize="1.7em";
-		document.getElementById("content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid<br>Press return to get back to the previous screen";
+		Support.widgetPutInnerHTML("content", "Huh.. Looks like I have no content to show you in this view I'm afraid<br>Press return to get back to the previous screen");
 
 		document.getElementById("noItems").focus();
 	}
 };
 
-GuiPhotos.updateDisplayedItems = function() {
+Photos.updateDisplayedItems = function() {
 	var Items = this.ItemData.Items;
 	var htmlToAdd = "";
 	var DivIdPrepend = "";
@@ -85,7 +84,7 @@ GuiPhotos.updateDisplayedItems = function() {
 				photosCount = photos.TotalRecordCount;
 				if(photos.Items[0]){
 					if(photos.Items[0].ImageTags.Primary){
-						imgsrc = Server.getImageURL(photos.Items[0].Id,"Primary",(i==0?880:440),(i==0?880:440),0,false,0);
+						imgsrc = Server.getImageURL(photos.Items[0].Id, "Primary", (i==0?880:440),(i==0?880:440),0,false,0);
 					}
 				}
 			}
@@ -93,7 +92,7 @@ GuiPhotos.updateDisplayedItems = function() {
 				imgsrc = "images/EmptyFolder-122x98.png";
 			}
 			htmlToAdd += (i==0?"<td class=photoThumbLarge colspan=2 rowspan=2>":"<td class=photoThumbSmall>")+"<div id="+ DivIdPrepend + Items[this.topLeftItem+i].Id + " style=background-color:rgba(0,0,0,0.5);background-image:url(" +imgsrc+ ");width:"+(i==0?572:270)+"px;height:"+(i==0?572:270)+"px><div class=photoTitle style=font-size:"+(i==0?36:28)+"px>"+ title + "</div>";
-			if (Items[this.topLeftItem+i].UserData.IsFavorite){
+			if (Items[this.topLeftItem + i].UserData.IsFavorite){
 				htmlToAdd += "<div class=favItem></div>";
 			}
 			if (photosCount > 0) {
@@ -132,10 +131,10 @@ GuiPhotos.updateDisplayedItems = function() {
 		}
 	}
 	htmlToAdd += "</tr></table></div>";
-	document.getElementById("content").innerHTML = htmlToAdd;
+	Support.widgetPutInnerHTML("content", htmlToAdd);
 };
 
-GuiPhotos.updateOneDisplayedItem = function(item,selectedItem) {
+Photos.updateOneDisplayedItem = function(item, selectedItem) {
 	var htmlToAdd = "";
 	if (item.Type == "PhotoAlbum" || item.Type == "Folder") {
 		var title = item.Name;
@@ -146,24 +145,23 @@ GuiPhotos.updateOneDisplayedItem = function(item,selectedItem) {
 	}
 	var itemCount = item.ChildCount;
 	if (itemCount) {
-		htmlToAdd += "<div class=photoItemCount>"+itemCount+"</div>";
+		htmlToAdd += "<div class=photoItemCount>" + itemCount+"</div>";
 	}
-	document.getElementById(item.Id).innerHTML = htmlToAdd;
+	Support.widgetPutInnerHTML(ItemId, htmlToAdd);
 };
 
 //Function sets CSS Properties to show which item is selected.
-GuiPhotos.updateSelectedItems = function () {
-		Support.updateSelectedNEW(this.ItemData.Items, this.selectedItem, this.topLeftItem,
+Photos.updateSelectedItems = function () {
+		Support.updateSelectedNEW(this.ItemData.Items,  this.selectedItem, this.topLeftItem,
 				Math.min(this.topLeftItem + this.getMaxDisplay(), this.ItemData.Items.length), "photo selected", "photo", "");
 };
 
-GuiPhotos.keyDown = function() {
+Photos.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
 	if (document.getElementById("notifications").style.visibility == "") {
-		document.getElementById("notifications").style.visibility = "hidden";
-		document.getElementById("notificationText").innerHTML = "";
+		Notifications.delNotification();
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -177,7 +175,7 @@ GuiPhotos.keyDown = function() {
 		//Update Main.js isScreensaverRunning - Sets to True
 		Main.setIsScreensaverRunning();
 		//End Screensaver
-		GuiImagePlayerScreensaver.stopScreensaver();
+		ImagePlayerScreensaver.stopScreensaver();
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
@@ -250,23 +248,23 @@ GuiPhotos.keyDown = function() {
 	}
 };
 
-GuiPhotos.processSelectedItem = function() {
+Photos.processSelectedItem = function() {
 	clearTimeout(this.backdropTimeout);
-	Support.processSelectedItem("GuiPhotos",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null,this.genreType,this.isLatest);
+	Support.processSelectedItem("Photos", this.ItemData, this.startParams, this.selectedItem, this.topLeftItem,null, this.genreType, this.isLatest);
 };
 
-GuiPhotos.playSelectedItem = function () {
+Photos.playSelectedItem = function () {
 	clearTimeout(this.backdropTimeout);
-	Support.playSelectedItem("GuiPhotos",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null);
+	Support.playSelectedItem("Photos", this.ItemData, this.startParams, this.selectedItem, this.topLeftItem,null);
 };
 
-GuiPhotos.openMenu = function() {
-	Support.updateURLHistory("Photos",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
+Photos.openMenu = function() {
+	Support.updateURLHistory("Photos",this.startParams[0], this.startParams[1], null, null, this.selectedItem, this.topLeftItem, null);
 	alert(this.selectedItem);
-	MainMenu.requested("Photos",this.ItemData.Items[this.selectedItem].Id);
+	MainMenu.requested("Photos", this.ItemData.Items[this.selectedItem].Id);
 };
 
-GuiPhotos.processLeftKey = function() {
+Photos.processLeftKey = function() {
 	if (this.selectedItem - this.topLeftItem == 0 || this.selectedItem - this.topLeftItem == 9) {
 		this.openMenu();
 	} else if (this.selectedItem - this.topLeftItem == 5) {
@@ -285,7 +283,7 @@ GuiPhotos.processLeftKey = function() {
 	}
 };
 
-GuiPhotos.processRightKey = function() {
+Photos.processRightKey = function() {
 	this.selectedItem++;
 	if (this.selectedItem >= this.ItemData.Items.length) {
 		this.selectedItem--;
@@ -299,11 +297,11 @@ GuiPhotos.processRightKey = function() {
 };
 
 //Moving up and down on an irregular shaped grid is imprecise. Handle each case individually.
-GuiPhotos.processUpKey = function() {
+Photos.processUpKey = function() {
 	if (this.selectedItem - this.topLeftItem == 0) {
 		if (this.selectedItem > 0) {
-			this.selectedItem = Math.max(this.selectedItem-9,0);
-			this.topLeftItem = Math.max(this.topLeftItem-9,0);
+			this.selectedItem = Math.max(this.selectedItem - 9, 0);
+			this.topLeftItem = Math.max(this.topLeftItem - 9, 0);
 			this.updateDisplayedItems();
 		} else {
 			this.selectedItem = 0;
@@ -364,7 +362,7 @@ GuiPhotos.processUpKey = function() {
 	this.updateSelectedItems();
 };
 
-GuiPhotos.processDownKey = function() {
+Photos.processDownKey = function() {
 	if (this.selectedItem - this.topLeftItem == 0 && this.ItemData.Items.length-1 > this.selectedItem+9) {
 		this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem+9);
 	} else if (this.selectedItem - this.topLeftItem == 1 && this.ItemData.Items.length-1 > this.selectedItem+3) {
@@ -411,11 +409,11 @@ GuiPhotos.processDownKey = function() {
 	this.updateSelectedItems();
 };
 
-GuiPhotos.setPadding = function(title) {
+Photos.setPadding = function(title) {
 	document.getElementById("Center").style.top = "100px";
 };
 
-GuiPhotos.returnFromMusicPlayer = function() {
+Photos.returnFromMusicPlayer = function() {
 	this.selectedItem = 0;
 	this.updateDisplayedItems();
 	this.updateSelectedItems();

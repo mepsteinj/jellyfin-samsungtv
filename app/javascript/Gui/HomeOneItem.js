@@ -63,7 +63,7 @@ HomeOneItem.start = function(title, url, selectedItem, topLeftItem) {
 		}
 
 		//Set page content
-		document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='bannerMenu'></div><div id=Center class='homeOneCenter'><p id='title' style='position:relative;font-size:1.4em;z-index:5;'>"+title+"</p><div id=Content></div></div>";
+		Support.widgetPutInnerHTML("pageContent", "<div id=bannerSelection class, ='bannerMenu'></div><div id=Center class='homeOneCenter'><p id='title' style='position:relative;font-size:1.4em;z-index:5;'>" + title + "</p><div id=Content></div></div>");
 
 		//Set isResume based on title - used in UpdateDisplayedItems
 		this.isResume = (title == "Resume" ||  title == "Continue Watching" ) ? true : false;
@@ -77,13 +77,15 @@ HomeOneItem.start = function(title, url, selectedItem, topLeftItem) {
 		this.menuItems = MainMenu.menuItemsHomePages;
 		
 		//Generate Banner display
+		var bannerSelection = "";
 		for (var index = 0; index < this.menuItems.length; index++) {
 			if (index != this.menuItems.length - 1) {
-				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItemHome bannerItemPadding'>" + Support.getMenuItemName(this.menuItems[index]) + "</div>";
+				bannerSelection += "<div id='bannerItem" + index + "' class='bannerItemHome bannerItemPadding'>" + Support.getMenuItemName(this.menuItems[index]) + "</div>";
 			} else {
-				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItemHome'>" + Support.getMenuItemName(this.menuItems[index]) + "</div>";
+				bannerSelection += "<div id='bannerItem" + index + "' class='bannerItemHome'>" + Support.getMenuItemName(this.menuItems[index]) + "</div>";
 			}
 		}
+		Support.widgetPutInnerHTML("bannerSelection", bannerSelection);
 
 		//Display first XX series
 		this.updateDisplayedItems();
@@ -112,10 +114,10 @@ HomeOneItem.start = function(title, url, selectedItem, topLeftItem) {
 
 	} else {
 		//Set message to user
-		document.getElementById("pageContent").innerHTML = "<p id='title' class=pageTitle>" + title + "</p><div id=content></div></div>";
-		document.getElementById("counter").innerHTML = "";
-		document.getElementById("title").innerHTML = "Sorry";
-		document.getElementById("content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid";
+		Support.widgetPutInnerHTML("pageContent", "<p id='title' class=pageTitle>" + title + "</p><div id=content></div></div>");
+		Support.widgetPutInnerHTML("counter", "");
+		Support.widgetPutInnerHTML("title", "Sorry");
+		Support.widgetPutInnerHTML("content", "Huh.. Looks like I have no content to show you in this view I'm afraid");
 
 		//Set Background
 		Support.fadeImage("images/bg1.jpg");
@@ -158,8 +160,7 @@ HomeOneItem.keyDown = function() {
 	alert("Key pressed: " + keyCode);
 
 	if (document.getElementById("notifications").style.visibility == "") {
-		document.getElementById("notifications").style.visibility = "hidden";
-		document.getElementById("notificationText").innerHTML = "";
+		Notifications.delNotification();
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";

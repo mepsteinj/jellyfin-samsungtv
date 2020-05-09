@@ -1,4 +1,4 @@
-var GuiPlaylist = {
+var Playlist = {
 	AlbumData : null,
 	selectedItem : 0, //the current row (-1 is the menu row).
 	topLeftItem : 0,
@@ -10,7 +10,7 @@ var GuiPlaylist = {
 	playItems : ["PlayFrom_","Play_","View_","Remove_"]
 };
 
-GuiPlaylist.getMaxDisplay = function() {
+Playlist.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
 };
 
@@ -18,8 +18,8 @@ GuiPlaylist.getMaxDisplay = function() {
 //      Episode Functions
 //------------------------------------------------------------
 
-GuiPlaylist.start = function(title,url,type,playlistId) { //Type is either Audio or Video
-	alert("Page Enter : GuiPlaylist");
+Playlist.start = function(title,url,type,playlistId) { //Type is either Audio or Video
+	alert("Page Enter : Playlist");
 	Helper.setControlButtons(null, null, null, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
 
 	//Save Start Params
@@ -38,19 +38,19 @@ GuiPlaylist.start = function(title,url,type,playlistId) { //Type is either Audio
 		//Set PageContent
 		document.getElementById("pageContent").className = "";
 		document.getElementById("pageContent").style.fontSize="0.9em";
-		document.getElementById("pageContent").innerHTML = "<div id='playlistTitle' class='playlistTitle'></div> \
+		Support.widgetPutInnerHTML("pageContent", "<div id='playlistTitle' class='playlistTitle'></div> \
 			<div id='playlistSubtitle' class='playlistSubtitle'></div> \
 			<div id='playlist' class='playlist'> \
 			<div id='playlistGlobals' class='playlistGlobals'> \
-			<div id='PlayAll' class='guiMusic_Global'>Play All</div> \
-			<div id='ShuffleAll' class='guiMusic_Global'>Shuffle</div> \
-			<div id='Delete' class='guiMusic_Global'>Delete</div></div> \
-			<div id='playlistOptions' class='playlistOptions'></div></div>";
-		document.getElementById("counter").innerHTML = "1/" + this.topMenuItems.length;
+			<div id='playAll' class='musicGlobal'>Play All</div> \
+			<div id='shuffleAll' class='musicGlobal'>Shuffle</div> \
+			<div id='delete' class='musicGlobal'>Delete</div></div> \
+			<div id='playlistOptions' class='playlistOptions'></div></div>");
+		Support.widgetPutInnerHTML("counter", "1/" + this.topMenuItems.length);
 
 		//Set Page Title
-		document.getElementById("playlistTitle").innerHTML = title;
-		document.getElementById("playlistSubtitle").innerHTML = type + " Playlist";
+		Support.widgetPutInnerHTML("playlistTitle", title);
+		Support.widgetPutInnerHTML("playlistSubtitle",type + " Playlist");
 
 		//Get Page Items
 		this.updateDisplayedItems();
@@ -59,34 +59,34 @@ GuiPlaylist.start = function(title,url,type,playlistId) { //Type is either Audio
 		this.updateSelectedItems();
 
 		//Set Focus for Key Events
-		document.getElementById("GuiPlaylist").focus();
+		document.getElementById("evnPlaylist").focus();
 	} else {
 		//No items in playlist
 		//Set PageContent
 		document.getElementById("pageContent").className = "";
-		document.getElementById("pageContent").innerHTML = "<div id='playlistTitle' class='playlistTitle'></div> \
+		Support.widgetPutInnerHTML("pageContent", "<div id='playlistTitle' class='playlistTitle'></div> \
 			<div id='playlistSubtitle' class='playlistSubtitle'></div> \
 			<div id='playlist' class='playlist'> \
 			<div id='playlistGlobals' class='playlistGlobals'> \
-			<div id='PlayAll' class='guiMusic_Global'>Play All</div> \
-			<div id='ShuffleAll' class='guiMusic_Global'>Shuffle</div> \
-			<div id='Delete' class='guiMusic_Global'>Delete</div></div> \
-			<div id='playlistOptions' class='playlistOptions'>There are no items in this playlist</div></div>";
-		document.getElementById("counter").innerHTML = "0/0";
+			<div id='playAll' class='usicGlobal'>Play All</div> \
+			<div id='shuffleAll' class='musicGlobal'>Shuffle</div> \
+			<div id='delete' class='musicGlobal'>Delete</div></div> \
+			<div id='playlistOptions' class='playlistOptions'>There are no items in this playlist</div></div>");
+		Support.widgetPutInnerHTML("counter", "0/0");
 
 		//Set Page Title
-		document.getElementById("playlistTitle").innerHTML = title;
-		document.getElementById("playlistSubtitle").innerHTML = type + " Playlist";
+		Support.widgetPutInnerHTML("playlistTitle", title);
+		Support.widgetPutInnerHTML("playlistSubtitle", type + " Playlist");
 
 		//Update Selected Item
 		this.updateSelectedItems();
 
 		//Set Focus for Key Events
-		document.getElementById("GuiPlaylist").focus();
+		document.getElementById("evnPlaylist").focus();
 	}
 };
 
-GuiPlaylist.updateDisplayedItems = function() {
+Playlist.updateDisplayedItems = function() {
 	var htmlToAdd = "";
 	if (this.startParams[2] == "Audio") {
 		htmlToAdd = "<table><th style='width:200px'></th><th style='width:66px'></th><th style='width:72px'></th><th style='width:120px'></th><th style='width:66px'></th><th style='width:500px'></th><th style='width:130px'></th>";
@@ -99,9 +99,9 @@ GuiPlaylist.updateDisplayedItems = function() {
 				TrackDetails = "?";
 			}
 
-			htmlToAdd += "<tr><td id=PlayFrom_"+this.AlbumData.Items[index].Id+" class='guiMusic_TableTd'>Play From Here</td><td id=Play_"+this.AlbumData.Items[index].Id+" class='guiMusic_TableTd'>Play</td><td id=View_"+this.AlbumData.Items[index].Id+" class='guiMusic_TableTd'>View</td><td id=Remove_"+this.AlbumData.Items[index].Id+" class='guiMusic_TableTd'>Remove</td>" +
-					"<td class='guiMusic_TableTd'>"+TrackDetails+ "</td><td id="+ this.AlbumData.Items[index].Id +" class='guiMusic_TableTd'>" + this.AlbumData.Items[index].Name + "</td>" +
-							"<td class='guiMusic_TableTd'>"+Support.convertTicksToTimeSingle(this.AlbumData.Items[index].RunTimeTicks/10000,true)+"</td></tr>";
+			htmlToAdd += "<tr><td id=PlayFrom_"+this.AlbumData.Items[index].Id+" class='musicTableTd'>Play From Here</td><td id=play_"+this.AlbumData.Items[index].Id+" class='musicTableTd'>Play</td><td id=view_"+this.AlbumData.Items[index].Id+" class='musicTableTd'>View</td><td id=remove_"+this.AlbumData.Items[index].Id+" class='musicTableTd'>Remove</td>" +
+					"<td class='musicTableTd'>"+TrackDetails+ "</td><td id="+ this.AlbumData.Items[index].Id +" class='musicTableTd'>" + this.AlbumData.Items[index].Name + "</td>" +
+							"<td class='musicTableTd'>"+Support.convertTicksToTimeSingle(this.AlbumData.Items[index].RunTimeTicks/10000,true)+"</td></tr>";
 		}
 	} else {
 		htmlToAdd = "<table><th style='width:200px'></th><th style='width:66px'></th><th style='width:72px'></th><th style='width:120px'></th><th style='width:300px'></th><th style='width:100px'></th><th style='width:500px'></th><th style='width:130px'></th>";
@@ -111,34 +111,34 @@ GuiPlaylist.updateDisplayedItems = function() {
 				var epNo = Support.getNameFormat(null,this.AlbumData.Items[index].ParentIndexNumber,null,this.AlbumData.Items[index].IndexNumber);
 				var seriesName = (this.AlbumData.Items[index].SeriesName !== undefined)? this.AlbumData.Items[index].SeriesName : "Unknown";
 
-				htmlToAdd += "<tr><td id=PlayFrom_"+this.AlbumData.Items[index].Id+" class='guiMusic_TableTd'>Play From Here</td><td id=Play_"+this.AlbumData.Items[index].Id+" class='guiMusic_TableTd'>Play</td><td id=View_"+this.AlbumData.Items[index].Id+" class='guiMusic_TableTd'>View</td><td id=Remove_"+this.AlbumData.Items[index].Id+" class='guiMusic_TableTd'>Remove</td>" +
-						"<td id="+ this.AlbumData.Items[index].Id +" class='guiMusic_TableTd'>" + seriesName + "</td><td id=epNo_"+ this.AlbumData.Items[index].Id +" class='guiMusic_TableTd'>" + epNo + "</td><td id=epName_"+ this.AlbumData.Items[index].Id +" class='guiMusic_TableTd'>" + this.AlbumData.Items[index].Name + "</td>" +
-								"<td class='guiMusic_TableTd'>"+Support.convertTicksToTimeSingle(this.AlbumData.Items[index].RunTimeTicks/10000,true)+"</td></tr>";
+				htmlToAdd += "<tr><td id=playFrom_"+this.AlbumData.Items[index].Id+" class='musicTableTd'>Play From Here</td><td id=play_"+this.AlbumData.Items[index].Id+" class='musicTableTd'>Play</td><td id=view_"+this.AlbumData.Items[index].Id+" class='musicTableTd'>View</td><td id=remove_"+this.AlbumData.Items[index].Id+" class='musicTableTd'>Remove</td>" +
+						"<td id="+ this.AlbumData.Items[index].Id +" class='musicTableTd'>" + seriesName + "</td><td id=epNo_"+ this.AlbumData.Items[index].Id +" class='musicTableTd'>" + epNo + "</td><td id=epName_"+ this.AlbumData.Items[index].Id +" class='musicTableTd'>" + this.AlbumData.Items[index].Name + "</td>" +
+								"<td class='musicTableTd'>" + Support.convertTicksToTimeSingle(this.AlbumData.Items[index].RunTimeTicks/10000,true)+"</td></tr>";
 			} else {
-				htmlToAdd += "<tr><td id=PlayFrom_"+this.AlbumData.Items[index].Id+" class='guiMusic_TableTd'>Play From Here</td><td id=Play_"+this.AlbumData.Items[index].Id+" class='guiMusic_TableTd'>Play</td><td id=View_"+this.AlbumData.Items[index].Id+" class='guiMusic_TableTd'>View</td><td id=Remove_"+this.AlbumData.Items[index].Id+" class='guiMusic_TableTd'>Remove</td>" +
-						"<td id="+ this.AlbumData.Items[index].Id +" class='guiMusic_TableTd'colspan=3 >" + this.AlbumData.Items[index].Name + "</td>" +
-								"<td class='guiMusic_TableTd'>"+Support.convertTicksToTimeSingle(this.AlbumData.Items[index].RunTimeTicks/10000,true)+"</td></tr>";
+				htmlToAdd += "<tr><td id=PlayFrom_"+this.AlbumData.Items[index].Id+" class='musicTableTd'>Play From Here</td><td id=play_"+this.AlbumData.Items[index].Id+" class='musicTableTd'>Play</td><td id=view_" + this.AlbumData.Items[index].Id+" class='musicTableTd'>View</td><td id=remove_"+this.AlbumData.Items[index].Id+" class='musicTableTd'>Remove</td>" +
+						"<td id="+ this.AlbumData.Items[index].Id +" class='musicTableTd' colspan=3 >" + this.AlbumData.Items[index].Name + "</td>" +
+								"<td class='musicTableTd'>"+Support.convertTicksToTimeSingle(this.AlbumData.Items[index].RunTimeTicks/10000,true)+"</td></tr>";
 			}
 		}
 	}
-	document.getElementById("playlistOptions").innerHTML = htmlToAdd + "</table>";
+	Support.widgetPutInnerHTML("playlistOptions", htmlToAdd + "</table>");
 };
 
 //Function sets CSS Properties so show which user is selected
-GuiPlaylist.updateSelectedItems = function () {
+Playlist.updateSelectedItems = function () {
 	if (this.selectedItem == -1) {
 		//Highlight the selected global item (PlayAll, Shuffle etc.)
 		for (var index = 0; index < this.topMenuItems.length; index++) {
 			if (index == this.selectedItem2) {
-				document.getElementById(this.topMenuItems[index]).className = "guiMusic_Global highlight"+Main.highlightColour+"Background";
+				document.getElementById(this.topMenuItems[index]).className = "musicGlobal highlight" + Main.highlightColour+"Background";
 			} else {
-				document.getElementById(this.topMenuItems[index]).className = "guiMusic_Global";
+				document.getElementById(this.topMenuItems[index]).className = "musicGlobal";
 			}
 		}
 	} else {
 		//Reset the global items.
 		for (var index = 0; index < this.topMenuItems.length; index++) {
-			document.getElementById(this.topMenuItems[index]).className = "guiMusic_Global";
+			document.getElementById(this.topMenuItems[index]).className = "musicGlobal";
 		}
 
 		//Highlight the selected list item.
@@ -146,15 +146,15 @@ GuiPlaylist.updateSelectedItems = function () {
 			if (index == this.selectedItem) {
 				for (var index2 = 0; index2 < this.playItems.length; index2++) {
 					if (index2 == this.selectedItem2) {
-						document.getElementById(this.playItems[index2]+this.AlbumData.Items[index].Id).className = "guiMusic_TableTd highlight"+Main.highlightColour+"Background";
+						document.getElementById(this.playItems[index2]+this.AlbumData.Items[index].Id).className = "musicTableTd highlight" + Main.highlightColour + "Background";
 					} else {
-						document.getElementById(this.playItems[index2]+this.AlbumData.Items[index].Id).className = "guiMusic_TableTd";
+						document.getElementById(this.playItems[index2]+this.AlbumData.Items[index].Id).className = "musicTableTd";
 					}
 				}
 			} else {
-				document.getElementById(this.AlbumData.Items[index].Id).className = "guiMusic_TableTd";
+				document.getElementById(this.AlbumData.Items[index].Id).className = "musicTableTd";
 				for (var index2 = 0; index2 < this.playItems.length; index2++) {
-					document.getElementById(this.playItems[index2]+this.AlbumData.Items[index].Id).className = "guiMusic_TableTd";
+					document.getElementById(this.playItems[index2]+this.AlbumData.Items[index].Id).className = "musicTableTd";
 				}
 			}
 		}
@@ -162,20 +162,19 @@ GuiPlaylist.updateSelectedItems = function () {
 
 	//Set Counter to be album count or x/3 for top part
 	if (this.selectedItem == -1) {
-		document.getElementById("counter").innerHTML = (this.selectedItem2 + 1) + "/" + this.topMenuItems.length;
+	  Support.widgetPutInnerHTML("counter", (this.selectedItem2 + 1) + "/" + this.topMenuItems.length);
 	} else {
-		document.getElementById("counter").innerHTML = (this.selectedItem + 1) + "/" + this.AlbumData.Items.length;
+	  Support.widgetPutInnerHTML("counter", (this.selectedItem + 1) + "/" + this.AlbumData.Items.length);
 	}
 
 };
 
-GuiPlaylist.keyDown = function() {
+Playlist.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
 	if (document.getElementById("notifications").style.visibility == "") {
-		document.getElementById("notifications").style.visibility = "hidden";
-		document.getElementById("notificationText").innerHTML = "";
+		Notifications.delNotification();
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -189,7 +188,7 @@ GuiPlaylist.keyDown = function() {
 		//Update Main.js isScreensaverRunning - Sets to True
 		Main.setIsScreensaverRunning();
 		//End Screensaver
-		GuiImagePlayerScreensaver.stopScreensaver();
+		ImagePlayerScreensaver.stopScreensaver();
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
@@ -230,9 +229,9 @@ GuiPlaylist.keyDown = function() {
 			break;
 		case tvKey.KEY_BLUE:
 			if (this.selectedItem == -1) {
-				MusicPlayer.showMusicPlayer("Playlist", this.topMenuItems[this.selectedItem2],"guiMusic_Global highlight"+Main.highlightColour+"Background");
+				MusicPlayer.showMusicPlayer("Playlist", this.topMenuItems[this.selectedItem2],"musicGlobal highlight" + Main.highlightColour + "Background");
 			} else {
-				MusicPlayer.showMusicPlayer("Playlist", this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id,"guiMusic_TableTd highlight"+Main.highlightColour+"Background");
+				MusicPlayer.showMusicPlayer("Playlist", this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id,"musicTableTd highlight" + Main.highlightColour + "Background");
 			}
 			break;
 		case tvKey.KEY_EXIT:
@@ -242,16 +241,16 @@ GuiPlaylist.keyDown = function() {
 	}
 };
 
-GuiPlaylist.openMenu = function() {
-	Support.updateURLHistory("GuiPlaylist", this.startParams[0], this.startParams[1], null, null, this.selectedItem, this.topLeftItem, true);
+Playlist.openMenu = function() {
+	Support.updateURLHistory("Playlist", this.startParams[0], this.startParams[1], null, null, this.selectedItem, this.topLeftItem, true);
 	if (this.selectedItem == -1) {
-		MainMenu.requested("Playlist", this.topMenuItems[this.selectedItem], "guiMusicGlobal green");
+		MainMenu.requested("Playlist", this.topMenuItems[this.selectedItem], "musicGlobal green");
 	} else {
-		MainMenu.requested("Playlist", this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id, "guiMusicTableTd highlight" + Main.highlightColour + "Background");
+		MainMenu.requested("Playlist", this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id, "musicTableTd highlight" + Main.highlightColour + "Background");
 	}
 };
 
-GuiPlaylist.processUpKey = function() {
+Playlist.processUpKey = function() {
 	this.selectedItem--;
 	if (this.selectedItem < -1) { //When would this even happen?
 		this.selectedItem = -1;
@@ -260,7 +259,7 @@ GuiPlaylist.processUpKey = function() {
 			this.selectedItem2 = 0; //Always start from Play All so that Delete can only be highlighted by the user.
 			document.getElementById(this.AlbumData.Items[0].Id).style.color = "white";
 			for (var index = 0; index < this.playItems.length; index++) {
-				document.getElementById(this.playItems[index]+this.AlbumData.Items[0].Id).className = "guiMusic_TableTd";
+				document.getElementById(this.playItems[index]+this.AlbumData.Items[0].Id).className = "musicTableTd";
 			}
 		}
 		if (this.selectedItem < this.topLeftItem) {
@@ -275,7 +274,7 @@ GuiPlaylist.processUpKey = function() {
 	}
 };
 
-GuiPlaylist.processDownKey = function() {
+Playlist.processDownKey = function() {
 	this.selectedItem++;
 	if (this.selectedItem == 0) {
 		this.selectedItem2 = 0;
@@ -295,7 +294,7 @@ GuiPlaylist.processDownKey = function() {
 	this.updateSelectedItems();
 };
 
-GuiPlaylist.processLeftKey = function() {
+Playlist.processLeftKey = function() {
 	this.selectedItem2--;
 	if (this.selectedItem2 == -1) {
 		this.selectedItem2 = 0;
@@ -305,7 +304,7 @@ GuiPlaylist.processLeftKey = function() {
 	}
 };
 
-GuiPlaylist.processRightKey = function() {
+Playlist.processRightKey = function() {
 	this.selectedItem2++;
 	if (this.selectedItem == -1) {
 		if (this.selectedItem2 > this.topMenuItems.length-1) {
@@ -322,7 +321,7 @@ GuiPlaylist.processRightKey = function() {
 	}
 };
 
-GuiPlaylist.processSelectedItem = function() {
+Playlist.processSelectedItem = function() {
 	alert("List item = " + this.selectedItem + " : Menu item = " + this.selectedItem2);
 	if (this.selectedItem == -1) {
 		//Is Top Menu Bar
@@ -331,8 +330,8 @@ GuiPlaylist.processSelectedItem = function() {
 			if (this.AlbumData.Items.length > 0) {
 				var url = Server.getCustomURL("/Playlists/"+this.startParams[3]+"/Items?userId="+Server.getUserID()+"&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,MediaSources&format=json");
 				if (this.startParams[2] == "Video") {
-					Support.updateURLHistory("GuiPlaylist",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],0,0,null);
-					GuiPlayer.start("PlayAll",url,0,"GuiPlaylist");
+					Support.updateURLHistory("Playlist",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],0,0,null);
+					Player.start("PlayAll",url,0,"Playlist");
 				} else if (this.startParams[2] == "Audio") {
 					MusicPlayer.start("Album", url, "Playlist", false);
 				}
@@ -342,8 +341,8 @@ GuiPlaylist.processSelectedItem = function() {
 			if (this.AlbumData.Items.length > 0) {
 				var url = Server.getCustomURL("/Users/"+Server.getUserID()+"/Items?userId="+Server.getUserID()+"&Fields=MediaSources,Chapters&Limit=100&Filters=IsNotFolder&Recursive=true&SortBy=Random&ParentId="+this.startParams[3]+"&ExcludeLocationTypes=Virtual&format=json");
 				if (this.startParams[2] == "Video") {
-					Support.updateURLHistory("GuiPlaylist",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],0,0,null);
-					GuiPlayer.start("PlayAll",url,0,"GuiPlaylist");
+					Support.updateURLHistory("Playlist",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],0,0,null);
+				  Player.start("PlayAll",url,0,"Playlist");
 				} else if (this.startParams[2] == "Audio") {
 					MusicPlayer.start("Album", url, "Playlist", false);
 				}
@@ -358,8 +357,8 @@ GuiPlaylist.processSelectedItem = function() {
 		case 0:
 			var url = Server.getCustomURL("/Playlists/"+this.startParams[3]+"/Items?userId="+Server.getUserID()+"&StartIndex="+this.selectedItem+"&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,MediaSources&format=json");
 			if (this.startParams[2] == "Video") {
-				Support.updateURLHistory("GuiPlaylist",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],0,0,null);
-				GuiPlayer.start("PlayAll",url,0,"GuiPlaylist");
+				Support.updateURLHistory("Playlist",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],0,0,null);
+				Player.start("PlayAll",url,0,"Playlist");
 			} else if (this.startParams[2] == "Audio") {
 				MusicPlayer.start("Album", url, "Playlist", false);
 			}
@@ -367,22 +366,22 @@ GuiPlaylist.processSelectedItem = function() {
 		case 1:
 			var url = Server.getItemInfoURL(this.AlbumData.Items[this.selectedItem].Id);
 			if (this.startParams[2] == "Video") {
-				Support.updateURLHistory("GuiPlaylist",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem,this.topLeftItem,null);
-				GuiPlayer.start("PLAY",url,0,"GuiPlaylist");
+				Support.updateURLHistory("Playlist",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem,this.topLeftItem,null);
+			  Player.start("PLAY",url,0,"Playlist");
 			} else if (this.startParams[2] == "Audio"){
 				MusicPlayer.start("Song", url, "Playlist", false);
 			}
 
 			break;
 		case 2:
-			Support.updateURLHistory("GuiPlaylist",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem,this.topLeftItem,null);
+			Support.updateURLHistory("Playlist",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem,this.topLeftItem,null);
 			if (this.startParams[2] == "Video") {
 				var url = Server.getItemInfoURL(this.AlbumData.Items[this.selectedItem].Id);
 				ItemDetails.start(this.AlbumData.Items[this.selectedItem].Name, url, 0);
 			} else if (this.startParams[2] == "Audio"){
 				var url = Server.getChildItemsURL(this.AlbumData.Items[this.selectedItem].AlbumId,"&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Audio&Recursive=true&CollapseBoxSetItems=false");
 				alert (url);
-				GuiMusic.start(this.AlbumData.Items[this.selectedItem].Name,url, "MusicAlbum");
+				Music.start(this.AlbumData.Items[this.selectedItem].Name,url, "MusicAlbum");
 			}
 
 			break;
@@ -390,14 +389,14 @@ GuiPlaylist.processSelectedItem = function() {
 			Server.removeFromPlaylist(this.startParams[3],this.AlbumData.Items[this.selectedItem].PlaylistItemId);
 			//Timeout required to allow for action on the server!
 			setTimeout(function(){
-				GuiPlaylist.start(GuiPlaylist.startParams[0],GuiPlaylist.startParams[1],GuiPlaylist.startParams[2],GuiPlaylist.startParams[3]);
+				Playlist.start(Playlist.startParams[0],Playlist.startParams[1],Playlist.startParams[2],Playlist.startParams[3]);
 				},250);
 			break;
 		}
 	}
 };
 
-GuiPlaylist.deletePlaylist = function (playlistId) {
+Playlist.deletePlaylist = function (playlistId) {
 	var ids = "";
 	for(var index = 0; index < this.AlbumData.Items.length; index++) {
 		alert (this.AlbumData.Items[index].PlaylistItemId);
@@ -418,6 +417,6 @@ GuiPlaylist.deletePlaylist = function (playlistId) {
 
 	setTimeout(function(){
 		var url = Server.getItemTypeURL("SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Playlist&Recursive=true&Fields=SortName");
-		GuiDisplayOneItem.start("Playlists",url,0,0);
+		DisplayOneItem.start("Playlists",url,0,0);
 	}, 450);
 };

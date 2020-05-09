@@ -74,7 +74,7 @@ HomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,topLeftIte
 			this.topLeftItem = 0;
 			this.topLeftItem2 = topLeftItem;
 			//Set Focus for Key Events
-			document.getElementById("GuiHomeTwoItemsBottom").focus();
+			document.getElementById("evnHomeTwoItemsBottom").focus();
 		} else {
 			this.selectedItem = selectedItem;
 			this.selectedItem2 = -1; //Prevents any item being shown as selected!
@@ -85,11 +85,11 @@ HomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,topLeftIte
 		}
 
 		//Set PageContent
-		document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='bannerMenu'></div>" +
+		Support.widgetPutInnerHTML("pageContent", "<div id=bannerSelection class='bannerMenu'></div>" +
 				"<div id=Center class='homeOneCenter'>" +
 				"<p style='position:relative;font-size:1.4em;padding-left:11px;z-index:5;'>"+title1+"</p><div id='TopRow' style='margin-bottom:50px'><div id=content></div></div>" +
 				"<p style='position:relative;font-size:1.4em;padding-left:11px;z-index:5;'>"+title2+"</p><div id='BottomRow'><div id=Content2></div></div>" +
-				"</div>";
+				"</div>");
 
 		//Set isResume based on title - used in UpdateDisplayedItems
 		this.isResume = (title1 == "Resume" ||  title1 == "Continue Watching" ) ? true : false;
@@ -103,13 +103,15 @@ HomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,topLeftIte
 		this.menuItems = MainMenu.menuItemsHomePages;
 
 		//Generate Banner display
+		var bannerSelection = "";
 		for (var index = 0; index < this.menuItems.length; index++) {
 			if (index != this.menuItems.length-1) {
-				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItemHome bannerItemPadding'>"+this.menuItems[index].replace(/_/g, ' ')+"</div>";
+				bannerSelection += "<div id='bannerItem" + index + "' class='bannerItemHome bannerItemPadding'>"+this.menuItems[index].replace(/_/g, ' ')+"</div>";
 			} else {
-				document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItemHome'>"+this.menuItems[index].replace(/_/g, ' ')+"</div>";
+				bannerSelection += "<div id='bannerItem" + index + "' class='bannerItemHome'>"+this.menuItems[index].replace(/_/g, ' ')+"</div>";
 			}
 		}
+		Support.widgetPutInnerHTML("bannerSelection", bannerSelection);
 
 		//Display first XX series
 		this.updateDisplayedItems();
@@ -194,8 +196,7 @@ HomeTwoItems.keyDown = function()
 	alert("Key pressed: " + keyCode);
 
 	if (document.getElementById("notifications").style.visibility == "") {
-		document.getElementById("notifications").style.visibility = "hidden";
-		document.getElementById("notificationText").innerHTML = "";
+		Notifications.delNotification();
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -209,7 +210,7 @@ HomeTwoItems.keyDown = function()
 		//Update Main.js isScreensaverRunning - Sets to True
 		Main.setIsScreensaverRunning();
 		//End Screensaver
-		GuiImagePlayerScreensaver.stopScreensaver();
+		ImagePlayerScreensaver.stopScreensaver();
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
@@ -277,7 +278,7 @@ HomeTwoItems.keyDown = function()
 					this.selectedItem = 0;
 
 					//Set Focus
-					document.getElementById("GuiHomeTwoItemsBottom").focus();
+					document.getElementById("evnHomeTwoItemsBottom").focus();
 					//Update Selected
 					this.selectedItem2 = 0;
 					this.updateSelectedItems2(false);
@@ -415,8 +416,7 @@ HomeTwoItems.bottomKeyDown = function()
 	alert("Key pressed: " + keyCode);
 
 	if (document.getElementById("notifications").style.visibility == "") {
-		document.getElementById("notifications").style.visibility = "hidden";
-		document.getElementById("notificationText").innerHTML = "";
+		Notifications.delNotification();
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -430,7 +430,7 @@ HomeTwoItems.bottomKeyDown = function()
 		//Update Main.js isScreensaverRunning - Sets to True
 		Main.setIsScreensaverRunning();
 		//End Screensaver
-		GuiImagePlayerScreensaver.stopScreensaver();
+		ImagePlayerScreensaver.stopScreensaver();
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}

@@ -1,4 +1,4 @@
-var GuiDisplaySeries = {
+var DisplaySeries = {
 	ItemData : null,
 	ItemIndexData : null,
 	totalRecordCount : null,
@@ -24,7 +24,7 @@ var GuiDisplaySeries = {
 	isLatest : false
 };
 
-GuiDisplaySeries.onFocus = function() {
+DisplaySeries.onFocus = function() {
 	switch (this.currentMediaType) {
 	case "Movies":
 	case "TV":
@@ -39,15 +39,15 @@ GuiDisplaySeries.onFocus = function() {
 	}
 };
 
-GuiDisplaySeries.getMaxDisplay = function() {
+DisplaySeries.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
 };
 
-GuiDisplaySeries.start = function(title,url,selectedItem,topLeftItem,items) {
-	alert("Page Enter : GuiDisplaySeries");
+DisplaySeries.start = function(title,url,selectedItem,topLeftItem,items) {
+	alert("Page Enter : DisplaySeries");
 	this.onFocus();
 	//Save Start Params
-	Support.pageLoadTimes("GuiDisplaySeries","Start",true);
+	Support.pageLoadTimes("DisplaySeries","Start",true);
 	this.startParams = [title,url];
 
 	//Reset Values
@@ -77,10 +77,10 @@ GuiDisplaySeries.start = function(title,url,selectedItem,topLeftItem,items) {
 
 	if (this.ItemData == null) { Support.processReturnURLHistory(); }
 	this.totalRecordCount = (this.totalRecordCount == 0) ? this.ItemData.TotalRecordCount : this.totalRecordCount;
-	Support.pageLoadTimes("GuiDisplaySeries","RetrievedServerData",false);
+	Support.pageLoadTimes("DisplaySeries","RetrievedServerData",false);
 
 	//Update Padding on pageContent
-	document.getElementById("pageContent").innerHTML = "<div id=bannerSelection class='bannerMenu'></div>" +
+	Support.widgetPutInnerHTML("pageContent", "<div id=bannerSelection class='bannerMenu'></div>" +
 			"<div id=Center class='SeriesCenter'>" +
 				"<div id=content></div>" +
 			"</div>" +
@@ -88,7 +88,7 @@ GuiDisplaySeries.start = function(title,url,selectedItem,topLeftItem,items) {
 				"<div id='SeriesTitle' class='SeriesTitle'></div>" +
 				"<div id='SeriesSubData' class='SeriesSubData'></div>" +
 				"<div id='SeriesOverview' class='SeriesOverview'></div>" +
-			"</div>";
+			"</div>");
 
 	//Split Name - 1st Element = View, 2nd = Type
 	var titleArray = title.split(" ");
@@ -203,15 +203,17 @@ GuiDisplaySeries.start = function(title,url,selectedItem,topLeftItem,items) {
 		}
 
 		//Create banner headers only if all tv or all movies is selected
+		var bannerSelection = "";
 		if (this.isAllorFolder == 0) {
 			for (var index = 0; index < this.bannerItems.length; index++) {
 				if (index != this.bannerItems.length-1) {
-					document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem bannerItemPadding'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";
+					bannerSelection += "<div id='bannerItem" + index + "' class='bannerItem bannerItemPadding'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";
 				} else {
-					document.getElementById("bannerSelection").innerHTML += "<div id='bannerItem" + index + "' class='bannerItem'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";
+					bannerSelection += "<div id='bannerItem" + index + "' class='bannerItem'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";
 				}
 			}
 		}
+		Support.widgetPutInnerHTML("bannerSelection", bannerSelection);
 
 		//Indexing Algorithm
 		if (this.currentMediaType != "LiveTV") {
@@ -227,20 +229,20 @@ GuiDisplaySeries.start = function(title,url,selectedItem,topLeftItem,items) {
 		this.selectedBannerItem = 0;
 
 		//Set Focus for Key Events
-		document.getElementById("GuiDisplaySeries").focus();
-		Support.pageLoadTimes("GuiDisplaySeries","UserControl",false);
+		document.getElementById("evnDisplaySeries").focus();
+		Support.pageLoadTimes("DisplaySeries", "UserControl", false);
 
 	} else {
 		//Set message to user
-		document.getElementById("counter").innerHTML = "";
+		Support.widgetPutInnerHTML("counter", "");
 		document.getElementById("content").style.fontSize="40px";
-		document.getElementById("content").innerHTML = "Huh.. Looks like I have no content to show you in this view I'm afraid<br>Press return to get back to the previous screen";
+		Support.widgetPutInnerHTML("content", "Huh.. Looks like I have no content to show you in this view I'm afraid<br>Press return to get back to the previous screen");
 
 		document.getElementById("noItems").focus();
 	}
 };
 
-GuiDisplaySeries.updateDisplayedItems = function() {
+DisplaySeries.updateDisplayedItems = function() {
 	if (this.topLeftItem + this.getMaxDisplay() > this.ItemData.Items.length) {
 		if (this.totalRecordCount > this.ItemData.Items.length) {
 			this.loadMoreItems();
@@ -252,7 +254,7 @@ Support.updateDisplayedItems(this.ItemData.Items,this.selectedItem,this.topLeftI
 };
 
 //Function sets CSS Properties so show which user is selected
-GuiDisplaySeries.updateSelectedItems = function () {
+DisplaySeries.updateSelectedItems = function () {
 	if (this.isTvOrMovies == 2 || this.ItemData.Items[0].Type == "ChannelAudioItem") {
 		//Music - Use different styles
 		Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem, this.topLeftItem,
@@ -356,25 +358,25 @@ GuiDisplaySeries.updateSelectedItems = function () {
 		if (this.ItemData.Items[this.selectedItem].CurrentProgram !== undefined) {
 			var programmeURL = Server.getItemInfoURL(this.ItemData.Items[this.selectedItem].CurrentProgram.Id,"");
 			var ProgrammeData = Server.getContent(programmeURL);
-			document.getElementById("SeriesTitle").innerHTML = this.ItemData.Items[this.selectedItem].Name;
-			document.getElementById("SeriesSubData").innerHTML = "<font color='red'>On Now: </font>"+this.ItemData.Items[this.selectedItem].CurrentProgram.Name;
-			document.getElementById("SeriesOverview").style.top =
-			document.getElementById("SeriesOverview").innerHTML = ProgrammeData.Overview;
-			Support.scrollingText("SeriesOverview");
+			Support.widgetPutInnerHTML("seriesTitle", this.ItemData.Items[this.selectedItem].Name);
+			Support.widgetPutInnerHTML("seriesSubData", "<font color='red'>On Now: </font>" + this.ItemData.Items[this.selectedItem].CurrentProgram.Name);
+			document.getElementById("seriesOverview").style.top = "960px"
+			Support.widgetPutInnerHTML("seriesOverview", ProgrammeData.Overview);
+			Support.scrollingText("seriesOverview");
 		} else {
-			document.getElementById("SeriesTitle").innerHTML = htmlForTitle;
-			document.getElementById("SeriesSubData").innerHTML = htmlForSubData;
-			document.getElementById("SeriesOverview").innerHTML = htmlForOverview;
-			Support.scrollingText("SeriesOverview");
+		  Support.widgetPutInnerHTML("seriesTitle", htmlForTitle);
+		  Support.widgetPutInnerHTML("seriesSubData", htmlForSubData);
+		  Support.widgetPutInnerHTML("seriesOverview", htmlForOverview);
+			Support.scrollingText("seriesOverview");
 		}
 	} else {
-		if (File.getUserProperty("LargerView") == true){
-			document.getElementById("SeriesTitle").innerHTML = htmlForTitle;
-			document.getElementById("SeriesOverview").innerHTML = htmlForOverview;
-			Support.scrollingText("SeriesOverview");
+		if (File.getUserProperty("LargerView") == true) {
+			Support.widgetPutInnerHTML("seriesTitle", htmlForTitle);
+			Support.widgetPutInnerHTML("seriesOverview", htmlForOverview);
+			Support.scrollingText("seriesOverview");
 		} else {
-			document.getElementById("SeriesContent").style.top = "960px";
-			document.getElementById("SeriesTitle").innerHTML = htmlForTitle;
+			document.getElementById("seriesContent").style.top = "960px";
+			Support.widgetPutInnerHTML("seriesTitle", htmlForTitle);
 		}
 	}
 
@@ -386,14 +388,14 @@ GuiDisplaySeries.updateSelectedItems = function () {
 			(this.currentMediaType == "Music")) {
 		var currentSelectedItem = this.selectedItem;
 		setTimeout(function(){
-			if (GuiDisplaySeries.selectedItem == currentSelectedItem) {
+			if (DisplaySeries.selectedItem == currentSelectedItem) {
 					//A movie.
-					if (GuiDisplaySeries.ItemData.Items[currentSelectedItem].BackdropImageTags.length > 0) {
-						var imgsrc = Server.getBackgroundImageURL(GuiDisplaySeries.ItemData.Items[currentSelectedItem].Id, "Backdrop", Main.backdropWidth,Main.backdropHeight, 0, false, 0, GuiDisplaySeries.ItemData.Items[currentSelectedItem].BackdropImageTags.length);
+					if (DisplaySeries.ItemData.Items[currentSelectedItem].BackdropImageTags.length > 0) {
+						var imgsrc = Server.getBackgroundImageURL(DisplaySeries.ItemData.Items[currentSelectedItem].Id, "Backdrop", Main.backdropWidth,Main.backdropHeight, 0, false, 0, DisplaySeries.ItemData.Items[currentSelectedItem].BackdropImageTags.length);
 						Support.fadeImage(imgsrc);
 					//A music album.
-					} else if (GuiDisplaySeries.ItemData.Items[currentSelectedItem].ParentBackdropImageTags) {
-						var imgsrc = Server.getBackgroundImageURL(GuiDisplaySeries.ItemData.Items[currentSelectedItem].ParentBackdropItemId, "Backdrop", Main.backdropWidth,Main.backdropHeight, 0, false, 0, GuiDisplaySeries.ItemData.Items[currentSelectedItem].ParentBackdropImageTags.length);
+					} else if (DisplaySeries.ItemData.Items[currentSelectedItem].ParentBackdropImageTags) {
+						var imgsrc = Server.getBackgroundImageURL(DisplaySeries.ItemData.Items[currentSelectedItem].ParentBackdropItemId, "Backdrop", Main.backdropWidth,Main.backdropHeight, 0, false, 0, DisplaySeries.ItemData.Items[currentSelectedItem].ParentBackdropImageTags.length);
 						Support.fadeImage(imgsrc);
 					}
 			}
@@ -401,7 +403,7 @@ GuiDisplaySeries.updateSelectedItems = function () {
 	}
 };
 
-GuiDisplaySeries.updateSelectedBannerItems = function() {
+DisplaySeries.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.bannerItems.length; index++) {
 		if (index == this.selectedBannerItem) {
 			if (index != this.bannerItems.length-1) {
@@ -426,17 +428,16 @@ GuiDisplaySeries.updateSelectedBannerItems = function() {
 		}
 	}
 	if (this.selectedItem == -1) {
-		document.getElementById("counter").innerHTML = (this.selectedBannerItem+1) + "/" + this.bannerItems.length;
+	  Support.widgetPutInnerHTML("counter", (this.selectedBannerItem+1) + "/" + this.bannerItems.length);
 	}
 };
 
-GuiDisplaySeries.keyDown = function() {
+DisplaySeries.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 
 	if (document.getElementById("notifications").style.visibility == "") {
-		document.getElementById("notifications").style.visibility = "hidden";
-		document.getElementById("notificationText").innerHTML = "";
+		Notifications.delNotification();
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -444,7 +445,7 @@ GuiDisplaySeries.keyDown = function() {
 
 	//Clear Indexing Letter Display timeout & Hide
 	//clearTimeout(this.indexTimeout);
-	document.getElementById("guiDisplaySeriesIndexing").style.opacity = 0;
+	document.getElementById("displaySeriesIndexing").style.opacity = 0;
 
 	//Update Screensaver Timer
 	Support.screensaver();
@@ -455,7 +456,7 @@ GuiDisplaySeries.keyDown = function() {
 		Main.setIsScreensaverRunning();
 
 		//End Screensaver
-		GuiImagePlayerScreensaver.stopScreensaver();
+		ImagePlayerScreensaver.stopScreensaver();
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
 	}
@@ -511,8 +512,8 @@ GuiDisplaySeries.keyDown = function() {
 					Server.setFavourite(this.ItemData.Items[this.selectedItem].Id);
 					this.ItemData.Items[this.selectedItem].UserData.IsFavorite = true;
 				}
-				GuiDisplaySeries.updateDisplayedItems();
-				GuiDisplaySeries.updateSelectedItems();
+				DisplaySeries.updateDisplayedItems();
+				DisplaySeries.updateSelectedItems();
 			}
 			break;
 		case tvKey.KEY_YELLOW:
@@ -543,65 +544,65 @@ GuiDisplaySeries.keyDown = function() {
 	}
 };
 
-GuiDisplaySeries.processSelectedItem = function() {
+DisplaySeries.processSelectedItem = function() {
 	if (this.selectedItem == -1) {
 		switch (this.bannerItems[this.selectedBannerItem]) {
 		case "All":
 			var url = Server.getItemTypeURL("&IncludeItemTypes=Movie"+Server.getMoviesViewQueryPart()+"&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
-			GuiDisplaySeries.start("All Movies",url,0,0);
+			DisplaySeries.start("All Movies",url,0,0);
 			break;
 		case "Series":
 			var url = Server.getItemTypeURL("&IncludeItemTypes=Series"+Server.getTVViewQueryPart()+"&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
-			GuiDisplaySeries.start("All TV",url,0,0);
+			DisplaySeries.start("All TV",url,0,0);
 			break;
 		case "Unwatched":
 			if (this.isTvOrMovies == 1) {
 				var url = Server.getItemTypeURL("&IncludeItemTypes=Movie"+Server.getMoviesViewQueryPart()+"&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true&Filters=IsUnPlayed");
-				GuiDisplaySeries.start("Unwatched Movies",url,0,0);
+				DisplaySeries.start("Unwatched Movies",url,0,0);
 			}
 			break;
 		case "Upcoming":
-			GuiTVUpcoming.start();
+			TVUpcoming.start();
 			break;
 		case "Latest":
 			if (this.isTvOrMovies == 1) {
 				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&IncludeItemTypes=Movie"+Server.getMoviesViewQueryPart()+"&IsFolder=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
-				GuiDisplaySeries.start("Latest Movies",url,0,0);
+				DisplaySeries.start("Latest Movies",url,0,0);
 			} else if (this.isTvOrMovies == 0){
 				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&IncludeItemTypes=Episode&IsFolder=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
-				GuiDisplaySeries.start("Latest TV",url,0,0);
+				DisplaySeries.start("Latest TV",url,0,0);
 			} else {
 				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&IncludeItemTypes=Audio&Limit=21&fields=SortName,Genres");
-				GuiDisplaySeries.start("Latest Music",url,0,0);
+				DisplaySeries.start("Latest Music",url,0,0);
 			}
 			break;
 		case "Genre":
 			if (this.isTvOrMovies == 1) {
 				var url1 = Server.getCustomURL("/Genres?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Movie"+Server.getMoviesViewQueryPart()+"&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,ItemCounts&userId=" + Server.getUserID());
-				GuiDisplaySeries.start("Genre Movies",url1,0,0);
+				DisplaySeries.start("Genre Movies",url1,0,0);
 			} else {
 				var url1 = Server.getCustomURL("/Genres?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Series"+Server.getTVViewQueryPart()+"&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,ItemCounts&userId=" + Server.getUserID());
-				GuiDisplaySeries.start("Genre TV",url1,0,0);
+				DisplaySeries.start("Genre TV",url1,0,0);
 			}
 			break;
 		case "Channels":
-			Support.updateURLHistory("GuiDisplaySeries",this.startParams[0],this.startParams[1],null,null,0,0,false);
+			Support.updateURLHistory("DisplaySeries",this.startParams[0],this.startParams[1],null,null,0,0,false);
 			var url = Server.getCustomURL("/LiveTV/Channels?StartIndex=0&EnableFavoriteSorting=true&userId=" + Server.getUserID());
-			GuiDisplaySeries.start("Channels LiveTV",url,0,0);
+			DisplaySeries.start("Channels LiveTV",url,0,0);
 			break;
 		case "Recordings":
-			Support.updateURLHistory("GuiDisplaySeries",this.startParams[0],this.startParams[1],null,null,0,0,false);
+			Support.updateURLHistory("DisplaySeries",this.startParams[0],this.startParams[1],null,null,0,0,false);
 			var url = Server.getCustomURL("/LiveTV/Recordings?IsInProgress=false&SortBy=StartDate&SortOrder=Descending&StartIndex=0&fields=SortName&UserId=" + Server.getUserID());
-			GuiDisplaySeries.start("Recordings LiveTV",url,0,0);
+			DisplaySeries.start("Recordings LiveTV",url,0,0);
 			break;
 		case "Guide":
-			Support.updateURLHistory("GuiDisplaySeries",this.startParams[0],this.startParams[1],null,null,0,0,false);
+			Support.updateURLHistory("DisplaySeries",this.startParams[0],this.startParams[1],null,null,0,0,false);
 			var url = Server.getCustomURL("/LiveTV/Channels?StartIndex=0&Limit=100&EnableFavoriteSorting=true&UserId=" + Server.getUserID());
 			var guideTime = new Date();
 			var timeMsec = guideTime.getTime();
 			var startTime = timeMsec - 900000; //rewind the clock fifteen minutes.
 			guideTime.setTime(startTime);
-			GuiTVGuide.start("Guide",url,0,0,0,guideTime);
+			TVGuide.start("Guide",url,0,0,0,guideTime);
 			break;
 		case "Recent":
 		case "Frequent":
@@ -612,18 +613,18 @@ GuiDisplaySeries.processSelectedItem = function() {
 			break;
 		case"A-Z":
 			if (this.isTvOrMovies == 1) {
-				GuiMusicAZ.start("Movies",0);
+				MusicAZ.start("Movies",0);
 			} else {
-				GuiMusicAZ.start("TV",0);
+			  MusicAZ.start("TV",0);
 			}
 			break;
 		}
 	} else {
-		Support.processSelectedItem("GuiDisplaySeries",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null,this.genreType,this.isLatest);
+		Support.processSelectedItem("DisplaySeries",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null,this.genreType,this.isLatest);
 	}
 };
 
-GuiDisplaySeries.toggleWatchedStatus = function () {
+DisplaySeries.toggleWatchedStatus = function () {
 	if (this.selectedItem > -1) {
 		var titleArray = this.startParams[0].split(" ");
 		switch (titleArray[1]) {
@@ -636,8 +637,8 @@ GuiDisplaySeries.toggleWatchedStatus = function () {
 				Server.setWatchedStatus(this.ItemData.Items[this.selectedItem].Id);
 				this.ItemData.Items[this.selectedItem].UserData.Played = true;
 			}
-			GuiDisplaySeries.updateDisplayedItems();
-			GuiDisplaySeries.updateSelectedItems();
+			DisplaySeries.updateDisplayedItems();
+			DisplaySeries.updateSelectedItems();
 			break;
 		case "TV": //Mark all episodes of all seasons as watched
 			if (this.ItemData.Items[this.selectedItem].UserData.Played == true) {
@@ -657,18 +658,18 @@ GuiDisplaySeries.toggleWatchedStatus = function () {
 				}
 				this.ItemData.Items[this.selectedItem].UserData.Played = true;
 			}
-			GuiDisplaySeries.updateDisplayedItems();
-			GuiDisplaySeries.updateSelectedItems();
+			DisplaySeries.updateDisplayedItems();
+			DisplaySeries.updateSelectedItems();
 			break;
 		}
 	}
 };
 
-GuiDisplaySeries.playSelectedItem = function () {
-	Support.playSelectedItem("GuiDisplaySeries",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null);
+DisplaySeries.playSelectedItem = function () {
+	Support.playSelectedItem("DisplaySeries",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null);
 };
 
-GuiDisplaySeries.openMenu = function() {
+DisplaySeries.openMenu = function() {
 	if (this.selectedItem == -1) { //Banner menu
 		if (this.currentView == "All" || this.currentView == "Series") {
 			document.getElementById("bannerItem0").class = "bannerItem bannerItemPadding offWhite";
@@ -678,7 +679,7 @@ GuiDisplaySeries.openMenu = function() {
 			MainMenu.requested("DisplaySeries","bannerItem0","bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
 		}
 	} else if (this.isTvOrMovies == 2) { //Music
-		Support.updateURLHistory("GuiDisplaySeries",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
+		Support.updateURLHistory("DisplaySeries",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
 		MainMenu.requested("DisplaySeries",this.ItemData.Items[this.selectedItem].Id,"Music Selected");
 	} else { //TV or Movies
 		Support.updateURLHistory("DisplaySeries",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
@@ -686,7 +687,7 @@ GuiDisplaySeries.openMenu = function() {
 	}
 };
 
-GuiDisplaySeries.processLeftKey = function() {
+DisplaySeries.processLeftKey = function() {
 	if (this.selectedItem == -1) {
 		this.selectedBannerItem--;
 		this.updateSelectedBannerItems();
@@ -713,7 +714,7 @@ GuiDisplaySeries.processLeftKey = function() {
 	}
 };
 
-GuiDisplaySeries.processRightKey = function() {
+DisplaySeries.processRightKey = function() {
 	if (this.selectedItem == -1) {
 		this.selectedBannerItem++;
 		if (this.selectedBannerItem >= this.bannerItems.length) {
@@ -742,7 +743,7 @@ GuiDisplaySeries.processRightKey = function() {
 	}
 };
 
-GuiDisplaySeries.processUpKey = function() {
+DisplaySeries.processUpKey = function() {
 	this.selectedItem = this.selectedItem - this.MAXCOLUMNCOUNT;
 	if (this.selectedItem < 0) {
 		if (this.isAllorFolder == 0 && this.startParams[0] != "All Collections" && this.bannerItems.length > 0 ) {
@@ -783,7 +784,7 @@ GuiDisplaySeries.processUpKey = function() {
 	}
 };
 
-GuiDisplaySeries.processDownKey = function() {
+DisplaySeries.processDownKey = function() {
 	if (this.selectedItem == -1) {
 		this.selectedItem = 0;
 		this.selectedBannerItem = -1;
@@ -816,7 +817,7 @@ GuiDisplaySeries.processDownKey = function() {
 	this.updateSelectedItems();
 };
 
-GuiDisplaySeries.processChannelUpKey = function() {
+DisplaySeries.processChannelUpKey = function() {
 	if (this.selectedItem > -1) {
 		this.selectedItem = this.selectedItem - this.getMaxDisplay();
 		if (this.selectedItem < 0) {
@@ -835,7 +836,7 @@ GuiDisplaySeries.processChannelUpKey = function() {
 	}
 };
 
-GuiDisplaySeries.processChannelDownKey = function() {
+DisplaySeries.processChannelDownKey = function() {
 	if (this.selectedItem > -1) {
 		this.selectedItem = this.selectedItem + this.getMaxDisplay();
 		if (this.selectedItem >= this.ItemData.Items.length) {
@@ -862,7 +863,7 @@ GuiDisplaySeries.processChannelDownKey = function() {
 	}
 };
 
-GuiDisplaySeries.processIndexing = function() {
+DisplaySeries.processIndexing = function() {
 	if (this.currentMediaType == "LiveTV") {
 		return;
 	}
@@ -906,27 +907,26 @@ GuiDisplaySeries.processIndexing = function() {
 				break;
 			}
 		}
-
-		document.getElementById("guiDisplaySeriesIndexing").innerHTML = indexLetter[indexSeekPos].toUpperCase();
-		document.getElementById("guiDisplaySeriesIndexing").style.opacity = 1;
+    Support.widgetPutInnerHTML("displaySeriesIndexing", indexLetter[indexSeekPos].toUpperCase());
+		document.getElementById("displaySeriesIndexing").style.opacity = 1;
 
 		clearTimeout(this.indexTimeout);
 		this.indexTimeout = setTimeout(function(){
-			document.getElementById("guiDisplaySeriesIndexing").style.opacity = 0;
-			GuiDisplaySeries.updateDisplayedItems();
-			GuiDisplaySeries.updateSelectedItems();
+			document.getElementById("displaySeriesIndexing").style.opacity = 0;
+			DisplaySeries.updateDisplayedItems();
+			DisplaySeries.updateSelectedItems();
 		}, 500);
 
 
 	}
 };
 
-GuiDisplaySeries.loadMoreItems = function() {
+DisplaySeries.loadMoreItems = function() {
 	if (this.totalRecordCount > this.ItemData.Items.length) {
-		Support.pageLoadTimes("GuiDisplaySeries","GetRemainingItems",true);
+		Support.pageLoadTimes("DisplaySeries","GetRemainingItems",true);
 
 		//Show Loading Div
-		document.getElementById("guiPlayerLoading").style.visibility = "";
+		document.getElementById("playerLoading").style.visibility = "";
 
 		//Remove User Control
 		document.getElementById("noKeyInput").focus();
@@ -935,27 +935,27 @@ GuiDisplaySeries.loadMoreItems = function() {
 		var originalLength = this.ItemData.Items.length;
 		var ItemDataRemaining = Server.getContent(this.startParams[1] + "&Limit="+File.getTVProperty("ItemPaging") + "&StartIndex=" + originalLength);
 		if (ItemDataRemaining == null) { return; }
-		Support.pageLoadTimes("GuiDisplaySeries","GotRemainingItems",false);
+		Support.pageLoadTimes("DisplaySeries","GotRemainingItems",false);
 
 		for (var index = 0; index < ItemDataRemaining.Items.length; index++) {
 			this.ItemData.Items[index+originalLength] = ItemDataRemaining.Items[index];
 		}
-		document.getElementById("counter").innerHTML = (this.selectedItem + 1) + "/" + this.ItemData.Items.length;
+		Support.widgetPutInnerHTML("counter", (this.selectedItem + 1) + "/" + this.ItemData.Items.length);
 
 		//Reprocess Indexing Algorithm
 		this.ItemIndexData = Support.processIndexing(this.ItemData.Items);
 
 		//Hide Loading Div
-		document.getElementById("guiPlayerLoading").style.visibility = "hidden";
+		document.getElementById("playerLoading").style.visibility = "hidden";
 
 		//Pass back Control
-		document.getElementById("GuiDisplaySeries").focus();
+		document.getElementById("evnDisplaySeries").focus();
 
-		Support.pageLoadTimes("GuiDisplaySeries","AddedRemainingItems",false);
+		Support.pageLoadTimes("DisplaySeries","AddedRemainingItems",false);
 	}
 };
 
-GuiDisplaySeries.returnFromMusicPlayer = function() {
+DisplaySeries.returnFromMusicPlayer = function() {
 	this.selectedItem = 0;
 	this.updateDisplayedItems();
 	this.updateSelectedItems();
