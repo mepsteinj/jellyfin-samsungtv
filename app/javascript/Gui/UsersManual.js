@@ -12,24 +12,32 @@ UsersManual.getRememberPasswordWord = function() {
 UsersManual.start = function(userName) {
 	alert("Page Enter : UsersManual");
 	Helper.setControlButtons(null, null, null, null, Main.messages.LabButtonReturn);
+	document.getElementById("topPanel").style.visibility = "";
+	if (userName == null) {
+		userName = "";
+	}	
 	//Reset Properties
 	this.selectedItem = 0;
-	this.rememberPassword = false;
+	this.rememberPassword = true;
 	Notifications.delNotification()
 	//Load Data
 	var url = Server.getServerAddr() + "/Users/Public?format=json";
 	this.userData = Server.getContent(url);
 	if (this.userData == null) { return; }
 	//Change Display
-	var div = "<div class='newServer12key'>" +
-		"<p style='padding-bottom:5px'>" + Main.messages.LabUserName + "</p>" +
-		"<form><input id='user' style='z-index:10;' type='text' size='40' value=''/></form>" +
-		"<p style='padding-bottom:5px'>" + Main.messages.LabPassword + "</p>" +
-		"<form><input id='pass' style='z-index:10;' type='password' size='40' value=''/></form>" +
-		"<br><span id='usersRemPwd'>" + Main.messages.LabRememberPassword + "</span> : <span id='usersRemPwdValue'>" + this.getRememberPasswordWord() + "</span>" +
-		"</div>";
-	Support.widgetPutInnerHTML("pageContent", div);
-	new UsersManualInput("user");
+	Support.widgetPutInnerHTML("pageContent",
+	"<div class='newServer12key'>" +
+	"<p style='padding-left:60px;padding-top:20px;padding-bottom:5px;text-align:left;'>" + Main.messages.LabUserName + ":</p>" +
+	"<form><input id='user' style='z-index:10;' type='text' size='40' value='" + userName + "'/></form>" +
+	"<p style='padding-left:60px;padding-top:20px;padding-bottom:5px;text-align:left;'>" + Main.messages.LabPassword + ":</p>" +
+	"<form><input id='pass' style='z-index:10;' type='password' size='40' value=''/></form>" +
+	"<br><span id='usersRemPwd' style='text-align:left;'>" + Main.messages.LabRememberPassword + "</span> : <span id='usersRemPwdValue'>" + this.getRememberPasswordWord() + "</span>" +
+	"</div>");
+	if (userName != "") {
+		new UsersManualInput("pass");
+	} else {
+		new UsersManualInput("user");
+	}
 };
 
 UsersManual.IMEAuthenticate = function(user, password) {
@@ -50,9 +58,9 @@ UsersManual.IMEAuthenticate = function(user, password) {
 			alert("Need to add the user to the DB");
 			//Add Username & Password to DB - Save password only if rememberPassword = true
 			if (this.rememberPassword == true) {
-				File.addUser(Server.UserID, user, password, this.rememberPassword);
+				File.addUser(Server.getUserID(), user, password, this.rememberPassword);
 			} else {
-				File.addUser(Server.UserID, user, "", this.rememberPassword);
+				File.addUser(Server.getUserID(), user, "", this.rememberPassword);
 			}
 		}
 		//Change Focus and call function in GuiMain to initiate the page!
@@ -84,7 +92,7 @@ var UsersManualInput  = function(id) {
 				//Set IME to Password field
 				UsersManual.selectedItem++;
 				new UsersManualInput("pass");
-				document.getElementById("pass").focus;
+				document.getElementById("pass").focus();
 			} else {
 				//Process Login Here
 				var usr = document.getElementById("user").value;
@@ -99,7 +107,7 @@ var UsersManualInput  = function(id) {
 				//Set IME to Password field
 				UsersManual.selectedItem++;
 				new UsersManualInput("pass");
-				document.getElementById("pass").focus;
+				document.getElementById("pass").focus();
 			} else {
 				document.getElementById("usersRemPwd").style.color = "red";
 				document.getElementById("evnUsersManualPwd").focus();
@@ -112,7 +120,7 @@ var UsersManualInput  = function(id) {
 				//Set IME to Username field
 				UsersManual.selectedItem--;
 				new UsersManualInput("user");
-				document.getElementById("user").focus;
+				document.getElementById("user").focus();
 			}
 		});
 

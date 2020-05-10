@@ -63,15 +63,16 @@ HomeOneItem.start = function(title, url, selectedItem, topLeftItem) {
 		}
 
 		//Set page content
-		Support.widgetPutInnerHTML("pageContent", "<div id=bannerSelection class, ='bannerMenu'></div><div id=Center class='homeOneCenter'><p id='title' style='position:relative;font-size:1.4em;z-index:5;'>" + title + "</p><div id=Content></div></div>");
+		Support.widgetPutInnerHTML("pageContent", "<div id=bannerSelection class='bannerMenu'></div><div id=center class='homeOneCenter'>" +
+		"<p id='title' style='position:relative;font-size:1.4em;z-index:5;'>" + title + "</p><div id=content></div></div>");
 
 		//Set isResume based on title - used in UpdateDisplayedItems
 		this.isResume = (title == "Resume" ||  title == "Continue Watching" ) ? true : false;
 
 		//If to determine positioning of content
-		document.getElementById("Center").style.top = (this.ItemData.Items.length <= this.MAXCOLUMNCOUNT) ? "180px" : "200px";
-		document.getElementById("Center").style.left = "170px";
-		document.getElementById("Center").style.width = "1620px";
+		document.getElementById("center").style.top = (this.ItemData.Items.length <= this.MAXCOLUMNCOUNT) ? "180px" : "200px";
+		document.getElementById("center").style.left = "170px";
+		document.getElementById("center").style.width = "1620px";
 
 		//Generate Banner Items - Mreove Home Page
 		this.menuItems = MainMenu.menuItemsHomePages;
@@ -102,7 +103,7 @@ HomeOneItem.start = function(title, url, selectedItem, topLeftItem) {
 
 			for (var index = 0; index < randomImageData.Items.length; index++) {
 				if (randomImageData.Items[index ].BackdropImageTags.length > 0) {
-					var imgsrc = Server.getBackgroundImageURL(randomImageData.Items[index ].Id,"Backdrop",Main.backdropWidth,Main.backdropHeight,0,false,0,randomImageData.Items[index ].BackdropImageTags.length);
+					var imgsrc = Server.getBackgroundImageURL(randomImageData.Items[index ].Id, "Backdrop", Main.backdropWidth,Main.backdropHeight, 0, false, 0, randomImageData.Items[index ].BackdropImageTags.length);
 					Support.fadeImage(imgsrc);
 					break;
 				}
@@ -119,16 +120,13 @@ HomeOneItem.start = function(title, url, selectedItem, topLeftItem) {
 		Support.widgetPutInnerHTML("title", "Sorry");
 		Support.widgetPutInnerHTML("content", "Huh.. Looks like I have no content to show you in this view I'm afraid");
 
-		//Set Background
-		Support.fadeImage("images/bg1.jpg");
-
 		//As no content focus on menu bar and null null means user can't return off the menu bar
 		MainMenu.requested(null, null);
 	}
 };
 
 HomeOneItem.updateDisplayedItems = function() {
-	Support.updateDisplayedItems(this.ItemData.Items,this.selectedItem,this.topLeftItem, Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length), "Content", "", this.isResume, null, true);
+	Support.updateDisplayedItems(this.ItemData.Items,this.selectedItem,this.topLeftItem, Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length), "content", "", this.isResume, null, true);
 };
 
 //Function sets CSS Properties so show which user is selected
@@ -256,12 +254,12 @@ HomeOneItem.keyDown = function() {
 		case tvKey.KEY_BLUE:
 			if (this.selectedItem == -1) {
 				if (this.selectedBannerItem == this.menuItems.length - 1) {
-					MusicPlayer.showMusicPlayer("HomeOneItem", "bannerItem"+this.selectedBannerItem, "bannerItemHome highlight" + Main.highlightColour + "Text");
+					MusicPlayer.showMusicPlayer("HomeOneItem", "bannerItem" + this.selectedBannerItem, "bannerItemHome highlight" + Main.highlightColour + "Text");
 				} else {
-					MusicPlayer.showMusicPlayer("HomeOneItem", "bannerItem"+this.selectedBannerItem, "bannerItemHome bannerItemPadding highlight" + Main.highlightColour + "Text");
+					MusicPlayer.showMusicPlayer("HomeOneItem", "bannerItem" + this.selectedBannerItem, "bannerItemHome bannerItemPadding highlight" + Main.highlightColour + "Text");
 				}
 			} else {
-				MusicPlayer.showMusicPlayer("HomeOneItem", this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
+				MusicPlayer.showMusicPlayer("HomeOneItem", this.ItemData.Items[this.selectedItem].Id, document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
 			}
 			break;
 		case tvKey.KEY_TOOLS:

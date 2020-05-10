@@ -1195,16 +1195,17 @@ Support.removeSplashScreen = function () {
 
 //-----------------------------------------------------------------------------------------------------------------------------------------
 
-
 Support.processHomePageMenu = function(menuItem) {
 	var url1 = "";
 	var url2 = "";
 	var title1 = "";
 	var title2 = "";
+	var resumeItems = "";
+	var url = "";
 	switch (menuItem) {
 	case "Home":
 		Support.removeAllURLs();
-		var url = Server.getServerAddr() + "/Users/" + Server.getUserID() + "/Items?SortBy=DatePlayed&SortOrder=Descending&MediaTypes=Video&Filters=IsResumable&Limit=10&Recursive=true&Fields=PrimaryImageAspectRatio,BasicSyncInfo&CollapseBoxSetItems=false&ExcludeLocationTypes=Virtual&ImageTypeLimit=1&EnableImageTypes=Primary,Backdrop,Banner,Thumb&EnableTotalRecordCount=false";
+		url = Server.getServerAddr() + "/Users/" + Server.getUserID() + "/Items?SortBy=DatePlayed&SortOrder=Descending&MediaTypes=Video&Filters=IsResumable&Limit=10&Recursive=true&Fields=PrimaryImageAspectRatio,BasicSyncInfo&CollapseBoxSetItems=false&ExcludeLocationTypes=Virtual&ImageTypeLimit=1&EnableImageTypes=Primary,Backdrop,Banner,Thumb&EnableTotalRecordCount=false";
 		resumeItems = Server.getContent(url);
 		if (resumeItems.Items.length > 0 && File.getUserProperty("ContinueWatching") == true){
 			url1 = url;
@@ -1230,45 +1231,45 @@ Support.processHomePageMenu = function(menuItem) {
 		}
 		break;
 	case "Favourites":
-		var url = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&Filters=IsFavorite&fields=SortName&recursive=true");
+		url = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&Filters=IsFavorite&fields=SortName&recursive=true");
 		DisplayOneItem.start("Favourites", url, 0, 0);
 		break;
 	case "MediaFolders":
-		var url = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&CollapseBoxSetItems=false&fields=SortName");
+		url = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&CollapseBoxSetItems=false&fields=SortName");
 		DisplayOneItem.start("Media Folders", url, 0, 0);
 		break;
 	case "Channels":
-		var url = Server.getCustomURL("/Channels?userId=" + Server.getUserID() + "&format=json");
+		url = Server.getCustomURL("/Channels?userId=" + Server.getUserID() + "&format=json");
 		DisplayOneItem.start("Channels", url, 0, 0);
 		break;
 	case "Collections":
-		var url = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=BoxSet&Recursive=true&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
+		url = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=BoxSet&Recursive=true&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
 		DisplaySeries.start("All Collections", url,0,0);
 		break;
 	case "TV":
-		var url = Server.getItemTypeURL("&IncludeItemTypes=Series"+Server.getTVViewQueryPart()+"&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
+		url = Server.getItemTypeURL("&IncludeItemTypes=Series"+Server.getTVViewQueryPart()+"&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
 		DisplaySeries.start("All TV",url,0,0);
 		break;
 	case "Movies":
-		var url = Server.getItemTypeURL("&IncludeItemTypes=Movie" + Server.getMoviesViewQueryPart() + "&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
+		url = Server.getItemTypeURL("&IncludeItemTypes=Movie" + Server.getMoviesViewQueryPart() + "&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
 		DisplaySeries.start("All Movies", url, 0, 0);
 		break;
 	case "Music":
 		this.enterMusicPage(File.getUserProperty("MusicView"));
 		break;
 	case "Playlists":
-		var url = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&fields=SortName&IncludeItemTypes=Playlist&Recursive=true");
+		url = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&fields=SortName&IncludeItemTypes=Playlist&Recursive=true");
 		DisplayOneItem.start("Playlists", url, 0, 0);
 		break;
 	case "Photos":
 		var photosFolderId = Server.getUserViewId("photos");
 		if (photosFolderId != null){
-			var url = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&Fields=SortName&StartIndex=0&Limit=500&Recursive=false&IncludeItemTypes=&MediaTypes=&ParentId=" + photosFolderId);
+			url = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&Fields=SortName&StartIndex=0&Limit=500&Recursive=false&IncludeItemTypes=&MediaTypes=&ParentId=" + photosFolderId);
 			Photos.start("Photos", url, 0, 0);
 		}
 		break;
 	case "Live_TV":
-		var url = Server.getCustomURL("/LiveTV/Channels?StartIndex=0&Limit=100&EnableFavoriteSorting=true&UserId=" + Server.getUserID());
+		url = Server.getCustomURL("/LiveTV/Channels?StartIndex=0&Limit=100&EnableFavoriteSorting=true&UserId=" + Server.getUserID());
 		var guideTime = new Date();
 		var timeMsec = guideTime.getTime();
 		var startTime = timeMsec - 300000; //rewind the clock five minutes.
@@ -1278,7 +1279,7 @@ Support.processHomePageMenu = function(menuItem) {
 	case "HomeMovies":
 		var homeVideosFolderId = Server.getUserViewId("homevideos");
 		if (homeVideosFolderId != null){
-			var url = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&fields=PrimaryImageAspectRatio,SortName&ParentId=" + homeVideosFolderId);
+			url = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&fields=PrimaryImageAspectRatio,SortName&ParentId=" + homeVideosFolderId);
 			DisplayOneItem.start("Home Movies", url, 0, 0);
 		}
 		break;
@@ -1298,28 +1299,28 @@ Support.processHomePageMenu = function(menuItem) {
 	}
 };
 
-
 Support.enterMusicPage = function(musicView) {
+	var url = "";
 	if (File.getUserProperty("SkipMusicAZ")){
 		switch (musicView) {
 			case "Album":
-				var url = Server.getItemTypeURL("&IncludeItemTypes=MusicAlbum&Recursive=true&SortBy=SortName&SortOrder=Ascending&ExcludeLocationTypes=Virtual&fields=SortName,Genres&CollapseBoxSetItems=false");
+				url = Server.getItemTypeURL("&IncludeItemTypes=MusicAlbum&Recursive=true&SortBy=SortName&SortOrder=Ascending&ExcludeLocationTypes=Virtual&fields=SortName,Genres&CollapseBoxSetItems=false");
 				DisplaySeries.start("Album Music", url, 0, 0);
 				break;
 			case "Album Artist":
-				var url = Server.getCustomURL("/Artists/AlbumArtists?format=json&SortBy=SortName&SortOrder=Ascending&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,Genres,ItemCounts&userId=" + Server.getUserID());
+				url = Server.getCustomURL("/Artists/AlbumArtists?format=json&SortBy=SortName&SortOrder=Ascending&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,Genres,ItemCounts&userId=" + Server.getUserID());
 				MusicArtist.start("Album Artist", url, 0, 0);
 				break;
 			case "Artist":
-				var url = Server.getCustomURL("/Artists?format=json&SortBy=SortName&SortOrder=Ascending&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,Genres,ItemCounts&userId=" + Server.getUserID());
+				url = Server.getCustomURL("/Artists?format=json&SortBy=SortName&SortOrder=Ascending&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,Genres,ItemCounts&userId=" + Server.getUserID());
 				DisplaySeries.start("Artist Music", url, 0, 0);
 				break;
 			case "Recent":
-				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items?format=json&SortBy=DatePlayed&SortOrder=Descending&IncludeItemTypes=Audio&Filters=IsPlayed&Limit=21&Recursive=true&fields=SortName,Genres");
+				url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items?format=json&SortBy=DatePlayed&SortOrder=Descending&IncludeItemTypes=Audio&Filters=IsPlayed&Limit=21&Recursive=true&fields=SortName,Genres");
 				DisplaySeries.start("Recent Music", url, 0, 0);
 				break;
 			case "Frequent":
-				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items?format=json&SortBy=PlayCount&SortOrder=Descending&IncludeItemTypes=Audio&Limit=21&Filters=IsPlayed&Recursive=true&fields=SortName,Genres");
+				url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items?format=json&SortBy=PlayCount&SortOrder=Descending&IncludeItemTypes=Audio&Limit=21&Filters=IsPlayed&Recursive=true&fields=SortName,Genres");
 				DisplaySeries.start("Frequent Music", url, 0, 0);
 				break;
 		}
@@ -1331,24 +1332,22 @@ Support.enterMusicPage = function(musicView) {
 				MusicAZ.start(musicView,0);
 				break;
 			case "Recent":
-				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items?format=json&SortBy=DatePlayed&SortOrder=Descending&IncludeItemTypes=Audio&Filters=IsPlayed&Limit=21&Recursive=true&fields=SortName,Genres");
+				url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items?format=json&SortBy=DatePlayed&SortOrder=Descending&IncludeItemTypes=Audio&Filters=IsPlayed&Limit=21&Recursive=true&fields=SortName,Genres");
 				DisplaySeries.start("Recent Music", url, 0, 0);
 				break;
 			case "Frequent":
-				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items?format=json&SortBy=PlayCount&SortOrder=Descending&IncludeItemTypes=Audio&Limit=21&Filters=IsPlayed&Recursive=true&fields=SortName,Genres");
+				url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items?format=json&SortBy=PlayCount&SortOrder=Descending&IncludeItemTypes=Audio&Limit=21&Filters=IsPlayed&Recursive=true&fields=SortName,Genres");
 				DisplaySeries.start("Frequent Music", url, 0, 0);
 				break;
 		}
 	}
 };
 
-
 Support.parseSearchTerm = function(searchTermString) {
 	var parsedString = searchTermString.replace(/ /gi, "%20");
 	//Probably more chars to parse here!
 	return parsedString;
 };
-
 
 Support.fadeImage = function(imgsrc) {
 	var bg = $('#pageBackground').css('background-image');
@@ -1384,11 +1383,9 @@ Support.screensaver = function () {
 	}
 };
 
-
 Support.screensaverOn = function () {
 	this.isScreensaverOn = true;
 };
-
 
 Support.screensaverOff = function () {
 	if (Main.isScreensaverEnabled()) {
@@ -1403,7 +1400,6 @@ Support.screensaverOff = function () {
 };
 
 //-----------------------------------------------------------------------------------------------------------------------------------------
-
 
 Support.pageLoadTimes = function(page, process, reset) {
 	if (reset == true) {
@@ -1473,13 +1469,13 @@ Support.noItemsKeyDown = function() {
 //-----------------------------------------------------------------------------------------------------------------------------------------
 
 Support.convertTicksToTime = function (currentTime, duration) {
-	totalTimeHour = Math.floor(duration / 3600000);
-	timeHour = Math.floor(currentTime / 3600000);
-	totalTimeMinute = Math.floor((duration % 3600000) / 60000);
-	timeMinute = Math.floor((currentTime % 3600000) / 60000);
-	totalTimeSecond = Math.floor((duration % 60000) / 1000);
-	timeSecond = Math.floor((currentTime % 60000) / 1000);
-	timeHTML = timeHour + ":";
+	var totalTimeHour = Math.floor(duration / 3600000);
+	var timeHour = Math.floor(currentTime / 3600000);
+	var totalTimeMinute = Math.floor((duration % 3600000) / 60000);
+	var timeMinute = Math.floor((currentTime % 3600000) / 60000);
+	var totalTimeSecond = Math.floor((duration % 60000) / 1000);
+	var timeSecond = Math.floor((currentTime % 60000) / 1000);
+	var timeHTML = timeHour + ":";
 	if (timeMinute == 0) {
 		timeHTML += "00:";
 	} else if (timeMinute < 10) {
@@ -1512,12 +1508,11 @@ Support.convertTicksToTime = function (currentTime, duration) {
 	return timeHTML;
 };
 
-
 Support.convertTicksToTimeSingle = function (currentTime) {
-   timeHour = Math.floor(currentTime / 3600000);
-   timeMinute = Math.floor((currentTime % 3600000) / 60000);
-   timeSecond = Math.floor((currentTime % 60000) / 1000);
-   timeHTML = timeHour + ":";
+   var timeHour = Math.floor(currentTime / 3600000);
+   var timeMinute = Math.floor((currentTime % 3600000) / 60000);
+   var timeSecond = Math.floor((currentTime % 60000) / 1000);
+   var timeHTML = timeHour + ":";
    if (timeMinute == 0) {
 	   timeHTML += "00:";
    } else if (timeMinute < 10) {
@@ -1539,14 +1534,12 @@ Support.convertTicksToTimeSingle = function (currentTime) {
    return timeHTML;
 };
 
-
 Support.convertTicksToMinutes = function (currentTime) {
-	timeMinute = Math.floor((currentTime / 3600000) * 60);
+	var timeMinute = Math.floor((currentTime / 3600000) * 60);
 	return timeMinute + " mins";
 };
 
 //-------------------------------------------------------------------------------------------------------------
-
 
 Support.SeriesRun = function(type, prodyear, status, enddate) {
 	var output = "";
@@ -1581,6 +1574,7 @@ Support.AirDate = function(apiDate, type) {
 	var min = apiDate.substring(14,16);
 	var d = new Date(apiDate);
 	var weekday = new Array(7);
+	var shortWeekday = new Array(7);	
 	weekday[0]=  "Sunday";
 	weekday[1] = "Monday";
 	weekday[2] = "Tuesday";
@@ -1589,7 +1583,6 @@ Support.AirDate = function(apiDate, type) {
 	weekday[5] = "Friday";
 	weekday[6] = "Saturday";
 	var dayName = weekday[d.getDay()];
-	var shortWeekday = new Array(7);
 	shortWeekday[0]=  "Sun.";
 	shortWeekday[1] = "Mon.";
 	shortWeekday[2] = "Tues.";
@@ -1632,11 +1625,8 @@ Support.FutureDate = function(apiDate, airTime) {
 	var airdate = new Date(year, month - 1, day, hour, min, 0); //Month is stored in array starting at index 0!
 	var now = new Date();
 	var secsInFuture = (airdate.getTime() - now.getTime()) / 1000;
-	if (secsInFuture > 0){
-		return true;
-	} else {
-		return false;
-	}
+	
+	return secsInFuture > 0;
 };
 
 //
@@ -1648,17 +1638,17 @@ Support.formatDateTime = function(apiDate, formatOption) {
 	var month = apiDate.substring(5,7);
 	var day = apiDate.substring(8,10);
 	var time = apiDate.substring(11,16);
+	var dataTime = "";
 	switch (formatOption) {
-	default:
 	case 0:
-		return day + "/" + month + "/" + year;
-	break;
+		dataTime = day + "/" + month + "/" + year;
+		break;
 	case 1:
-		return day + "/" + month + "/" + year + " : " + time;
+		dataTime = day + "/" + month + "/" + year + " : " + time;
 		break;
 	}
 	//Should never get here!!!!!
-	return day + "/" + month + "/" + year;
+	return dataTime;
 };
 
 
@@ -1767,22 +1757,10 @@ Support.tvGuideStartTime = function(date) {
 
 ///Returns the number of minutes between the time shown at the start of the TV guide and now.
 
-Support.tvGuideOffsetMins = function(date) {
+Support.tvGuideOffsetMins = function() {
 	var now = new Date();
 	var offset = (now.getTime() - TVGuide.guideStartTime.getTime()) / 60000;
 	return(~~offset);
 };
-
-//Get user details.
-//var userURL = Server.getServerAddr() + "/Users/" + Server.getUserID() + "?format=json&Fields=PrimaryImageTag";
-//var userData = Server.getContent(userURL);
-//if (userData == null) { return; }
-////User Image
-//if (userData.PrimaryImageTag) {
-//	var imgsrc = Server.getImageURL(userData.Id, "UsersPrimary", 70, 70, 0, false, 0);
-//	document.getElementById("menuUserImage").style.backgroundImage = "url(" + imgsrc + ")";
-//} else {
-//	document.getElementById("menuUserImage").style.backgroundImage = "url(images/loginusernoimage.png)";
-//}
 
 

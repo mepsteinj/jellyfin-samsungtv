@@ -37,7 +37,7 @@ var messagesEN = {
 	"Ch. Up/Down - Skips one page of content. ",
 	LabPassword : "Password",
 	LabUserName : "Username",
-	LabRememberPassword : "Remember Password ",
+	LabRememberPassword : "Remember",
 	LabManualLogin : "Login manually",
 	LabChangeServer : "Change Server",
 	LabUsersDescription : "Available options for each page are shown at the bottom.<br>Once logged in, move left on any page to access the main menu.",

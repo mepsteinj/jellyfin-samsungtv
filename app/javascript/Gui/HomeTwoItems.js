@@ -29,7 +29,7 @@ HomeTwoItems.getMaxDisplayBottom = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
 };
 
-HomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,topLeftItem,isTop) {
+HomeTwoItems.start = function(title1, url1, title2, url2,selectedItem, topLeftItem, isTop) {
 	alert("Page Enter : HomeTwoItems");
 
 	//Save Start Params
@@ -85,19 +85,18 @@ HomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,topLeftIte
 		}
 
 		//Set PageContent
-		Support.widgetPutInnerHTML("pageContent", "<div id=bannerSelection class='bannerMenu'></div>" +
-				"<div id=Center class='homeOneCenter'>" +
-				"<p style='position:relative;font-size:1.4em;padding-left:11px;z-index:5;'>"+title1+"</p><div id='TopRow' style='margin-bottom:50px'><div id=content></div></div>" +
-				"<p style='position:relative;font-size:1.4em;padding-left:11px;z-index:5;'>"+title2+"</p><div id='BottomRow'><div id=Content2></div></div>" +
-				"</div>");
+		Support.widgetPutInnerHTML("pageContent", "<div id=bannerSelection class='bannerMenu'></div><div id=center class='homeOneCenter'>" +
+		"<p style='position:relative;font-size:1.4em;padding-left:11px;z-index:5;'>" + title1 + "</p><div id='topRow' style='margin-bottom:50px'><div id=content></div></div>" +
+		"<p style='position:relative;font-size:1.4em;padding-left:11px;z-index:5;'>" + title2 + "</p><div id='bottomRow'><div id=content2></div></div>" +
+		"</div>");
 
 		//Set isResume based on title - used in UpdateDisplayedItems
 		this.isResume = (title1 == "Resume" ||  title1 == "Continue Watching" ) ? true : false;
 
 		//If to determine positioning of content
-		document.getElementById("Center").style.top = "180px";
-		document.getElementById("Center").style.left = "170px";
-		document.getElementById("Center").style.width = "1620px";
+		document.getElementById("center").style.top = "180px";
+		document.getElementById("center").style.left = "170px";
+		document.getElementById("center").style.width = "1620px";
 
 		//Generate Banner Items
 		this.menuItems = MainMenu.menuItemsHomePages;
@@ -106,9 +105,9 @@ HomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,topLeftIte
 		var bannerSelection = "";
 		for (var index = 0; index < this.menuItems.length; index++) {
 			if (index != this.menuItems.length-1) {
-				bannerSelection += "<div id='bannerItem" + index + "' class='bannerItemHome bannerItemPadding'>"+this.menuItems[index].replace(/_/g, ' ')+"</div>";
+				bannerSelection += "<div id='bannerItem" + index + "' class='bannerItemHome bannerItemPadding'>" + this.menuItems[index].replace(/_/g, ' ') + "</div>";
 			} else {
-				bannerSelection += "<div id='bannerItem" + index + "' class='bannerItemHome'>"+this.menuItems[index].replace(/_/g, ' ')+"</div>";
+				bannerSelection += "<div id='bannerItem" + index + "' class='bannerItemHome'>" + this.menuItems[index].replace(/_/g, ' ') + "</div>";
 			}
 		}
 		Support.widgetPutInnerHTML("bannerSelection", bannerSelection);
@@ -139,7 +138,7 @@ HomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,topLeftIte
 
 			for (var index = 0; index < randomImageData.Items.length; index++) {
 				if (randomImageData.Items[index ].BackdropImageTags.length > 0) {
-					var imgsrc = Server.getBackgroundImageURL(randomImageData.Items[index ].Id,"Backdrop",Main.backdropWidth,Main.backdropHeight,0,false,0,randomImageData.Items[index ].BackdropImageTags.length);
+					var imgsrc = Server.getBackgroundImageURL(randomImageData.Items[index ].Id, "Backdrop", Main.backdropWidth,Main.backdropHeight, 0, false, 0, randomImageData.Items[index ].BackdropImageTags.length);
 					Support.fadeImage(imgsrc);
 					break;
 				}
@@ -163,7 +162,7 @@ HomeTwoItems.start = function(title1, url1, title2, url2,selectedItem,topLeftIte
 
 HomeTwoItems.updateDisplayedItems = function() {
 		Support.updateDisplayedItems(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-				Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Content",this.divprepend1,this.isResume,null,true);
+				Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length), "content", this.divprepend1,this.isResume,null,true);
 };
 
 //Function sets CSS Properties so show which user is selected
@@ -176,15 +175,15 @@ HomeTwoItems.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.menuItems.length; index++) {
 		if (index == this.selectedBannerItem && this.selectedItem == -2) {
 			if (index != this.menuItems.length-1) {
-				document.getElementById("bannerItem"+index).className = "bannerItemHome bannerItemPadding highlight"+Main.highlightColour+"Text";
+				document.getElementById("bannerItem" + index).className = "bannerItemHome bannerItemPadding highlight" + Main.highlightColour + "Text";
 			} else {
-				document.getElementById("bannerItem"+index).className = "bannerItemHome highlight"+Main.highlightColour+"Text";
+				document.getElementById("bannerItem" + index).className = "bannerItemHome highlight" + Main.highlightColour + "Text";
 			}
 		} else {
 			if (index != this.menuItems.length-1) {
-					document.getElementById("bannerItem"+index).className = "bannerItemHome bannerItemPadding offWhite";
+				document.getElementById("bannerItem" + index).className = "bannerItemHome bannerItemPadding offWhite";
 			} else {
-					document.getElementById("bannerItem"+index).className = "bannerItemHome offWhite";
+				document.getElementById("bannerItem" + index).className = "bannerItemHome offWhite";
 			}
 		}
 	}
@@ -339,12 +338,12 @@ HomeTwoItems.keyDown = function()
 		case tvKey.KEY_BLUE:
 			if (this.selectedItem == -2) {
 				if (this.selectedBannerItem == this.menuItems.length-1) {
-					MusicPlayer.showMusicPlayer("HomeTwoItems","bannerItem"+this.selectedBannerItem,"bannerItemHome highlight"+Main.highlightColour+"Text");
+					MusicPlayer.showMusicPlayer("HomeTwoItems", "bannerItem" + this.selectedBannerItem,"bannerItemHome highlight"+Main.highlightColour+"Text");
 				} else {
-					MusicPlayer.showMusicPlayer("HomeTwoItems","bannerItem"+this.selectedBannerItem,"bannerItemHome bannerItemPadding highlight"+Main.highlightColour+"Text");
+					MusicPlayer.showMusicPlayer("HomeTwoItems", "bannerItem" + this.selectedBannerItem,"bannerItemHome bannerItemPadding highlight"+Main.highlightColour+"Text");
 				}
 			} else {
-				MusicPlayer.showMusicPlayer("HomeTwoItems",this.divprepend1 + this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.divprepend1 + this.ItemData.Items[this.selectedItem].Id).className);
+				MusicPlayer.showMusicPlayer("HomeTwoItems", this.divprepend1 + this.ItemData.Items[this.selectedItem].Id, document.getElementById(this.divprepend1 + this.ItemData.Items[this.selectedItem].Id).className);
 			}
 			break;
 		case tvKey.KEY_EXIT:
@@ -356,14 +355,14 @@ HomeTwoItems.keyDown = function()
 
 HomeTwoItems.openMenu = function() {
 	if (this.selectedItem == -2) {
-		Support.updateURLHistory("HomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem,this.topLeftItem,true);
+		Support.updateURLHistory("HomeTwoItems", this.startParams[0], this.startParams[1], this.startParams[2], this.startParams[3], this.selectedItem, this.topLeftItem,true);
 		if (this.selectedBannerItem == this.menuItems.length-1) {
-			MainMenu.requested("HomeTwoItems","bannerItem"+this.selectedBannerItem,"bannerItemHome highlight"+Main.highlightColour+"Text");
+			MainMenu.requested("HomeTwoItems", "bannerItem" + this.selectedBannerItem, "bannerItemHome highlight" + Main.highlightColour + "Text");
 		} else {
-			MainMenu.requested("HomeTwoItems","bannerItem"+this.selectedBannerItem,"bannerItemHome bannerItemPadding highlight"+Main.highlightColour+"Text");
+			MainMenu.requested("HomeTwoItems", "bannerItem" + this.selectedBannerItem, "bannerItemHome bannerItemPadding highlight" + Main.highlightColour + "Text");
 		}
 	} else {
-		Support.updateURLHistory("HomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem,this.topLeftItem,true);
+		Support.updateURLHistory("HomeTwoItems", this.startParams[0], this.startParams[1], this.startParams[2], this.startParams[3], this.selectedItem, this.topLeftItem, true);
 		MainMenu.requested("HomeTwoItems",this.divprepend1 + this.ItemData.Items[this.selectedItem].Id);
 	}
 };
@@ -400,8 +399,8 @@ HomeTwoItems.processLeftKey = function() {
 //---------------------------------------------------------------------------------------------------
 
 HomeTwoItems.updateDisplayedItems2 = function() {
-	Support.updateDisplayedItems(this.ItemData2.Items,this.selectedItem2,this.topLeftItem2,
-			Math.min(this.topLeftItem2 + this.getMaxDisplayBottom(),this.ItemData2.Items.length),"Content2",this.divprepend2,this.isResume2,null,true);
+	Support.updateDisplayedItems(this.ItemData2.Items, this.selectedItem2, this.topLeftItem2,
+			Math.min(this.topLeftItem2 + this.getMaxDisplayBottom(), this.ItemData2.Items.length), "content2", this.divprepend2, this.isResume2, null, true);
 };
 
 //Function sets CSS Properties so show which user is selected
@@ -443,8 +442,8 @@ HomeTwoItems.bottomKeyDown = function()
 			if (this.selectedItem2 == -1) {
 				this.selectedItem2 = 0; //Going left from bottom items row.
 				//Open the menu
-				Support.updateURLHistory("HomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem2,this.topLeftItem2,false);
-				MainMenu.requested("HomeTwoItemsBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id);
+				Support.updateURLHistory("HomeTwoItems", this.startParams[0], this.startParams[1], this.startParams[2], this.startParams[3], this.selectedItem2, this.topLeftItem2, false);
+				MainMenu.requested("HomeTwoItemsBottom", this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id);
 			} else {
 				if (this.selectedItem2 < this.topLeftItem2) {
 					this.topLeftItem2--;
@@ -462,7 +461,7 @@ HomeTwoItems.bottomKeyDown = function()
 			if (this.selectedItem2 >= this.ItemData2.Items.length) {
 				this.selectedItem2--;
 			} else {
-				if (this.selectedItem2 >= this.topLeftItem2+this.getMaxDisplayBottom() ) {
+				if (this.selectedItem2 >= this.topLeftItem2 + this.getMaxDisplayBottom() ) {
 					this.topLeftItem2++;
 					this.updateDisplayedItems2();
 				}
@@ -484,7 +483,7 @@ HomeTwoItems.bottomKeyDown = function()
 				this.selectedItem2 = 0;
 
 				//Set Focus
-				document.getElementById("envHomeTwoItems").focus();
+				document.getElementById("HomeTwoItems").focus();
 				//Update Selected
 				this.selectedItem = 0;
 				this.updateSelectedItems(false);
@@ -493,15 +492,15 @@ HomeTwoItems.bottomKeyDown = function()
 		case tvKey.KEY_ENTER:
 		case tvKey.KEY_PANEL_ENTER:
 			alert("ENTER BOTTOM");
-			this.processSelectedItem(this.ItemData2,false);
+			this.processSelectedItem(this.ItemData2, false);
 			break;
 		case tvKey.KEY_PLAY:
-			this.playSelectedItem(this.ItemData2.Items,false);
+			this.playSelectedItem(this.ItemData2.Items, false);
 			break;
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
-			Support.updateURLHistory("HomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],this.selectedItem2,this.topLeftItem2,false);
-			MainMenu.requested("HomeTwoItemsBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id);
+			Support.updateURLHistory("HomeTwoItems", this.startParams[0], this.startParams[1], this.startParams[2], this.startParams[3], this.selectedItem2, this.topLeftItem2, false);
+			MainMenu.requested("HomeTwoItemsBottom", this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id);
 			break;
 		case tvKey.KEY_RETURN:
 			alert("RETURN BOTTOM");
@@ -542,7 +541,7 @@ HomeTwoItems.bottomKeyDown = function()
 			}
 			break;
 		case tvKey.KEY_BLUE:
-			MusicPlayer.showMusicPlayer("HomeTwoItemsBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id,document.getElementById(this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id).className);
+			MusicPlayer.showMusicPlayer("HomeTwoItemsBottom",this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id, document.getElementById(this.divprepend2 + this.ItemData2.Items[this.selectedItem2].Id).className);
 			break;
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY BOTTOM");
@@ -556,7 +555,7 @@ HomeTwoItems.bottomKeyDown = function()
 HomeTwoItems.processSelectedItem = function (array,isTop) {
 	clearTimeout(this.backdropTimeout);
 	if (this.selectedItem == -2) {
-		Support.updateURLHistory("HomeTwoItems",this.startParams[0],this.startParams[1],this.startParams[2],this.startParams[3],0,0,true);
+		Support.updateURLHistory("HomeTwoItems", this.startParams[0], this.startParams[1], this.startParams[2], this.startParams[3], 0, 0, true);
 		Support.processHomePageMenu(this.menuItems[this.selectedBannerItem]);
 	} else {
 		var selectedItem = 0;
@@ -576,14 +575,14 @@ HomeTwoItems.processSelectedItem = function (array,isTop) {
 				isLatest = true;
 			}
 		}
-		Support.processSelectedItem("HomeTwoItems",array,this.startParams,selectedItem,topLeftItem,isTop,null,isLatest);
+		Support.processSelectedItem("HomeTwoItems", array, this.startParams, selectedItem, topLeftItem, isTop, null, isLatest);
 	}
 };
 
 HomeTwoItems.playSelectedItem = function(array, isTop) {
 	if (isTop == true) {
-		Support.playSelectedItem("HomeTwoItems",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,isTop);
+		Support.playSelectedItem("HomeTwoItems", this.ItemData,this.startParams, this.selectedItem, this.topLeftItem, isTop);
 	} else {
-		Support.playSelectedItem("HomeTwoItems",this.ItemData2,this.startParams,this.selectedItem2,this.topLeftItem2,isTop);
+		Support.playSelectedItem("HomeTwoItems", this.ItemData2,this.startParams, this.selectedItem2, this.topLeftItem2, isTop);
 	}
 };

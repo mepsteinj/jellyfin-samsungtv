@@ -14,6 +14,8 @@ Servers.getMaxDisplay = function() {
 Servers.start = function(runAutoLogin) {
 	alert("Page Enter : Servers");
 	Helper.setControlButtons(Main.messages.LabButtonDefault, null, null, Main.messages.LabButtonDelete, Main.messages.LabButtonExit);
+	document.getElementById("topPanel").style.visibility = "";
+	
 	//Reset Properties
 	this.selectedItem = 0;
 	this.topLeftItem = 0;
@@ -26,17 +28,15 @@ Servers.start = function(runAutoLogin) {
 	} else {
 		Support.removeSplashScreen();
 		//Change Display
-		var div = "<div style='padding-top:100px;text-align:center'>" +
-		"<div id=serversAllUsers></div>" +
+		Support.widgetPutInnerHTML("pageContent", 
+		"<div style='padding-top:200px;text-align:center'>" +
+		"<div id=serversAllServers></div>" +
 		"</div>" +
 		"<div id=serversAddNew class='serversAddNew'>" + Main.messages.LabAddNewServer + "</div>" +
-		"<div style='text-align:center' class='loginOptions' >" + Main.messages.LabServersDescription + 
-		"</div>";
-		Support.widgetPutInnerHTML("pageContent", div);
+		"<div style='text-align:center' class='loginOptions'><br>" + Main.messages.LabServersDescription + 
+		"</div>");
 		this.updateDisplayedUsers();
 		this.updateSelectedUser();
-		//Set Backdrop
-		Support.fadeImage("images/bg1.jpg");
 		//Set focus to element in Index that defines keydown method! This enables keys to work :D
 		document.getElementById("evnServers").focus();
 	}
@@ -48,13 +48,13 @@ Servers.updateDisplayedUsers = function() {
 		htmlToAdd += "<div id=" + this.serverData.Servers[index].Id + " style=background-image:url(images/server.png)><div class=listItem>" + this.serverData.Servers[index].Name + "</div></div>";
 	}
 	//Set Content to Server Data
-	Support.widgetPutInnerHTML("serversAllUsers", htmlToAdd);
+	Support.widgetPutInnerHTML("serversAllServers", htmlToAdd);
 };
 
 //Function sets CSS Properties so show which user is selected
 Servers.updateSelectedUser = function () {
 	Support.updateSelectedNEW(this.serverData.Servers, this.selectedItem, this.topLeftItem,
-			Math.min(this.topLeftItem + this.getMaxDisplay(), this.serverData.Servers.length), "user selected highlight1Boarder", "user", "");
+			Math.min(this.topLeftItem + this.getMaxDisplay(), this.serverData.Servers.length), "user selected highlight1Background", "user", "");
 };
 
 //Function executes on the selection of a user - should log user in or generate error message on screen
@@ -83,50 +83,54 @@ Servers.keyDown = function() {
 			break;
 		case tvKey.KEY_LEFT:
 			alert("LEFT");
-			this.selectedItem--;
-			if (this.selectedItem < 0) {
-				this.selectedItem = this.serverData.Servers.length - 1;
-				if(this.serverData.Servers.length > this.MAXCOLUMNCOUNT) {
-					this.topLeftItem = (this.selectedItem - 2);
-					this.updateDisplayedUsers();
-				} else {
-					this.topLeftItem = 0;
-				}
-			} else {
-				if (this.selectedItem < this.topLeftItem) {
-					this.topLeftItem--;
-					if (this.topLeftItem < 0) {
+			if (!this.isAddButton) {
+				this.selectedItem--;
+				if (this.selectedItem < 0) {
+					this.selectedItem = this.serverData.Servers.length - 1;
+					if(this.serverData.Servers.length > this.MAXCOLUMNCOUNT) {
+						this.topLeftItem = (this.selectedItem - 2);
+						this.updateDisplayedUsers();
+					} else {
 						this.topLeftItem = 0;
 					}
-					this.updateDisplayedUsers();
+				} else {
+					if (this.selectedItem < this.topLeftItem) {
+						this.topLeftItem--;
+						if (this.topLeftItem < 0) {
+							this.topLeftItem = 0;
+						}
+						this.updateDisplayedUsers();
+					}
 				}
+				this.updateSelectedUser();
 			}
-			this.updateSelectedUser();
 			break;
 		case tvKey.KEY_RIGHT:
 			alert("RIGHT");
-			this.selectedItem++;
-			if (this.selectedItem >= this.serverData.Servers.length) {
-				this.selectedItem = 0;
-				this.topLeftItem = 0;
-				this.updateDisplayedUsers();
-			} else {
-				if (this.selectedItem >= this.topLeftItem + this.getMaxDisplay()) {
-					this.topLeftItem++;
+			if (!this.isAddButton) {
+				this.selectedItem++;
+				if (this.selectedItem >= this.serverData.Servers.length) {
+					this.selectedItem = 0;
+					this.topLeftItem = 0;
 					this.updateDisplayedUsers();
+				} else {
+					if (this.selectedItem >= this.topLeftItem + this.getMaxDisplay()) {
+						this.topLeftItem++;
+						this.updateDisplayedUsers();
+					}
 				}
+				this.updateSelectedUser();
 			}
-			this.updateSelectedUser();
 			break;
 		case tvKey.KEY_DOWN:
 			this.isAddButton = true;
 			document.getElementById(this.serverData.Servers[this.selectedItem].Id).className = "user";
-			document.getElementById("serversAddNew").style.border = "2px solid rgba(39,164,54,1)";
+			document.getElementById("serversAddNew").style.backgroundColor = "rgba(39,164,54,0.85)";
 			break;
 		case tvKey.KEY_UP:
 			this.isAddButton = false;
 			document.getElementById(this.serverData.Servers[this.selectedItem].Id).className = "user selected";
-			document.getElementById("serversAddNew").style.border = "2px solid black";
+			document.getElementById("serversAddNew").style.backgroundColor = "#303030";
 			this.updateSelectedUser();
 			break;
 		case tvKey.KEY_ENTER:

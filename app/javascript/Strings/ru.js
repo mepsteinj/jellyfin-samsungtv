@@ -37,7 +37,7 @@ var messagesRU = {
 	"Ch. Up/Down - Skips one page of content. ",
 	LabPassword : "Пароль",
 	LabUserName : "Пользователь",
-	LabRememberPassword : "Запоминать пароль ",
+	LabRememberPassword : "Запомнить",
 	LabManualLogin : "Войти вручную",
 	LabChangeServer : "Изменить сервер",
 	LabUsersDescription : "Доступные параметры для каждой страницы показаны внизу.<br>После входа в систему на любой странице перейдите влево, чтобы получить доступ к главному меню.",

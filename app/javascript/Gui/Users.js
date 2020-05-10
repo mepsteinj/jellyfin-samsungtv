@@ -1,17 +1,11 @@
 var Users = {
 	userData : null,
 	isManualEntry : false,
-	rememberPassword : true,
 	selectedUser : 0,
 	selectedRow : 0,
 	topLeftItem : 0,
 	MAXCOLUMNCOUNT : 3,
 	MAXROWCOUNT : 1
-};
-
-Users.getRememberPasswordWord = function() {
-	var res = (this.rememberPassword == true) ? Main. messages.LabYes : Main.messages.LabNo;
-	return res;
 };
 
 Users.getMaxDisplay = function() {
@@ -22,17 +16,18 @@ Users.start = function(runAutoLogin) {
 	alert("Page Enter : Users");
 	Helper.setControlButtons(null, Main.messages.LabButtonDelUsers, Main.messages.LabButtonDelPass, null, Main.messages.LabButtonExit);
 	Support.removeSplashScreen();
+	document.getElementById("topPanel").style.visibility = "";
+	document.getElementById("topPanelLogo").style.visibility = "";
+	document.getElementById("topPanelUser").style.visibility = "hidde";
+	
 	//Reset Properties
 	File.setUserEntry(null);
 	this.selectedUser = 0;
 	this.selectedRow = 0;
 	this.topLeftItem = 0;
 	this.isManualEntry = false;
-	this.rememberPassword = true;
 	Support.destroyURLHistory();
-	Support.fadeImage("images/bg1.jpg");
-	Support.widgetPutInnerHTML("notificationText", "");
-	document.getElementById("notifications").style.visibility = "hidden";
+	Notifications.delNotification();	
 	//Load Data
 	var url = Server.getServerAddr() + "/Users/Public?format=json";
 	this.userData = Server.getContent(url);
@@ -68,19 +63,14 @@ Users.start = function(runAutoLogin) {
 	if (autoLogin == false) {
 		//Change Display
 		document.getElementById("pageContent").className = "";
-		var div = "<div style='padding-top:100px;text-align:center'>" +
+		Support.widgetPutInnerHTML("pageContent", 
+		"<div style='padding-top:200px;text-align:center'>" +
 		"<div id=usersAllUsers></div>" +
-		"<div id='pwdOptions' class='loginOptions'>" +
-		"<div id='usersPwd' style='visibility:hidden'>" +
-		"<br>" + Main.messages.LabPassword + " <input id='usersPassword' type='password' size='20'/>" +
-		"<br><span id='usersRemPwd'>" + Main.messages.LabRememberPassword + "</span> : <span id='usersRemPwdValue'>" + this.getRememberPasswordWord() + "</span>" +
-		"<br></div>" +
-		"<div id='loginOptions' class='loginOptions'>" +
+		"</div>" +
 		"<div id='manualLogin' class='usersManual'>" + Main.messages.LabManualLogin + "</div>" +
 		"<div id='changeServer' class='serversChange'>" + Main.messages.LabChangeServer + "</div> " +
-		"<div><br>" + Main.messages.LabUsersDescription + "</div>" +
-		"</div></div>";
-		Support.widgetPutInnerHTML("pageContent", div);
+		"<div style='text-align:center' class='loginOptions'><br>" + Main.messages.LabUsersDescription +
+		"</div>");	
 		if (this.userData.length != 0) {
 			this.updateDisplayedUsers();
 			this.updateSelectedUser();
@@ -109,7 +99,7 @@ Users.updateDisplayedUsers = function() {
 //Function sets CSS Properties so show which user is selected
 Users.updateSelectedUser = function() {
 	Support.updateSelectedNEW(this.userData, this.selectedUser, this.topLeftItem,
-			Math.min(this.topLeftItem + this.getMaxDisplay(), this.userData.length), "user selected highlight1Boarder", "user", "");
+			Math.min(this.topLeftItem + this.getMaxDisplay(), this.userData.length), "user selected highlight1Background", "user", "");
 };
 
 //Function executes on the selection of a user - should log user in or generate error message on screen
@@ -130,16 +120,11 @@ Users.processSelectedUser = function() {
 				userInFile = true;
 				var user = fileJson.Servers[File.getServerEntry()].Users[index].UserName;
 				var password = fileJson.Servers[File.getServerEntry()].Users[index].Password;
-				if (fileJson.Servers[File.getServerEntry()].Users[index].RememberPassword !== undefined) {
-					this.rememberPassword = fileJson.Servers[File.getServerEntry()].Users[index].RememberPassword;
-					Support.widgetPutInnerHTML("usersRemPwdValue", this.getRememberPasswordWord());
-				}
 				//Authenticate with MB3 - if fail somehow bail?
 				authenticateSuccess = Server.Authenticate(userId, user, password);
 				if (authenticateSuccess) {
 					//Hide loading
 					document.getElementById("videoLoading").style.visibility = "hidden";
-					//document.getElementById("evnUsers").focus();
 					//Set File User Entry
 					File.setUserEntry(index);
 					//Change Focus and call function in GuiMain to initiate the page!
@@ -148,9 +133,7 @@ Users.processSelectedUser = function() {
 					//Doesn't delete, allows user to correct password for the user.
 					//Hide loading
 					document.getElementById("videoLoading").style.visibility = "hidden";
-					document.getElementById("evnUsers").focus();
-					//Saved password failed - likely due to a user changing their password or user forgetting passwords!
-					new UsersInput("usersPassword");
+					UsersManual.start(user);
 				}
 				break;
 			}
@@ -161,8 +144,7 @@ Users.processSelectedUser = function() {
 			//Has password - Load IME
 			//Hide loading
 			document.getElementById("videoLoading").style.visibility = "hidden";
-			document.getElementById("evnUsers").focus();
-			new UsersInput("usersPassword");
+			UsersManual.start(this.userData[this.selectedUser].Name);
 		} else {
 			authenticateSuccess = Server.Authenticate(this.userData[this.selectedUser].Id, this.userData[this.selectedUser].Name, "");
 			if (authenticateSuccess) {
@@ -170,7 +152,7 @@ Users.processSelectedUser = function() {
 				//Hide loading
 				document.getElementById("videoLoading").style.visibility = "hidden";
 				//Add Username & Password to DB
-				File.addUser(this.userData[this.selectedUser].Id, this.userData[this.selectedUser].Name, "", this.rememberPassword);
+				File.addUser(this.userData[this.selectedUser].Id, this.userData[this.selectedUser].Name, "", true);
 				//Change Focus and call function in GuiMain to initiate the page!
 				MainMenu.start();
 			} else {
@@ -204,29 +186,29 @@ Users.keyDown = function() {
 			this.selectedRow--;
 			if (this.selectedRow < 1) {
 				this.selectedRow = 0;
-				document.getElementById("manualLogin").style.border = "2px solid black";
+				document.getElementById("manualLogin").style.backgroundColor = "#303030";
 				this.updateSelectedUser();
 			} else if (this.selectedRow == 1) {
 				this.isManualEntry = true;
-				document.getElementById("manualLogin").style.border = "2px solid rgba(39,164,54,1)";
-				document.getElementById("changeServer").style.border = "2px solid black";
+				document.getElementById("manualLogin").style.backgroundColor = "rgba(39,164,54,0.85)";
+				document.getElementById("changeServer").style.backgroundColor = "#303030";
 				document.getElementById(this.userData[this.selectedUser].Id).className = "user";
 			} else if (this.selectedRow == 2) {
-				document.getElementById("manualLogin").style.border = "2px solid black";
-				document.getElementById("changeServer").style.border = "2px solid rgba(39,164,54,1)";
+				document.getElementById("manualLogin").style.backgroundColor = "#303030";
+				document.getElementById("changeServer").style.backgroundColor = "rgba(39,164,54,0.85)";
 			}
 			break;
 		case tvKey.KEY_DOWN:
 			this.selectedRow++;
 			if (this.selectedRow == 1) {
 				this.isManualEntry = true;
-				document.getElementById("manualLogin").style.border = "2px solid rgba(39,164,54,1)";
-				document.getElementById("changeServer").style.border = "2px solid black";
+				document.getElementById("manualLogin").style.backgroundColor = "rgba(39,164,54,0.85)";
+				document.getElementById("changeServer").style.backgroundColor = "#303030";
 				document.getElementById(this.userData[this.selectedUser].Id).className = "user";
 			} else if (this.selectedRow > 1) {
 				this.selectedRow = 2;
-				document.getElementById("manualLogin").style.border = "2px solid black";
-				document.getElementById("changeServer").style.border = "2px solid rgba(39,164,54,1)";
+				document.getElementById("manualLogin").style.backgroundColor = "#303030";
+				document.getElementById("changeServer").style.backgroundColor = "rgba(39,164,54,0.85)";
 			}
 			break;
 		case tvKey.KEY_LEFT:
@@ -298,137 +280,6 @@ Users.keyDown = function() {
 			alert ("RETURN KEY");
 			widgetAPI.blockNavigation(event);
 			this.start();
-			break;
-		case tvKey.KEY_EXIT:
-			alert ("EXIT KEY");
-			widgetAPI.sendExitEvent();
-			break;
-		default:
-			alert("Unhandled key");
-			break;
-	}
-};
-
-//////////////////////////////////////////////////////////////////
-//  Input method for entering user password                     //
-//////////////////////////////////////////////////////////////////
-
-var UsersInput = function(id) {
-	
-	var imeReady = function(imeObject) {
-		installFocusKeyCallbacks();
-		document.getElementById("usersPwd").style.visibility="";
-		document.getElementById("usersPassword").focus();
-	};
-
-	var ime = new IMEShell(id, imeReady, 'en');
-	ime.setKeypadPos(1280,150);
-
-	var installFocusKeyCallbacks = function() {
-		ime.setKeyFunc(tvKey.KEY_ENTER, function(keyCode) {
-			alert("Enter key pressed");
-			//Save pwd value first, then wipe for next use
-			var pwd = document.getElementById("usersPassword").value;
-			ime.setString("");
-			//Set focus back to Users to reset IME
-			document.getElementById("evnUsers").focus();
-			Users.IMEAuthenticate(pwd);
-		});
-		//Keycode to abort login from password screen
-		ime.setKeyFunc(tvKey.KEY_RED, function(keyCode) {
-			document.getElementById("usersPwd").style.visibility="hidden";
-			document.getElementById("evnUsers").focus();
-		});
-		ime.setKeyFunc(tvKey.KEY_DOWN, function(keyCode) {
-			document.getElementById("usersRemPwd").style.color = "red";
-			document.getElementById("evnUsersPwd").focus();
-		});
-		ime.setKeyFunc(tvKey.KEY_RETURN, function(keyCode) {
-			widgetAPI.blockNavigation(event);
-			Users.start();
-		});
-		ime.setKeyFunc(tvKey.KEY_EXIT, function(keyCode) {
-			widgetAPI.sendExitEvent();
-		});
-	};
-};
-
-//Run from IME if user has password - Run in Users for ease of access to class variables
-Users.IMEAuthenticate = function(password) {
-	var authenticateSuccess = Server.Authenticate(this.userData[this.selectedUser].Id, this.userData[this.selectedUser].Name, password);
-	if (authenticateSuccess) {
-		//Reset GUI to as new!
-		document.getElementById("usersPwd").style.visibility="hidden";
-		//Add Username & Password to DB - Save password only if rememberPassword = true
-		if (this.rememberPassword == true) {
-			File.addUser(this.userData[this.selectedUser].Id, this.userData[this.selectedUser].Name, password, this.rememberPassword);
-		} else {
-			File.addUser(this.userData[this.selectedUser].Id, this.userData[this.selectedUser].Name, "", this.rememberPassword);
-		}
-		//Change Focus and call function in GuiMain to initiate the page!
-		MainMenu.start();
-	} else {
-		//Wrong password - Reset IME focus and notifty user
-		document.getElementById("usersPassword").focus();
-		Notifications.setNotification(Main.messages.LabBadPassword, Main.messages.LabLogonError);
-	}
-};
-
-Users.keyDownPassword = function() {
-	var keyCode = event.keyCode;
-	alert("Key pressed: " + keyCode);
-	if (document.getElementById("notifications").style.visibility == "") {
-		document.getElementById("notifications").style.visibility = "hidden";
-		Support.widgetPutInnerHTML("notificationText", "");
-		widgetAPI.blockNavigation(event);
-		//Change keycode so it does nothing!
-		keyCode = "VOID";
-	}
-	switch(keyCode) {
-		case tvKey.KEY_RETURN:
-		case tvKey.KEY_PANEL_RETURN:
-			alert("RETURN");
-			widgetAPI.sendReturnEvent();
-			break;
-		case tvKey.KEY_UP:
-			if (document.getElementById("usersRemPwd").style.color == "red") {
-				document.getElementById("usersRemPwd").style.color = "#f9f9f9";
-				document.getElementById("usersPassword").focus();
-			} else {
-				this.rememberPassword = (this.rememberPassword == false) ? true : false;
-				Support.widgetPutInnerHTML("usersRemPwdValue", this.getRememberPasswordWord());
-			}
-			break;
-		case tvKey.KEY_DOWN:
-			if (document.getElementById("usersRemPwdValue").style.color == "red") {
-				this.rememberPassword = (this.rememberPassword == false) ? true : false;
-				Support.widgetPutInnerHTML("usersRemPwdValue", this.getRememberPasswordWord());
-			}
-			break;
-		case tvKey.KEY_RIGHT:
-			alert("RIGHT");
-			if (document.getElementById("usersRemPwd").style.color == "red") {
-				document.getElementById("usersRemPwd").style.color = "green";
-				document.getElementById("usersRemPwdValue").style.color = "red";
-			}
-			break;
-		case tvKey.KEY_LEFT:
-			alert("LEFT");
-			if (document.getElementById("usersRemPwdValue").style.color == "red") {
-				document.getElementById("usersRemPwd").style.color = "red";
-				document.getElementById("usersRemPwdValue").style.color = "#f9f9f9";
-			}
-			break;
-		case tvKey.KEY_ENTER:
-		case tvKey.KEY_PANEL_ENTER:
-			alert("ENTER");
-			if (document.getElementById("usersRemPwdValue").style.color == "red") {
-				document.getElementById("usersRemPwd").style.color = "red";
-				document.getElementById("usersRemPwdValue").style.color = "#f9f9f9";
-			} else {
-				document.getElementById("usersRemPwd").style.color = "green";
-				document.getElementById("usersRemPwdValue").style.color = "red";
-			}
 			break;
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY");

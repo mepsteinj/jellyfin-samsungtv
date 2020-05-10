@@ -16,6 +16,20 @@ MainMenu.getSelectedMainMenuItem = function() {
 
 //Entry Point from User Menu - ONLY RUN ONCE PER USER LOGIN
 MainMenu.start = function() {
+	document.getElementById("topPanel").style.visibility = "";
+	document.getElementById("topPanelLogo").style.visibility = "";
+	document.getElementById("topPanelUser").style.visibility = "";
+	
+	var userURL = Server.getServerAddr() + "/Users/" + Server.getUserID() + "?format=json&Fields=PrimaryImageTag";
+	var UserData = Server.getContent(userURL);
+	if (UserData == null) { return; }
+
+	//User Image
+	if (UserData.PrimaryImageTag) {
+		var imgsrc = Server.getImageURL(UserData.Id, "UsersPrimary", 50, 50, 0, false, 0);
+		document.getElementById("topPanelUser").style.backgroundImage = "url(" + imgsrc + ")";
+	}
+	
 	//Generate Menu based on whether there is any of (Folders, TV, Movies, .....)
 	this.menuItems.length = 0;
 	this.menuItemsHomePages.length = 0;
@@ -31,14 +45,13 @@ MainMenu.start = function() {
 		htmlToAdd += "<div id='" + this.menuItems[index] + "' class='menuItem'><div id='menuIcon' class='menuIcon' style='background-image:url(images/menu/" + Support.getMenuItemImage(this.menuItems[index]) + "-46x37.png)'></div>" + Support.getMenuItemName(this.menuItems[index]) + "</div>";
 	}
 	//Add settings and logout
-	htmlToAddAdv = "";
 	this.menuItems.push("Search");
-	htmlToAddAdv += "<div id=Search class='menuItem'><div id='menuIcon' class='menuIcon' style='background-image:url(images/menu/" + Support.getMenuItemImage("Search") + "-46x37.png)'></div>" + Support.getMenuItemName("Search") + "</div>";
+	htmlToAdd += "<div id=Search class='menuItem'><div id='menuIcon' class='menuIcon' style='background-image:url(images/menu/" + Support.getMenuItemImage("Search") + "-46x37.png)'></div>" + Support.getMenuItemName("Search") + "</div>";
 	this.menuItems.push("Settings");
-	htmlToAddAdv += "<div id=Settings class='menuItem'><div id='menuIcon' class='menuIcon' style='background-image:url(images/menu/" + Support.getMenuItemImage("Settings") + "-46x37.png)'></div>" + Support.getMenuItemName("Settings") + "</div>";
+	htmlToAdd += "<div id=Settings class='menuItem'><div id='menuIcon' class='menuIcon' style='background-image:url(images/menu/" + Support.getMenuItemImage("Settings") + "-46x37.png)'></div>" + Support.getMenuItemName("Settings") + "</div>";
 	this.menuItems.push("LogOut");
-	htmlToAddAdv += "<div id=LogOut class='menuItem'><div id='menuIcon' class='menuIcon' style='background-image:url(images/menu/" + Support.getMenuItemImage("LogOut") + "-46x37.png)'></div>" + Support.getMenuItemName("LogOut") + "</div>";
-	Support.widgetPutInnerHTML("menuItems", htmlToAdd + htmlToAddAdv);
+	htmlToAdd += "<div id=LogOut class='menuItem'><div id='menuIcon' class='menuIcon' style='background-image:url(images/menu/" + Support.getMenuItemImage("LogOut") + "-46x37.png)'></div>" + Support.getMenuItemName("LogOut") + "</div>";
+	Support.widgetPutInnerHTML("menuItems", htmlToAdd);
 	//Turn On Screensaver
 	Support.screensaverOn();
 	Support.screensaver();
@@ -80,11 +93,11 @@ MainMenu.requested = function(pageSelected, selectedDivId, selectedDivClass) {
 		} else {
 			this.selectedDivClass = selectedDivClass;
 		}
-		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("settingChanging arrowUpDown","");
-		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("highlight" + Main.highlightColour + "Background","");
-		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("highlight" + Main.highlightColour + "Text","");
-		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("seriesSelected","");
-		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("selected","");
+		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("settingChanging arrowUpDown", "");
+		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("highlight" + Main.highlightColour + "Background", "");
+		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("highlight" + Main.highlightColour + "Text", "");
+		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("seriesSelected", "");
+		document.getElementById(selectedDivId).className = document.getElementById(selectedDivId).className.replace("selected", "");
 	}
 	//Show Menu
 	document.getElementById("menu").style.visibility = "";
@@ -112,7 +125,7 @@ MainMenu.keyDown = function() {
 	var keyCode = event.keyCode;
 	alert("Key pressed: " + keyCode);
 	if (document.getElementById("notifications").style.visibility == "") {
-	Notifications.delNotification()
+		Notifications.delNotification()
 		widgetAPI.blockNavigation(event);
 		//Change keycode so it does nothing!
 		keyCode = "VOID";
@@ -232,7 +245,7 @@ MainMenu.processReturnKey = function() {
 MainMenu.processUpKey = function() {
 	this.selectedMainMenuItem--;
 	if (this.selectedMainMenuItem < 0) {
-		this.selectedMainMenuItem = this.menuItems.length-1;
+		this.selectedMainMenuItem = this.menuItems.length - 1;
 	}
 	this.updateSelectedItems();
 };

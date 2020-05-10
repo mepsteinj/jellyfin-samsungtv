@@ -106,9 +106,6 @@ MusicArtist.start = function(title1, url1, selectedItem, topLeftItem) {
 		
 		Support.widgetPutInnerHTML("content", "Huh.. Looks like I have no content to show you in this view I'm afraid<br>Press return to get back to the previous screen");
 
-		//Set Background
-		Support.fadeImage("images/bg1.jpg");
-
 		document.getElementById("NoItems").focus();
 	}
 };
