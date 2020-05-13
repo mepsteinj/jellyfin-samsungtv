@@ -77,7 +77,7 @@ HomeOneItem.start = function(title, url, selectedItem, topLeftItem) {
 		//Generate Banner Items - Mreove Home Page
 		this.menuItems = MainMenu.menuItemsHomePages;
 		
-		//Generate Banner display
+		//Generate Banner display		
 		var bannerSelection = "";
 		for (var index = 0; index < this.menuItems.length; index++) {
 			if (index != this.menuItems.length - 1) {

@@ -1,34 +1,31 @@
 var DisplayOneItem = {
-		ItemData : null,
-		ItemIndexData : null,
-
-		selectedItem : 0,
-		topLeftItem : 0,
-		MAXCOLUMNCOUNT : 4,
-		MAXROWCOUNT : 3,
-
-		indexSeekPos : -1,
-		isResume : false,
-		genreType : "",
-
-		startParams : [],
-		isLatest : false,
-		backdropTimeout : null
+	ItemData : null,
+	ItemIndexData : null,
+	selectedItem : 0,
+	topLeftItem : 0,
+	MAXCOLUMNCOUNT : 4,
+	MAXROWCOUNT : 3,
+	indexSeekPos : -1,
+	isResume : false,
+	genreType : "",
+	startParams : [],
+	isLatest : false,
+	backdropTimeout : null
 };
 
 DisplayOneItem.onFocus = function() {
-	Helper.setControlButtons(null, null, null, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
+	Helper.setControlButtons(null, null, null, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? Main.messages.LabButtonMusic : null, Main.messages.LabButtonReturn);
 };
 
 DisplayOneItem.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
 };
 
-DisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
+DisplayOneItem.start = function(title, url, selectedItem, topLeftItem) {
 	alert("Page Enter : DisplayOneItem");
 
 	//Save Start Params
-	this.startParams = [title,url];
+	this.startParams = [title, url];
 
 	//Reset Values
 	this.indexSeekPos = -1;
@@ -37,7 +34,7 @@ DisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
 	this.genreType = null;
 
 	//Load Data
-	this.ItemData = Server.getContent(url + "&Limit="+File.getTVProperty("ItemPaging"));
+	this.ItemData = Server.getContent(url + "&Limit=" + File.getTVProperty("ItemPaging"));
 	if (this.ItemData == null) { Support.processReturnURLHistory(); }
 	//Once we've browsed the channels down to a content folder we should display them using DisplaySeries.
 	if (this.ItemData.TotalRecordCount >0){
@@ -45,7 +42,7 @@ DisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
 				this.ItemData.Items[0].Type == "ChannelAudioItem" ||
 				this.ItemData.Items[0].Type == "Trailer" ||
 				this.ItemData.Items[0].Type == "AudioPodcast") {
-			DisplaySeries.start("All "+this.ItemData.Items[0].Type,url,selectedItem,topLeftItem,this.ItemData);
+			DisplaySeries.start("All " + this.ItemData.Items[0].Type,url,selectedItem,topLeftItem, this.ItemData);
 			return;
 		}
 	}
@@ -71,7 +68,7 @@ DisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
 
 	//Set Page Content 
   Support.widgetPutInnerHTML("pageContent", "<div id='title' class='episodesSeriesInfo'>" + title + "</div>" +
-			"<div id=Center class='seriesCenter'><div id=content></div></div>");
+			"<div id=сenter class='seriesCenter'><div id=content></div></div>");
 
 	//Set Top
 	DisplayOneItem.setPadding(title);
@@ -103,7 +100,7 @@ DisplayOneItem.start = function(title,url,selectedItem,topLeftItem) {
 
 DisplayOneItem.updateDisplayedItems = function() {
 	Support.updateDisplayedItems(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Content","",this.isResume,this.genreType,true);
+			Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length), "content", "", this.isResume, this.genreType, true);
 };
 
 //Function sets CSS Properties so show which user is selected
@@ -111,10 +108,10 @@ DisplayOneItem.updateSelectedItems = function () {
 	if (this.MAXCOLUMNCOUNT == 3) {
 		//Add Collections Class to add more margin
 		Support.updateSelectedNEW(this.ItemData.Items, this.selectedItem, this.topLeftItem,
-				Math.min(this.topLeftItem + this.getMaxDisplay(), this.ItemData.Items.length),"series collection selected highlight" + Main.highlightColour + "Boarder","series collection","");
+				Math.min(this.topLeftItem + this.getMaxDisplay(), this.ItemData.Items.length), "series collection selected highlight" + Main.highlightColour + "Boarder", "series collection", "");
 	} else {
 		Support.updateSelectedNEW(this.ItemData.Items, this.selectedItem, this.topLeftItem,
-				Math.min(this.topLeftItem + this.getMaxDisplay(), this.ItemData.Items.length),"series selected highlight" + Main.highlightColour + "Boarder","series","");
+				Math.min(this.topLeftItem + this.getMaxDisplay(), this.ItemData.Items.length), "series selected highlight" + Main.highlightColour + "Boarder", "series", "");
 	}
 };
 
@@ -189,7 +186,7 @@ DisplayOneItem.keyDown = function() {
 			//Favourites - May not be needed on this page
 			break;
 		case tvKey.KEY_BLUE:
-			MusicPlayer.showMusicPlayer("DisplayOneItem", this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
+			MusicPlayer.showMusicPlayer("DisplayOneItem", this.ItemData.Items[this.selectedItem].Id, document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
 			break;
 		case tvKey.KEY_TOOLS:
 			widgetAPI.blockNavigation(event);
@@ -204,17 +201,17 @@ DisplayOneItem.keyDown = function() {
 
 DisplayOneItem.processSelectedItem = function() {
 	clearTimeout(this.backdropTimeout);
-	Support.processSelectedItem("DisplayOneItem",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null,this.genreType,this.isLatest);
+	Support.processSelectedItem("DisplayOneItem", this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null,this.genreType,this.isLatest);
 };
 
 DisplayOneItem.playSelectedItem = function () {
 	clearTimeout(this.backdropTimeout);
-	Support.playSelectedItem("DisplayOneItem",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null);
+	Support.playSelectedItem("DisplayOneItem", this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null);
 };
 
 DisplayOneItem.openMenu = function() {
-	Support.updateURLHistory("DisplayOneItem",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
-	MainMenu.requested("DisplayOneItem",this.ItemData.Items[this.selectedItem].Id);
+	Support.updateURLHistory("DisplayOneItem", this.startParams[0],this.startParams[1], null, null, this.selectedItem, this.topLeftItem,null);
+	MainMenu.requested("DisplayOneItem", this.ItemData.Items[this.selectedItem].Id);
 };
 
 DisplayOneItem.processLeftKey = function() {
@@ -306,7 +303,7 @@ DisplayOneItem.processChannelUpKey = function() {
 DisplayOneItem.processChannelDownKey = function() {
 	this.selectedItem = this.selectedItem + this.getMaxDisplay();
 	if (this.selectedItem >= this.ItemData.Items.length) {
-		this.selectedItem = (this.ItemData.Items.length-1);
+		this.selectedItem = (this.ItemData.Items.length - 1);
 		if (this.selectedItem >= this.topLeftItem + this.getMaxDisplay()) {
 			this.topLeftItem = this.topLeftItem + this.getMaxDisplay();
 		}
@@ -339,9 +336,9 @@ DisplayOneItem.setPadding = function(title) {
 	case "MediaFolders":
 	case "Collections":
 		if (this.ItemData.Items.length <= this.MAXCOLUMNCOUNT) {
-			document.getElementById("Center").style.top = "220px";
+			document.getElementById("сenter").style.top = "220px";
 		} else {
-			document.getElementById("Center").style.top = "180px";
+			document.getElementById("сenter").style.top = "180px";
 		}
 		break;
 	case "Music":
@@ -351,13 +348,13 @@ DisplayOneItem.setPadding = function(title) {
 	default:
 		if (this.ItemData.Items.length > this.MAXCOLUMNCOUNT * 2) {
 			//3 Rows
-			document.getElementById("Center").style.top = "120px";
+			document.getElementById("сenter").style.top = "120px";
 		} else if (this.ItemData.Items.length > this.MAXCOLUMNCOUNT) {
 			//2 Rows
-			document.getElementById("Center").style.top = "220px";
+			document.getElementById("сenter").style.top = "220px";
 		} else {
 			//1 Row
-			document.getElementById("Center").style.top = "180px";
+			document.getElementById("сenter").style.top = "180px";
 		}
 		break;
 	}

@@ -14,9 +14,10 @@ var messagesRU = {
 	LabButtonDelUsers : "Удалить всех пользователей",
 	LabButtonDelPass : "Удалить все пароли ",
 	LabButtonFavourite : "Избранное",
-	LabButtonWatched : "Смотрели",
+	LabButtonWatched : "Просматривается",
 	LabButtonHelp : "Помощь",
 	LabButtonMusic : "Музыка",
+	LabButtonNextIndex : "Следующий индекс",
 	LabHelpPage : "Станица помощи",
 	LabHelpImagePlayer : "Return, Stop - Ends slideshow and returns the user to the previous screen. <br> " +
 	"Left, Right - Move 1 image backwards or forwards. <br>" +

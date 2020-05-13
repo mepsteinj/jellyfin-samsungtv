@@ -17,6 +17,7 @@ var messagesEN = {
 	LabButtonWatched : "Watched",
 	LabButtonHelp : "Help",
 	LabButtonMusic : "Music",
+	LabButtonNextIndex : "Next Index",
 	LabHelpPage : "Help Page",
 	LabHelpImagePlayer : "Return, Stop - Ends slideshow and returns the user to the previous screen. <br> " +
 	"Left, Right - Move 1 image backwards or forwards. <br>" +

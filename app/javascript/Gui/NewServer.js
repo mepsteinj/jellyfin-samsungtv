@@ -71,6 +71,7 @@ NewServer.deleteAllBoxes = function(currentId) {
 
 //IME Key Handler
 var NewServerInput  = function(id, previousId, nextId) {
+	
 	var imeReady = function(imeObject) {
 		installFocusKeyCallbacks();
 		NewServer.ready(id);

@@ -29,13 +29,13 @@ DisplaySeries.onFocus = function() {
 	case "Movies":
 	case "TV":
 	case "Trailer":
-		Helper.setControlButtons("Favourite", "Watched", "Next Index", MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
+		Helper.setControlButtons(Main.messages.LabButtonFavourite, Main.messages.LabButtonWatched, Main.messages.LabButtonNextIndex, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? Main.messages.LabButtonMusic : null, Main.messages.LabButtonReturn);
 	break;
 	case "LiveTV":
-		Helper.setControlButtons("Favourite", null, null, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
+		Helper.setControlButtons(Main.messages.LabButtonFavourite, null, null, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? Main.messages.LabButtonMusic : null, Main.messages.LabButtonReturn);
 	break;
 	default:
-		Helper.setControlButtons("Favourite", null, "Next Index", MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
+		Helper.setControlButtons(Main.messages.LabButtonFavourite, null, Main.messages.LabButtonNextIndex, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? Main.messages.LabButtonMusic : null, Main.messages.LabButtonReturn);
 	}
 };
 
@@ -43,11 +43,11 @@ DisplaySeries.getMaxDisplay = function() {
 	return this.MAXCOLUMNCOUNT * this.MAXROWCOUNT;
 };
 
-DisplaySeries.start = function(title,url,selectedItem,topLeftItem,items) {
+DisplaySeries.start = function(title, url, selectedItem, topLeftItem, items) {
 	alert("Page Enter : DisplaySeries");
 	this.onFocus();
 	//Save Start Params
-	Support.pageLoadTimes("DisplaySeries","Start",true);
+	Support.pageLoadTimes("DisplaySeries", "Start", true);
 	this.startParams = [title,url];
 
 	//Reset Values
@@ -77,17 +77,17 @@ DisplaySeries.start = function(title,url,selectedItem,topLeftItem,items) {
 
 	if (this.ItemData == null) { Support.processReturnURLHistory(); }
 	this.totalRecordCount = (this.totalRecordCount == 0) ? this.ItemData.TotalRecordCount : this.totalRecordCount;
-	Support.pageLoadTimes("DisplaySeries","RetrievedServerData",false);
+	Support.pageLoadTimes("DisplaySeries","RetrievedServerData", false);
 
 	//Update Padding on pageContent
 	Support.widgetPutInnerHTML("pageContent", "<div id=bannerSelection class='bannerMenu'></div>" +
-			"<div id=Center class='SeriesCenter'>" +
+			"<div id=center class='seriesCenter'>" +
 				"<div id=content></div>" +
 			"</div>" +
-			"<div id=SeriesContent class='SeriesContent'>" +
-				"<div id='SeriesTitle' class='SeriesTitle'></div>" +
-				"<div id='SeriesSubData' class='SeriesSubData'></div>" +
-				"<div id='SeriesOverview' class='SeriesOverview'></div>" +
+			"<div id=seriesContent class='seriesContent'>" +
+				"<div id='seriesTitle' class='seriesTitle'></div>" +
+				"<div id='seriesSubData' class='seriesSubData'></div>" +
+				"<div id='seriesOverview' class='seriesOverview'></div>" +
 			"</div>");
 
 	//Split Name - 1st Element = View, 2nd = Type
@@ -120,23 +120,23 @@ DisplaySeries.start = function(title,url,selectedItem,topLeftItem,items) {
 		this.isTvOrMovies = 0;
 		this.bannerItems = this.tvBannerItems;
 		if (File.getUserProperty("LargerView") == true) {
-			document.getElementById("SeriesContent").style.top="830px";
-			document.getElementById("SeriesOverview").style.height="250px";
+			document.getElementById("seriesContent").style.top="830px";
+			document.getElementById("seriesOverview").style.height="250px";
 		}
 		break;
 	case "Movies":
 		this.isTvOrMovies = 1;
 		this.bannerItems = this.movieBannerItems;
 		if (File.getUserProperty("LargerView") == true) {
-			document.getElementById("SeriesContent").style.top="830px";
-			document.getElementById("SeriesOverview").style.height="250px";
+			document.getElementById("seriesContent").style.top="830px";
+			document.getElementById("seriesOverview").style.height="250px";
 		}
 		break;
 	case "Collections":
 		this.isTvOrMovies = -1;
 		if (File.getUserProperty("LargerView") == true) {
-			document.getElementById("SeriesContent").style.top="830px";
-			document.getElementById("SeriesOverview").style.height="250px";
+			document.getElementById("seriesContent").style.top="830px";
+			document.getElementById("seriesOverview").style.height="250px";
 		}
 		break;
 	case "Music":
@@ -144,30 +144,30 @@ DisplaySeries.start = function(title,url,selectedItem,topLeftItem,items) {
 		this.MAXROWCOUNT = 3;
 		this.isTvOrMovies = 2;
 		this.bannerItems = this.musicBannerItems;
-		document.getElementById("SeriesContent").style.top="880px";
-		document.getElementById("SeriesOverview").style.height="0px";
+		document.getElementById("seriesContent").style.top="880px";
+		document.getElementById("seriesOverview").style.height="0px";
 		break;
 	case "AudioPodcast":
 		this.MAXCOLUMNCOUNT = 7;
 		this.MAXROWCOUNT = 3;
 		this.isTvOrMovies = 2;
-		document.getElementById("SeriesContent").style.top="880px";
-		document.getElementById("SeriesOverview").style.height="0px";
+		document.getElementById("seriesContent").style.top="880px";
+		document.getElementById("seriesOverview").style.height="0px";
 		break;
 	case "LiveTV":
 		this.MAXCOLUMNCOUNT = 7;
 		this.MAXROWCOUNT = 3;
 		this.isTvOrMovies = 2;
 		this.bannerItems = this.liveTvBannerItems;
-		document.getElementById("SeriesContent").style.top="880px";
-		document.getElementById("SeriesOverview").style.height="250px";
+		document.getElementById("seriesContent").style.top="880px";
+		document.getElementById("seriesOverview").style.height="250px";
 		break;
 	default:
 		this.isTvOrMovies = 1;
 		this.bannerItems = [];
 		if (File.getUserProperty("LargerView") == true) {
-			document.getElementById("SeriesContent").style.top="830px";
-			document.getElementById("SeriesOverview").style.height="250px";
+			document.getElementById("seriesContent").style.top="830px";
+			document.getElementById("seriesOverview").style.height="250px";
 		}
 		break;
 	}
@@ -191,14 +191,14 @@ DisplaySeries.start = function(title,url,selectedItem,topLeftItem,items) {
 		if (this.MAXROWCOUNT > 2) {
 			if (this.ItemData.Items.length <= this.MAXCOLUMNCOUNT * 2) {
 				if (this.ItemData.Items.length <= this.MAXCOLUMNCOUNT) {
-					document.getElementById("Center").style.top = "200px";
+					document.getElementById("center").style.top = "200px";
 				} else {
-					document.getElementById("Center").style.top = "120px";
+					document.getElementById("center").style.top = "120px";
 				}
 			}
 		} else {
 			if (this.ItemData.Items.length <= this.MAXCOLUMNCOUNT) {
-				document.getElementById("Center").style.top = "220px";
+				document.getElementById("center").style.top = "220px";
 			}
 		}
 
@@ -206,10 +206,10 @@ DisplaySeries.start = function(title,url,selectedItem,topLeftItem,items) {
 		var bannerSelection = "";
 		if (this.isAllorFolder == 0) {
 			for (var index = 0; index < this.bannerItems.length; index++) {
-				if (index != this.bannerItems.length-1) {
-					bannerSelection += "<div id='bannerItem" + index + "' class='bannerItem bannerItemPadding'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";
+				if (index != this.bannerItems.length - 1) {
+					bannerSelection += "<div id='bannerItem" + index + "' class='bannerItem bannerItemPadding'>" + this.bannerItems[index].replace(/_/g, ' ') + "</div>";
 				} else {
-					bannerSelection += "<div id='bannerItem" + index + "' class='bannerItem'>"+this.bannerItems[index].replace(/_/g, ' ')+"</div>";
+					bannerSelection += "<div id='bannerItem" + index + "' class='bannerItem'>" + this.bannerItems[index].replace(/_/g, ' ') + "</div>";
 				}
 			}
 		}
@@ -250,7 +250,7 @@ DisplaySeries.updateDisplayedItems = function() {
 	}
 
 Support.updateDisplayedItems(this.ItemData.Items,this.selectedItem,this.topLeftItem,
-		Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length),"Content","",this.isResume,this.genreType);
+		Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length), "content", "", this.isResume, this.genreType);
 };
 
 //Function sets CSS Properties so show which user is selected
@@ -258,20 +258,18 @@ DisplaySeries.updateSelectedItems = function () {
 	if (this.isTvOrMovies == 2 || this.ItemData.Items[0].Type == "ChannelAudioItem") {
 		//Music - Use different styles
 		Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem, this.topLeftItem,
-				Math.min(this.topLeftItem + this.getMaxDisplay(), this.ItemData.Items.length), "music seriesSelected", "music", "", false, this.totalRecordCount);
+		Math.min(this.topLeftItem + this.getMaxDisplay(), this.ItemData.Items.length), "music seriesSelected", "music", "", false, this.totalRecordCount);
 	} else {
 		if (File.getUserProperty("LargerView") == true) {
-			Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem, this.topLeftItem,
+			Support.updateSelectedNEW(this.ItemData.Items, this.selectedItem, this.topLeftItem,
 					Math.min(this.topLeftItem + this.getMaxDisplay(), this.ItemData.Items.length), "seriesPortraitLarge selected highlight" + Main.highlightColour + "Boarder", "seriesPortraitLarge", "", false, this.totalRecordCount);
 		} else {
-			Support.updateSelectedNEW(this.ItemData.Items,this.selectedItem, this.topLeftItem,
+			Support.updateSelectedNEW(this.ItemData.Items, this.selectedItem, this.topLeftItem,
 					Math.min(this.topLeftItem + this.getMaxDisplay(), this.ItemData.Items.length), "seriesPortrait seriesSelected highlight" + Main.highlightColour + "Boarder", "seriesPortrait", "", false, this.totalRecordCount);
 		}
 
 	}
-
 	var htmlForTitle = this.ItemData.Items[this.selectedItem].Name + "<div style='display:inline-block; position:absolute;'><table style='padding-left:20px;'><tr>";
-
 	var toms = this.ItemData.Items[this.selectedItem].CriticRating;
 	var stars = this.ItemData.Items[this.selectedItem].CommunityRating;
 	var tomsImage = "";
@@ -300,57 +298,56 @@ DisplaySeries.updateSelectedItems = function () {
 	if (this.ItemData.Items[this.selectedItem].Type !== undefined
 			&& this.ItemData.Items[this.selectedItem].ProductionYear !== undefined) {
 		//"" is required to ensure type string is stored!
-		text =  "" + Support.SeriesRun(this.ItemData.Items[this.selectedItem].Type, this.ItemData.Items[this.selectedItem].ProductionYear, this.ItemData.Items[this.selectedItem].Status, this.ItemData.Items[this.selectedItem].EndDate);
+		var text = "" + Support.SeriesRun(this.ItemData.Items[this.selectedItem].Type, this.ItemData.Items[this.selectedItem].ProductionYear, this.ItemData.Items[this.selectedItem].Status, this.ItemData.Items[this.selectedItem].EndDate);
 
 		if (text.indexOf("Present") > -1) {
-			htmlForTitle += "<td class='MetadataItemSmallLong'>" + text + "</td>";
+			htmlForTitle += "<td class='metadataItemSmallLong'>" + text + "</td>";
 		} else {
-			htmlForTitle += "<td class='MetadataItemSmall'>" + text + "</td>";
+			htmlForTitle += "<td class='metadataItemSmall'>" + text + "</td>";
 		}
 	}
 
 	if (this.ItemData.Items[this.selectedItem].OfficialRating !== undefined) {
-		htmlForTitle +="<td class='MetadataItemSmall'>" + this.ItemData.Items[this.selectedItem].OfficialRating + "</td>";
+		htmlForTitle +="<td class='metadataItemSmall'>" + this.ItemData.Items[this.selectedItem].OfficialRating + "</td>";
 	}
 	if (this.ItemData.Items[this.selectedItem].RecursiveItemCount !== undefined) {
 		if (this.isAllorFolder == 1) {
-			htmlForTitle += "<td class='MetadataItemSmall'>" + this.ItemData.Items[this.selectedItem].RecursiveItemCount + " Items</td>";
+			htmlForTitle += "<td class='metadataItemSmall'>" + this.ItemData.Items[this.selectedItem].RecursiveItemCount + " Items</td>";
 			if (this.ItemData.Items[this.selectedItem].RecursiveItemCount == 1){
-				htmlForTitle += "<td class='MetadataItemSmall'>" + this.ItemData.Items[this.selectedItem].RecursiveItemCount + " Item</td>";
+				htmlForTitle += "<td class='metadataItemSmall'>" + this.ItemData.Items[this.selectedItem].RecursiveItemCount + " Item</td>";
 			}
 		}
 		if (this.isTvOrMovies == 2) {
-			htmlForTitle += "<td class='MetadataItemSmall'>" + this.ItemData.Items[this.selectedItem].RecursiveItemCount + " Songs</td>";
+			htmlForTitle += "<td class='metadataItemSmall'>" + this.ItemData.Items[this.selectedItem].RecursiveItemCount + " Songs</td>";
 			if (this.ItemData.Items[this.selectedItem].RecursiveItemCount == 1){
-				htmlForTitle += "<td class='MetadataItemSmall'>" + this.ItemData.Items[this.selectedItem].RecursiveItemCount + " Song</td>";
+				htmlForTitle += "<td class='metadataItemSmall'>" + this.ItemData.Items[this.selectedItem].RecursiveItemCount + " Song</td>";
 			}
 		} else {
 			if (this.ItemData.Items[this.selectedItem].SeasonCount !== undefined) {
 				if (this.ItemData.Items[this.selectedItem].SeasonCount == 1){
-					htmlForTitle += "<td class='MetadataItemSmall'>" + this.ItemData.Items[this.selectedItem].SeasonCount + " Season</td>";
+					htmlForTitle += "<td class='metadataItemSmall'>" + this.ItemData.Items[this.selectedItem].SeasonCount + " Season</td>";
 				} else {
-					htmlForTitle += "<td class='MetadataItemSmall'>" + this.ItemData.Items[this.selectedItem].SeasonCount + " Seasons</td>";
+					htmlForTitle += "<td class='metadataItemSmall'>" + this.ItemData.Items[this.selectedItem].SeasonCount + " Seasons</td>";
 				}
 			}
 		}
 	}
 
 	if (this.ItemData.Items[this.selectedItem].RunTimeTicks !== undefined) {
-		htmlForTitle += "<td class='MetadataItemSmall'>" + Support.convertTicksToMinutes(this.ItemData.Items[this.selectedItem].RunTimeTicks/10000) + "</td>";
+		htmlForTitle += "<td class='metadataItemSmall'>" + Support.convertTicksToMinutes(this.ItemData.Items[this.selectedItem].RunTimeTicks/10000) + "</td>";
 	}
 
 	if (this.ItemData.Items[this.selectedItem].HasSubtitles) {
-		htmlForTitle += "<td class=MetadataItemIcon style=background-image:url(images/cc-50x40.png)></td>";
+		htmlForTitle += "<td class=metadataItemIcon style=background-image:url(images/cc-50x40.png)></td>";
 	}
-
 	htmlForTitle += "</tr></table></div>";
-
-	htmlForSubData = "";
+	
+	var htmlForSubData = "";
 	if (this.ItemData.Items[this.selectedItem].Genres !== undefined) {
 		htmlForSubData = this.ItemData.Items[this.selectedItem].Genres.join(" / ");
 	}
 
-	htmlForOverview = "";
+	var htmlForOverview = "";
 	if (this.ItemData.Items[this.selectedItem].Overview !== undefined) {
 		htmlForOverview = this.ItemData.Items[this.selectedItem].Overview;
 	}
@@ -383,6 +380,7 @@ DisplaySeries.updateSelectedItems = function () {
 	//Background Image
 	//Blocking code to skip getting data for items where the user has just gone past it
 	//Only for collections (usually small) as a performance enhance - If screen is full of items anyway who cares what the background is.
+	var imgsrc = "";
 	if  ((this.currentMediaType == "Collections" && this.ItemData.Items[this.selectedItem].Type == "BoxSet") ||
 			(this.currentMediaType == "Collections" && this.ItemData.Items[this.selectedItem].Type == "Movie") ||
 			(this.currentMediaType == "Music")) {
@@ -391,11 +389,11 @@ DisplaySeries.updateSelectedItems = function () {
 			if (DisplaySeries.selectedItem == currentSelectedItem) {
 					//A movie.
 					if (DisplaySeries.ItemData.Items[currentSelectedItem].BackdropImageTags.length > 0) {
-						var imgsrc = Server.getBackgroundImageURL(DisplaySeries.ItemData.Items[currentSelectedItem].Id, "Backdrop", Main.backdropWidth,Main.backdropHeight, 0, false, 0, DisplaySeries.ItemData.Items[currentSelectedItem].BackdropImageTags.length);
+						imgsrc = Server.getBackgroundImageURL(DisplaySeries.ItemData.Items[currentSelectedItem].Id, "Backdrop", Main.backdropWidth,Main.backdropHeight, 0, false, 0, DisplaySeries.ItemData.Items[currentSelectedItem].BackdropImageTags.length);
 						Support.fadeImage(imgsrc);
 					//A music album.
 					} else if (DisplaySeries.ItemData.Items[currentSelectedItem].ParentBackdropImageTags) {
-						var imgsrc = Server.getBackgroundImageURL(DisplaySeries.ItemData.Items[currentSelectedItem].ParentBackdropItemId, "Backdrop", Main.backdropWidth,Main.backdropHeight, 0, false, 0, DisplaySeries.ItemData.Items[currentSelectedItem].ParentBackdropImageTags.length);
+						imgsrc = Server.getBackgroundImageURL(DisplaySeries.ItemData.Items[currentSelectedItem].ParentBackdropItemId, "Backdrop", Main.backdropWidth,Main.backdropHeight, 0, false, 0, DisplaySeries.ItemData.Items[currentSelectedItem].ParentBackdropImageTags.length);
 						Support.fadeImage(imgsrc);
 					}
 			}
@@ -407,22 +405,22 @@ DisplaySeries.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.bannerItems.length; index++) {
 		if (index == this.selectedBannerItem) {
 			if (index != this.bannerItems.length-1) {
-				document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text";
+				document.getElementById("bannerItem" + index).className = "bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text";
 			} else {
-				document.getElementById("bannerItem"+index).className = "bannerItem highlight"+Main.highlightColour+"Text";
+				document.getElementById("bannerItem" + index).className = "bannerItem highlight"+Main.highlightColour+"Text";
 			}
 		} else {
 			if (index != this.bannerItems.length-1) {
 				if (this.bannerItems[index] == this.currentView) {
-					document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding offWhite";
+					document.getElementById("bannerItem" + index).className = "bannerItem bannerItemPadding offWhite";
 				} else {
-					document.getElementById("bannerItem"+index).className = "bannerItem bannerItemPadding";
+					document.getElementById("bannerItem" + index).className = "bannerItem bannerItemPadding";
 				}
 			} else {
 				if (this.bannerItems[index] == this.currentView) {
-					document.getElementById("bannerItem"+index).className = "bannerItem offWhite";
+					document.getElementById("bannerItem" + index).className = "bannerItem offWhite";
 				} else {
-					document.getElementById("bannerItem"+index).className = "bannerItem";
+					document.getElementById("bannerItem" + index).className = "bannerItem";
 				}
 			}
 		}
@@ -525,12 +523,12 @@ DisplaySeries.keyDown = function() {
 			//Focus the music player
 			if (this.selectedItem == -1) {
 				if (this.selectedBannerItem == this.bannerItems.length-1) {
-					MusicPlayer.showMusicPlayer("DisplaySeries","bannerItem"+this.selectedBannerItem,"bannerItem highlight"+Main.highlightColour+"Text");
+					MusicPlayer.showMusicPlayer("DisplaySeries", "bannerItem" + this.selectedBannerItem, "bannerItem highlight" + Main.highlightColour + "Text");
 				} else {
-					MusicPlayer.showMusicPlayer("DisplaySeries","bannerItem"+this.selectedBannerItem,"bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
+					MusicPlayer.showMusicPlayer("DisplaySeries", "bannerItem" + this.selectedBannerItem, "bannerItem bannerItemPadding highlight" + Main.highlightColour + "Text");
 				}
 			} else {
-				MusicPlayer.showMusicPlayer("DisplaySeries",this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
+				MusicPlayer.showMusicPlayer("DisplaySeries", this.ItemData.Items[this.selectedItem].Id, document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
 			}
 			break;
 		case tvKey.KEY_TOOLS:
@@ -545,20 +543,22 @@ DisplaySeries.keyDown = function() {
 };
 
 DisplaySeries.processSelectedItem = function() {
+	var url = "";
+	var url1 = "";
 	if (this.selectedItem == -1) {
 		switch (this.bannerItems[this.selectedBannerItem]) {
 		case "All":
-			var url = Server.getItemTypeURL("&IncludeItemTypes=Movie"+Server.getMoviesViewQueryPart()+"&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
-			DisplaySeries.start("All Movies",url,0,0);
+			url = Server.getItemTypeURL("&IncludeItemTypes=Movie" + Server.getMoviesViewQueryPart() + "&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
+			DisplaySeries.start("All Movies", url, 0, 0);
 			break;
 		case "Series":
-			var url = Server.getItemTypeURL("&IncludeItemTypes=Series"+Server.getTVViewQueryPart()+"&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
-			DisplaySeries.start("All TV",url,0,0);
+			url = Server.getItemTypeURL("&IncludeItemTypes=Series" + Server.getTVViewQueryPart() + "&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true");
+			DisplaySeries.start("All TV", url, 0, 0);
 			break;
 		case "Unwatched":
 			if (this.isTvOrMovies == 1) {
-				var url = Server.getItemTypeURL("&IncludeItemTypes=Movie"+Server.getMoviesViewQueryPart()+"&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true&Filters=IsUnPlayed");
-				DisplaySeries.start("Unwatched Movies",url,0,0);
+				url = Server.getItemTypeURL("&IncludeItemTypes=Movie" + Server.getMoviesViewQueryPart() + "&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,Overview,Genres,RunTimeTicks&recursive=true&Filters=IsUnPlayed");
+				DisplaySeries.start("Unwatched Movies", url, 0, 0);
 			}
 			break;
 		case "Upcoming":
@@ -566,43 +566,43 @@ DisplaySeries.processSelectedItem = function() {
 			break;
 		case "Latest":
 			if (this.isTvOrMovies == 1) {
-				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&IncludeItemTypes=Movie"+Server.getMoviesViewQueryPart()+"&IsFolder=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
-				DisplaySeries.start("Latest Movies",url,0,0);
+				url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&IncludeItemTypes=Movie" + Server.getMoviesViewQueryPart() + "&IsFolder=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
+				DisplaySeries.start("Latest Movies", url, 0, 0);
 			} else if (this.isTvOrMovies == 0){
-				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&IncludeItemTypes=Episode&IsFolder=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
-				DisplaySeries.start("Latest TV",url,0,0);
+				url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&IncludeItemTypes=Episode&IsFolder=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
+				DisplaySeries.start("Latest TV",url, 0, 0);
 			} else {
-				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&IncludeItemTypes=Audio&Limit=21&fields=SortName,Genres");
-				DisplaySeries.start("Latest Music",url,0,0);
+				url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&IncludeItemTypes=Audio&Limit=21&fields=SortName,Genres");
+				DisplaySeries.start("Latest Music", url, 0, 0);
 			}
 			break;
 		case "Genre":
 			if (this.isTvOrMovies == 1) {
-				var url1 = Server.getCustomURL("/Genres?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Movie"+Server.getMoviesViewQueryPart()+"&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,ItemCounts&userId=" + Server.getUserID());
-				DisplaySeries.start("Genre Movies",url1,0,0);
+				url1 = Server.getCustomURL("/Genres?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Movie" + Server.getMoviesViewQueryPart() + "&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,ItemCounts&userId=" + Server.getUserID());
+				DisplaySeries.start("Genre Movies", url1, 0, 0);
 			} else {
-				var url1 = Server.getCustomURL("/Genres?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Series"+Server.getTVViewQueryPart()+"&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,ItemCounts&userId=" + Server.getUserID());
-				DisplaySeries.start("Genre TV",url1,0,0);
+				url1 = Server.getCustomURL("/Genres?format=json&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Series" + Server.getTVViewQueryPart() + "&Recursive=true&ExcludeLocationTypes=Virtual&Fields=ParentId,SortName,ItemCounts&userId=" + Server.getUserID());
+				DisplaySeries.start("Genre TV", url1, 0, 0);
 			}
 			break;
 		case "Channels":
-			Support.updateURLHistory("DisplaySeries",this.startParams[0],this.startParams[1],null,null,0,0,false);
-			var url = Server.getCustomURL("/LiveTV/Channels?StartIndex=0&EnableFavoriteSorting=true&userId=" + Server.getUserID());
-			DisplaySeries.start("Channels LiveTV",url,0,0);
+			Support.updateURLHistory("DisplaySeries", this.startParams[0], this.startParams[1], null, null, 0, 0, false);
+			url = Server.getCustomURL("/LiveTV/Channels?StartIndex=0&EnableFavoriteSorting=true&userId=" + Server.getUserID());
+			DisplaySeries.start("Channels LiveTV", url, 0, 0);
 			break;
 		case "Recordings":
-			Support.updateURLHistory("DisplaySeries",this.startParams[0],this.startParams[1],null,null,0,0,false);
-			var url = Server.getCustomURL("/LiveTV/Recordings?IsInProgress=false&SortBy=StartDate&SortOrder=Descending&StartIndex=0&fields=SortName&UserId=" + Server.getUserID());
-			DisplaySeries.start("Recordings LiveTV",url,0,0);
+			Support.updateURLHistory("DisplaySeries", this.startParams[0], this.startParams[1], null, null, 0, 0, false);
+			url = Server.getCustomURL("/LiveTV/Recordings?IsInProgress=false&SortBy=StartDate&SortOrder=Descending&StartIndex=0&fields=SortName&UserId=" + Server.getUserID());
+			DisplaySeries.start("Recordings LiveTV", url, 0, 0);
 			break;
 		case "Guide":
-			Support.updateURLHistory("DisplaySeries",this.startParams[0],this.startParams[1],null,null,0,0,false);
-			var url = Server.getCustomURL("/LiveTV/Channels?StartIndex=0&Limit=100&EnableFavoriteSorting=true&UserId=" + Server.getUserID());
+			Support.updateURLHistory("DisplaySeries", this.startParams[0], this.startParams[1], null, null, 0, 0, false);
+			url = Server.getCustomURL("/LiveTV/Channels?StartIndex=0&Limit=100&EnableFavoriteSorting=true&UserId=" + Server.getUserID());
 			var guideTime = new Date();
 			var timeMsec = guideTime.getTime();
 			var startTime = timeMsec - 900000; //rewind the clock fifteen minutes.
 			guideTime.setTime(startTime);
-			TVGuide.start("Guide",url,0,0,0,guideTime);
+			TVGuide.start("Guide", url, 0, 0, 0, guideTime);
 			break;
 		case "Recent":
 		case "Frequent":
@@ -613,18 +613,20 @@ DisplaySeries.processSelectedItem = function() {
 			break;
 		case"A-Z":
 			if (this.isTvOrMovies == 1) {
-				MusicAZ.start("Movies",0);
+				MusicAZ.start("Movies", 0);
 			} else {
-			  MusicAZ.start("TV",0);
+			  MusicAZ.start("TV", 0);
 			}
 			break;
 		}
 	} else {
-		Support.processSelectedItem("DisplaySeries",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null,this.genreType,this.isLatest);
+		Support.processSelectedItem("DisplaySeries", this.ItemData,this.startParams, this.selectedItem, this.topLeftItem, null, this.genreType, this.isLatest);
 	}
 };
 
 DisplaySeries.toggleWatchedStatus = function () {
+	var urlSeasons = "";
+	var seasons = "";
 	if (this.selectedItem > -1) {
 		var titleArray = this.startParams[0].split(" ");
 		switch (titleArray[1]) {
@@ -643,16 +645,16 @@ DisplaySeries.toggleWatchedStatus = function () {
 		case "TV": //Mark all episodes of all seasons as watched
 			if (this.ItemData.Items[this.selectedItem].UserData.Played == true) {
 				Server.deleteWatchedStatus(this.ItemData.Items[this.selectedItem].Id);
-				var urlSeasons = Server.getChildItemsURL(this.ItemData.Items[this.selectedItem].Id,"&IncludeItemTypes=Season&fields=SortName");
-				var seasons = Server.getContent(urlSeasons);
+				urlSeasons = Server.getChildItemsURL(this.ItemData.Items[this.selectedItem].Id,"&IncludeItemTypes=Season&fields=SortName");
+				seasons = Server.getContent(urlSeasons);
 				for (var s = 0; s < seasons.Items.length; s++){
 					Server.deleteWatchedStatus(seasons.Items[s].Id);
 				}
 				this.ItemData.Items[this.selectedItem].UserData.Played = false;
 			} else {
 				Server.setWatchedStatus(this.ItemData.Items[this.selectedItem].Id);
-				var urlSeasons = Server.getChildItemsURL(this.ItemData.Items[this.selectedItem].Id,"&IncludeItemTypes=Season&fields=SortName");
-				var seasons = Server.getContent(urlSeasons);
+				urlSeasons = Server.getChildItemsURL(this.ItemData.Items[this.selectedItem].Id,"&IncludeItemTypes=Season&fields=SortName");
+				seasons = Server.getContent(urlSeasons);
 				for (var s = 0; s < seasons.Items.length; s++){
 					Server.setWatchedStatus(seasons.Items[s].Id);
 				}
@@ -666,24 +668,24 @@ DisplaySeries.toggleWatchedStatus = function () {
 };
 
 DisplaySeries.playSelectedItem = function () {
-	Support.playSelectedItem("DisplaySeries",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null);
+	Support.playSelectedItem("DisplaySeries", this.ItemData, this.startParams, this.selectedItem, this.topLeftItem, null);
 };
 
 DisplaySeries.openMenu = function() {
 	if (this.selectedItem == -1) { //Banner menu
 		if (this.currentView == "All" || this.currentView == "Series") {
 			document.getElementById("bannerItem0").class = "bannerItem bannerItemPadding offWhite";
-			MainMenu.requested("DisplaySeries","bannerItem0","bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
+			MainMenu.requested("DisplaySeries","bannerItem0","bannerItem bannerItemPadding highlight" + Main.highlightColour + "Text");
 		} else {
 			document.getElementById("bannerItem0").class = "bannerItem bannerItemPadding";
-			MainMenu.requested("DisplaySeries","bannerItem0","bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text");
+			MainMenu.requested("DisplaySeries","bannerItem0","bannerItem bannerItemPadding highlight" + Main.highlightColour + "Text");
 		}
 	} else if (this.isTvOrMovies == 2) { //Music
-		Support.updateURLHistory("DisplaySeries",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
-		MainMenu.requested("DisplaySeries",this.ItemData.Items[this.selectedItem].Id,"Music Selected");
+		Support.updateURLHistory("DisplaySeries", this.startParams[0], this.startParams[1], null, null, this.selectedItem, this.topLeftItem, null);
+		MainMenu.requested("DisplaySeries", this.ItemData.Items[this.selectedItem].Id, "music Selected");
 	} else { //TV or Movies
-		Support.updateURLHistory("DisplaySeries",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
-		MainMenu.requested("DisplaySeries",this.ItemData.Items[this.selectedItem].Id,(File.getUserProperty("LargerView") == true) ? "SeriesPortraitLarge Selected" : "SeriesPortrait Selected");
+		Support.updateURLHistory("DisplaySeries", this.startParams[0], this.startParams[1], null, null, this.selectedItem, this.topLeftItem, null);
+		MainMenu.requested("DisplaySeries", this.ItemData.Items[this.selectedItem].Id, (File.getUserProperty("LargerView") == true) ? "seriesPortraitLarge selected" : "seriesPortrait selected");
 	}
 };
 
@@ -923,7 +925,7 @@ DisplaySeries.processIndexing = function() {
 
 DisplaySeries.loadMoreItems = function() {
 	if (this.totalRecordCount > this.ItemData.Items.length) {
-		Support.pageLoadTimes("DisplaySeries","GetRemainingItems",true);
+		Support.pageLoadTimes("DisplaySeries", "GetRemainingItems", true);
 
 		//Show Loading Div
 		document.getElementById("playerLoading").style.visibility = "";
@@ -935,7 +937,7 @@ DisplaySeries.loadMoreItems = function() {
 		var originalLength = this.ItemData.Items.length;
 		var ItemDataRemaining = Server.getContent(this.startParams[1] + "&Limit="+File.getTVProperty("ItemPaging") + "&StartIndex=" + originalLength);
 		if (ItemDataRemaining == null) { return; }
-		Support.pageLoadTimes("DisplaySeries","GotRemainingItems",false);
+		Support.pageLoadTimes("DisplaySeries", "GotRemainingItems", false);
 
 		for (var index = 0; index < ItemDataRemaining.Items.length; index++) {
 			this.ItemData.Items[index+originalLength] = ItemDataRemaining.Items[index];
@@ -951,7 +953,7 @@ DisplaySeries.loadMoreItems = function() {
 		//Pass back Control
 		document.getElementById("evnDisplaySeries").focus();
 
-		Support.pageLoadTimes("DisplaySeries","AddedRemainingItems",false);
+		Support.pageLoadTimes("DisplaySeries", "AddedRemainingItems", false);
 	}
 };
 

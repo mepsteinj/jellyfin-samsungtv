@@ -181,7 +181,7 @@ Support.processReturnURLHistory = function() {
 				Settings.start();
 				break;
 			case "TVGuide":
-				var url = Server.getCustomURL("/LiveTV/Channels?StartIndex=0&Limit=100&EnableFavoriteSorting=true&UserId=" + Server.getUserID());
+				url = Server.getCustomURL("/LiveTV/Channels?StartIndex=0&Limit=100&EnableFavoriteSorting=true&UserId=" + Server.getUserID());
 				var guideTime = new Date();
 				var timeMsec = guideTime.getTime();
 				var startTime = timeMsec - 900000; //rewind the clock fifteen minutes.
@@ -244,13 +244,16 @@ Support.processIndexing = function(itemsArray) {
 
 Support.updateDisplayedItems = function(items, selectedItemID, startPos, endPos, divIdUpdate, divIdPrepend, isResume, genre, showBackdrop) {
 	var htmlToAdd = "";
+	var progress = "";
+	var imgsrc = "";
+	var title = "";
+	var imageData = "";
 	for (var index = startPos; index < endPos; index++) {
 		if (isResume == true) {
 			progress = Math.round((Main.posterWidth / 100) * Math.round(items[index].UserData.PlayedPercentage));
 			//Calculate Width of Progress Bar
 			if (items[index].Type == "Episode") {
-				var title = this.getNameFormat(items[index].SeriesName, items[index].ParentIndexNumber, items[index].Name, items[index].IndexNumber);
-				var imgsrc = "";
+				title = this.getNameFormat(items[index].SeriesName, items[index].ParentIndexNumber, items[index].Name, items[index].IndexNumber);				
 				if (items[index].ParentThumbItemId) {
 					title = this.getNameFormat("", items[index].ParentIndexNumber, items[index].Name, items[index].IndexNumber);
 					imgsrc = Server.getImageURL(items[index].SeriesId, "Thumb", Main.posterWidth, Main.posterHeight, 0, false);
@@ -273,15 +276,15 @@ Support.updateDisplayedItems = function(items, selectedItemID, startPos, endPos,
 				htmlToAdd += "<div class=menuItemWithProgress>" + title +"</div></div>";
 
 			} else {
-				var title = items[index].Name;
+				title = items[index].Name;
 				if (items[index].ImageTags.Thumb) {
-					var imgsrc = Server.getImageURL(items[index].Id, "Thumb", Main.posterWidth, Main.posterHeight, items[index].UserData.PlayCount, items[index].UserData.Played);
+					imgsrc = Server.getImageURL(items[index].Id, "Thumb", Main.posterWidth, Main.posterHeight, items[index].UserData.PlayCount, items[index].UserData.Played);
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-image:url(" +imgsrc+ ")><div class=menuProgressBar></div><div class=menuProgressBarCurrent style='width:" + progress + "px;'></div><div class=menuItemWithProgress></div></div>";
 				} else if (items[index].BackdropImageTags.length > 0) {
-					var imgsrc = Server.getImageURL(items[index].Id, "Backdrop", Main.posterWidth, Main.posterHeight, items[index].UserData.PlayCount, items[index].UserData.Played);
+					imgsrc = Server.getImageURL(items[index].Id, "Backdrop", Main.posterWidth, Main.posterHeight, items[index].UserData.PlayCount, items[index].UserData.Played);
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-image:url(" +imgsrc+ ")><div class=menuProgressBar></div><div class=menuProgressBarCurrent style='width:" + progress + "px;'></div><div class=menuItemWithProgress>" + title + "</div></div>";
 				} else if (items[index].ImageTags.Primary) {
-					var imgsrc = Server.getImageURL(items[index].Id, "Primary", Main.posterWidth, Main.posterHeight, 0, false, 0);
+					imgsrc = Server.getImageURL(items[index].Id, "Primary", Main.posterWidth, Main.posterHeight, 0, false, 0);
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-image:url(" +imgsrc+ ")><div class=menuProgressBar></div><div class=menuProgressBarCurrent style='width:" + progress + "px;'></div><div class=menuItemWithProgress>" + title + "</div></div>";
 				} else {
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-image:url(images/collection.png)><div class=menuProgressBar></div><div class=menuProgressBarCurrent style='width:" + progress + "px;'></div><div class=menuItemWithProgress>" + title + "</div></div>";
@@ -303,25 +306,24 @@ Support.updateDisplayedItems = function(items, selectedItemID, startPos, endPos,
 					break;
 				}
 				if (items[index].ImageTags.Primary) {
-					var imgsrc = (File.getUserProperty("LargerView") == true) ? Server.getImageURL(items[index].Id, "Primary", 238, 356, 0, false, 0) : Server.getImageURL(items[index].Id, "Primary", 192, 280, 0, false, 0);
+					imgsrc = (File.getUserProperty("LargerView") == true) ? Server.getImageURL(items[index].Id, "Primary", 238, 356, 0, false, 0) : Server.getImageURL(items[index].Id, "Primary", 192, 280, 0, false, 0);
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-image:url(" + imgsrc + ")><div class='genreItemCount highlight" + Main.highlightColour + "Background'>" + itemCount + "</div></div>";
 				} else {
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-color:rgba(0,0,0,0.5);><div class='genreItemCount highlight" + Main.highlightColour + "Background'>" + itemCount + "</div></div>";
 				}
 			//----------------------------------------------------------------------------------------------
 			} else if (items[index].Type == "Episode") {
-				var title = this.getNameFormat(items[index].SeriesName, items[index].ParentIndexNumber, items[index].Name, items[index].IndexNumber, items[index].SeriesStudio?items[index].SeriesStudio:undefined, items[index].AirTime?items[index].AirTime:undefined);
-				var imageData = "";
+				title = this.getNameFormat(items[index].SeriesName, items[index].ParentIndexNumber, items[index].Name, items[index].IndexNumber, items[index].SeriesStudio?items[index].SeriesStudio:undefined, items[index].AirTime?items[index].AirTime:undefined);
 				if (items[index].ParentThumbItemId) {
-					var imgsrc = Server.getImageURL(items[index].SeriesId, "Thumb", Main.posterWidth,Main.posterHeight, 0, items[index].UserData.Played, 0);
+					imgsrc = Server.getImageURL(items[index].SeriesId, "Thumb", Main.posterWidth,Main.posterHeight, 0, items[index].UserData.Played, 0);
 					imageData = "'background-image:url(" +imgsrc+ ");background-size:contain'";
 					title = this.getNameFormat("", items[index].ParentIndexNumber, items[index].Name, items[index].IndexNumber, items[index].SeriesStudio?items[index].SeriesStudio:undefined, items[index].AirTime?items[index].AirTime:undefined);
 				} else if (items[index].ParentBackdropImageTags.length > 0) {
-					var imgsrc = Server.getImageURL(items[index].ParentBackdropItemId, "Backdrop", Main.posterWidth, Main.posterHeight, 0, false);
+					imgsrc = Server.getImageURL(items[index].ParentBackdropItemId, "Backdrop", Main.posterWidth, Main.posterHeight, 0, false);
 					imageData = "'background-image:url(" +imgsrc+ ");background-size:contain'";
 					title = this.getNameFormat(items[index].SeriesName, items[index].ParentIndexNumber, items[index].Name, items[index].IndexNumber,  items[index].SeriesStudio?items[index].SeriesStudio:undefined, items[index].AirTime?items[index].AirTime:undefined);
 				} else  if (items[index].ImageTags.Primary) {
-					var imgsrc = Server.getImageURL(items[index].Id, "Primary", Main.posterWidth, Main.posterHeight, 0, items[index].UserData.Played, 0);
+					imgsrc = Server.getImageURL(items[index].Id, "Primary", Main.posterWidth, Main.posterHeight, 0, items[index].UserData.Played, 0);
 					imageData = "'background-image:url(" + imgsrc + ");background-size:contain'";
 				} else {
 					imageData = "background-color:rgba(0,0,0,0.5)";
@@ -346,9 +348,9 @@ Support.updateDisplayedItems = function(items, selectedItemID, startPos, endPos,
 				htmlToAdd += "<div class=menuItem>" + title + "</div></div>";
 			//----------------------------------------------------------------------------------------------
 			} else if (items[index].Type == "MusicAlbum"){
-				var title = items[index].Name;
+				title = items[index].Name;
 				if (items[index].ImageTags.Primary) {
-					var imgsrc = Server.getImageURL(items[index].Id,"Primary",224,224,items[index].UserData.PlayCount,false,0);
+					imgsrc = Server.getImageURL(items[index].Id,"Primary",224,224,items[index].UserData.PlayCount,false,0);
 					if (items[index].UserData.IsFavorite) {
 						htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-image:url(" + imgsrc + ")><div class=favItem></div><div class='genreItemCount highlight" + Main.highlightColour + "Background'>" + items[index].RecursiveItemCount + "</div><div class=menuItem>" + title + "</div></div>";
 					} else {
@@ -359,9 +361,9 @@ Support.updateDisplayedItems = function(items, selectedItemID, startPos, endPos,
 				}
 			//----------------------------------------------------------------------------------------------
 			} else if (items[index].Type == "ChannelAudioItem" || items[index].Type == "AudioPodcast"){
-				var title = items[index].Name;
+				title = items[index].Name;
 				if (items[index].ImageTags.Primary) {
-					var imgsrc = Server.getImageURL(items[index].Id, "Primary", 224, 224, items[index].UserData.PlayCount, false, 0);
+					imgsrc = Server.getImageURL(items[index].Id, "Primary", 224, 224, items[index].UserData.PlayCount, false, 0);
 					if (items[index].UserData.IsFavorite) {
 						htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-image:url(" + imgsrc + ")><div class=favItem></div></div>";
 					} else {
@@ -372,10 +374,10 @@ Support.updateDisplayedItems = function(items, selectedItemID, startPos, endPos,
 				}
 			//----------------------------------------------------------------------------------------------
 			}  else if (items[index].Type == "MusicArtist"){
-				var title = items[index].Name;
+				title = items[index].Name;
 				var count = items[index].RecursiveItemCount;
 				if (items[index].ImageTags.Primary) {
-					var imgsrc = Server.getImageURL(items[index].Id, "Primary", 250, 500, 0, false, 0);
+					imgsrc = Server.getImageURL(items[index].Id, "Primary", 250, 500, 0, false, 0);
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-image:url(" + imgsrc + ")>";
 				} else {
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style='background-image:url(images/artist.png);border:2px solid black;background-position:center;'>";
@@ -387,32 +389,32 @@ Support.updateDisplayedItems = function(items, selectedItemID, startPos, endPos,
 				}
 			//----------------------------------------------------------------------------------------------
 			} else if (items[index].Type == "Audio"){
-				var title = items[index].Name;
+				title = items[index].Name;
 				if (items[index].AlbumPrimaryImageTag) {
-					var imgsrc = Server.getImageURL(items[index].AlbumId, "Primary", 224, 224, 0, false, 0);
+					imgsrc = Server.getImageURL(items[index].AlbumId, "Primary", 224, 224, 0, false, 0);
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-image:url(" + imgsrc + ")><div class=menuItem>" + title + "</div></div>";
 				} else {
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-image:url(images/album.png)><div class=menuItem>" + title + "</div></div>";
 				}
 			//----------------------------------------------------------------------------------------------
 			} else if (items[index].Type == "Series" || items[index].Type == "Movie" || items[index].Type == "BoxSet" || items[index].Type == "ChannelVideoItem" || items[index].Type == "Trailer") {
-				var title = items[index].Name;
+				title = items[index].Name;
 				if (showBackdrop == true) {
 					if (items[index].ImageTags.Thumb) {
-						var imgsrc = Server.getImageURL(items[index].Id, "Thumb", Main.posterWidth, Main.posterHeight, 0, false, 0);
+						imgsrc = Server.getImageURL(items[index].Id, "Thumb", Main.posterWidth, Main.posterHeight, 0, false, 0);
 						htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style='background-image:url(" +imgsrc+ ")'>";
 					} else if (items[index].BackdropImageTags.length > 0) {
-						var imgsrc = Server.getBackgroundImageURL(items[index].Id,"Backdrop", Main.posterWidth,Main.posterHeight, 0, false, 0, items[index].BackdropImageTags.length);
+						imgsrc = Server.getBackgroundImageURL(items[index].Id,"Backdrop", Main.posterWidth,Main.posterHeight, 0, false, 0, items[index].BackdropImageTags.length);
 						htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style='background-image:url(" + imgsrc + ")'><div class=menuItem>" + title + "</div>";
 					} else if (items[index].ImageTags.Primary) {
-						var imgsrc = Server.getImageURL(items[index].Id, "Primary", Main.posterWidth, Main.posterHeight, 0, false, 0);
+						imgsrc = Server.getImageURL(items[index].Id, "Primary", Main.posterWidth, Main.posterHeight, 0, false, 0);
 						htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style='background-image:url(" + imgsrc + ")'><div class=menuItem>" + title + "</div>";
 					} else {
 						htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style='background-image:rgba(0,0,0,0.5)'><div class=menuItem>" + title + "</div>";
 					}
 				} else {
 					if (items[index].ImageTags.Primary) {
-						var imgsrc = (File.getUserProperty("LargerView") == true) ? Server.getImageURL(items[index].Id, "Primary", Main.seriesPosterLargeWidth, Main.seriesPosterLargeHeight, 0, false, 0) : Server.getImageURL(items[index].Id, "Primary", Main.seriesPosterWidth, Main.seriesPosterHeight, 0, false, 0);
+						imgsrc = (File.getUserProperty("LargerView") == true) ? Server.getImageURL(items[index].Id, "Primary", Main.seriesPosterLargeWidth, Main.seriesPosterLargeHeight, 0, false, 0) : Server.getImageURL(items[index].Id, "Primary", Main.seriesPosterWidth, Main.seriesPosterHeight, 0, false, 0);
 						htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style='background-image:url(" + imgsrc + ")'>";
 					} else {
 						htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style='background-image:rgba(0,0,0,0.5)'><div class=menuItem>" + title + "</div>";
@@ -430,19 +432,19 @@ Support.updateDisplayedItems = function(items, selectedItemID, startPos, endPos,
 				htmlToAdd += "</div>";
 			//----------------------------------------------------------------------------------------------
 			} else if (items[index].Type == "TvChannel") {
-				var title = items[index].Name;
+				title = items[index].Name;
 				if (items[index].ImageTags.Primary) {
-					var imgsrc = Server.getImageURL(items[index].Id, "Primary", 224, 224, 0, false, 0);
+					imgsrc = Server.getImageURL(items[index].Id, "Primary", 224, 224, 0, false, 0);
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-image:url(" + imgsrc + ")><div class=menuItem>" + title + "</div></div>";
 				} else {
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style='background-position:center;background-color:rgba(63,81,181,0.8);background-image:url(images/Live-TV-108x98.png)')><div class=menuItem>" + title + "</div></div>";
 				}
 				//----------------------------------------------------------------------------------------------
 			} else if (items[index].Type == "Recording") {
-				var title = items[index].Name + "<br>" + Support.AirDate(items[index].StartDate,"Recording");
+				title = items[index].Name + "<br>" + Support.AirDate(items[index].StartDate,"Recording");
 
 				if (items[index].ImageTags.Primary) {
-					var imgsrc = Server.getImageURL(items[index].Id, "Primary", Main.posterWidth, Main.posterHeight, 0, false, 0);
+					imgsrc = Server.getImageURL(items[index].Id, "Primary", Main.posterWidth, Main.posterHeight, 0, false, 0);
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-image:url(" + imgsrc + ")><div class=menuItem>"+ title + "</div>";
 				} else {
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style='background-position:center;background-color:rgba(63,81,181,0.8);background-image:url(images/Live-TV-108x98.png)')><div class=menuItem>" + title + "</div>";
@@ -460,20 +462,20 @@ Support.updateDisplayedItems = function(items, selectedItemID, startPos, endPos,
 			//----------------------------------------------------------------------------------------------
 			} else if (items[index].Type == "Season") {
 				if (items[index].BackdropImageTags.length > 0) {
-					var imgsrc = Server.getBackgroundImageURL(items[index].Id, "Primary", 114, 165, items[index].UserData.PlayCount, items[index].UserData.Played, items[index].UserData.PlayedPercentage, items[index].BackdropImageTags.length);
+					imgsrc = Server.getBackgroundImageURL(items[index].Id, "Primary", 114, 165, items[index].UserData.PlayCount, items[index].UserData.Played, items[index].UserData.PlayedPercentage, items[index].BackdropImageTags.length);
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-image:url(" + imgsrc + ")></div>";
 				} else {
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-color:rgba(0,0,0,0.5);></div>";
 				}
 			//----------------------------------------------------------------------------------------------
 			} else if (items[index].Type == "Channel") {
-				var title = items[index].Name;
+				title = items[index].Name;
 				if (items[index].BackdropImageTags.length > 0) {
-					var imgsrc = Server.getBackgroundImageURL(items[index].Id, "Backdrop", Main.posterWidth, Main.posterHeight, 0, false, 0, items[index].BackdropImageTags.length);
+					imgsrc = Server.getBackgroundImageURL(items[index].Id, "Backdrop", Main.posterWidth, Main.posterHeight, 0, false, 0, items[index].BackdropImageTags.length);
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-image:url(" + imgsrc + ")><div class=menuItem>" + title + "</div></div>";
 				}
 				else if (items[index].ImageTags.Thumb) {
-					var imgsrc = Server.getImageURL(items[index].Id, "Thumb", Main.posterWidth, Main.posterHeight, 0, false, 0);
+					imgsrc = Server.getImageURL(items[index].Id, "Thumb", Main.posterWidth, Main.posterHeight, 0, false, 0);
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-image:url(" + imgsrc + ")><div class=menuItem>" + title + "</div></div>";
 				}
 				else {
@@ -481,81 +483,81 @@ Support.updateDisplayedItems = function(items, selectedItemID, startPos, endPos,
 				}
 			//----------------------------------------------------------------------------------------------
 			} else if (items[index].Type == "ChannelFolderItem") {
-				var title = items[index].Name;
+				title = items[index].Name;
 				if (items[index].ImageTags.Primary) {
-					var imgsrc = Server.getImageURL(items[index].Id, "Primary", Main.posterWidth, Main.posterHeight, 0, false, 0);
+					imgsrc = Server.getImageURL(items[index].Id, "Primary", Main.posterWidth, Main.posterHeight, 0, false, 0);
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-image:url(" + imgsrc + ")><div class=menuItem>" + title + "</div></div>";
 				} else {
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-color:rgba(0,0,0,0.5);background-image:url(images/EmptyFolder-122x98.png)><div class=menuItem>"+ title + "</div></div>";
 				}
 			//----------------------------------------------------------------------------------------------
 			} else if (items[index].Type == "ChannelVideoItem") {
-				var title = items[index].Name;
+				title = items[index].Name;
 				if (items[index].ImageTags.Primary) {
-					var imgsrc = Server.getImageURL(items[index].Id, "Primary", Main.posterWidth, Main.posterHeight, 0, false, 0);
+					imgsrc = Server.getImageURL(items[index].Id, "Primary", Main.posterWidth, Main.posterHeight, 0, false, 0);
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-image:url(" + imgsrc + ")><div class=menuItem>" + title + "</div></div>";
 				} else {
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-color:rgba(0,0,0,0.5);><div class=menuItem>" + title + "</div></div>";
 				}
 			//----------------------------------------------------------------------------------------------
 			} else if (items[index].Type == "Playlist" || items[index].Type == "CollectionFolder" ) {
-				var title = items[index].Name;
+				title = items[index].Name;
 				if (items[index].ImageTags.Primary) {
-					var imgsrc = Server.getImageURL(items[index].Id, "Primary", Main.posterWidth, Main.posterHeight, 0, false, 0);
+					imgsrc = Server.getImageURL(items[index].Id, "Primary", Main.posterWidth, Main.posterHeight, 0, false, 0);
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-image:url(" + imgsrc + ")><div class=menuItem>" + title + "</div></div>";
 				} else if (items[index].ImageTags.Thumb) {
-					var imgsrc = Server.getImageURL(items[index].Id, "Thumb", Main.posterWidth, Main.posterHeight, 0, false, 0);
+					imgsrc = Server.getImageURL(items[index].Id, "Thumb", Main.posterWidth, Main.posterHeight, 0, false, 0);
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-image:url(" + imgsrc + ")><div class=menuItem>" + title + "</div></div>";
 				} else if (items[index].BackdropImageTags.length > 0) {
-					var imgsrc = Server.getBackgroundImageURL(items[index].Id, "Backdrop", Main.posterWidth, Main.posterHeight, 0, false, 0, items[index].BackdropImageTags.length);
+					imgsrc = Server.getBackgroundImageURL(items[index].Id, "Backdrop", Main.posterWidth, Main.posterHeight, 0, false, 0, items[index].BackdropImageTags.length);
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-image:url(" + imgsrc + ")><div class=menuItem>" + title + "</div></div>";
 				} else {
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-color:rgba(0,0,0,0.5);><div class=menuItem>" + title + "</div></div>";
 				}
 			//----------------------------------------------------------------------------------------------
 			}  else if (items[index].Type == "Photo") {
-				var title = items[index].Name;
+				title = items[index].Name;
 				if (items[index].ImageTags.Primary) {
-					var imgsrc = Server.getImageURL(items[index].Id, "Primary", Main.posterWidth, Main.posterHeight, 0, false, 0);
+					imgsrc = Server.getImageURL(items[index].Id, "Primary", Main.posterWidth, Main.posterHeight, 0, false, 0);
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-image:url(" + imgsrc + ")><div class=menuItem></div></div>";
 				} else {
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-color:rgba(0,0,0,0.5);><div class=menuItem>" + title + "</div></div>";
 				}
 			//----------------------------------------------------------------------------------------------
 			}  else if (items[index].Type == "Folder") {
-				var title = items[index].Name;
+				title = items[index].Name;
 				if (items[index].ImageTags.Thumb) {
-					var imgsrc = Server.getImageURL(items[index].Id, "Thumb", Main.posterWidth, Main.posterHeight, 0, false, 0);
+					imgsrc = Server.getImageURL(items[index].Id, "Thumb", Main.posterWidth, Main.posterHeight, 0, false, 0);
 					htmlToAdd += "<div id="+ divIdPrepend + items[index].Id + " style=background-image:url(" + imgsrc + ")><div class=menuItem>" + title + "</div></div>";
 				} else if (items[index].ImageTags.Primary) {
-					var imgsrc = Server.getImageURL(items[index].Id, "Primary", Main.posterWidth, Main.posterHeight, 0, false, 0);
+					imgsrc = Server.getImageURL(items[index].Id, "Primary", Main.posterWidth, Main.posterHeight, 0, false, 0);
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-image:url(" + imgsrc + ")><div class=menuItem>" + title + "</div></div>";
 				} else {
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-color:rgba(0,0,0,0.5);background-image:url(images/EmptyFolder-122x98.png)><div class=menuItem>"+ title + "</div></div>";
 				}
 			//----------------------------------------------------------------------------------------------
 			}  else if (items[index].Type == "PhotoAlbum") {
-				var title = items[index].Name;
+				title = items[index].Name;
 				if (items[index].ImageTags.Thumb) {
-					var imgsrc = Server.getImageURL(items[index].Id, "Thumb", Main.posterWidth, Main.posterHeight, 0, false, 0);
+					imgsrc = Server.getImageURL(items[index].Id, "Thumb", Main.posterWidth, Main.posterHeight, 0, false, 0);
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-image:url(" + imgsrc + ")><div class=menuItem>" + title + "</div></div>";
 				} else if (items[index].ImageTags.Primary) {
-					var imgsrc = Server.getImageURL(items[index].Id, "Primary", Main.posterWidth, Main.posterHeight, 0, false, 0);
+					imgsrc = Server.getImageURL(items[index].Id, "Primary", Main.posterWidth, Main.posterHeight, 0, false, 0);
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-image:url(" + imgsrc + ")><div class=menuItem>" + title + "</div></div>";
 				} else {
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-color:rgba(0,0,0,0.5);><div class=menuItem>" + title + "</div></div>";
 				}
 			//----------------------------------------------------------------------------------------------
 			} else if (items[index].Type == "Video") {
-				var title = items[index].Name;
+				title = items[index].Name;
 				if (items[index].ImageTags.Primary) {
-					var imgsrc = Server.getImageURL(items[index].Id, "Primary", Main.posterWidth, Main.posterHeight, 0, false, 0);
+					imgsrc = Server.getImageURL(items[index].Id, "Primary", Main.posterWidth, Main.posterHeight, 0, false, 0);
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-image:url(" + imgsrc + ")><div class=menuItem>" + title + "</div></div>";
 				} else if (items[index].ImageTags.Thumb) {
-					var imgsrc = Server.getImageURL(items[index].Id, "Thumb", Main.posterWidth, Main.posterHeight, 0, false, 0);
+					imgsrc = Server.getImageURL(items[index].Id, "Thumb", Main.posterWidth, Main.posterHeight, 0, false, 0);
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-image:url(" + imgsrc + ")><div class=menuItem>" + title + "</div></div>";
 				} else if (items[index].BackdropImageTags.length > 0) {
-					var imgsrc = Server.getBackgroundImageURL(items[index].Id, "Backdrop", Main.posterWidth, Main.posterHeight, 0, false, 0, items[index].BackdropImageTags.length);
+					imgsrc = Server.getBackgroundImageURL(items[index].Id, "Backdrop", Main.posterWidth, Main.posterHeight, 0, false, 0, items[index].BackdropImageTags.length);
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-image:url(" + imgsrc + ")><div class=menuItem>" + title + "</div></div>";
 				} else {
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-color:rgba(0,0,0,0.5);><div class=menuItem>" + title + "</div></div>";
@@ -563,12 +565,12 @@ Support.updateDisplayedItems = function(items, selectedItemID, startPos, endPos,
 			//----------------------------------------------------------------------------------------------
 			} else {
 				alert("Unhandled Item type: "+items[index].Type);
-				var title = items[index].Name;
+				title = items[index].Name;
 				if (items[index].ImageTags.Thumb) {
-					var imgsrc = Server.getImageURL(items[index].Id, "Thumb", Main.posterWidth, Main.posterHeight, 0, false, 0);
+					imgsrc = Server.getImageURL(items[index].Id, "Thumb", Main.posterWidth, Main.posterHeight, 0, false, 0);
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-image:url(" + imgsrc + ")><div class=menuItem>" + title + "</div></div>";
 				} else if (items[index].BackdropImageTags.length > 0) {
-					var imgsrc = Server.getBackgroundImageURL(items[index].Id, "Backdrop", Main.posterWidth, Main.posterHeight, 0, false, 0, items[index].BackdropImageTags.length);
+					imgsrc = Server.getBackgroundImageURL(items[index].Id, "Backdrop", Main.posterWidth, Main.posterHeight, 0, false, 0, items[index].BackdropImageTags.length);
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-image:url(" + imgsrc + ")><div class=menuItem>" + title + "</div></div>";
 				} else {
 					htmlToAdd += "<div id=" + divIdPrepend + items[index].Id + " style=background-color:rgba(0,0,0,0.5);><div class=menuItem>" + title + "</div></div>";
@@ -582,12 +584,13 @@ Support.updateDisplayedItems = function(items, selectedItemID, startPos, endPos,
 //-----------------------------------------------------------------------------------------------------------------------------------------
 
 Support.getNameFormat = function(seriesName, seriesNo, episodeName, episodeNo, seriesStudio, airTime) {
-	var nameLabel = ""; //WARN IGNORY
+	var nameLabel = "";
+	var seasonNumber = "";
+	var seasonString = "";
 	if (File.getUserProperty("SeasonLabel")){
 		if (seriesName == "" || seriesName == null) {
 			if (seriesNo !== undefined && episodeNo !== undefined) {
-				var seasonNumber = seriesNo;
-				var seasonString = "";
+				seasonNumber = seriesNo;		
 				if (seasonNumber < 10){
 					seasonString = "0" + seasonNumber;
 				} else {
@@ -610,15 +613,13 @@ Support.getNameFormat = function(seriesName, seriesNo, episodeName, episodeNo, s
 			}
 		} else {
 			if (seriesNo !== undefined && episodeNo !== undefined) {
-				var seasonNumber = seriesNo;
-				var seasonString = "";
+				seasonNumber = seriesNo;
 				if (seasonNumber < 10){
 					seasonString = "0" + seasonNumber;
 				} else {
 					seasonString = seasonNumber;
 				}
-				var episodeNumber = episodeNo;
-				var episodeString = "";
+				episodeNumber = episodeNo;
 				if (episodeNumber < 10){
 					episodeString = "0" + episodeNumber;
 				} else {
@@ -638,7 +639,7 @@ Support.getNameFormat = function(seriesName, seriesNo, episodeName, episodeNo, s
 						nameLabel = "S" + seriesNo + ",E" + episodeNo + " - " + episodeName;
 					}
 				} else {
-					var nameLabel = episodeName;
+					nameLabel = episodeName;
 				}
 			} else {
 				if (seriesNo !== undefined && episodeNo !== undefined) {
@@ -691,6 +692,7 @@ Support.updateSelectedNEW = function(array, selectedItemID, startPos, endPos, st
 //-----------------------------------------------------------------------------------------------------------------------------------------
 
 Support.processSelectedItem = function(page, itemData, startParams, selectedItem, topLeftItem, isTop, genreType, isLatest) {
+	var url = "";
 	if (page == "HomeTwoItems") {
 		this.updateURLHistory(page, startParams[0], startParams[1], startParams[2], startParams[3], selectedItem, topLeftItem, isTop);
 	} else {
@@ -705,35 +707,35 @@ Support.processSelectedItem = function(page, itemData, startParams, selectedItem
 		switch (itemData.Items[selectedItem].CollectionType) {
 		case "boxsets":
 			//URL Below IS TEMPORARY TO GRAB SERIES OR FILMS ONLY - IN FUTURE SHOULD DISPLAY ALL
-			var url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
+			url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
 			DisplaySeries.start("All Collections",url,0,0);
 			break;
 		case "tvshows" :
-			var url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Series&Recursive=true&CollapseBoxSetItems=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
+			url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Series&Recursive=true&CollapseBoxSetItems=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
 			DisplaySeries.start("All TV",url,0,0);
 			break;
 		case "movies" :
-			var url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Movie&Recursive=true&CollapseBoxSetItems=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
+			url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Movie&Recursive=true&CollapseBoxSetItems=false&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
 			DisplaySeries.start("All Movies", url, 0, 0);
 			break;
 		case "music" :
 			if (Main.isMusicEnabled()) {
-				var url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&IncludeItemTypes=MusicAlbum&Recursive=true&ExcludeLocationTypes=Virtual&fields=ParentId,SortName&CollapseBoxSetItems=false");
+				url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&IncludeItemTypes=MusicAlbum&Recursive=true&ExcludeLocationTypes=Virtual&fields=ParentId,SortName&CollapseBoxSetItems=false");
 				DisplaySeries.start("Album Music", url, 0, 0);
 			} else {
 				Support.removeLatestURL();
 			}
 			break;
 		case "photos" :
-			var url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&SortBy=SortName&SortOrder=Ascending&fields=PrimaryImageAspectRatio,SortName");
+			url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&SortBy=SortName&SortOrder=Ascending&fields=PrimaryImageAspectRatio,SortName");
 			Photos.start(itemData.Items[selectedItem].Name, url, 0, 0);
 			break;
 		case "playlists":
-			var url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&SortBy=SortName&SortOrder=Ascending&fields=SortName");
+			url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&SortBy=SortName&SortOrder=Ascending&fields=SortName");
 			DisplayOneItem.start(itemData.Items[selectedItem].Name, url, 0, 0);
 			break;
 		default:
-			var url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&SortBy=SortName&SortOrder=Ascending&fields=PrimaryImageAspectRatio,SortName");
+			url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&SortBy=SortName&SortOrder=Ascending&fields=PrimaryImageAspectRatio,SortName");
 			if (page == "Photos"){
 				Photos.start(itemData.Items[selectedItem].Name, url, 0, 0);
 			} else {
@@ -745,25 +747,25 @@ Support.processSelectedItem = function(page, itemData, startParams, selectedItem
 		alert("Type: " + itemData.Items[selectedItem].Type + " MeidaType: "+itemData.Items[selectedItem].MediaType);
 		switch (itemData.Items[selectedItem].Type) {
 		case "ManualCollectionsFolder":
-			var url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
+			url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
 			DisplaySeries.start("All Collections", url, 0, 0);
 			break;
 		case "BoxSet":
-			var url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
+			url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&fields=ParentId,SortName,Overview,Genres,RunTimeTicks");
 			DisplaySeries.start("All Collections", url, 0, 0);
 			break;
 		case "Series":
 			//Is Latest Items Screen - If so skip to Episode view of latest episodes
 			if (isLatest) {
-				var url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&Limit=" + itemData.Items[selectedItem].ChildCount + "&ParentId=" + itemData.Items[selectedItem].Id+"&isPlayed=false&IsFolder=false&GroupItems=false&fields=SortName,Overview,Genres,RunTimeTicks");
+				url = Server.getCustomURL("/Users/" + Server.getUserID() + "/Items/Latest?format=json&Limit=" + itemData.Items[selectedItem].ChildCount + "&ParentId=" + itemData.Items[selectedItem].Id+"&isPlayed=false&IsFolder=false&GroupItems=false&fields=SortName,Overview,Genres,RunTimeTicks");
 				DisplayEpisodes.start("New TV", url, 0, 0);
 			} else {
-				var url = Server.getItemInfoURL(itemData.Items[selectedItem].Id, null);
+				url = Server.getItemInfoURL(itemData.Items[selectedItem].Id, null);
 				TVShow.start(itemData.Items[selectedItem].Name, url, 0, 0);
 			}
 			break;
 		case "Movie":
-			var url = Server.getItemInfoURL(itemData.Items[selectedItem].Id,null);
+			url = Server.getItemInfoURL(itemData.Items[selectedItem].Id,null);
 			if (page == "DisplaySeries"){
 				ItemDetails.start(itemData.Items[selectedItem].Name, url, 0);
 			} else {
@@ -771,18 +773,18 @@ Support.processSelectedItem = function(page, itemData, startParams, selectedItem
 			}
 			break;
 		case "Episode":
-			var url = Server.getItemInfoURL(itemData.Items[selectedItem].Id, null);
+			url = Server.getItemInfoURL(itemData.Items[selectedItem].Id, null);
 			ItemDetails.start(itemData.Items[selectedItem].Name, url, 0);
 			break;
 		case "Genre":
-			var url = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=" + genreType + "&Recursive=true&CollapseBoxSetItems=false&fields=ParentId,SortName,Overview,RunTimeTicks&Genres=" + itemData.Items[selectedItem].Name);
+			url = Server.getItemTypeURL("&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=" + genreType + "&Recursive=true&CollapseBoxSetItems=false&fields=ParentId,SortName,Overview,RunTimeTicks&Genres=" + itemData.Items[selectedItem].Name);
 			var name = (genreType == "Series") ? "Genre TV" : "Genre Movies";
 			DisplaySeries.start(name, url, 0, 0);
 			break;
 		case "MusicArtist":
 			var artist = itemData.Items[selectedItem].Name.replace(/ /g, '+');
 			artist = artist.replace(/&/g, '%26');
-			var url = Server.getItemTypeURL("&SortBy=Album%2CSortName&SortOrder=Ascending&IncludeItemTypes=Audio&Recursive=true&CollapseBoxSetItems=false&Artists=" + artist);
+			url = Server.getItemTypeURL("&SortBy=Album%2CSortName&SortOrder=Ascending&IncludeItemTypes=Audio&Recursive=true&CollapseBoxSetItems=false&Artists=" + artist);
 			Music.start(itemData.Items[selectedItem].Name, url, itemData.Items[selectedItem].Type);
 			break;
 		case "MusicAlbum":
@@ -792,7 +794,7 @@ Support.processSelectedItem = function(page, itemData, startParams, selectedItem
 		case "Folder":
 		case "PhotoAlbum":
 		case "CollectionFolder":
-			var url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&SortBy=SortName&SortOrder=Ascending&fields=PrimaryImageAspectRatio,SortName,ParentId");
+			url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&SortBy=SortName&SortOrder=Ascending&fields=PrimaryImageAspectRatio,SortName,ParentId");
 			if (page == "Photos"){
 				Photos.start(itemData.Items[selectedItem].Name, url, 0, 0);
 			} else {
@@ -800,18 +802,18 @@ Support.processSelectedItem = function(page, itemData, startParams, selectedItem
 			}
 			break;
 		case "Channel":
-			var url = Server.getCustomURL("/Channels/" + itemData.Items[selectedItem].Id + "/Items?userId="+Server.getUserID() + "&fields=SortName&format=json");
+			url = Server.getCustomURL("/Channels/" + itemData.Items[selectedItem].Id + "/Items?userId="+Server.getUserID() + "&fields=SortName&format=json");
 			DisplayOneItem.start(itemData.Items[selectedItem].Name, url, 0, 0);
 			break;
 		case "ChannelFolderItem":
-			var url = Server.getCustomURL("/Channels/" + itemData.Items[selectedItem].ChannelId + "/Items?userId="+Server.getUserID() + "&folderId=" + itemData.Items[selectedItem].Id + "&fields=SortName&format=json");
+			url = Server.getCustomURL("/Channels/" + itemData.Items[selectedItem].ChannelId + "/Items?userId="+Server.getUserID() + "&folderId=" + itemData.Items[selectedItem].Id + "&fields=SortName&format=json");
 			DisplayOneItem.start(itemData.Items[selectedItem].Name, url, 0, 0);
 			break;
 		case "TvChannel":
 			this.playSelectedItem("DisplaySeries", itemData, startParams, selectedItem, topLeftItem, null);
 			break;
 		case "Playlist":
-			var url = Server.getCustomURL("/Playlists/" + itemData.Items[selectedItem].Id + "/Items?userId=" + Server.getUserID() + "&fields=SortName&SortBy=SortName&SortOrder=Ascending&format=json");
+			url = Server.getCustomURL("/Playlists/" + itemData.Items[selectedItem].Id + "/Items?userId=" + Server.getUserID() + "&fields=SortName&SortBy=SortName&SortOrder=Ascending&format=json");
 			Playlist.start(itemData.Items[selectedItem].Name, url, itemData.Items[selectedItem].MediaType, itemData.Items[selectedItem].Id);
 			break;
 		default:
@@ -820,12 +822,12 @@ Support.processSelectedItem = function(page, itemData, startParams, selectedItem
 				ImagePlayer.start(itemData, selectedItem);
 				break;
 			case "Video":
-				var url = Server.getItemInfoURL(itemData.Items[selectedItem].Id, null);
+				url = Server.getItemInfoURL(itemData.Items[selectedItem].Id, null);
 				ItemDetails.start(itemData.Items[selectedItem].Name, url, 0);
 				break;
 			case "Audio":
 				this.removeLatestURL(); //Music player loads within the previous page - thus remove!
-				var url = Server.getItemInfoURL(itemData.Items[selectedItem].Id, null);
+				url = Server.getItemInfoURL(itemData.Items[selectedItem].Id, null);
 				MusicPlayer.start("Song", url, page, false, false, itemData.Items[selectedItem].Id);
 				break;
 			default:
@@ -840,6 +842,7 @@ Support.processSelectedItem = function(page, itemData, startParams, selectedItem
 //-----------------------------------------------------------------------------------------------------------------------------------------
 
 Support.playSelectedItem = function(page, itemData, startParams, selectedItem, topLeftItem, isTop) {
+	var url = "";
 	startParams[2] = (startParams[2] === undefined) ? null : startParams[2];
 	startParams[3] = (startParams[3] === undefined) ? null : startParams[3];
 	alert("playSelectedItem: CollectionType " + itemData.Items[selectedItem].CollectionType);
@@ -855,10 +858,10 @@ Support.playSelectedItem = function(page, itemData, startParams, selectedItem, t
 			return;
 		}
 		this.updateURLHistory(page,startParams[0], startParams[1], startParams[2], startParams[3], selectedItem, topLeftItem, isTop);
-		var url = Server.getItemInfoURL(itemData.Items[selectedItem].Id, "&ExcludeLocationTypes=Virtual");
+		url = Server.getItemInfoURL(itemData.Items[selectedItem].Id, "&ExcludeLocationTypes=Virtual");
 		Player.start("PLAY", url, itemData.Items[selectedItem].UserData.PlaybackPositionTicks / 10000, page);
 	} else if (itemData.Items[selectedItem].Type == "Playlist") {
-		var url = Server.getCustomURL("/Playlists/" + itemData.Items[selectedItem].Id + "/Items?userId="+Server.getUserID() + "&StartIndex=0&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,MediaSources");
+		url = Server.getCustomURL("/Playlists/" + itemData.Items[selectedItem].Id + "/Items?userId="+Server.getUserID() + "&StartIndex=0&SortBy=SortName&SortOrder=Ascending&fields=ParentId,SortName,MediaSources");
 		if (itemData.Items[selectedItem].MediaType == "Video"){
 			this.updateURLHistory(page, startParams[0], startParams[1], startParams[2], startParams[3], selectedItem, topLeftItem, isTop);
 			Player.start("PlayAll", url, 0, page);
@@ -869,13 +872,13 @@ Support.playSelectedItem = function(page, itemData, startParams, selectedItem, t
 		}
 	} else if (itemData.Items[selectedItem].MediaType == "ChannelVideoItem") {
 		this.updateURLHistory(page,startParams[0], startParams[1], startParams[2], startParams[3], selectedItem, topLeftItem, isTop);
-		var url = Server.getItemInfoURL(itemData.Items[selectedItem].Id, "&ExcludeLocationTypes=Virtual");
+		url = Server.getItemInfoURL(itemData.Items[selectedItem].Id, "&ExcludeLocationTypes=Virtual");
 		Player.start("PLAY", url, itemData.Items[selectedItem].UserData.PlaybackPositionTicks / 10000,page);
 	}  else if (itemData.Items[selectedItem].Type == "TvChannel") {
 		this.updateURLHistory(page, startParams[0], startParams[1], startParams[2], startParams[3], selectedItem, topLeftItem, isTop);
-		var url = Server.getItemInfoURL(itemData.Items[selectedItem].Id,"&ExcludeLocationTypes=Virtual");
+		url = Server.getItemInfoURL(itemData.Items[selectedItem].Id,"&ExcludeLocationTypes=Virtual");
 		Player.start("PLAY", url, 0, page);
-	}  else if (itemData.Items[selectedItem].CollectionType == "photos") {
+	}  else if (itemData.Items[selectedItem].CollectionType == "Photos") {
 		this.updateURLHistory(page, startParams[0], startParams[1], startParams[2], startParams[3], selectedItem, topLeftItem, isTop);
 		ImagePlayer.start(itemData, selectedItem, true);
 	} else if (itemData.Items[selectedItem].Type == "PhotoAlbum") {
@@ -883,7 +886,7 @@ Support.playSelectedItem = function(page, itemData, startParams, selectedItem, t
 		ImagePlayer.start(itemData, selectedItem, true);
 	} else if (itemData.Items[selectedItem].Type == "Series") {
 		this.updateURLHistory(page, startParams[0], startParams[1], null, null, selectedItem, topLeftItem, null);
-		var url= Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&ExcludeLocationTypes=Virtual&IncludeItemTypes=Episode&Recursive=true&SortBy=SortName&SortOrder=Ascending&Fields=ParentId,SortName,MediaSources");
+		url= Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&ExcludeLocationTypes=Virtual&IncludeItemTypes=Episode&Recursive=true&SortBy=SortName&SortOrder=Ascending&Fields=ParentId,SortName,MediaSources");
 		Player.start("PlayAll", url, 0, page);
 	} else if (itemData.Items[selectedItem].Type == "Season") {
 		this.updateURLHistory(page, startParams[0], startParams[1], null, null, selectedItem, topLeftItem, null);
@@ -891,15 +894,15 @@ Support.playSelectedItem = function(page, itemData, startParams, selectedItem, t
 		Player.start("PlayAll", urlToPlay, 0, page);
 	} else if (itemData.Items[selectedItem].Type == "Movie" || itemData.Items[selectedItem].Type == "Episode") {
 		this.updateURLHistory(page, startParams[0], startParams[1], null, null, selectedItem, topLeftItem, null);
-		var url = Server.getItemInfoURL(itemData.Items[selectedItem].Id,"&ExcludeLocationTypes=Virtual");
+		url = Server.getItemInfoURL(itemData.Items[selectedItem].Id,"&ExcludeLocationTypes=Virtual");
 		Player.start("PLAY", url, 0, page);
 	} else if (itemData.Items[selectedItem].Type == "MusicAlbum") {
 		this.updateURLHistory(page, startParams[0], startParams[1], null, null, selectedItem, topLeftItem, null);
-		var url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Audio&Recursive=true&CollapseBoxSetItems=false&Fields=MediaSources");
+		url = Server.getChildItemsURL(itemData.Items[selectedItem].Id, "&SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Audio&Recursive=true&CollapseBoxSetItems=false&Fields=MediaSources");
 		MusicPlayer.start("Album", url, "DisplaySeries", false);
 	} else if (itemData.Items[selectedItem].Type == "Audio") {
 		this.updateURLHistory(page, startParams[0], startParams[1], null, null, selectedItem, topLeftItem, null);
-		var url = Server.getItemInfoURL(itemData.Items[selectedItem].Id);
+		url = Server.getItemInfoURL(itemData.Items[selectedItem].Id);
 		MusicPlayer.start("Song", url, "DisplaySeries", false);
 	}
 };
