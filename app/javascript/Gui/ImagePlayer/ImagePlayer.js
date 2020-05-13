@@ -25,9 +25,9 @@ ImagePlayer.start = function(ItemData,selectedItem,isPhotoCollection) {
 	//Show colour buttons on screen for a few seconds when a slideshow starts.
 	document.getElementById("imagePlayerScreenSaverOverlay").style.visibility="hidden";
 	document.getElementById("buttonShade").style.visibility = "";
-	Helper.setControlButtons("Favourite", "Date/Time", "Help", MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? "Music" : null, "Return");
+	Helper.setControlButtons(Main.messages.LabButtonFavourite, "Date/Time", Main.messages.LabButtonHelp, MusicPlayer.Status == "PLAYING" || MusicPlayer.Status == "PAUSED" ? Main.messages.LabButtonMusic : null, Main.messages.LabButtonReturn);
 	this.infoTimer = setTimeout(function(){
-		Helper.setControlButtons(null,null,null,null,null);
+		Helper.setControlButtons(null, null, null, null, null);
 		document.getElementById("clock").style.visibility = "hidden";
 		document.getElementById("buttonShade").style.visibility = "hidden";
 		document.getElementById("imagePlayerScreenSaverOverlay").style.visibility="";
@@ -46,7 +46,6 @@ ImagePlayer.start = function(ItemData,selectedItem,isPhotoCollection) {
 	Support.styleSubtitles("imagePlayerScreenSaverOverlay");
 	//Create ARRAY of all URL's!
 	//Order from starting selectedItem!
-	imageIdx = 0;
 	for (var index = 0; index < result.Items.length; index++) {
 		//Dont use server function here to prevent these large images caching!
 		var temp = Server.getServerAddr() + "/Items/"+ this.newItemData.Items[index].Id +"/Images/Primary/0?maxwidth=1920&maxheight=1080&quality=90";
@@ -74,7 +73,6 @@ ImagePlayer.start = function(ItemData,selectedItem,isPhotoCollection) {
 	//Start Slide Show
 	this.ImageViewer.show();
 	this.setSlideshowMode();
-	//this.setNormalMode();
 };
 
 // Set normal mode
@@ -92,7 +90,7 @@ ImagePlayer.setNormalMode = function() {
 
 	for (var i=0; i < this.newItemData.Items.length; i++){
 		//Dont use server function here to prevent these large images caching!
-		var ImageUrl = Server.getServerAddr() + "/Items/"+ this.newItemData.Items[i].Id +"/Images/Primary/0?maxwidth=1920&maxheight=1080&quality=90";
+		var ImageUrl = Server.getServerAddr() + "/Items/"+ this.newItemData.Items[i].Id + "/Images/Primary/0?maxwidth=1920&maxheight=1080&quality=90";
 		this.photos[i] = {
 				url: ImageUrl,
 				width: 1920,
@@ -104,10 +102,6 @@ ImagePlayer.setNormalMode = function() {
 
 	// Draw the image in the specified area defined by "setPosition" function.
 	sf.service.ImageViewer.draw(this.photos[0]);
-
-
-	//this.ImageViewer.endSlideshow();
-	//playImage();
 };
 
 // Set Slideshow mode
@@ -192,7 +186,7 @@ ImagePlayer.keyDown = function() {
 			alert("LEFT");
 			this.imageIdx--;
 			if (this.imageIdx < 0) {
-				this.imageIdx = this.images.length-1;
+				this.imageIdx = this.images.length - 1;
 			}
 			ImagePlayer.prepImage(ImagePlayer.imageIdx);
 			break;

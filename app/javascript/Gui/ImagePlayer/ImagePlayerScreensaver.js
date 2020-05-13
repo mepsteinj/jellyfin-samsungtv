@@ -17,12 +17,14 @@ ImagePlayerScreensaver.kill = function() {
 };
 
 ImagePlayerScreensaver.start = function() {
+	var randomImageURL = "";
+	var randomImageData = "";
+	var imgsrc = "";
 	this.imagesToUse = File.getUserProperty("ScreensaverImages");
 	alert(this.imagesToUse);
 	this.images = [];
 	this.overlay = [];
 	this.imageIdx = 0;
-	//alert("imagestouse - " + this.imagesToUse)
 	//Update Main.js isScreensaverRunning - Sets to True
 	Main.setIsScreensaverRunning();
 	//Hide helper page if shown
@@ -34,14 +36,14 @@ ImagePlayerScreensaver.start = function() {
 	}
 	Support.styleSubtitles("imagePlayerScreensaverOverlay");
 	if (this.imagesToUse == "Media") {
-		var randomImageURL = Server.getItemTypeURL("&SortBy=Random&MediaTypes=Photo&Recursive=true&CollapseBoxSetItems=false&Limit=1000");
-		var randomImageData = Server.getContent(randomImageURL);
+		randomImageURL = Server.getItemTypeURL("&SortBy=Random&MediaTypes=Photo&Recursive=true&CollapseBoxSetItems=false&Limit=1000");
+		randomImageData = Server.getContent(randomImageURL);
 		if (randomImageData == null) { return; }
 
 		for (var index = 0; index < randomImageData.Items.length; index++) {
 			//Only add images with higher res
 			if (randomImageData.Items[index].Width >= 1920 && randomImageData.Items[index].Height >= 1080){
-				var imgsrc = Server.getScreenSaverImageURL(randomImageData.Items[index].Id,"Primary",1920,1080);
+				imgsrc = Server.getScreenSaverImageURL(randomImageData.Items[index].Id,"Primary", 1920, 1080);
 				this.images.push(imgsrc);
 				if (randomImageData.Items[index].PremiereDate !== undefined) {
 					this.overlay.push(Support.formatDateTime(randomImageData.Items[index].PremiereDate,1));
@@ -52,13 +54,13 @@ ImagePlayerScreensaver.start = function() {
 			}
 		}
 	} else {
-		var randomImageURL = Server.getItemTypeURL("&SortBy=Random&IncludeItemTypes=Series,Movie&Recursive=true&CollapseBoxSetItems=false&Limit=1000");
-		var randomImageData = Server.getContent(randomImageURL);
+		randomImageURL = Server.getItemTypeURL("&SortBy=Random&IncludeItemTypes=Series,Movie&Recursive=true&CollapseBoxSetItems=false&Limit=1000");
+		randomImageData = Server.getContent(randomImageURL);
 		if (randomImageData == null) { return; }
 
 		for (var index = 0; index < randomImageData.Items.length; index++) {
 			if (randomImageData.Items[index].BackdropImageTags.length > 0) {
-				var imgsrc = Server.getScreenSaverImageURL(randomImageData.Items[index ].Id,"Backdrop",1920,1080);
+				imgsrc = Server.getScreenSaverImageURL(randomImageData.Items[index ].Id,"Backdrop", 1920, 1080);
 				this.images.push(imgsrc);
 				if (randomImageData.Items[index].Name !== undefined) {
 					this.overlay.push(randomImageData.Items[index].Name);
