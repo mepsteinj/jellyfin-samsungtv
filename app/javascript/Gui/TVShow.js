@@ -90,11 +90,11 @@ TVShow.start = function(title, url, selectedItem, topLeftItem) {
 			//If cover art use that else use text
 			if (this.ShowData.ImageTags.Logo) {
 				imgsrc = Server.getImageURL(this.ShowData.Id,"Logo",600,80,0,false,0);
-				document.getElementById("ShowSeriesInfo").style.backgroundImage="url('"+imgsrc+"')";
-				document.getElementById("ShowSeriesInfo").className = 'EpisodesSeriesInfoLogo';
+				document.getElementById("showSeriesInfo").style.backgroundImage="url('"+imgsrc+"')";
+				document.getElementById("showSeriesInfo").className = 'episodesSeriesInfoLogo';
 			} else {
 			  Support.widgetPutInnerHTML("showSeriesInfo", this.ShowData.Name);
-				document.getElementById("ShowSeriesInfo").className = 'EpisodesSeriesInfo';
+				document.getElementById("showSeriesInfo").className = 'episodesSeriesInfo';
 			}
 
 			//Update Overview

@@ -17,7 +17,7 @@ var messagesEN = {
 	LabButtonWatched : "Watched",
 	LabButtonHelp : "Help",
 	LabButtonMusic : "Music",
-	LabButtonNextIndex : "Next Index",
+	LabButtonNextIndex : "Next Index  ",
 	LabHelpPage : "Help Page",
 	LabHelpImagePlayer : "Return, Stop - Ends slideshow and returns the user to the previous screen. <br> " +
 	"Left, Right - Move 1 image backwards or forwards. <br>" +
@@ -77,4 +77,14 @@ var messagesEN = {
 	LabSearch : "Search",
 	LabSettings : "Settings",
 	LabLogOut : "LogOut",
+	LabLatestMovies : "Latest Movies",
+	LabButtonFullScreen : "Full Screen",
+	LabRESUME : "RESUME",
+	LabPLAYTRAILER : "PLAY TRAILER",
+	LabPLAY : "PLAY",
+	LabCHAPTERS : "CHAPTERS",
+	LabMOREEPISODES : "MORE EPISODES",
+	LabCAST : "CAST",
+	LabADDTOPLAYLIST : "ADD TO PLAYLIST",
+	LabSUGGESTED : "SUGGESTED",
 };

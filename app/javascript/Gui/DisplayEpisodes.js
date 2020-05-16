@@ -45,16 +45,16 @@ DisplayEpisodes.start = function(title,url,selectedItem,topLeftItem) {
 	}
 
 	if (this.ItemData.Items.length > 0) {
-    Support.widgetPutInnerHTML("pageContent", "<div id=allOptions class='EpisodesAllOptions'>" +
+    Support.widgetPutInnerHTML("pageContent", "<div id=allOptions class='episodesAllOptions'>" +
 		"<span id='bannerItem0'>Play All</span>" +
-		"<span id='bannerItem1'>Shuffle All</span></div><div id=content class='EpisodesList'></div>" +
-		"<div id='EpisodesSeriesInfo' class='EpisodesSeriesInfo'></div>" +
-		"<div id='EpisodesImage' class='EpisodesImage'></div>" +
-		"<div id='EpisodesInfo' class='EpisodesInfo'>" +
-		"<div id='SeriesTitle' style='font-size:1.7em; margin:6px 0px'></div>" +
+		"<span id='bannerItem1'>Shuffle All</span></div><div id=content class='episodesList'></div>" +
+		"<div id='episodesSeriesInfo' class='episodesSeriesInfo'></div>" +
+		"<div id='episodesImage' class='episodesImage'></div>" +
+		"<div id='episodesInfo' class='episodesInfo'>" +
+		"<div id='seriesTitle' style='font-size:1.7em; margin:6px 0px'></div>" +
 		"<hr/>"+
-		"<div id='SeriesOverview' class='EpisodesOverview'></div></div>" +
-		"<div id='SeriesSubData' class='EpisodesSubData'></div>");
+		"<div id='seriesOverview' class='episodesOverview'></div></div>" +
+		"<div id='seriesSubData' class='episodesSubData'></div>");
 
 
 		//Set backdrop

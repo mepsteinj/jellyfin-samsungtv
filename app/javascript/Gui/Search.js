@@ -27,7 +27,7 @@ Search.start = function(title, url) {
 	this.startParams = [],
 
 	//Change Display
-	Support.widgetPutInnerHTML("pageContent", "<div id='title' class='EpisodesSeriesInfo'>Search</div><div class='searchPageInput'> \
+	Support.widgetPutInnerHTML("pageContent", "<div id='title' class='episodesSeriesInfo'>Search</div><div class='searchPageInput'> \
 		<form><input id='searchInput' type='text' size='50' value=''/></form> \
 		</div><div id='ResultsTitle' class='searchPageTitle'></div><div id=Results class='searchPageResults'></div>");
 

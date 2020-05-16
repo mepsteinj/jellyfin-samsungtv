@@ -23,6 +23,7 @@ DisplayOneItem.getMaxDisplay = function() {
 
 DisplayOneItem.start = function(title, url, selectedItem, topLeftItem) {
 	alert("Page Enter : DisplayOneItem");
+	Support.loading(1250);
 
 	//Save Start Params
 	this.startParams = [title, url];
@@ -37,12 +38,12 @@ DisplayOneItem.start = function(title, url, selectedItem, topLeftItem) {
 	this.ItemData = Server.getContent(url + "&Limit=" + File.getTVProperty("ItemPaging"));
 	if (this.ItemData == null) { Support.processReturnURLHistory(); }
 	//Once we've browsed the channels down to a content folder we should display them using DisplaySeries.
-	if (this.ItemData.TotalRecordCount >0){
+	if (this.ItemData.TotalRecordCount > 0){
 		if (this.ItemData.Items[0].Type == "ChannelVideoItem" ||
 				this.ItemData.Items[0].Type == "ChannelAudioItem" ||
 				this.ItemData.Items[0].Type == "Trailer" ||
 				this.ItemData.Items[0].Type == "AudioPodcast") {
-			DisplaySeries.start("All " + this.ItemData.Items[0].Type,url,selectedItem,topLeftItem, this.ItemData);
+			DisplaySeries.start("All " + this.ItemData.Items[0].Type, url, selectedItem, topLeftItem, this.ItemData);
 			return;
 		}
 	}
@@ -67,8 +68,8 @@ DisplayOneItem.start = function(title, url, selectedItem, topLeftItem) {
 	}
 
 	//Set Page Content 
-  Support.widgetPutInnerHTML("pageContent", "<div id='title' class='episodesSeriesInfo'>" + title + "</div>" +
-			"<div id=сenter class='seriesCenter'><div id=content></div></div>");
+	Support.widgetPutInnerHTML("pageContent", "<div id='title' class='episodesSeriesInfo'>" + Support.getLocalizationName(title) + "</div>" +
+	"<div id=сenter class='seriesCenter'><div id=content></div></div>");
 
 	//Set Top
 	DisplayOneItem.setPadding(title);
@@ -93,7 +94,6 @@ DisplayOneItem.start = function(title, url, selectedItem, topLeftItem) {
 		Support.widgetPutInnerHTML("counter", "" );
 		document.getElementById("content").style.fontSize="40px";
 		Support.widgetPutInnerHTML("content", "Huh.. Looks like I have no content to show you in this view I'm afraid<br>Press return to get back to the previous screen");
-
 		document.getElementById("noItems").focus();
 	}
 };
@@ -108,10 +108,10 @@ DisplayOneItem.updateSelectedItems = function () {
 	if (this.MAXCOLUMNCOUNT == 3) {
 		//Add Collections Class to add more margin
 		Support.updateSelectedNEW(this.ItemData.Items, this.selectedItem, this.topLeftItem,
-				Math.min(this.topLeftItem + this.getMaxDisplay(), this.ItemData.Items.length), "series collection selected highlight" + Main.highlightColour + "Boarder", "series collection", "");
+				Math.min(this.topLeftItem + this.getMaxDisplay(), this.ItemData.Items.length), "series collection selected highlight" + Main.highlightColour + "Background", "series collection", "");
 	} else {
 		Support.updateSelectedNEW(this.ItemData.Items, this.selectedItem, this.topLeftItem,
-				Math.min(this.topLeftItem + this.getMaxDisplay(), this.ItemData.Items.length), "series selected highlight" + Main.highlightColour + "Boarder", "series", "");
+				Math.min(this.topLeftItem + this.getMaxDisplay(), this.ItemData.Items.length), "series selected highlight" + Main.highlightColour + "Background", "series", "");
 	}
 };
 
@@ -201,12 +201,12 @@ DisplayOneItem.keyDown = function() {
 
 DisplayOneItem.processSelectedItem = function() {
 	clearTimeout(this.backdropTimeout);
-	Support.processSelectedItem("DisplayOneItem", this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null,this.genreType,this.isLatest);
+	Support.processSelectedItem("DisplayOneItem", this.ItemData, this.startParams, this.selectedItem, this.topLeftItem,null, this.genreType, this.isLatest);
 };
 
 DisplayOneItem.playSelectedItem = function () {
 	clearTimeout(this.backdropTimeout);
-	Support.playSelectedItem("DisplayOneItem", this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null);
+	Support.playSelectedItem("DisplayOneItem", this.ItemData, this.startParams, this.selectedItem, this.topLeftItem,null);
 };
 
 DisplayOneItem.openMenu = function() {

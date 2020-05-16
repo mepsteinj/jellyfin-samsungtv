@@ -236,7 +236,7 @@ PlayerDisplay.keyDownTools = function() {
 				document.getElementById("playerSubtitles").style.top="none";
 				document.getElementById("playerSubtitles").style.bottom="60px";
 			}, 500);
-			document.getElementById("GuiPlayer").focus();
+			document.getElementById("evnPlayer").focus();
 			break;
 		case tvKey.KEY_UP:
 			widgetAPI.blockNavigation(event);
@@ -248,8 +248,8 @@ PlayerDisplay.keyDownTools = function() {
 				document.getElementById("playerSubtitles").style.top="none";
 				document.getElementById("playerSubtitles").style.bottom="60px";
 			}, 500);
-			GuiPlayer.handlePlayKey();
-			document.getElementById("GuiPlayer").focus();
+			Player.handlePlayKey();
+			document.getElementById("evnPlayer").focus();
 			break;
 		case tvKey.KEY_LEFT:
 			if (this.videoToolsSelectedItem > 0) {
@@ -287,7 +287,7 @@ PlayerDisplay.keyDownTools = function() {
 				document.getElementById("GuiPlayerToolsSub").focus();
 				break;
 			case "videoOptionSlider":
-				this.sliderCurrentTime = GuiPlayer.currentTime + this.offsetSeconds;
+				this.sliderCurrentTime = Player.currentTime + this.offsetSeconds;
 				var leftPos = (1800 *  this.sliderCurrentTime/ (this.PlayerData.RunTimeTicks / 10000))-20+60;
 				document.getElementById("playerToolsSliderBarCurrent").style.left = leftPos+"px";
 				Support.widgetPutInnerHTML("playerToolsSliderBarCurrentTime", Support.convertTicksToTimeSingle(this.sliderCurrentTime));
@@ -305,44 +305,44 @@ PlayerDisplay.keyDownTools = function() {
 				document.getElementById("playerSubtitles").style.top="none";
 				document.getElementById("playerSubtitles").style.bottom="60px";
 			}, 500);
-			document.getElementById("GuiPlayer").focus();
-			GuiPlayer.handlePlayKey();
+			document.getElementById("evnPlayer").focus();
+			Player.handlePlayKey();
 			break;
 		case tvKey.KEY_STOP:
-			GuiPlayer.handleStopKey();
+			Player.handleStopKey();
 			break;
 		case tvKey.KEY_PAUSE:
 			if (document.getElementById("playerTools").style.opacity != 0) {
 				$('#playerTools').css('opacity',1).animate({opacity:0}, 500);
 			}
-			document.getElementById("GuiPlayer").focus();
-			GuiPlayer.handlePauseKey();
+			document.getElementById("evnPlayer").focus();
+			Player.handlePauseKey();
 			break;
 		case tvKey.KEY_FF:
 			if (document.getElementById("playerTools").style.opacity != 0) {
 				$('#playerTools').css('opacity',1).animate({opacity:0}, 500);
 			}
-			document.getElementById("GuiPlayer").focus();
-			GuiPlayer.handleFFKey();
+			document.getElementById("evnPlayer").focus();
+			Player.handleFFKey();
 			break;
 		case tvKey.KEY_RW:
 			if (document.getElementById("playerTools").style.opacity != 0) {
 				$('#playerTools').css('opacity',1).animate({opacity:0}, 500);
 			}
-			document.getElementById("GuiPlayer").focus();
-			GuiPlayer.handleRWKey();
+			document.getElementById("evnPlayer").focus();
+			Player.handleRWKey();
 			break;
 		case tvKey.KEY_INFO:
 			if (document.getElementById("playerTools").style.opacity != 0) {
 				$('#playerTools').css('opacity',1).animate({opacity:0}, 500);
 			}
 			document.getElementById("evnPlayer").focus();
-			GuiPlayer.handleInfoKey();
+			Player.handleInfoKey();
 			break;
 		case tvKey.KEY_EXIT:
 			alert("EXIT");
 			widgetAPI.blockNavigation(event);
-			GuiPlayer.stopPlayback();
+			Player.stopPlayback();
 			PlayerDisplay.restorePreviousMenu();
 			break;
 	}
@@ -384,55 +384,55 @@ PlayerDisplay.keyDownToolsSlider = function() {
 				document.getElementById("playerSubtitles").style.top="none";
 				document.getElementById("playerSubtitles").style.bottom="60px";
 			}, 500);
-			GuiPlayer.newPlaybackPosition(this.sliderCurrentTime * 10000);
+			Player.newPlaybackPosition(this.sliderCurrentTime * 10000);
 			break;
 		case tvKey.KEY_PLAY:
 			document.getElementById("playerToolsSlider").style.visibility = "hidden";
 			if (document.getElementById("playerTools").style.opacity != 0) {
 				$('#playerTools').css('opacity',1).animate({opacity:0}, 500);
 			}
-			document.getElementById("GuiPlayer").focus();
-			GuiPlayer.handlePlayKey();
+			document.getElementById("evnPlayer").focus();
+			Player.handlePlayKey();
 			break;
 		case tvKey.KEY_STOP:
-			GuiPlayer.handleStopKey();
+			Player.handleStopKey();
 			break;
 		case tvKey.KEY_PAUSE:
 			document.getElementById("playerToolsSlider").style.visibility = "hidden";
 			if (document.getElementById("playerTools").style.opacity != 0) {
 				$('#playerTools').css('opacity',1).animate({opacity:0}, 500);
 			}
-			document.getElementById("GuiPlayer").focus();
-			GuiPlayer.handlePauseKey();
+			document.getElementById("evnPlayer").focus();
+			Player.handlePauseKey();
 			break;
 		case tvKey.KEY_FF:
 			document.getElementById("playerToolsSlider").style.visibility = "hidden";
 			if (document.getElementById("playerTools").style.opacity != 0) {
 				$('#playerTools').css('opacity',1).animate({opacity:0}, 500);
 			}
-			document.getElementById("GuiPlayer").focus();
-			GuiPlayer.handleFFKey();
+			document.getElementById("evnPlayer").focus();
+			Player.handleFFKey();
 			break;
 		case tvKey.KEY_RW:
 			document.getElementById("playerToolsSlider").style.visibility = "hidden";
 			if (document.getElementById("playerTools").style.opacity != 0) {
 				$('#playerTools').css('opacity',1).animate({opacity:0}, 500);
 			}
-			document.getElementById("GuiPlayer").focus();
-			GuiPlayer.handleRWKey();
+			document.getElementById("evnPlayer").focus();
+			Player.handleRWKey();
 			break;
 		case tvKey.KEY_INFO:
 			document.getElementById("playerToolsSlider").style.visibility = "hidden";
 			if (document.getElementById("playerTools").style.opacity != 0) {
 				$('#playerTools').css('opacity',1).animate({opacity:0}, 500);
 			}
-			document.getElementById("GuiPlayer").focus();
-			GuiPlayer.handleInfoKey();
+			document.getElementById("evnPlayer").focus();
+			Player.handleInfoKey();
 			break;
 		case tvKey.KEY_EXIT:
 			alert("EXIT");
 			widgetAPI.blockNavigation(event);
-			GuiPlayer.stopPlayback();
+			Player.stopPlayback();
 			PlayerDisplay.restorePreviousMenu();
 			break;
 	}
@@ -494,20 +494,20 @@ PlayerDisplay.keyDownToolsSub = function() {
 			}, 500);
 			switch (this.videoToolsOptions[this.videoToolsSelectedItem]) {
 			case "videoOptionChapters":
-				GuiPlayer.newPlaybackPosition(this.PlayerData.Chapters[this.videoToolsSelectedItemSub].StartPositionTicks);
+				Player.newPlaybackPosition(this.PlayerData.Chapters[this.videoToolsSelectedItemSub].StartPositionTicks);
 				break;
 			case "videoOptionSubtitles":
-				GuiPlayer.newSubtitleIndex(this.videoToolsSubOptions[this.videoToolsSelectedItemSub]);
+				Player.newSubtitleIndex(this.videoToolsSubOptions[this.videoToolsSelectedItemSub]);
 				break;
 			case "videoOptionAudio":
 				if (this.videoToolsSubOptions[this.videoToolsSelectedItemSub] != this.playingAudioIndex) {
-					GuiPlayer.stopPlayback();
+					Player.stopPlayback();
 					document.getElementById("player").focus();
 
 					//Check if first index - If it is need to stream copy audio track
 					var isFirstAudioIndex = (this.videoToolsSubOptions[this.videoToolsSelectedItemSub] == this.audioIndexes[0]) ? true : false;
-					var transcodeResult = GuiPlayerTranscoding.start(this.PlayerData.Id, this.playingMediaSource, this.playingMediaSourceIndex, this.playingVideoIndex, this.videoToolsSubOptions[this.videoToolsSelectedItemSub],isFirstAudioIndex,this.playingSubtitleIndex);
-					GuiPlayer.startPlayback(transcodeResult, GuiPlayer.currentTime);
+					var transcodeResult = PlayerTranscoding.start(this.PlayerData.Id, this.playingMediaSource, this.playingMediaSourceIndex, this.playingVideoIndex, this.videoToolsSubOptions[this.videoToolsSelectedItemSub],isFirstAudioIndex,this.playingSubtitleIndex);
+					Player.startPlayback(transcodeResult, Player.currentTime);
 				} else {
 					//Do Nothing!
 					document.getElementById("player").focus();
@@ -521,10 +521,10 @@ PlayerDisplay.keyDownToolsSub = function() {
 				$('#playerTools').css('opacity',1).animate({opacity:0}, 500);
 			}
 			document.getElementById("player").focus();
-			GuiPlayer.handlePlayKey();
+			Player.handlePlayKey();
 			break;
 		case tvKey.KEY_STOP:
-			GuiPlayer.handleStopKey();
+			Player.handleStopKey();
 			break;
 		case tvKey.KEY_PAUSE:
 			document.getElementById("playerToolsSubOptions").style.visibility = "hidden";
@@ -532,7 +532,7 @@ PlayerDisplay.keyDownToolsSub = function() {
 				$('#playerTools').css('opacity',1).animate({opacity:0}, 500);
 			}
 			document.getElementById("player").focus();
-			GuiPlayer.handlePauseKey();
+			Player.handlePauseKey();
 			break;
 		case tvKey.KEY_FF:
 			document.getElementById("playerToolsSubOptions").style.visibility = "hidden";
@@ -540,7 +540,7 @@ PlayerDisplay.keyDownToolsSub = function() {
 				$('#playerTools').css('opacity',1).animate({opacity:0}, 500);
 			}
 			document.getElementById("player").focus();
-			GuiPlayer.handleFFKey();
+			Player.handleFFKey();
 			break;
 		case tvKey.KEY_RW:
 			document.getElementById("playerToolsSubOptions").style.visibility = "hidden";
@@ -548,7 +548,7 @@ PlayerDisplay.keyDownToolsSub = function() {
 				$('#playerTools').css('opacity',1).animate({opacity:0}, 500);
 			}
 			document.getElementById("player").focus();
-			GuiPlayer.handleRWKey();
+			Player.handleRWKey();
 			break;
 		case tvKey.KEY_INFO:
 			document.getElementById("playerToolsSubOptions").style.visibility = "hidden";
@@ -556,12 +556,12 @@ PlayerDisplay.keyDownToolsSub = function() {
 				$('#playerTools').css('opacity',1).animate({opacity:0}, 500);
 			}
 			document.getElementById("player").focus();
-			GuiPlayer.handleInfoKey();
+			Player.handleInfoKey();
 			break;
 		case tvKey.KEY_EXIT:
 			alert("EXIT");
 			widgetAPI.blockNavigation(event);
-			GuiPlayer.stopPlayback();
+			Player.stopPlayback();
 			PlayerDisplay.restorePreviousMenu();
 			break;
 	}
@@ -611,7 +611,7 @@ PlayerDisplay.updateDisplayedItemsSub = function() {
 			break;
 		case "videoOptionAudio":
 			//Run option through transcoding algorithm - see if it plays natively
-			var transcodeResult = GuiPlayerTranscoding.start(this.PlayerData.Id, this.playingMediaSource,this.playingMediaSourceIndex, this.playingVideoIndex, this.videoToolsSubOptions[index]);
+			var transcodeResult = PlayerTranscoding.start(this.PlayerData.Id, this.playingMediaSource,this.playingMediaSourceIndex, this.playingVideoIndex, this.videoToolsSubOptions[index]);
 			var Name = this.playingMediaSource.MediaStreams[this.videoToolsSubOptions[index]].Codec + " - ";
 			if (this.playingMediaSource.MediaStreams[this.videoToolsSubOptions[index]].Language !== undefined) {
 				Name += this.playingMediaSource.MediaStreams[this.videoToolsSubOptions[index]].Language;

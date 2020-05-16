@@ -538,8 +538,8 @@ input[type="password"] {
 .episodesSeriesInfo {
     position:absolute;
     font-size:1.2em;
-    top:44px;
-    left:20px;
+    top:12px;
+    left:180px;
     z-index:5;
 }
 
@@ -877,14 +877,15 @@ input[type="password"] {
     display:inline-block;
     position:relative;
     margin:4px;
-    border:3px solid rgba(0,0,0,0.8);
+    border:3px solid rgba(0,0,0,0);
     border-radius: 10px;
     white-space:nowrap;
     text-overflow:ellipsis;
     overflow: hidden;
     background-repeat: no-repeat;
-    background-position:center;
-    background-size:auto 100%;
+    background-position: center;
+    background-size: auto 100%;
+    background-color: #303030;
 }
 
 .homePagePoster {
@@ -894,13 +895,14 @@ input[type="password"] {
     position:relative;
     margin:0px;
     border:3px solid rgba(0,0,0,0);
-    border-radius: 0px;
-    white-space:nowrap;
-    text-overflow:ellipsis;
+    border-radius: 10px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     overflow: hidden;
     background-repeat: no-repeat;
-    background-position:center;
-    background-size:auto 100%;
+    background-position: center;
+    background-size: auto 100%;
+    background-color: #303030;
 }
 
 .seriesPortrait {
@@ -1122,8 +1124,8 @@ input[type="password"] {
 }
 
 .selected {
-    -webkit-transform: scale(1.05);
-    transform: scale(1.1);
+    -webkit-transform: scale(1.0);
+    transform: scale(1.0);
 }
 
 .seriesSelected {
@@ -1140,7 +1142,7 @@ input[type="password"] {
 
 .bannerMenu {
     position: absolute;
-    padding-top:10px;
+    padding-top:12px;
     padding-bottom:10px;
     height:25px;
     width:100%;
@@ -1449,7 +1451,7 @@ input[type="password"] {
     background-position:center;
 }
 
-.TVEpisodeEpisodeImage {
+.tvEpisodeEpisodeImage {
     position:absolute;
     top:40px;
     right:40px;
@@ -1461,14 +1463,14 @@ input[type="password"] {
     z-index:5;
 }
 
-.TVEpisodeOptions {
+.tvEpisodeOptions {
     position:absolute;
     top:250px;
     left:40px;
     z-index:5;
 }
 
-.TVEpisodeSubOptions {
+.tvEpisodeSubOptions {
     position:absolute;
     top:248px;
     left:470px;
@@ -1478,7 +1480,7 @@ input[type="password"] {
     z-index:5;
 }
 
-.TVEpisodeSubOptionImages {
+.tvEpisodeSubOptionImages {
     position:relative;
     top:248px;
     left:850px;
@@ -1602,7 +1604,7 @@ input[type="password"] {
     transform: rotate(0deg);
 }
 
-.TVEpisodePoster {
+.tvEpisodePoster {
     position:absolute;
     bottom:40px;
     left:20px;
@@ -1636,7 +1638,7 @@ input[type="password"] {
     z-index:5;
 }
 
-.TVEpisodeOverview {
+.tvEpisodeOverview {
     font-size:1.1em;
     width:680px;
     min-height:100px;

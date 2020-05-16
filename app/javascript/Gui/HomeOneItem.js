@@ -24,6 +24,7 @@ HomeOneItem.onFocus = function() {
 
 HomeOneItem.start = function(title, url, selectedItem, topLeftItem) {
 	alert("Page Enter : HomeOneItem");
+	Support.loading(1250);
 
 	//Save Start Params
 	this.startParams = [title, url];
@@ -50,7 +51,7 @@ HomeOneItem.start = function(title, url, selectedItem, topLeftItem) {
 		if (this.ItemData == null) { Support.processReturnURLHistory(); }
 	}
 	
-	if (this.ItemData.Items.length > 0) {
+	if (this.ItemData.Items.length > 0) {		
 		//Latest Page Fix
 		this.isLatest = false;
 
@@ -81,9 +82,9 @@ HomeOneItem.start = function(title, url, selectedItem, topLeftItem) {
 		var bannerSelection = "";
 		for (var index = 0; index < this.menuItems.length; index++) {
 			if (index != this.menuItems.length - 1) {
-				bannerSelection += "<div id='bannerItem" + index + "' class='bannerItemHome bannerItemPadding'>" + Support.getMenuItemName(this.menuItems[index]) + "</div>";
+				bannerSelection += "<div id='bannerItem" + index + "' class='bannerItemHome bannerItemPadding'>" + Support.getLocalizationName(this.menuItems[index]) + "</div>";
 			} else {
-				bannerSelection += "<div id='bannerItem" + index + "' class='bannerItemHome'>" + Support.getMenuItemName(this.menuItems[index]) + "</div>";
+				bannerSelection += "<div id='bannerItem" + index + "' class='bannerItemHome'>" + Support.getLocalizationName(this.menuItems[index]) + "</div>";
 			}
 		}
 		Support.widgetPutInnerHTML("bannerSelection", bannerSelection);
@@ -132,7 +133,7 @@ HomeOneItem.updateDisplayedItems = function() {
 //Function sets CSS Properties so show which user is selected
 HomeOneItem.updateSelectedItems = function (bypassCounter) {
 	Support.updateSelectedNEW(this.ItemData.Items, this.selectedItem, this.topLeftItem,
-			Math.min(this.topLeftItem + this.getMaxDisplay(), this.ItemData.Items.length), "homePagePoster collection selected highlight" + Main.highlightColour + "Boarder", "homePagePoster collection", "", bypassCounter);
+			Math.min(this.topLeftItem + this.getMaxDisplay(), this.ItemData.Items.length), "homePagePoster collection selected highlight" + Main.highlightColour + "Background", "homePagePoster collection", "", bypassCounter);
 };
 
 HomeOneItem.updateSelectedBannerItems = function() {

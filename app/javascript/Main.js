@@ -109,7 +109,7 @@ Main.onLoad = function() {
 	Support.clock();
 	widgetAPI.sendReadyEvent();
 	window.onShow = Main.initKeys();
-    Main.setLangInterface("ru");//!!! 
+	Main.setLangInterface("ru");//!!! 
 	//Set DeviceID & Device Name
 	var NNaviPlugin = document.getElementById("pluginObjectNNavi");
 	var pluginNetwork = document.getElementById("pluginObjectNetwork");
@@ -173,7 +173,8 @@ Main.onLoad = function() {
 			} else {
 				//Update version in settings file to current version
 				fileJson.Version = this.version;
-			}   File.writeAll(fileJson);
+			}
+			File.writeAll(fileJson);
 		}
 		//Allow Evo Kit owners to override the model year.
 		if (fileJson.TV.ModelOverride != "None") {

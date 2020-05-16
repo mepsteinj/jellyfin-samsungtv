@@ -34,7 +34,7 @@ Users.start = function(runAutoLogin) {
 	if (this.userData == null) { return; }
 	//Check for Default User
 	var autoLogin = false;
-	//Load File Data
+	//Load File Data	
 	if (runAutoLogin == true) {
 		var fileJson = JSON.parse(File.loadFile());
 		//Look at each user in the local users file.

@@ -224,7 +224,7 @@ CastMember.playSelectedItem = function () {
 	if (this.ItemData.Items[this.selectedItem].MediaType == "Video") {
 		Support.updateURLHistory("CastMember",this.startParams[0],this.startParams[1],null,null,this.selectedItem,this.topLeftItem,null);
 		var url = Server.getItemInfoURL(this.ItemData.Items[this.selectedItem].Id);
-		GuiPlayer.start("PLAY",url,this.ItemData.Items[this.selectedItem].UserData.PlaybackPositionTicks / 10000);
+		Player.start("PLAY",url,this.ItemData.Items[this.selectedItem].UserData.PlaybackPositionTicks / 10000);
 	}
 };
 

@@ -703,7 +703,7 @@ TVGuide.playCurrentChannel = function () {
 	if (this.selectedRow >= 0) {
 		Support.updateURLHistory("TVGuide",this.startParams[0],this.startParams[1],null,null,this.selectedRow,this.topChannel,null);
 		var url = Server.getItemInfoURL(this.Channels.Items[this.selectedRow + this.topChannel].Id,"");
-		GuiPlayer.start("PLAY",url,0,page);
+		Player.start("PLAY",url,0,page);
 	}
 };
 

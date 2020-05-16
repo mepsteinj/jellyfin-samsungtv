@@ -35,7 +35,7 @@ PlayerVersions.start = function(playerData,resumeTicks,playedFromPage) {
 		var streamparams = '/Stream.ts?VideoCodec=h264&Profile=high&Level=41&MaxVideoBitDepth=8&MaxWidth=1920&VideoBitrate=10000000&AudioCodec='+audioCodec+'&audioBitrate=360000&MaxAudioChannels=6&MediaSourceId='+this.PlayerData.MediaSources[0].Id + '&api_key=' + Server.getAuthToken();
 		var url = Server.getServerAddr() + '/Videos/' + this.PlayerData.Id + streamparams + '&DeviceId='+Server.getDeviceID();
 		var httpPlayback = [0,url,"Transcode",-1,-1,-1];
-		GuiPlayer.startPlayback(httpPlayback,resumeTicks);
+		Player.startPlayback(httpPlayback,resumeTicks);
 		return;
 	}
 	//Loop through all media sources and determine which is best
@@ -46,7 +46,7 @@ PlayerVersions.start = function(playerData,resumeTicks,playedFromPage) {
 	//Loop through all options and see if transcode is required, generate URL blah...
 	FileLog.write("Video : Determine Playback of Media Streams");
 	for (var index = 0; index < this.MediaOptions.length; index++) {
-		var result = GuiPlayerTranscoding.start(this.PlayerData.Id, this.PlayerData.MediaSources[this.MediaOptions[index][0]],this.MediaOptions[index][0],
+		var result = PlayerTranscoding.start(this.PlayerData.Id, this.PlayerData.MediaSources[this.MediaOptions[index][0]],this.MediaOptions[index][0],
 			this.MediaOptions[index][1],this.MediaOptions[index][2],this.MediaOptions[index][3],this.MediaOptions[index][4]);
 			FileLog.write("Video : Playback Added");
 			this.MediaPlayback.push(result);
@@ -66,7 +66,7 @@ PlayerVersions.start = function(playerData,resumeTicks,playedFromPage) {
 	} else if (this.MediaPlayback.length == 1) { //Added in check to play only non transcoded stuff
 		//Play file
 		FileLog.write("Video : One Playback Option - Player Loaded");
-		GuiPlayer.startPlayback(this.MediaPlayback[0],resumeTicks); //Need to change
+		Player.startPlayback(this.MediaPlayback[0],resumeTicks); //Need to change
 	} else {
 		//See how many will direct play
 		FileLog.write("Video : Multiple Playback Options - Determine Direct Play Count");
@@ -80,7 +80,7 @@ PlayerVersions.start = function(playerData,resumeTicks,playedFromPage) {
 		//If more than 1 loop through and generate GUI asking user
 		if (this.MediaSelections.length == 1) {
 			FileLog.write("Video : One Direct Stream - Player Loaded");
-			GuiPlayer.startPlayback(this.MediaSelections[0],resumeTicks);
+			Player.startPlayback(this.MediaSelections[0],resumeTicks);
 		} else if (this.MediaSelections.length > 1) {
 			FileLog.write("Video : Multiple Direct Stream - Option Presented to User");
 			document.getElementById("evnPlayerVersions").focus();
@@ -99,7 +99,7 @@ PlayerVersions.start = function(playerData,resumeTicks,playedFromPage) {
 			//If more than 1 loop through and generate GUI asking user
 			if (this.MediaSelections.length == 1) {
 				FileLog.write("Video : One Audio Only Transcode - Player Loaded");
-				GuiPlayer.startPlayback(this.MediaSelections[0],resumeTicks);
+				Player.startPlayback(this.MediaSelections[0],resumeTicks);
 			} else if (this.MediaSelections.length > 1) {
 				FileLog.write("Video : Multiple Audio Only Transcode - Option Presented to User");
 				document.getElementById("PlayerVersions").focus();
@@ -108,7 +108,7 @@ PlayerVersions.start = function(playerData,resumeTicks,playedFromPage) {
 			} else {
 				//Just use 1st Source and give up!
 				FileLog.write("Video : None Audio Only Transcode - Use First Media Source - Player Started");
-				GuiPlayer.startPlayback(this.MediaSelections[0],resumeTicks);
+				Player.startPlayback(this.MediaSelections[0],resumeTicks);
 			}
 		}
 	}
@@ -326,7 +326,7 @@ PlayerVersions.keyDown = function() {
 			Support.widgetPutInnerHTML("playerVersionsPlayables", "");
 			Support.widgetPutInnerHTML("counter", this.previousCounter);
 			document.getElementById(this.playedFromPage).focus();
-			GuiPlayer.startPlayback(this.MediaSelections[this.selectedItem],this.resumeTicks);
+			Player.startPlayback(this.MediaSelections[this.selectedItem],this.resumeTicks);
 			break;
 		case tvKey.KEY_BLUE:
 			alert("BLUE");

@@ -42,15 +42,15 @@ MainMenu.start = function() {
 	//Add menu entries
 	var htmlToAdd = "";
 	for (var index = 0; index < this.menuItems.length;index++) {
-		htmlToAdd += "<div id='" + this.menuItems[index] + "' class='menuItem'><div id='menuIcon' class='menuIcon' style='background-image:url(images/menu/" + Support.getMenuItemImage(this.menuItems[index]) + "-46x37.png)'></div>" + Support.getMenuItemName(this.menuItems[index]) + "</div>";
+		htmlToAdd += "<div id='" + this.menuItems[index] + "' class='menuItem'><div id='menuIcon' class='menuIcon' style='background-image:url(images/menu/" + this.menuItems[index] + "-46x37.png)'></div>" + Support.getLocalizationName(this.menuItems[index]) + "</div>";
 	}
 	//Add settings and logout
 	this.menuItems.push("Search");
-	htmlToAdd += "<div id=Search class='menuItem'><div id='menuIcon' class='menuIcon' style='background-image:url(images/menu/" + Support.getMenuItemImage("Search") + "-46x37.png)'></div>" + Support.getMenuItemName("Search") + "</div>";
+	htmlToAdd += "<div id=Search class='menuItem'><div id='menuIcon' class='menuIcon' style='background-image:url(images/menu/" + "Search-46x37.png)'></div>" + Support.getLocalizationName("Search") + "</div>";
 	this.menuItems.push("Settings");
-	htmlToAdd += "<div id=Settings class='menuItem'><div id='menuIcon' class='menuIcon' style='background-image:url(images/menu/" + Support.getMenuItemImage("Settings") + "-46x37.png)'></div>" + Support.getMenuItemName("Settings") + "</div>";
+	htmlToAdd += "<div id=Settings class='menuItem'><div id='menuIcon' class='menuIcon' style='background-image:url(images/menu/" + "Settings-46x37.png)'></div>" + Support.getLocalizationName("Settings") + "</div>";
 	this.menuItems.push("LogOut");
-	htmlToAdd += "<div id=LogOut class='menuItem'><div id='menuIcon' class='menuIcon' style='background-image:url(images/menu/" + Support.getMenuItemImage("LogOut") + "-46x37.png)'></div>" + Support.getMenuItemName("LogOut") + "</div>";
+	htmlToAdd += "<div id=LogOut class='menuItem'><div id='menuIcon' class='menuIcon' style='background-image:url(images/menu/" + "Log_Out-46x37.png)'></div>" + Support.getLocalizationName("Log_Out") + "</div>";
 	Support.widgetPutInnerHTML("menuItems", htmlToAdd);
 	//Turn On Screensaver
 	Support.screensaverOn();

@@ -17,7 +17,7 @@ var messagesRU = {
 	LabButtonWatched : "Просматривается",
 	LabButtonHelp : "Помощь",
 	LabButtonMusic : "Музыка",
-	LabButtonNextIndex : "Следующий индекс",
+	LabButtonNextIndex : "Следующий индекс  ",
 	LabHelpPage : "Станица помощи",
 	LabHelpImagePlayer : "Return, Stop - Ends slideshow and returns the user to the previous screen. <br> " +
 	"Left, Right - Move 1 image backwards or forwards. <br>" +
@@ -77,4 +77,14 @@ var messagesRU = {
 	LabSearch : "Поиск",
 	LabSettings : "Настройки",
 	LabLogOut : "Выход",
+	LabLatestMovies : "Последние фильмы",
+	LabButtonFullScreen : "Полный экран",
+	LabRESUME : "ВОЗОБНОВИТЬ",
+	LabPLAYTRAILER : "ВОCПРОИЗВЕСТИ ТРЕЙЛЕР",
+	LabPLAY : "ВОCПРОИЗВЕСТИ",
+	LabCHAPTERS : "ГЛАВЫ",
+	LabMOREEPISODES : "БОЛЬШЕ СЕРИЙ",
+	LabCAST : "В РОЛЯХ",
+	LabADDTOPLAYLIST : "ДОБАВИТЬ В ПЛЕЙЛИСТ",
+	LabSUGGESTED : "РЕКОМЕНДУЕМЫЙ",
 };
