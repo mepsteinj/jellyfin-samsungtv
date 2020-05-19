@@ -9,7 +9,7 @@ NewServer.start = function() {
 	Helper.setControlButtons(null, null, null, null, Main.messages.LabButtonReturn);
 	//Insert html into page
 	Support.widgetPutInnerHTML("pageContent",
-	"<div class='newServer12key'>" +
+	"<div class='inputPanel'>" +
 	"<p style='padding-bottom:5px;'>" + Main.messages.LabEnterIP + "</p>" +
 	"<form>" +
 	"<input id='1' type='text' size='5' maxlength='3' value=''/>." +

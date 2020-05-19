@@ -87,4 +87,5 @@ var messagesRU = {
 	LabCAST : "В РОЛЯХ",
 	LabADDTOPLAYLIST : "ДОБАВИТЬ В ПЛЕЙЛИСТ",
 	LabSUGGESTED : "РЕКОМЕНДУЕМЫЙ",
+	LabSignIn : "Выполните вход",
 };

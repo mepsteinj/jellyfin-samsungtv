@@ -26,7 +26,7 @@ UsersManual.start = function(userName) {
 	if (this.userData == null) { return; }
 	//Change Display
 	Support.widgetPutInnerHTML("pageContent",
-	"<div class='newServer12key'>" +
+	"<div class='inputPanel'>" +
 	"<p style='padding-left:60px;padding-top:20px;padding-bottom:5px;text-align:left;'>" + Main.messages.LabUserName + ":</p>" +
 	"<form><input id='user' style='z-index:10;' type='text' size='40' value='" + userName + "'/></form>" +
 	"<p style='padding-left:60px;padding-top:20px;padding-bottom:5px;text-align:left;'>" + Main.messages.LabPassword + ":</p>" +

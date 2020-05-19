@@ -65,10 +65,11 @@ Users.start = function(runAutoLogin) {
 		document.getElementById("pageContent").className = "";
 		Support.widgetPutInnerHTML("pageContent", 
 		"<div style='padding-top:200px;text-align:center'>" +
+		"<h2 class='loginOptions'>" + Main.messages.LabSignIn + "</h2>" +
 		"<div id=usersAllUsers></div>" +
 		"</div>" +
-		"<div id='manualLogin' class='usersManual'>" + Main.messages.LabManualLogin + "</div>" +
-		"<div id='changeServer' class='serversChange'>" + Main.messages.LabChangeServer + "</div> " +
+		"<div id='manualLogin' class='usersButtons'>" + Main.messages.LabManualLogin + "</div>" +
+		"<div id='changeServer' class='usersButtons'>" + Main.messages.LabChangeServer + "</div> " +
 		"<div style='text-align:center' class='loginOptions'><br>" + Main.messages.LabUsersDescription +
 		"</div>");	
 		if (this.userData.length != 0) {
@@ -84,9 +85,10 @@ Users.start = function(runAutoLogin) {
 
 Users.updateDisplayedUsers = function() {
 	var htmlToAdd = "";
+	var imgsrc = "";
 	for (var index = this.topLeftItem; index < (Math.min(this.topLeftItem + this.getMaxDisplay(), this.userData.length)); index++) {
 		if (this.userData[index].PrimaryImageTag) {
-			var imgsrc = Server.getImageURL(this.userData[index].Id, "UsersPrimary", 400, 400, 0, false, 0);
+			imgsrc = Server.getImageURL(this.userData[index].Id, "UsersPrimary", 400, 400, 0, false, 0);
 			htmlToAdd += "<div id=" + this.userData[index].Id + " style=background-image:url(" + imgsrc + ")><div class=listItem>" + this.userData[index].Name + "</div></div>";
 		} else {
 			htmlToAdd += "<div id=" + this.userData[index].Id + " style=background-image:url(images/loginusernoimage.png)><div class=listItem>"+ this.userData[index].Name + "</div></div>";
@@ -105,11 +107,9 @@ Users.updateSelectedUser = function() {
 //Function executes on the selection of a user - should log user in or generate error message on screen
 Users.processSelectedUser = function() {
 	var selectedUserId = this.userData[this.selectedUser].Id;
-  //UsersManual.start("");
 	var authenticateSuccess = false;
 	//Remove Focus & Display Loading
 	document.getElementById("noItems").focus();
-	document.getElementById("videoLoading").style.visibility = "";
 	//Load JSON File
 	var userInFile = false;
 	var fileJson = JSON.parse(File.loadFile());
@@ -123,16 +123,12 @@ Users.processSelectedUser = function() {
 				//Authenticate with MB3 - if fail somehow bail?
 				authenticateSuccess = Server.Authenticate(userId, user, password);
 				if (authenticateSuccess) {
-					//Hide loading
-					document.getElementById("videoLoading").style.visibility = "hidden";
 					//Set File User Entry
 					File.setUserEntry(index);
 					//Change Focus and call function in GuiMain to initiate the page!
 					MainMenu.start();
 				} else {
 					//Doesn't delete, allows user to correct password for the user.
-					//Hide loading
-					document.getElementById("videoLoading").style.visibility = "hidden";
 					UsersManual.start(user);
 				}
 				break;
@@ -142,22 +138,16 @@ Users.processSelectedUser = function() {
 	if (userInFile == false){
 		if (this.userData[this.selectedUser].HasPassword) {
 			//Has password - Load IME
-			//Hide loading
-			document.getElementById("videoLoading").style.visibility = "hidden";
 			UsersManual.start(this.userData[this.selectedUser].Name);
 		} else {
 			authenticateSuccess = Server.Authenticate(this.userData[this.selectedUser].Id, this.userData[this.selectedUser].Name, "");
 			if (authenticateSuccess) {
 				//Reset GUI to as new - Not Required as it already is!!
-				//Hide loading
-				document.getElementById("videoLoading").style.visibility = "hidden";
 				//Add Username & Password to DB
 				File.addUser(this.userData[this.selectedUser].Id, this.userData[this.selectedUser].Name, "", true);
 				//Change Focus and call function in GuiMain to initiate the page!
 				MainMenu.start();
 			} else {
-				//Hide loading
-				document.getElementById("videoLoading").style.visibility = "hidden";
 				document.getElementById("evnUsers").focus();
 				//Div to display Network Failure - No password therefore no password error
 				//This event should be impossible under normal circumstances
@@ -190,25 +180,25 @@ Users.keyDown = function() {
 				this.updateSelectedUser();
 			} else if (this.selectedRow == 1) {
 				this.isManualEntry = true;
-				document.getElementById("manualLogin").style.backgroundColor = "rgba(39,164,54,0.85)";
+				document.getElementById("manualLogin").style.backgroundColor = "rgba(0,164,220,0.85)";
 				document.getElementById("changeServer").style.backgroundColor = "#303030";
 				document.getElementById(this.userData[this.selectedUser].Id).className = "user";
 			} else if (this.selectedRow == 2) {
 				document.getElementById("manualLogin").style.backgroundColor = "#303030";
-				document.getElementById("changeServer").style.backgroundColor = "rgba(39,164,54,0.85)";
+				document.getElementById("changeServer").style.backgroundColor = "rgba(0,164,220,0.85)";
 			}
 			break;
 		case tvKey.KEY_DOWN:
 			this.selectedRow++;
 			if (this.selectedRow == 1) {
 				this.isManualEntry = true;
-				document.getElementById("manualLogin").style.backgroundColor = "rgba(39,164,54,0.85)";
+				document.getElementById("manualLogin").style.backgroundColor = "rgba(0,164,220,0.85)";
 				document.getElementById("changeServer").style.backgroundColor = "#303030";
 				document.getElementById(this.userData[this.selectedUser].Id).className = "user";
 			} else if (this.selectedRow > 1) {
 				this.selectedRow = 2;
 				document.getElementById("manualLogin").style.backgroundColor = "#303030";
-				document.getElementById("changeServer").style.backgroundColor = "rgba(39,164,54,0.85)";
+				document.getElementById("changeServer").style.backgroundColor = "rgba(0,164,220,0.85)";
 			}
 			break;
 		case tvKey.KEY_LEFT:

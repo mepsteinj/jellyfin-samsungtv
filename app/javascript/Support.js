@@ -59,7 +59,6 @@ Support.logout = function() {
 		MusicPlayer.handleStopKey();
 	}
 	FileLog.write("User "+ Server.getUserName() + " logged out.");
-	//document.getElementById("menuUserImage").style.backgroundImage = "";
 	this.widgetPutInnerHTML("menuItems", "");
 	Server.setUserID("");
 	Server.setUserName("");

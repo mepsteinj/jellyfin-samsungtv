@@ -87,4 +87,5 @@ var messagesEN = {
 	LabCAST : "CAST",
 	LabADDTOPLAYLIST : "ADD TO PLAYLIST",
 	LabSUGGESTED : "SUGGESTED",
+	LabSignIn : "Sign In",
 };

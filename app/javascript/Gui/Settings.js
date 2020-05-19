@@ -58,7 +58,7 @@ var Settings = {
 	SubtitleModeValues : ["Default","OnlyForced", "Always", "None"],
 	ModelOverrideOptions : ["None","SEK-1000","SEK-2000","SEK-2500"],
 	ModelOverrideValues : ["None","SEK1000","SEK2000","SEK2500"],
-	HighlightColourOptions : ["Green","Silver","Red","Navy","Aqua","Purple"],
+	HighlightColourOptions : ["Light Blue","Green","Silver","Red","Navy","Purple"],
 	HighlightColourValues : [1,2,3,4,5,6]
 };
 

@@ -32,7 +32,7 @@ Servers.start = function(runAutoLogin) {
 		"<div style='padding-top:200px;text-align:center'>" +
 		"<div id=serversAllServers></div>" +
 		"</div>" +
-		"<div id=serversAddNew class='serversAddNew'>" + Main.messages.LabAddNewServer + "</div>" +
+		"<div id=serversAddNew class='usersButtons'>" + Main.messages.LabAddNewServer + "</div>" +
 		"<div style='text-align:center' class='loginOptions'><br>" + Main.messages.LabServersDescription + 
 		"</div>");
 		this.updateDisplayedUsers();
@@ -125,7 +125,7 @@ Servers.keyDown = function() {
 		case tvKey.KEY_DOWN:
 			this.isAddButton = true;
 			document.getElementById(this.serverData.Servers[this.selectedItem].Id).className = "user";
-			document.getElementById("serversAddNew").style.backgroundColor = "rgba(39,164,54,0.85)";
+			document.getElementById("serversAddNew").style.backgroundColor = "rgba(0,164,220,0.85)";
 			break;
 		case tvKey.KEY_UP:
 			this.isAddButton = false;

@@ -23,9 +23,9 @@ input:focus {
 	font-size: 1em;
 	color: white;
     border-style: solid;
-    border-color: rgba(39,164,54,0.85);
+    border-color: rgba(0,164,220,0.85);
     border-width: 3px;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 input[type="text"] {
@@ -33,7 +33,7 @@ input[type="text"] {
     font-size: 1em;
     color: white;
     background-color: #292929;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 input[type="password"] {
@@ -41,7 +41,7 @@ input[type="password"] {
     font-size: 1em;
     color: white;
     background-color: #292929;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 .loading {
@@ -180,22 +180,6 @@ input[type="password"] {
 
 .menuItems {
     padding-top: 10px;
-}
-
-.menuUserImage {
-    position: relative;
-    left: 140px; top: 1px;
-    width: 70px;
-    height: 70px;
-    border-radius: 40px;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-.menuUserName {
-    position: relative;
-    text-align: center;
-    padding-bottom: 3px;
 }
 
 .menuItem {
@@ -404,7 +388,7 @@ input[type="password"] {
     color: white;
     z-index: 9999;
     background-color: #303030;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 .notificationText {
@@ -452,7 +436,7 @@ input[type="password"] {
     z-index: 5;
 }
 
-.newServer12key {
+.inputPanel {
     position: absolute;
     padding: 30px;
     top: 380px;
@@ -461,39 +445,11 @@ input[type="password"] {
     height: 310px;
     text-align: center;
     background-color: #303030;
-    border-radius: 10px;
+    border-radius: 5px;
     z-index: 5;
 }
 
-.serversAddNew {
-    position: relative;
-    top: 0px;
-    left: 670px;
-    width: 580px;
-    height: 50px;
-    margin-top: 40px;
-    background-color: #303030;
-    border-radius: 10px;
-    line-height: 50px;
-    text-align: center;
-    z-index: 5;
-}
-
-.usersManual {
-    position: relative;
-    top: 0px;
-    left: 670px;
-    width: 580px;
-    height: 50px;
-    margin-top: 40px;
-    background-color: #303030;
-    border-radius: 10px;
-    line-height: 50px;
-    text-align: center;
-    z-index: 5;
-}
-
-.serversChange {
+.usersButtons {
     position: relative;
     top: 0px;
     left: 670px;
@@ -501,7 +457,7 @@ input[type="password"] {
     height: 50px;
     margin-top: 5px;
     background-color: #303030;
-    border-radius: 10px;
+    border-radius: 5px;
     line-height: 50px;
     text-align: center;
     z-index: 5;
@@ -510,95 +466,95 @@ input[type="password"] {
 /*----------------------------------------------------------------------------------------------*/
 
 .searchPageTitle {
-    position:absolute;
-    font-size:1.2em;
-    top:135px;
-    left:30px;
-    z-index:5;
+    position: absolute;
+    font-size: 1.2em;
+    top: 135px;
+    left: 30px;
+    z-index: 5;
 }
 
 .searchPageInput {
-    position:absolute;
-    top:90px;
-    left:40px;
-    width:600px;
-    text-align:center;
-    z-index:5;
+    position: absolute;
+    top: 90px;
+    left: 40px;
+    width: 600px;
+    text-align: center;
+    z-index: 5;
 }
 
 .searchPageResults {
-    position:absolute;
-    top:165px;
-    left:50px;
-    z-index:5;
+    position: absolute;
+    top: 165px;
+    left: 50px;
+    z-index: 5;
 }
 
 /*----------------------------------------------------------------------------------------------*/
 
 .episodesSeriesInfo {
-    position:absolute;
-    font-size:1.2em;
-    top:12px;
-    left:180px;
-    z-index:5;
+    position: absolute;
+    font-size: 1.2em;
+    top: 12px;
+    left: 180px;
+    z-index: 5;
 }
 
 .episodesSeriesInfoLogo {
-    position:absolute;
-    top:20px;
-    left:60px;
-    width:600px;
-    height:80px;
+    position: absolute;
+    top: 20px;
+    left: 60px;
+    width: 600px;
+    height: 80px;
     background-repeat: no-repeat;
-    background-position:left;
-    z-index:5;
+    background-position: left;
+    z-index: 5;
 }
 
 .filmInfoLogo {
-    position:absolute;
-    top:20px;
-    left:40px;
-    width:1000px;
-    height:200px;
+    position: absolute;
+    top: 20px;
+    left: 40px;
+    width: 1000px;
+    height: 200px;
     background-repeat: no-repeat;
-    background-position:left;
+    background-position: left;
     background-size: contain;
-    z-index:5;
+    z-index: 5;
 }
 
 .episodesInfo {
-    font-size:1em;
-    position:absolute;
-    top:510px;
-    left:60px;
-    height:426px;
-    width:860px;
-    overflow-y:hidden;
-    z-index:5;
+    font-size: 1em;
+    position: absolute;
+    top: 510px;
+    left: 60px;
+    height: 426px;
+    width: 860px;
+    overflow-y: hidden;
+    z-index: 5;
 }
 
 .episodesImage {
-    position:absolute;
-    top:165px;
-    left:55px;
-    height:310px;
-    width:890px;
+    position: absolute;
+    top: 165px;
+    left: 55px;
+    height: 310px;
+    width: 890px;
     background-repeat: no-repeat;
-    background-position:center;
+    background-position: center;
     background-size: contain;
     z-index:5;
 }
 
 .episodesOverview {
-    font-size:1.2em;
-    position:relative;
-    height:120px;
-    width:860px;
-    overflow-y:hidden;
+    font-size: 1.2em;
+    position: relative;
+    height: 120px;
+    width: 860px;
+    overflow-y: hidden;
     margin: 20px 0px;
-    max-height:410px;
-    overflow-y:hidden;
-    z-index:5;
+    max-height: 410px;
+    overflow-y: hidden;
+    z-index: 5;
 }
 
 .episodesSubData {
@@ -1041,6 +997,14 @@ input[type="password"] {
     text-align: center;
     padding-left: 2px;
     background-color: rgba(0,0,0,0.8);
+}
+
+.listItem1 {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    text-align: center;
+    padding-left: 2px;
 }
 
 .menuItemWithProgress {
@@ -2336,23 +2300,23 @@ input[type="password"] {
 }
 
 .highlight1Background {
-    background-color:rgba(39,164,54,0.85);
+    background-color:rgba(0,164,220,0.85);
 }
 
 .highlight2Background {
-    background-color:rgba(140,140,140,0.85);
+    background-color:rgba(39,164,54,0.85);
 }
 
 .highlight3Background {
-    background-color:rgba(255,0,0,0.85);
+    background-color:rgba(140,140,140,0.85);
 }
 
 .highlight4Background {
-    background-color:rgba(15,10,85,0.85);
+    background-color:rgba(255,0,0,0.85);
 }
 
 .highlight5Background {
-    background-color:rgba(43,168,176,0.85);
+    background-color:rgba(15,10,85,0.85);
 }
 
 .highlight6Background {
@@ -2360,23 +2324,23 @@ input[type="password"] {
 }
 
 .highlight1Text {
-    color:rgba(39,164,54,1);
+    color:rgba(0,164,220,1);
 }
 
 .highlight2Text {
-    color:rgba(140,140,140,1);
+    color:rgba(39,164,54,1);
 }
 
 .highlight3Text {
-    color:rgba(255,0,0,1);
+    color:rgba(140,140,140,1);
 }
 
 .highlight4Text {
-    color:rgba(15,10,85,1);
+    color:rgba(255,0,0,1);
 }
 
 .highlight5Text {
-    color:rgba(43,168,176,1);
+    color:rgba(15,10,85,1);
 }
 
 .highlight6Text {
@@ -2384,23 +2348,23 @@ input[type="password"] {
 }
 
 .highlight1Boarder {
-    border:3px solid rgba(39,164,54,1);
+    border:3px solid rgba(0,164,220,1);
 }
 
 .highlight2Boarder {
-    border:3px solid rgba(140,140,140,1);
+    border:3px solid rgba(39,164,54,1);
 }
 
 .highlight3Boarder {
-    border:3px solid rgba(255,0,0,1);
+    border:3px solid rgba(140,140,140,1);
 }
 
 .highlight4Boarder {
-    border:3px solid rgba(15,10,85,1);
+    border:3px solid rgba(255,0,0,1);
 }
 
 .highlight5Boarder {
-    border:3px solid rgba(43,168,176,1);
+    border:3px solid rgba(15,10,85,1);
 }
 
 .highlight6Boarder {
