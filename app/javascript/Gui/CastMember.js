@@ -30,7 +30,8 @@ CastMember.start = function(title, url, selectedItem, topLeftItem) {
 	if (this.ItemData == null) { Support.processReturnURLHistory(); }
 
 	document.getElementById("pageContent").className = "";
-	Support.widgetPutInnerHTML("pageContent", "<div id='castMemberName' class='castMemberName'></div> \
+	Support.widgetPutInnerHTML("pageContent", 
+	"<div id='castMemberName' class='castMemberName'></div> \
 		<div id='castMemberDetails' class='castMemberDetails'></div> \
 		<div id='castMemberPoster' class='castMemberPoster'></div> \
 		<div id='castMemberBio' class='castMemberBio'></div> \

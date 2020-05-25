@@ -280,8 +280,8 @@ DisplaySeries.updateSelectedItems = function () {
 		} else {
 			tomsImage = "images/rotten-40x40.png";
 		}
-		htmlForTitle += "<td class=MetadataItemIcon style=background-image:url("+tomsImage+")></td>";
-		htmlForTitle += "<td class=MetadataItemVSmall>" + toms + "%</td>";
+		htmlForTitle += "<td class=metadataItemIcon style=background-image:url("+tomsImage+")></td>";
+		htmlForTitle += "<td class=metadataItemVSmall>" + toms + "%</td>";
 	}
 	if (stars){
 		if (stars <3.1){
@@ -291,8 +291,8 @@ DisplaySeries.updateSelectedItems = function () {
 		} else {
 			starsImage = "images/star_full-46x40.png";
 		}
-		htmlForTitle += "<td class=MetadataItemIcon style=background-image:url("+starsImage+")></td>";
-		htmlForTitle += "<td class=MetadataItemVSmall>" + stars + "</td>";
+		htmlForTitle += "<td class=metadataItemIcon style=background-image:url("+starsImage+")></td>";
+		htmlForTitle += "<td class=metadataItemVSmall>" + stars + "</td>";
 	}
 
 	if (this.ItemData.Items[this.selectedItem].Type !== undefined
@@ -404,13 +404,13 @@ DisplaySeries.updateSelectedItems = function () {
 DisplaySeries.updateSelectedBannerItems = function() {
 	for (var index = 0; index < this.bannerItems.length; index++) {
 		if (index == this.selectedBannerItem) {
-			if (index != this.bannerItems.length-1) {
-				document.getElementById("bannerItem" + index).className = "bannerItem bannerItemPadding highlight"+Main.highlightColour+"Text";
+			if (index != this.bannerItems length - 1) {
+				document.getElementById("bannerItem" + index).className = "bannerItem bannerItemPadding highlight" + Main.highlightColour + "Text";
 			} else {
-				document.getElementById("bannerItem" + index).className = "bannerItem highlight"+Main.highlightColour+"Text";
+				document.getElementById("bannerItem" + index).className = "bannerItem highlight" + Main.highlightColour + "Text";
 			}
 		} else {
-			if (index != this.bannerItems.length-1) {
+			if (index != this.bannerItems.length - 1) {
 				if (this.bannerItems[index] == this.currentView) {
 					document.getElementById("bannerItem" + index).className = "bannerItem bannerItemPadding offWhite";
 				} else {

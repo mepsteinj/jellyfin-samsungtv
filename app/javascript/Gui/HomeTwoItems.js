@@ -168,7 +168,7 @@ HomeTwoItems.updateDisplayedItems = function() {
 //Function sets CSS Properties so show which user is selected
 HomeTwoItems.updateSelectedItems = function (bypassCounter) {
 	Support.updateSelectedNEW(this.ItemData.Items, this.selectedItem, this.topLeftItem,
-			Math.min(this.topLeftItem + this.getMaxDisplay(), this.ItemData.Items.length), "homePagePoster collection selected highlight" + Main.highlightColour + "Background", "homePagePoster collection", this.divprepend1, bypassCounter);
+			Math.min(this.topLeftItem + this.getMaxDisplay(), this.ItemData.Items.length), "homePagePoster collection selected highlight"  + Main.highlightColour + "Background", "homePagePoster collection", this.divprepend1, bypassCounter);
 };
 
 HomeTwoItems.updateSelectedBannerItems = function() {

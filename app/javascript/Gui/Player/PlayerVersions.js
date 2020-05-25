@@ -336,7 +336,7 @@ PlayerVersions.keyDown = function() {
 			break;
 		case tvKey.KEY_EXIT:
 			alert ("EXIT KEY");
-			document.getElementById("PlayerLoading").style.visibility = "hidden";
+			document.getElementById("playerLoading").style.visibility = "hidden";
 			widgetAPI.sendExitEvent();
 			break;
 		default:

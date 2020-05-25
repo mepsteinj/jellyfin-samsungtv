@@ -38,17 +38,17 @@ Contributors.start = function() {
 		}
 	}
 	htmlToAdd += "</tr></table><br><br>";
-	htmlToAdd += "<span style='font-size:1.2em;'>Donators, supporters and valued beta testers.</span><table><tr class='guiSettingsRow'>";
+	htmlToAdd += "<span style='font-size:1.2em;'>Donators, supporters and valued beta testers.</span><table><tr class='settingsRow'>";
 	for (var index = 0; index < this.DonateSupport.length; index++) {
 		if (index % 7 == 0) {
-			htmlToAdd += "<tr class='guiSettingsRow'>";
+			htmlToAdd += "<tr class='settingsRow'>";
 		}
-		htmlToAdd += "<td class='guiSettingsTD'>" + this.DonateSupport[index] + "</td>";
+		htmlToAdd += "<td class='settingsTD'>" + this.DonateSupport[index] + "</td>";
 		if (index+1 % 7 == 0) {
 			htmlToAdd += "</tr>";
 		}
 	}
-  Support.widgetPutInnerHTML("ContentAbout", htmlToAdd + "</tr></table>");
+  Support.widgetPutInnerHTML("contentAbout", htmlToAdd + "</tr></table>");
 
 	//Set Focus for Key Events
 	document.getElementById("evnContributors").focus();

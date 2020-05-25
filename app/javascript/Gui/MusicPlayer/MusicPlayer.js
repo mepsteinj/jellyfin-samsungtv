@@ -141,7 +141,7 @@ MusicPlayer.start = function(title,url,playedFromPage,isQueue,showThemeId,itemId
 			//Start Playback
 			this.handlePlayKey();
 			//Show Content
-			this.showMusicPlayer(playedFromPage,itemId,"Music seriesSelected");
+			this.showMusicPlayer(playedFromPage,itemId,"music seriesSelected");
 		}
 	}
 };

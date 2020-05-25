@@ -272,19 +272,19 @@ PlayerDisplay.keyDownTools = function() {
 				this.videoToolsSubOptions = this.chapterIndexes;
 				this.updateDisplayedItemsSub();
 				this.updateSelectedItemsSub();
-				document.getElementById("GuiPlayerToolsSub").focus();
+				document.getElementById("evnPlayerToolsSub").focus();
 				break;
 			case "videoOptionSubtitles":
 				this.videoToolsSubOptions = this.subtitleIndexes;
 				this.updateDisplayedItemsSub();
 				this.updateSelectedItemsSub();
-				document.getElementById("GuiPlayerToolsSub").focus();
+				document.getElementById("evnPlayerToolsSub").focus();
 				break;
 			case "videoOptionAudio":
 				this.videoToolsSubOptions = this.audioIndexes;
 				this.updateDisplayedItemsSub();
 				this.updateSelectedItemsSub();
-				document.getElementById("GuiPlayerToolsSub").focus();
+				document.getElementById("evnPlayerToolsSub").focus();
 				break;
 			case "videoOptionSlider":
 				this.sliderCurrentTime = Player.currentTime + this.offsetSeconds;

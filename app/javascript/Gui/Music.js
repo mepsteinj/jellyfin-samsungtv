@@ -39,7 +39,7 @@ Music.start = function(title, url, type) { //Type is either MusicAlbum or MusicA
 		   <div id='musicSubtitle' class='musicSubtitle'></div></div> \
 		   <div id='musicDetails' class='musicDetails'> \
 		   <div id='musicGlobals' class='musicGlobals'> \
-		   <div id='PlayAll' class='musicGlobal'>Play All</div> \
+		   <div id='playAll' class='musicGlobal'>Play All</div> \
 		   <div id='queueAll' class='musicGlobal'>Queue All</div> \
 		   <div id='shuffleAll' class='musicGlobal'>Shuffle</div> \
 		   <div id='instantMix' class='musicGlobal'>Instant Mix</div></div> \
@@ -49,8 +49,8 @@ Music.start = function(title, url, type) { //Type is either MusicAlbum or MusicA
 
 	//Get Episode Poster
 	if (this.AlbumData.Items[0].AlbumPrimaryImageTag) {
-		var imgsrc = Server.getImageURL(this.AlbumData.Items[0].AlbumId,"Primary",650,650,0,false,0);
-		document.getElementById("musicPoster").style.backgroundImage = "url("+imgsrc + ")";
+		var imgsrc = Server.getImageURL(this.AlbumData.Items[0].AlbumId,"Primary", 650, 650, 0, false, 0);
+		document.getElementById("musicPoster").style.backgroundImage = "url(" + imgsrc + ")";
 	} else {
 		document.getElementById("musicPoster").style.backgroundImage = "url(images/collection.png)";
 	}
@@ -83,7 +83,7 @@ Music.updateDisplayedItems = function() {
 	var htmlToAdd = "<table class=table><th style='width:66px'></th><th style='width:100px'></th><th style='width:90px'></th><th style='width:66px'></th><th style='width:560px'></th><th style='width:130px'></th>";
 	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.AlbumData.Items.length); index++){
 		if (this.AlbumData.Items[index].ParentIndexNumber && this.AlbumData.Items[index].IndexNumber) {
-			TrackDetails = this.AlbumData.Items[index].ParentIndexNumber+"." + this.AlbumData.Items[index].IndexNumber;
+			TrackDetails = this.AlbumData.Items[index].ParentIndexNumber + "." + this.AlbumData.Items[index].IndexNumber;
 		} else if (this.AlbumData.Items[index].IndexNumber) {
 			TrackDetails = this.AlbumData.Items[index].IndexNumber;
 		} else {
@@ -96,9 +96,9 @@ Music.updateDisplayedItems = function() {
 			songName = songName.substring(0,40) + "...";
 		}
 
-		htmlToAdd += "<tr><td id=Play_"+this.AlbumData.Items[index].Id+" class='musicTableTd'>Play</td><td id=queue_"+this.AlbumData.Items[index].Id+" class='musicTableTd'>Queue</td><td id=mix_"+this.AlbumData.Items[index].Id+" class='musicTableTd'>Mix</td>" +
-				"<td class='musicTableTd'>"+TrackDetails+ "</td><td id="+ this.AlbumData.Items[index].Id +" class='musicTableTd'>" + songName + "</td>" +
-						"<td class='musicTableTd'>"+Support.convertTicksToTimeSingle(this.AlbumData.Items[index].RunTimeTicks/10000,true)+"</td></tr>";
+		htmlToAdd += "<tr><td id=play_"+this.AlbumData.Items[index].Id + " class='musicTableTd'>Play</td><td id=queue_" + this.AlbumData.Items[index].Id + " class='musicTableTd'>Queue</td><td id=mix_" + this.AlbumData.Items[index].Id + " class='musicTableTd'>Mix</td>" +
+				"<td class='musicTableTd'>" + TrackDetails+ "</td><td id=" + this.AlbumData.Items[index].Id + " class='musicTableTd'>" + songName + "</td>" +
+						"<td class='musicTableTd'>" + Support.convertTicksToTimeSingle(this.AlbumData.Items[index].RunTimeTicks/10000,true) + "</td></tr>";
 	}
 	Support.widgetPutInnerHTML("musicOptions", htmlToAdd + "</table>");
 };
@@ -197,9 +197,9 @@ Music.keyDown = function() {
 			break;
 		case tvKey.KEY_BLUE:
 			if (this.selectedItem == -1) {
-				MusicPlayer.showMusicPlayer("Music", this.topMenuItems[this.selectedItem2],"musicGlobal highlight"+Main.highlightColour+"Background");
+				MusicPlayer.showMusicPlayer("Music", this.topMenuItems[this.selectedItem2],"musicGlobal highlight" + Main.highlightColour + "Background");
 			} else {
-				MusicPlayer.showMusicPlayer("Music", this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id,"musicTableTd highlight"+Main.highlightColour+"Background");
+				MusicPlayer.showMusicPlayer("Music", this.playItems[this.selectedItem2] + this.AlbumData.Items[this.selectedItem].Id,"musicTableTd highlight" + Main.highlightColour + "Background");
 			}
 			break;
 		case tvKey.KEY_EXIT:
@@ -214,7 +214,7 @@ Music.openMenu = function() {
 	if (this.selectedItem == -1) {
 		MainMenu.requested("Music", this.topMenuItems[this.selectedItem2], "musicGlobal highlight" + Main.highlightColour + "Background");
 	} else {
-		MainMenu.requested("Music", this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id, "musicTableTd highlight" + Main.highlightColour + "Background");
+		MainMenu.requested("Music", this.playItems[this.selectedItem2] + this.AlbumData.Items[this.selectedItem].Id, "musicTableTd highlight" + Main.highlightColour + "Background");
 	}
 };
 
@@ -297,7 +297,7 @@ Music.processSelectedItem = function() {
 		switch (this.selectedItem2) {
 		case 0:
 			//Play All
-			document.getElementById(this.topMenuItems[this.selectedItem2]).className = document.getElementById(this.topMenuItems[this.selectedItem2]).className.replace("highlight"+Main.highlightColour+"Background","");
+			document.getElementById(this.topMenuItems[this.selectedItem2]).className = document.getElementById(this.topMenuItems[this.selectedItem2]).className.replace("highlight" + Main.highlightColour + "Background","");
 			MusicPlayer.start("Album", this.startParams[1] + "&Fields=MediaSources", "Music", false);
 			break;
 		case 1:
@@ -306,14 +306,14 @@ Music.processSelectedItem = function() {
 			break;
 		case 2:
 			//Shuffle
-			document.getElementById(this.topMenuItems[this.selectedItem2]).className = document.getElementById(this.topMenuItems[this.selectedItem2]).className.replace("highlight"+Main.highlightColour+"Background","");
+			document.getElementById(this.topMenuItems[this.selectedItem2]).className = document.getElementById(this.topMenuItems[this.selectedItem2]).className.replace("highlight" + Main.highlightColour + "Background","");
 			var url = this.startParams[1].replace("SortBy=SortName","SortBy=Random");
 			MusicPlayer.start("Album", url + "&Fields=MediaSources", "Music", false);
 			break;
 		case 3:
 			//Instant Mix
-			document.getElementById(this.topMenuItems[this.selectedItem2]).className = document.getElementById(this.topMenuItems[this.selectedItem2]).className.replace("highlight"+Main.highlightColour+"Background","");
-			var url = Server.getCustomURL("/Albums/"+this.AlbumData.Items[0].AlbumId + "/InstantMix?format=json&Limit=50&UserId="+Server.getUserID());
+			document.getElementById(this.topMenuItems[this.selectedItem2]).className = document.getElementById(this.topMenuItems[this.selectedItem2]).className.replace("highlight"+Main.highlightColour + "Background","");
+			var url = Server.getCustomURL("/Albums/" + this.AlbumData.Items[0].AlbumId + "/InstantMix?format=json&Limit=50&UserId=" + Server.getUserID());
 			MusicPlayer.start("Album", url + "&Fields=MediaSources", "Music", false);
 			break;
 		}
@@ -321,7 +321,7 @@ Music.processSelectedItem = function() {
 		switch (this.selectedItem2) {
 		case 0:
 			//Play
-			document.getElementById(this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id).className = document.getElementById(this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id).className.replace("highlight" + Main.highlightColour + "Background","");
+			document.getElementById(this.playItems[this.selectedItem2] + this.AlbumData.Items[this.selectedItem].Id).className = document.getElementById(this.playItems[this.selectedItem2] + this.AlbumData.Items[this.selectedItem].Id).className.replace("highlight" + Main.highlightColour + "Background","");
 			var url = Server.getItemInfoURL(this.AlbumData.Items[this.selectedItem].Id);
 			MusicPlayer.start("Song", url, "Music", false);
 			break;
@@ -332,8 +332,8 @@ Music.processSelectedItem = function() {
 			break;
 		case 2:
 			//Mix
-			document.getElementById(this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id).className = document.getElementById(this.playItems[this.selectedItem2]+this.AlbumData.Items[this.selectedItem].Id).className.replace("highlight"+Main.highlightColour+"Background","");
-			var url = Server.getCustomURL("/Songs/"+this.AlbumData.Items[this.selectedItem].Id + "/InstantMix?format=json&Limit=50&UserId="+Server.getUserID());
+			document.getElementById(this.playItems[this.selectedItem2] + this.AlbumData.Items[this.selectedItem].Id).className = document.getElementById(this.playItems[this.selectedItem2] + this.AlbumData.Items[this.selectedItem].Id).className.replace("highlight" + Main.highlightColour + "Background","");
+			var url = Server.getCustomURL("/Songs/" + this.AlbumData.Items[this.selectedItem].Id + "/InstantMix?format=json&Limit=50&UserId="+Server.getUserID());
 			MusicPlayer.start("Album", url + "&Fields=MediaSources", "Music", false);
 			break;
 		}

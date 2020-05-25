@@ -38,7 +38,7 @@ Photos.start = function(title, url, selectedItem, topLeftItem) {
 	if (this.ItemData == null) { Support.processReturnURLHistory(); }
 
 	//Set Page Content
-	Support.widgetPutInnerHTML("pageContent", "<div id='title' class='episodesSeriesInfo'>" + title + "</div>" + "<div id=Center class='seriesCenter'><div id=content></div></div>");
+	Support.widgetPutInnerHTML("pageContent", "<div id='title' class='episodesSeriesInfo'>" + title + "</div>" + "<div id=center class='seriesCenter'><div id=content></div></div>");
 
 	//Set Top
 	this.setPadding(title);
@@ -77,7 +77,7 @@ Photos.updateDisplayedItems = function() {
 		var imgsrc = "";
 		var title = Items[this.topLeftItem+i].Name;
 		if (Items[this.topLeftItem+i].Type == "PhotoAlbum" || Items[this.topLeftItem+i].Type == "Folder"){
-			var photosUrl = Server.getItemTypeURL("&IncludeItemTypes=photo&Limit=1&SortBy=SortName&SortOrder=Ascending&Recursive=true&ParentId="+Items[this.topLeftItem+i].Id);
+			var photosUrl = Server.getItemTypeURL("&IncludeItemTypes=photo&Limit=1&SortBy=SortName&SortOrder=Ascending&Recursive=true&ParentId=" + Items[this.topLeftItem + i].Id);
 			var photos = Server.getContent(photosUrl);
 			var photosCount = 0;
 			if (photos){
@@ -91,37 +91,37 @@ Photos.updateDisplayedItems = function() {
 			if (imgsrc == ""){
 				imgsrc = "images/EmptyFolder-122x98.png";
 			}
-			htmlToAdd += (i==0?"<td class=photoThumbLarge colspan=2 rowspan=2>":"<td class=photoThumbSmall>")+"<div id="+ DivIdPrepend + Items[this.topLeftItem+i].Id + " style=background-color:rgba(0,0,0,0.5);background-image:url(" +imgsrc+ ");width:"+(i==0?572:270)+"px;height:"+(i==0?572:270)+"px><div class=photoTitle style=font-size:"+(i==0?36:28)+"px>"+ title + "</div>";
+			htmlToAdd += (i==0?"<td class=photoThumbLarge colspan=2 rowspan=2>":"<td class=photoThumbSmall>")+"<div id="+ DivIdPrepend + Items[this.topLeftItem+i].Id + " style=background-color:rgba(0,0,0,0.5);background-image:url(" +imgsrc+ ");width:" + (i==0?572:270)+"px;height:"+(i==0?572:270)+"px><div class=photoTitle style=font-size:" + (i==0?36:28)+"px>"+ title + "</div>";
 			if (Items[this.topLeftItem + i].UserData.IsFavorite){
 				htmlToAdd += "<div class=favItem></div>";
 			}
 			if (photosCount > 0) {
-				htmlToAdd += "<div class=photoItemCount>"+photosCount+"</div>";
+				htmlToAdd += "<div class=photoItemCount>" + photos Count + "</div>";
 			}
 			htmlToAdd += "</div></td>";
 		} else if (Items[this.topLeftItem+i].Type == "Video") {
 			if (Items[this.topLeftItem+i].ImageTags.Primary){
-				imgsrc = Server.getImageURL(Items[this.topLeftItem+i].Id,"Primary",(i==0?880:440),(i==0?880:440),0,false,0);
+				imgsrc = Server.getImageURL(Items[this.topLeftItem + i].Id, "Primary", (i==0?880:440), (i==0?880:440), 0, false, 0);
 			} else if (Items[this.topLeftItem+i].ImageTags.Thumb){
-				imgsrc = Server.getImageURL(Items[this.topLeftItem+i].Id,"Thumb",(i==0?880:440),(i==0?880:440),0,false,0);
+				imgsrc = Server.getImageURL(Items[this.topLeftItem+i].Id, "Thumb", (i==0?880:440), (i==0?880:440), 0, false, 0);
 			} else {
 				imgsrc = "images/film-93x105.png";
 			}
-			htmlToAdd += (i==0?"<td class=photoThumbLarge colspan=2 rowspan=2>":"<td class=photoThumbSmall>")+"<div id="+ DivIdPrepend + Items[this.topLeftItem+i].Id + " style=background-color:rgba(0,0,0,0.5);background-image:url(" +imgsrc+ ");width:"+(i==0?572:270)+"px;height:"+(i==0?572:270)+"px><div class=photoTitle style=font-size:"+(i==0?36:28)+"px>"+ title + "</div>";
+			htmlToAdd += (i==0?"<td class=photoThumbLarge colspan=2 rowspan=2>":"<td class=photoThumbSmall>") + "<div id=" + DivIdPrepend + Items[this.topLeftItem+i].Id + " style=background-color:rgba(0,0,0,0.5);background-image:url(" +imgsrc+ ");width:"+(i==0?572:270) + "px;height:" + (i==0?572:270) + "px><div class=photoTitle style=font-size:" + (i==0?36:28)+"px>" + title + "</div>";
 			if (Items[this.topLeftItem+i].UserData.IsFavorite){
 				htmlToAdd += "<div class=favItem></div>";
 			}
 			htmlToAdd += "</div></td>";
 		} else { //It's a photo (probably).
 			if (Items[this.topLeftItem+i].ImageTags.Primary){
-				imgsrc = Server.getImageURL(Items[this.topLeftItem+i].Id,"Primary",(i==0?880:440),(i==0?880:440),0,false,0);
+				imgsrc = Server.getImageURL(Items[this.topLeftItem+i].Id, "Primary", (i==0?880:440), (i==0?880:440), 0, false, 0);
 			} else if (Items[this.topLeftItem+i].ImageTags.Thumb){
-				imgsrc = Server.getImageURL(Items[this.topLeftItem+i].Id,"Thumb",(i==0?880:440),(i==0?880:440),0,false,0);
+				imgsrc = Server.getImageURL(Items[this.topLeftItem+i].Id, "Thumb", (i==0?880:440), (i==0?880:440), 0, false, 0);
 			} else {
 				imgsrc = "images/menu/photos-54x54.png";
 			}
-			htmlToAdd += (i==0?"<td class=photoThumbLarge colspan=2 rowspan=2>":"<td class=photoThumbSmall>")+"<div id="+ DivIdPrepend + Items[this.topLeftItem+i].Id + " style=background-color:rgba(0,0,0,0.5);background-image:url(" +imgsrc+ ");width:"+(i==0?572:270)+"px;height:"+(i==0?572:270)+"px>";
-			if (Items[this.topLeftItem+i].UserData.IsFavorite){
+			htmlToAdd += (i==0?"<td class=photoThumbLarge colspan=2 rowspan=2>":"<td class=photoThumbSmall>") + "<div id="+ DivIdPrepend + Items[this.topLeftItem+i].Id + " style=background-color:rgba(0,0,0,0.5);background-image:url(" +imgsrc+ ");width:" + (i==0?572:270)+"px;height:" + (i==0?572:270) + "px>";
+			if (Items[this.topLeftItem + i].UserData.IsFavorite){
 				htmlToAdd += "<div class=favItem></div>";
 			}
 			htmlToAdd += "</div></td>";
@@ -138,14 +138,14 @@ Photos.updateOneDisplayedItem = function(item, selectedItem) {
 	var htmlToAdd = "";
 	if (item.Type == "PhotoAlbum" || item.Type == "Folder") {
 		var title = item.Name;
-		htmlToAdd += "<div class=photoTitle style=font-size:"+(this.selectedItem==this.topLeftItem?36:28)+"px>"+ title + "</div>";
+		htmlToAdd += "<div class=photoTitle style=font-size:" + (this.selectedItem==this.topLeftItem?36:28)+"px>" + title + "</div>";
 	}
 	if (item.UserData.IsFavorite){
 		htmlToAdd += "<div class=favItem></div>";
 	}
 	var itemCount = item.ChildCount;
 	if (itemCount) {
-		htmlToAdd += "<div class=photoItemCount>" + itemCount+"</div>";
+		htmlToAdd += "<div class=photoItemCount>" + item Count + "</div>";
 	}
 	Support.widgetPutInnerHTML(ItemId, htmlToAdd);
 };
@@ -250,16 +250,16 @@ Photos.keyDown = function() {
 
 Photos.processSelectedItem = function() {
 	clearTimeout(this.backdropTimeout);
-	Support.processSelectedItem("Photos", this.ItemData, this.startParams, this.selectedItem, this.topLeftItem,null, this.genreType, this.isLatest);
+	Support.processSelectedItem("Photos", this.ItemData, this.startParams, this.selectedItem, this.topLeftItem, null, this.genreType, this.isLatest);
 };
 
 Photos.playSelectedItem = function () {
 	clearTimeout(this.backdropTimeout);
-	Support.playSelectedItem("Photos", this.ItemData, this.startParams, this.selectedItem, this.topLeftItem,null);
+	Support.playSelectedItem("Photos", this.ItemData, this.startParams, this.selectedItem, this.topLeftItem, null);
 };
 
 Photos.openMenu = function() {
-	Support.updateURLHistory("Photos",this.startParams[0], this.startParams[1], null, null, this.selectedItem, this.topLeftItem, null);
+	Support.updateURLHistory("Photos", this.startParams[0], this.startParams[1], null, null, this.selectedItem, this.topLeftItem, null);
 	alert(this.selectedItem);
 	MainMenu.requested("Photos", this.ItemData.Items[this.selectedItem].Id);
 };
@@ -308,102 +308,102 @@ Photos.processUpKey = function() {
 		}
 	} else if (this.selectedItem - this.topLeftItem == 1) {
 		if (this.selectedItem > 1) {
-			this.selectedItem = Math.max(this.selectedItem-4,0);
-			this.topLeftItem = Math.max(this.topLeftItem-4,0);
+			this.selectedItem = Math.max(this.selectedItem - 4, 0);
+			this.topLeftItem = Math.max(this.topLeftItem - 4, 0);
 			this.updateDisplayedItems();
 		} else {
 			this.selectedItem = 0;
 		}
 	} else if (this.selectedItem - this.topLeftItem == 2) {
 		if (this.selectedItem > 2) {
-			this.selectedItem = Math.max(this.selectedItem-4,0);
-			this.topLeftItem = Math.max(this.topLeftItem-4,0);
+			this.selectedItem = Math.max(this.selectedItem - 4, 0);
+			this.topLeftItem = Math.max(this.topLeftItem - 4, 0);
 			this.updateDisplayedItems();
 		} else {
 			this.selectedItem = 0;
 		}
 	} else if (this.selectedItem - this.topLeftItem == 3) {
 		if (this.selectedItem > 3) {
-			this.selectedItem = Math.max(this.selectedItem-4,0);
-			this.topLeftItem = Math.max(this.topLeftItem-4,0);
+			this.selectedItem = Math.max(this.selectedItem - 4,0);
+			this.topLeftItem = Math.max(this.topLeftItem - 4,0);
 			this.updateDisplayedItems();
 		} else {
 			this.selectedItem = 0;
 		}
 	} else if (this.selectedItem - this.topLeftItem == 4) {
 		if (this.selectedItem > 4) {
-			this.selectedItem = Math.max(this.selectedItem-4,0);
-			this.topLeftItem = Math.max(this.topLeftItem-4,0);
+			this.selectedItem = Math.max(this.selectedItem - 4,0);
+			this.topLeftItem = Math.max(this.topLeftItem - 4, 0);
 			this.updateDisplayedItems();
 		} else {
 			this.selectedItem = 0;
 		}
 	} else if (this.selectedItem - this.topLeftItem == 5) {
-		this.selectedItem = this.topLeftItem+1;
+		this.selectedItem = this.topLeftItem + 1;
 	} else if (this.selectedItem - this.topLeftItem == 6) {
-		this.selectedItem = this.topLeftItem+2;
+		this.selectedItem = this.topLeftItem + 2;
 	} else if (this.selectedItem - this.topLeftItem == 7) {
-		this.selectedItem = this.topLeftItem+3;
+		this.selectedItem = this.topLeftItem + 3;
 	} else if (this.selectedItem - this.topLeftItem == 8) {
-		this.selectedItem = this.topLeftItem+4;
+		this.selectedItem = this.topLeftItem + 4;
 	} else if (this.selectedItem - this.topLeftItem == 9) {
 		this.selectedItem = this.topLeftItem;
 	} else if (this.selectedItem - this.topLeftItem == 10) {
 		this.selectedItem = this.topLeftItem;
 	} else if (this.selectedItem - this.topLeftItem == 11) {
-		this.selectedItem = this.topLeftItem+5;
+		this.selectedItem = this.topLeftItem + 5;
 	} else if (this.selectedItem - this.topLeftItem == 12) {
-		this.selectedItem = this.topLeftItem+6;
+		this.selectedItem = this.topLeftItem + 6;
 	} else if (this.selectedItem - this.topLeftItem == 13) {
-		this.selectedItem = this.topLeftItem+7;
+		this.selectedItem = this.topLeftItem + 7;
 	} else if (this.selectedItem - this.topLeftItem == 14) {
-		this.selectedItem = this.topLeftItem+8;
+		this.selectedItem = this.topLeftItem + 8;
 	}
 	this.updateSelectedItems();
 };
 
 Photos.processDownKey = function() {
-	if (this.selectedItem - this.topLeftItem == 0 && this.ItemData.Items.length-1 > this.selectedItem+9) {
-		this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem+9);
-	} else if (this.selectedItem - this.topLeftItem == 1 && this.ItemData.Items.length-1 > this.selectedItem+3) {
-		this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem+5);
-	} else if (this.selectedItem - this.topLeftItem == 2 && this.ItemData.Items.length-1 > this.selectedItem+2) {
-		this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem+6);
-	} else if (this.selectedItem - this.topLeftItem == 3 && this.ItemData.Items.length-1 > this.selectedItem+1) {
-		this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem+7);
-	} else if (this.selectedItem - this.topLeftItem == 4 && this.ItemData.Items.length-1 > this.selectedItem) {
-		this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem+8);
-	} else if (this.selectedItem - this.topLeftItem == 5 && this.ItemData.Items.length-1 > this.selectedItem+3) {
-		this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem+11);
-	} else if (this.selectedItem - this.topLeftItem == 6 && this.ItemData.Items.length-1 > this.selectedItem+2) {
-			this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem+12);
-	} else if (this.selectedItem - this.topLeftItem == 7 && this.ItemData.Items.length-1 > this.selectedItem+1) {
-			this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem+13);
-	} else if (this.selectedItem - this.topLeftItem == 8 && this.ItemData.Items.length-1 > this.selectedItem) {
-			this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem+14);
-	} else if (this.selectedItem - this.topLeftItem == 9 && this.ItemData.Items.length-1 > this.selectedItem+5) {
+	if (this.selectedItem - this.topLeftItem == 0 && this.ItemData.Items.length - 1 > this.selectedItem + 9) {
+		this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem + 9);
+	} else if (this.selectedItem - this.topLeftItem == 1 && this.ItemData.Items.length - 1 > this.selectedItem + 3) {
+		this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem + 5);
+	} else if (this.selectedItem - this.topLeftItem == 2 && this.ItemData.Items.length - 1 > this.selectedItem + 2) {
+		this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem + 6);
+	} else if (this.selectedItem - this.topLeftItem == 3 && this.ItemData.Items.length - 1 > this.selectedItem + 1) {
+		this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem + 7);
+	} else if (this.selectedItem - this.topLeftItem == 4 && this.ItemData.Items.length - 1 > this.selectedItem) {
+		this.selectedItem = Math.min(this.ItemData.Items.length - 1,this.topLeftItem + 8);
+	} else if (this.selectedItem - this.topLeftItem == 5 && this.ItemData.Items.length - 1 > this.selectedItem + 3) {
+		this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem + 11);
+	} else if (this.selectedItem - this.topLeftItem == 6 && this.ItemData.Items.length - 1 > this.selectedItem + 2) {
+			this.selectedItem = Math.min(this.ItemData.Items.length - 1,this.topLeftItem + 12);
+	} else if (this.selectedItem - this.topLeftItem == 7 && this.ItemData.Items.length - 1 > this.selectedItem + 1) {
+			this.selectedItem = Math.min(this.ItemData.Items.length - 1,this.topLeftItem + 13);
+	} else if (this.selectedItem - this.topLeftItem == 8 && this.ItemData.Items.length - 1 > this.selectedItem) {
+			this.selectedItem = Math.min(this.ItemData.Items.length - 1,this.topLeftItem + 14);
+	} else if (this.selectedItem - this.topLeftItem == 9 && this.ItemData.Items.length - 1 > this.selectedItem + 5) {
 			this.topLeftItem = this.selectedItem;
-			this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem+9);
+			this.selectedItem = Math.min(this.ItemData.Items.length - 1,this.topLeftItem+9);
 			this.updateDisplayedItems();
-	} else if (this.selectedItem - this.topLeftItem == 10 && this.ItemData.Items.length-1 > this.selectedItem+4) {
-			this.topLeftItem = this.selectedItem-1;
-			this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem+10);
+	} else if (this.selectedItem - this.topLeftItem == 10 && this.ItemData.Items.length - 1 > this.selectedItem + 4) {
+			this.topLeftItem = this.selectedItem - 1;
+			this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem + 10);
 			this.updateDisplayedItems();
-	} else if (this.selectedItem - this.topLeftItem == 11 && this.ItemData.Items.length-1 > this.selectedItem+3) {
-			this.topLeftItem = this.selectedItem-2;
-			this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem+11);
+	} else if (this.selectedItem - this.topLeftItem == 11 && this.ItemData.Items.length - 1 > this.selectedItem + 3) {
+			this.topLeftItem = this.selectedItem - 2;
+			this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem + 11);
 			this.updateDisplayedItems();
-	} else if (this.selectedItem - this.topLeftItem == 12 && this.ItemData.Items.length-1 > this.selectedItem+2) {
-			this.topLeftItem = this.selectedItem-3;
-			this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem+12);
+	} else if (this.selectedItem - this.topLeftItem == 12 && this.ItemData.Items.length - 1 > this.selectedItem + 2) {
+			this.topLeftItem = this.selectedItem - 3;
+			this.selectedItem = Math.min(this.ItemData.Items.length - 1,this.topLeftItem + 12);
 			this.updateDisplayedItems();
-	} else if (this.selectedItem - this.topLeftItem == 13 && this.ItemData.Items.length-1 > this.selectedItem+1) {
-			this.topLeftItem = this.selectedItem-4;
-			this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem+13);
+	} else if (this.selectedItem - this.topLeftItem == 13 && this.ItemData.Items.length - 1 > this.selectedItem + 1) {
+			this.topLeftItem = this.selectedItem - 4;
+			this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem + 13);
 			this.updateDisplayedItems();
-	} else if (this.selectedItem - this.topLeftItem == 14 && this.ItemData.Items.length-1 > this.selectedItem) {
-			this.topLeftItem = this.selectedItem-5;
-			this.selectedItem = Math.min(this.ItemData.Items.length-1,this.topLeftItem+14);
+	} else if (this.selectedItem - this.topLeftItem == 14 && this.ItemData.Items.length - 1 > this.selectedItem) {
+			this.topLeftItem = this.selectedItem - 5;
+			this.selectedItem = Math.min(this.ItemData.Items.length - 1,this.topLeftItem + 14);
 			this.updateDisplayedItems();
 	}
 	this.updateSelectedItems();

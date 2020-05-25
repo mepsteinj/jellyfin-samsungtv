@@ -45,7 +45,8 @@ DisplayEpisodes.start = function(title,url,selectedItem,topLeftItem) {
 	}
 
 	if (this.ItemData.Items.length > 0) {
-    Support.widgetPutInnerHTML("pageContent", "<div id=allOptions class='episodesAllOptions'>" +
+    Support.widgetPutInnerHTML("pageContent",
+    "<div id=allOptions class='episodesAllOptions'>" +
 		"<span id='bannerItem0'>Play All</span>" +
 		"<span id='bannerItem1'>Shuffle All</span></div><div id=content class='episodesList'></div>" +
 		"<div id='episodesSeriesInfo' class='episodesSeriesInfo'></div>" +
@@ -59,7 +60,7 @@ DisplayEpisodes.start = function(title,url,selectedItem,topLeftItem) {
 
 		//Set backdrop
 		if (this.ItemData.Items[0].ParentBackdropImageTags){
-			var imgsrc = Server.getBackgroundImageURL(this.ItemData.Items[0].ParentBackdropItemId,"Backdrop",Main.backdropWidth,Main.backdropHeight,0,false,0,this.ItemData.Items[0].ParentBackdropImageTags.length);
+			var imgsrc = Server.getBackgroundImageURL(this.ItemData.Items[0].ParentBackdropItemId,"Backdrop", Main.backdropWidth, Main.backdropHeight, 0, false, 0, this.ItemData.Items[0].ParentBackdropImageTags.length);
 			Support.fadeImage(imgsrc);
 		}
 
@@ -90,14 +91,14 @@ DisplayEpisodes.start = function(title,url,selectedItem,topLeftItem) {
 		MusicPlayer.start("Theme", null, "DisplayEpisodes",null,this.ItemData.Items[0].SeriesId,this.ItemData.Items[0].SeasonId);
 	} else {
 		//Set message to user
-		Support.widgetPutInnerHTML("pageContent", "<div id='itemContainer' class='Columns" + this.MAXCOLUMNCOUNT + " padding10'><p id='title' class=pageTitle>"+title+"</p><div id=Content></div></div>");
+		Support.widgetPutInnerHTML("pageContent", "<div id='itemContainer' class='Columns" + this.MAXCOLUMNCOUNT + " padding10'><p id='title' class=pageTitle>" + title + "</p><div id=content></div></div>");
 		Support.widgetPutInnerHTML("counter", "");
 		Support.widgetPutInnerHTML("title", "Sorry");
 		document.getElementById("content").className = "padding60";
 		Support.widgetPutInnerHTML("content", "Huh.. Looks like I have no content to show you in this view I'm afraid");
 
 		//As no content focus on menu bar and null null means user can't return off the menu bar
-		MainMenu.requested(null,null);
+		MainMenu.requested(null, null);
 	}
 };
 
@@ -111,33 +112,33 @@ DisplayEpisodes.updateDisplayedItems = function() {
 			title = this.ItemData.Items[index].IndexNumber + " - " + this.ItemData.Items[index].Name;
 		}
 
-		htmlToAdd += "<div id=" + this.ItemData.Items[index].Id + " class='EpisodeListSingle'>";
+		htmlToAdd += "<div id=" + this.ItemData.Items[index].Id + " class='episodeListSingle'>";
 
 		if (this.ItemData.Items[index].ImageTags.Primary) {
 			var imgsrc = Server.getImageURL(this.ItemData.Items[index].Id,"Primary",200,92,0,false,0);
-			htmlToAdd += "<div class='EpisodeListSingleImage' style=background-image:url(" +imgsrc+ ")></div>";
+			htmlToAdd += "<div class='episodeListSingleImage' style=background-image:url(" +imgsrc+ ")></div>";
 		} else {
-			htmlToAdd += "<div class='EpisodeListSingleImage'></div>";
+			htmlToAdd += "<div class='episodeListSingleImage'></div>";
 		}
 
 		htmlToAdd += "<div id=title_" + this.ItemData.Items[index].Id;
 
 		if (this.ItemData.Items[index].UserData.Played == true) {
-			htmlToAdd += " class='EpisodeListSingleTitleWatched'>"+ title +"</div>";
+			htmlToAdd += " class='episodeListSingleTitleWatched'>" + title + "</div>";
 		}else if (this.ItemData.Items[index].LocationType == "Virtual"){
-			htmlToAdd += " class='EpisodeListSingleTitleVirtual'>"+ title +"</div>";
+			htmlToAdd += " class='episodeListSingleTitleVirtual'>" + title + "</div>";
 		} else {
-			htmlToAdd += " class='EpisodeListSingleTitle'>"+ title +"</div>";
+			htmlToAdd += " class='episodeListSingleTitle'>" + title + "</div>";
 		}
 		if (this.ItemData.Items[index].UserData.IsFavorite == true) {
-			htmlToAdd += "<div class='ShowListSingleFav'></div>";
+			htmlToAdd += "<div class='showListSingleFav'></div>";
 		}
 		if (this.ItemData.Items[index].UserData.Played == true) {
-			htmlToAdd += "<div class='ShowListSingleWatched highlight"+Main.highlightColour+"Background'>&#10003</div>";
+			htmlToAdd += "<div class='showListSingleWatched highlight" + Main.highlightColour + "Background'>&#10003</div>";
 		}
 		if (this.ItemData.Items[index].LocationType == "Virtual"){
-			imageMissingOrUnaired = (Support.FutureDate(this.ItemData.Items[index].PremiereDate) == true) ? "ShowListSingleUnaired" : "ShowListSingleMissing";
-			htmlToAdd += "<div class='"+imageMissingOrUnaired+"'></div>";
+			imageMissingOrUnaired = (Support.FutureDate(this.ItemData.Items[index].PremiereDate) == true) ? "showListSingleUnaired" : "showListSingleMissing";
+			htmlToAdd += "<div class='" + imageMissingOrUnaired + "'></div>";
 		}
 		htmlToAdd += "</div>";
 
@@ -145,14 +146,14 @@ DisplayEpisodes.updateDisplayedItems = function() {
 	Support.widgetPutInnerHTML("content", htmlToAdd);
 
 	//Loop again to fix heights - has to be done after html is set!
-	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(),this.ItemData.Items.length); index++) {
+	for (var index = this.topLeftItem; index < Math.min(this.topLeftItem + this.getMaxDisplay(), this.ItemData.Items.length); index++) {
 		//Height fix for overview based on height of title - Numbers will need to change if styling is changed!
-		var titleHeight = $('#title_'+this.ItemData.Items[index].Id).height();
+		var titleHeight = $('#title_' + this.ItemData.Items[index].Id).height();
 
 		if (titleHeight >= 50) {
-			document.getElementById("title_"+this.ItemData.Items[index].Id).style.paddingTop = "2px";
+			document.getElementById("title_" + this.ItemData.Items[index].Id).style.paddingTop = "2px";
 		} else if (titleHeight >= 34) {
-			document.getElementById("title_"+this.ItemData.Items[index].Id).style.paddingTop = "18px";
+			document.getElementById("title_" + this.ItemData.Items[index].Id).style.paddingTop = "18px";
 		}
 	}
 };
@@ -165,7 +166,7 @@ DisplayEpisodes.updateSelectedItems = function () {
 	if (this.selectedItem > -1) {
 		//Update Displayed Image
 		if (this.ItemData.Items[this.selectedItem].ImageTags.Primary) {
-			var imgsrc = Server.getImageURL(this.ItemData.Items[this.selectedItem].Id,"Primary",890,310,0,false,0);
+			var imgsrc = Server.getImageURL(this.ItemData.Items[this.selectedItem].Id, "Primary", 890, 310, 0, false, 0);
 			document.getElementById("EpisodesImage").style.backgroundImage="url('" + imgsrc + "')";
 		}
 
@@ -174,10 +175,11 @@ DisplayEpisodes.updateSelectedItems = function () {
 
 		if (this.ItemData.Items[this.selectedItem].ParentIndexNumber !== undefined) {
 			if (this.ItemData.Items[this.selectedItem].ParentIndexNumber == 0) {
-				htmlSubData += "<td class='MetadataItemSmall'>" + "Specials";
+				htmlSubData += "<td class='metadataItemSmall'>" + "Specials";
 				+ "</td>";
 			} else {
-				htmlSubData += "<td class='MetadataItemSmall'>" + "Season " + this.ItemData.Items[this.selectedItem].ParentIndexNumber;
+				htmlSubData += "<td class='M
+				metadataItemSmall'>" + "Season " + this.ItemData.Items[this.selectedItem].ParentIndexNumber;
 				+ "</td>";
 			}
 
@@ -193,21 +195,21 @@ DisplayEpisodes.updateSelectedItems = function () {
 			} else {
 				starsImage = "images/star_full-46x40.png";
 			}
-			htmlSubData += "<td class=MetadataItemIcon style=background-image:url("+starsImage+")></td>";
-			htmlSubData += "<td class=MetadataItemVSmall>" + stars + "</td>";
+			htmlSubData += "<td class=metadataItemIcon style=background-image:url(" + stars Image + ")></td>";
+			htmlSubData += "<td class=metadataItemVSmall>" + stars + "</td>";
 		}
 		if (this.ItemData.Items[this.selectedItem].PremiereDate !== undefined) {
-			htmlSubData += "<td class='MetadataItemSmall'>" + Support.AirDate(this.ItemData.Items[this.selectedItem].PremiereDate, this.ItemData.Items[this.selectedItem].Type)
+			htmlSubData += "<td class='metadataItemSmall'>" + Support.AirDate(this.ItemData.Items[this.selectedItem].PremiereDate, this.ItemData.Items[this.selectedItem].Type)
 				+ "</td>";
 		}
 
 		if (this.ItemData.Items[this.selectedItem].RunTimeTicks !== undefined) {
-			htmlSubData += "<td class='MetadataItemSmall'>" + Support.convertTicksToMinutes(this.ItemData.Items[this.selectedItem].RunTimeTicks/10000)
+			htmlSubData += "<td class='metadataItemSmall'>" + Support.convertTicksToMinutes(this.ItemData.Items[this.selectedItem].RunTimeTicks/10000)
 				+ "</td>";
 		}
 
 		if (this.ItemData.Items[this.selectedItem].HasSubtitles) {
-			htmlSubData += "<td class=MetadataItemIcon style=background-image:url(images/cc-50x40.png)></td>";
+			htmlSubData += "<td class=metadataItemIcon style=background-image:url(images/cc-50x40.png)></td>";
 		}
 
 		htmlSubData += "</tr></table>";
@@ -225,16 +227,16 @@ DisplayEpisodes.updateSelectedItems = function () {
     Support.widgetPutInnerHTML("seriesOverview", htmlForOverview);
 
 		//Height fix for overview based on height of title - Numbers will need to change if styling is changed!
-		var titleHeight = $('#SeriesTitle').height();
+		var titleHeight = $('#seriesTitle').height();
 		if (titleHeight >= 78) {
-			document.getElementById("SeriesOverview").style.height = "218px";
+			document.getElementById("seriesTitleeriesOverview").style.height = "218px";
 		} else if (titleHeight >= 52) {
-			document.getElementById("SeriesOverview").style.height = "1270px";
+			document.getElementById("seriesOverview").style.height = "1270px";
 		} else {
-			document.getElementById("SeriesOverview").style.height = "322px";
+			document.getElementById("seriesOverview").style.height = "322px";
 		}
 
-		Support.scrollingText("SeriesOverview");
+		Support.scrollingText("seriesOverview");
 
 		//Background Image
 		//Blocking code to skip getting data for items where the user has just gone past it
@@ -243,7 +245,7 @@ DisplayEpisodes.updateSelectedItems = function () {
 			if (DisplayEpisodes.selectedItem == currentSelectedItem) {
 				//Set Background
 				if (DisplayEpisodes.ItemData.Items[currentSelectedItem].BackdropImageTags.length > 0) {
-					var imgsrc = Server.getBackgroundImageURL(DisplayEpisodes.ItemData.Items[currentSelectedItem].Id,"Backdrop",Main.backdropWidth,Main.backdropHeight,0,false,0,DisplayEpisodes.ItemData.Items[currentSelectedItem].BackdropImageTags.length);
+					var imgsrc = Server.getBackgroundImageURL(DisplayEpisodes.ItemData.Items[currentSelectedItem].Id, "Backdrop", Main.backdropWidth,Main.backdropHeight, 0, false, 0, DisplayEpisodes.ItemData.Items[currentSelectedItem].BackdropImageTags.length);
 					Support.fadeImage(imgsrc);
 				}
 			}
@@ -256,7 +258,7 @@ DisplayEpisodes.updateSelectedBannerItems = function() {
 	for (var index = 0; index < 2; index++) {
 		if (this.selectedItem == -1) {
 			if (this.selectedBannerItem == index) {
-				document.getElementById("bannerItem"+index).className = "button highlight"+Main.highlightColour+"Background";
+				document.getElementById("bannerItem" + index).className = "button highlight" + Main.highlightColour + "Background";
 			} else {
 				document.getElementById("bannerItem"+index).className = "button";
 			}
@@ -358,9 +360,9 @@ DisplayEpisodes.keyDown = function() {
 			break;
 		case tvKey.KEY_BLUE:
 			if (this.selectedItem == -1) {
-				MusicPlayer.showMusicPlayer("DisplayEpisodes", "bannerItem"+this.selectedBannerItem,"button highlight"+Main.highlightColour+"Background");
+				MusicPlayer.showMusicPlayer("DisplayEpisodes", "bannerItem"+this.selectedBannerItem,"button highlight" + Main.highlightColour+"Background");
 			} else {
-				MusicPlayer.showMusicPlayer("DisplayEpisodes", this.ItemData.Items[this.selectedItem].Id,document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
+				MusicPlayer.showMusicPlayer("DisplayEpisodes", this.ItemData.Items[this.selectedItem].Id, document.getElementById(this.ItemData.Items[this.selectedItem].Id).className);
 			}
 			break;
 		case tvKey.KEY_TOOLS:
@@ -390,16 +392,16 @@ DisplayEpisodes.processSelectedItem = function() {
 		} else if (this.selectedBannerItem == 1) {
 			//Shuffle All Episodes in Show
 			var urlToPlay= Server.getChildItemsURL(this.ItemData.Items[0].SeasonId,"&ExcludeLocationTypes=Virtual&IncludeItemTypes=Episode&Recursive=true&SortBy=Random&SortOrder=Ascending&Fields=ParentId,SortName,MediaSources");
-			Player.start("PlayAll",urlToPlay,0,"DisplayEpisodes");
+			Player.start("PlayAll",urlToPlay, 0, "DisplayEpisodes");
 		}
 	} else {
-		var url = Server.getItemInfoURL(this.ItemData.Items[this.selectedItem].Id,null);
+		var url = Server.getItemInfoURL(this.ItemData.Items[this.selectedItem].Id, null);
 		ItemDetails.start(this.ItemData.Items[this.selectedItem].Name, url, 0);
 	}
 };
 
 DisplayEpisodes.playSelectedItem = function () {
-	Support.playSelectedItem("DisplayEpisodes",this.ItemData,this.startParams,this.selectedItem,this.topLeftItem,null);
+	Support.playSelectedItem("DisplayEpisodes", this.ItemData, this.startParams, this.selectedItem,this.topLeftItem, null);
 };
 
 DisplayEpisodes.processUpKey = function() {
@@ -444,8 +446,6 @@ DisplayEpisodes.processDownKey = function() {
 	}
 };
 
-
-
 DisplayEpisodes.processChannelUpKey = function() {
 	if (this.selectedItem > -1) {
 		this.selectedItem = this.selectedItem - this.getMaxDisplay();
@@ -470,7 +470,7 @@ DisplayEpisodes.openMenu = function() {
 	if (this.selectedItem == -1) {
 		if (this.selectedBannerItem == -1) {
 			this.selectedBannerItem = 0;
-			document.getElementById("bannerItem"+this.selectedBannerItem).className = "button";
+			document.getElementById("bannerItem" + this.selectedBannerItem).className = "button";
 		}
 		MainMenu.requested("DisplayEpisodes", "bannerItem"+this.selectedBannerItem, "button highlight" + Main.highlightColour + "Background");
 	} else {
@@ -502,7 +502,7 @@ DisplayEpisodes.processRightKey = function() {
 DisplayEpisodes.processChannelDownKey = function() {
 	this.selectedItem = this.selectedItem + this.getMaxDisplay();
 	if (this.selectedItem >= this.ItemData.Items.length) {
-		this.selectedItem = (this.ItemData.Items.length-1);
+		this.selectedItem = (this.ItemData.Items.length - 1);
 		if (this.selectedItem >= this.topLeftItem + this.getMaxDisplay()) {
 			this.topLeftItem = this.topLeftItem + this.getMaxDisplay();
 		}

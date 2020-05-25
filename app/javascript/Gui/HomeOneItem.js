@@ -104,7 +104,7 @@ HomeOneItem.start = function(title, url, selectedItem, topLeftItem) {
 
 			for (var index = 0; index < randomImageData.Items.length; index++) {
 				if (randomImageData.Items[index ].BackdropImageTags.length > 0) {
-					var imgsrc = Server.getBackgroundImageURL(randomImageData.Items[index ].Id, "Backdrop", Main.backdropWidth,Main.backdropHeight, 0, false, 0, randomImageData.Items[index ].BackdropImageTags.length);
+					var imgsrc = Server.getBackgroundImageURL(randomImageData.Items[index ].Id, "Backdrop", Main.backdropWidth,Main.backdropHeight, 0, false, 0, randomImageData.Items[index].BackdropImageTags.length);
 					Support.fadeImage(imgsrc);
 					break;
 				}
